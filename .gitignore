@@ -1,1 +1,5 @@
 .vscode
+__pycache__
+wrk/lib
+wrk/objs
+wrk/output
