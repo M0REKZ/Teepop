@@ -1,10 +1,6 @@
 #ifdef FOO_LOWLEVEL_STRING_LIBC
 
-#ifdef FOO_PLATFORM_DARWIN
-	#include <alloc.h>
-#else
-	#include <stdlib.h>
-#endif
+#include <stdlib.h>
 
 #include <string.h>
 

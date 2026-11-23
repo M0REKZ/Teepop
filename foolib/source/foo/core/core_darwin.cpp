@@ -191,8 +191,6 @@ int main(int argc, char* argv[])
 	// Init
 	//
 	{
-		InitCursor();
-
 		if(AEInstallEventHandler(kCoreEventClass, kAEQuitApplication, NewAEEventHandlerUPP((AEEventHandlerProcPtr)QuitAppleEventHandler), 0, false) != noErr)
 			ExitToShell();
 	}

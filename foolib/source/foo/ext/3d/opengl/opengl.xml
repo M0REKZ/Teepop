@@ -12,9 +12,12 @@
 			<file name="ext_ext_swap_control.h"/>
 		</group>
 		<group name="platform">
-			<file name="opengl_darwin.cpp"/>
-			<file name="opengl_win32.cpp"/>
-			<file name="opengl_x11.cpp"/>
+			<file name="opengl_darwin.cpp" condition="system.platform=darwin"/>
+			<file name="opengl_macos.mm" condition="system.platform=darwin"/>
+			<file name="opengl_win32.cpp" condition="system.platform=win32"/>
+			<file name="opengl_x11.cpp" condition="system.platform=linux"/>
+			<file name="opengl_x11.cpp" condition="system.platform=freebsd"/>
+			<file name="opengl_x11.cpp" condition="system.platform=openbsd"/>
 		</group>
 		<group name="shared">
 			<file name="opengl_common.cpp"/>
@@ -35,10 +38,10 @@
 		<file name="ext_arb_vertex_program.cpp"/>
 		<file name="ext_ext_swap_control.cpp"/>
 		<file name="opengl_common.cpp"/>
-		<file name="opengl_darwin.cpp"/>
+		<file name="opengl_macos.mm" condition="system.platform=darwin"/>
 		<file name="opengl_states.cpp"/>
-		<file name="opengl_win32.cpp"/>
-		<file name="opengl_x11.cpp"/>
+		<file name="opengl_win32.cpp" condition="system.platform=win32"/>
+		<file name="opengl_x11.cpp" condition="system.platform=linux"/>
 	</set>
 
 
@@ -67,8 +70,8 @@
 		<rawoutput condition="system.platform=win32">glu32.lib</rawoutput>
 		<rawoutput condition="system.platform=win32">opengl32.lib</rawoutput>
 		<rawoutput condition="system.platform=win32">gdi32.lib</rawoutput>
-		<rawoutput condition="system.platform=darwin">-framework AGL</rawoutput>
 		<rawoutput condition="system.platform=darwin">-framework OpenGL</rawoutput>
+		<rawoutput condition="system.platform=darwin">-framework AppKit</rawoutput>
 
 		<rawoutput condition="system.platform=linux">-L/usr/X11R6/lib</rawoutput>
 		<rawoutput condition="system.platform=linux">-lX11</rawoutput>

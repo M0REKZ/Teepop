@@ -101,7 +101,7 @@ void NMemoryManager::DumpMemInfo()
 		int8 aBuf[1024];
 		StringCFormat(aBuf, "%s(%d)", pBlock->m_aFilename, pBlock->m_Line);
 		uint8 *pBlockAddr = ((uint8 *)pBlock)+EHeaderSize+EGuardSize;
-		NLog::WriteF("%-80s %8x %10d B  ", aBuf, (int32)pBlockAddr, pBlock->m_Size);
+		NLog::WriteF("%-80s %p %10d B  ", aBuf, (void *)pBlockAddr, pBlock->m_Size);
 
 		for(int32 i = 0; i < pBlock->m_Size && i < 32; i++)
 		{

@@ -185,7 +185,7 @@ namespace NFoo
 		//
 		//
 		//
-		TVector2 Round()							const	{ return Convert<int32>().Convert<T>(); }
+		TVector2 Round()							const	{ return Convert<int32>().template Convert<T>(); }
 		
 		//
 		// Operators

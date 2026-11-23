@@ -4,6 +4,7 @@
 
 	<setting condition="system.cpu=ppc" name="cxx.define.FOO_CPU_PPC"/>
 	<setting condition="system.cpu=x86" name="cxx.define.FOO_CPU_X86"/>
+	<setting condition="system.cpu=arm64" name="cxx.define.FOO_CPU_ARM64"/>
 	
 	<setting condition="system.platform=darwin" name="cxx.define.FOO_PLATFORM_DARWIN"/>
 	<setting condition="system.platform=freebsd" name="cxx.define.FOO_PLATFORM_FREEBSD"/>
@@ -18,6 +19,7 @@
 	
 	<setting condition="cxx.compiler=mw" name="cxx.define.FOO_COMPILER_CW"/>
 	<setting condition="cxx.compiler=gcc" name="cxx.define.FOO_COMPILER_GCC"/>
+	<setting condition="cxx.compiler=clang" name="cxx.define.FOO_COMPILER_CLANG"/>
 	<setting condition="cxx.compiler=msvc7" name="cxx.define.FOO_COMPILER_MSVC7"/>
 
 	<setting condition="conf.name=debug" name="cxx.define.FOO_MODE_DEBUG"/>
@@ -94,8 +96,11 @@
 		<file name="memory_std.cpp"/>
 		<file name="string_libc.cpp"/>
 		<file name="string_std.cpp"/>
-		<file name="sys_win32.cpp"/>
-		<file name="sys_posix.cpp"/>
+		<file name="sys_win32.cpp" condition="system.platform=win32"/>
+		<file name="sys_posix.cpp" condition="system.platform=darwin"/>
+		<file name="sys_posix.cpp" condition="system.platform=linux"/>
+		<file name="sys_posix.cpp" condition="system.platform=freebsd"/>
+		<file name="sys_posix.cpp" condition="system.platform=openbsd"/>
 	</set>
 
 	
@@ -112,7 +117,6 @@
 
 	<chain name="build">
 		<input>lib.base</input>
-		<rawoutput condition="system.platform=darwin">-framework System</rawoutput>
 		<rawoutput condition="system.platform=openbsd">-lpthread</rawoutput>
 		<rawoutput condition="system.platform=freebsd">-lpthread</rawoutput>
 	</chain>

@@ -10,6 +10,8 @@
 	#include "compiler_msvc6.h"
 #elif defined(FOO_COMPILER_GCC)
 	#include "compiler_gcc.h"
+#elif defined(FOO_COMPILER_CLANG)
+	#include "compiler_gcc.h"
 #elif defined(FOO_COMPILER_CW)
 	#include "compiler_cw.h"
 #elif defined(FOO_COMPILER_MW)
@@ -23,6 +25,8 @@
 	#include "cpu_x86.h"
 #elif defined(FOO_CPU_PPC)
 	#include "cpu_ppc.h"
+#elif defined(FOO_CPU_ARM64)
+	#include "cpu_arm64.h"
 #else
 	#error "FOO ERROR: No include for cpu"
 #endif

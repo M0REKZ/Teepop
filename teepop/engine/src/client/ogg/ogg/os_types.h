@@ -17,6 +17,8 @@
 #ifndef _OS_TYPES_H
 #define _OS_TYPES_H
 
+#include <stdint.h>
+
 /* make it easy on the folks that want to compile the libs with a
    different malloc than stdlib */
 #define _ogg_malloc  malloc
@@ -52,13 +54,13 @@
    typedef UInt32 ogg_uint32_t;
    typedef SInt64 ogg_int64_t;
 
-#elif defined(__MACOSX__) /* MacOS X Framework build */
+#elif defined(__MACOSX__) || defined(__APPLE__) /* MacOS X Framework build */
 
 #  include <sys/types.h>
    typedef int16_t ogg_int16_t;
-   typedef u_int16_t ogg_uint16_t;
+   typedef uint16_t ogg_uint16_t;
    typedef int32_t ogg_int32_t;
-   typedef u_int32_t ogg_uint32_t;
+   typedef uint32_t ogg_uint32_t;
    typedef int64_t ogg_int64_t;
 
 #elif defined(__BEOS__)

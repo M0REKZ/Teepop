@@ -141,7 +141,7 @@ namespace NFoo
 		TVector4<TNEWTYPE> Convert()				const	{ return TVector4<TNEWTYPE>((TNEWTYPE)x, (TNEWTYPE)y, (TNEWTYPE)z, (TNEWTYPE)w); }
 
 		//
-		TVector4 Round()							const	{ return Convert<int32>().Convert<T>(); }
+		TVector4 Round()							const	{ return Convert<int32>().template Convert<T>(); }
 		
 		//
 		// Operators

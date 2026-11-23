@@ -47,8 +47,8 @@
 		<file name="device.cpp"/>
 		<file name="puller.cpp"/>
 		<file name="source.cpp"/>
-		<file name="devices/directsound.cpp"/>
-		<file name="devices/waveout.cpp"/>
+		<file name="devices/directsound.cpp" condition="system.platform=win32"/>
+		<file name="devices/waveout.cpp" condition="system.platform=win32"/>
 		<file name="devices/openal.cpp"/>
 		<file name="sources/swmixer.cpp"/>
 		<file name="sources/sinus.cpp"/>

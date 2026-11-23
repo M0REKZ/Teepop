@@ -20,9 +20,11 @@
 
 	<set name="files.cpp">
 		<file name="core_common.cpp"/>
-		<file name="core_linux.cpp"/>
-		<file name="core_darwin.cpp"/>
-		<file name="core_win32.cpp"/>
+		<file name="core_linux.cpp" condition="system.platform=linux"/>
+		<file name="core_linux.cpp" condition="system.platform=freebsd"/>
+		<file name="core_linux.cpp" condition="system.platform=openbsd"/>
+		<file name="core_darwin.cpp" condition="system.platform=darwin"/>
+		<file name="core_win32.cpp" condition="system.platform=win32"/>
 	</set>
 
 	<cxx name="objs">

@@ -7,11 +7,11 @@
 typedef unsigned int uintr;
 typedef unsigned char uint8;
 typedef unsigned short uint16;
-typedef unsigned long uint32;
+typedef unsigned int uint32;
 typedef int intr;
 typedef char int8;
 typedef short int16;
-typedef long int32;
+typedef int int32;
 
 #if defined(FOO_COMPILER_INT64_INT64)
 	typedef __int64 int64;

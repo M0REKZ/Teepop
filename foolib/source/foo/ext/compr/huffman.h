@@ -127,30 +127,6 @@ namespace NFoo
 		}
 
 		template<class T>
-		int32 DecodeT(T &rBitStream)
-		{
-			rBitStream.Peek(16);
-			CNode *pNode = m_pFirstNode;
-			HUFFMAN_DEBUG_F(int64 Start = GetTickCount();)
-			while(pNode)
-			{
-				if(pNode->m_End)
-				{
-					HUFFMAN_DEBUG_F(m_Time_Decode += GetTickCount()-Start;)
-					return pNode->m_Alpha;
-				}
-
-				int32 bit = rBitStream.Read(1);
-				if(bit)
-					pNode = pNode->m_pOne;
-				else
-					pNode = pNode->m_pZero;
-			}
-			DebugBreak();
-			return -1;
-		}
-
-		template<class T>
 		int32 DecodeL(T &rBitStream)
 		{
 			HUFFMAN_DEBUG_F(int64 Start = GetTickCount();)

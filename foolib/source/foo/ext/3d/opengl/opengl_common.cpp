@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 #include <foo/ext/3d/3d.h>
 #include <foo/base/log.h>
 #include <foo/base/string.h>
@@ -596,15 +598,14 @@ int32 COpenGLDevice::CreateVertexBuffer(int32 _Count, int32 _What, int32 _Flags)
 		glextGenBuffersARB(1, (GLuint*)&pBuffer->m_iBufferID);
 		glextBindBufferARB(GL_ARRAY_BUFFER_ARB, pBuffer->m_iBufferID);
 
-		uint8 *pData = ((uint8 *)NULL)+4; // we must waste 4 bytes.. 0 = NULL
+		uintptr_t dataSize = 4; // reserve zero as the null buffer offset
 
-		int32 Offset = 0;
 		for(int32 i = 0; i < EMaxTextureUnits; i++)
 		{
 			if(_What&(EVB_TextureBase<<i))
 			{
-				pBuffer->m_LockInfo.m_pTexturefp32[i] = (TVector2<fp32>*)pData;
-				pData += _Count*sizeof(TVector2<fp32>);
+				pBuffer->m_LockInfo.m_pTexturefp32[i] = (TVector2<fp32>*)dataSize;
+				dataSize += _Count*sizeof(TVector2<fp32>);
 			}
 		}
 
@@ -613,24 +614,24 @@ int32 COpenGLDevice::CreateVertexBuffer(int32 _Count, int32 _What, int32 _Flags)
 		pBuffer->m_LockInfo.m_pColorfp32 = NULL;
 		if(_What&EVB_Vertex)
 		{
-			pBuffer->m_LockInfo.m_pVertexfp32 = (TVector3<fp32>*)pData;
-			pData += sizeof(TVector3<fp32>)*_Count;
+			pBuffer->m_LockInfo.m_pVertexfp32 = (TVector3<fp32>*)dataSize;
+			dataSize += sizeof(TVector3<fp32>)*_Count;
 		}
 
 		if(_What&EVB_Normal)
 		{
-			pBuffer->m_LockInfo.m_pNormalfp32 = (TVector3<fp32>*)pData;
-			pData += sizeof(TVector3<fp32>)*_Count;
+			pBuffer->m_LockInfo.m_pNormalfp32 = (TVector3<fp32>*)dataSize;
+			dataSize += sizeof(TVector3<fp32>)*_Count;
 		}
 
 		if(_What&EVB_Color)
 		{
-			pBuffer->m_LockInfo.m_pColorfp32 = (TVector4<fp32>*)pData;
-			pData += sizeof(TVector4<fp32>)*_Count;
+			pBuffer->m_LockInfo.m_pColorfp32 = (TVector4<fp32>*)dataSize;
+			dataSize += sizeof(TVector4<fp32>)*_Count;
 		}
 
-		int8 *pTemp = new int8[(int32)pData];
-		glextBufferDataARB(GL_ARRAY_BUFFER_ARB, (int32)pData, pTemp, GL_DYNAMIC_DRAW_ARB); //GL_STATIC_DRAW_ARB);
+		int8 *pTemp = new int8[dataSize];
+		glextBufferDataARB(GL_ARRAY_BUFFER_ARB, (GLuint)dataSize, pTemp, GL_DYNAMIC_DRAW_ARB); //GL_STATIC_DRAW_ARB);
 		delete [] pTemp;
 
 	}
@@ -708,11 +709,11 @@ CVertexBuffer* COpenGLDevice::LockVertexBuffer(int32 _iBuffer, int32 _What)
 		// fill the struct
 		pVB->m_LockInfo2.m_Count = Count;
 		for(int32 i = 0; i < EMaxTextureUnits; i++)
-			pVB->m_LockInfo2.m_pTexturefp32[i] = (TVector2<fp32>*)(pData+(int32)pVB->m_LockInfo.m_pTexturefp32[i]);
+			pVB->m_LockInfo2.m_pTexturefp32[i] = (TVector2<fp32>*)(pData+(uintptr_t)pVB->m_LockInfo.m_pTexturefp32[i]);
 
-		pVB->m_LockInfo2.m_pVertexfp32 = (TVector3<fp32>*)(pData+(int32)pVB->m_LockInfo.m_pVertexfp32);
-		pVB->m_LockInfo2.m_pNormalfp32 = (TVector3<fp32>*)(pData+(int32)pVB->m_LockInfo.m_pNormalfp32);
-		pVB->m_LockInfo2.m_pColorfp32 = (TVector4<fp32>*)(pData+(int32)pVB->m_LockInfo.m_pColorfp32);
+		pVB->m_LockInfo2.m_pVertexfp32 = (TVector3<fp32>*)(pData+(uintptr_t)pVB->m_LockInfo.m_pVertexfp32);
+		pVB->m_LockInfo2.m_pNormalfp32 = (TVector3<fp32>*)(pData+(uintptr_t)pVB->m_LockInfo.m_pNormalfp32);
+		pVB->m_LockInfo2.m_pColorfp32 = (TVector4<fp32>*)(pData+(uintptr_t)pVB->m_LockInfo.m_pColorfp32);
 
 		return &pVB->m_LockInfo2;
 	}

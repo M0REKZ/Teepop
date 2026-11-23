@@ -24,8 +24,8 @@
 	<set name="cppfiles">
 		<file name="input.cpp"/>
 		<file name="device.cpp"/>
-		<file name="keyboard_darwin.cpp"/>
-		<file name="keyboard_win32.cpp"/>
+		<file name="keyboard_darwin.cpp" condition="system.platform=darwin"/>
+		<file name="keyboard_win32.cpp" condition="system.platform=win32"/>
 	</set>
 
 	<cxx name="obj">

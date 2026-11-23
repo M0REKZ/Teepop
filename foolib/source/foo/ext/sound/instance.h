@@ -6,6 +6,8 @@
 
 namespace NFoo { namespace NSound {
 
+	class CPuller;
+
 	class CInstance
 	{
 		friend class CPuller;

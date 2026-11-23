@@ -619,8 +619,49 @@ class CCPPCompiler(CBasicTool):
 
 			if int(globalsettings['verbose']) > 0:
 				print(execstring)
-			os.system(execstring)
+			if os.system(execstring) != 0:
+				raise RuntimeError("GCC compilation failed: " + config['input'])
 	compilers.append(CCompiler_gcc)
+
+	##
+	## Clang
+	##
+	class CCompiler_clang(CCompiler):
+		name = "clang"
+		supports = []
+		def Init(self, tool):
+			try:
+				clang = os.popen("clang++ -dumpmachine")
+				target = clang.readline().strip()
+				clang.close()
+				target = GetTarget(target)
+				if "unknown" not in target:
+					self.supports.append(target)
+			except:
+				pass
+		def compile(self, config):
+			defines = ""
+			for define in config['defines']:
+				defines += " -D"+define
+
+			includes = ""
+			for include in config['includes']:
+				includes += " -I"+include
+
+			execstring = "clang++ -ansi "
+			if config['debuginfo'] == 'true':
+				execstring += "-g "
+			if config['optimize'] == 'true':
+				execstring += "-O3 "
+			if globalsettings['system.platform'] == 'darwin':
+				execstring += "-fmessage-length=0 "
+			execstring += "-c " + config['input'] + " " + includes+" "+defines + " -o" + config['output'] + " "
+
+			if int(globalsettings['verbose']) > 0:
+				print(execstring)
+			if os.system(execstring) != 0:
+				raise RuntimeError("Clang compilation failed: " + config['input'])
+	compilers.append(CCompiler_clang)
 
 	##
 	##
@@ -771,9 +812,10 @@ class CCPPCompiler(CBasicTool):
 		if action == Action_Build:
 			for c in CCPPCompiler.compilers:
 				if globalsettings['cxx.target'] in c.supports:
-					compiler = c()
-					compilername = c.name
-					break
+					if globalsettings['cxx.compiler'] in ('unknown', c.name):
+						compiler = c()
+						compilername = c.name
+						break
 	
 			if compiler == None:
 				print("Couldn't find a c++ compiler that supports " + globalsettings['cxx.target'])
@@ -796,7 +838,7 @@ class CCPPCompiler(CBasicTool):
 		if int(globalsettings['cxx.speedhack']) >= 1:
 			output = os.path.join(self.outputdir, os.path.basename(inputs[0])+".speedhack.o")
 			speedhackcpp = os.path.join(self.outputdir, os.path.basename(inputs[0])+".speedhack.cpp")
-			cfile = file(speedhackcpp, "w")
+			cfile = open(speedhackcpp, "w")
 			inputfiles = ""
 			for inputfile in inputs:
 				inputfiles += os.path.basename(inputfile) + " "
@@ -824,7 +866,7 @@ class CCPPCompiler(CBasicTool):
 		for inputfile in inputs:
 
 			## only compile .cpp files
-			validfiles = ["c++","cxx","cpp", "c"]
+			validfiles = ["c++","cxx","cpp", "c", "mm"]
 			list = inputfile.split(".")
 			if not list[len(list)-1] in validfiles:
 				continue
@@ -932,7 +974,10 @@ class CLinker(CBasicTool):
 		def link(self, linker, inputs):
 			if linker.type == "library":
 				DeleteFile(linker.output)
-				execline = "ar -rcs " + linker.output + " " + " ".join(inputs)
+				if globalsettings['system.platform'] == 'darwin':
+					execline = "libtool -static -o " + linker.output + " " + " ".join(inputs)
+				else:
+					execline = "ar -rcs " + linker.output + " " + " ".join(inputs)
 				if int(globalsettings['verbose']) > 0:
 					print(execline)
 				mstdin, mstdout, mstderr = Popen3(execline)
@@ -950,7 +995,7 @@ class CLinker(CBasicTool):
 		
 		# write pkginfo file
 		Pkginfo = open(name+".app/Contents/Pkginfo", "wb")
-		Pkginfo.write("APPL\x3f\x3f\x3f\x3f")
+		Pkginfo.write(b"APPL\x3f\x3f\x3f\x3f")
 		Pkginfo.close()
 		
 		# write info plist
@@ -1018,10 +1063,56 @@ class CLinker(CBasicTool):
 					execstring = "g++ -all_load -o " + linker.output + " -Wl,--start-group " + " ".join(inputs) + " -Wl,--end-group"
 				if int(globalsettings['verbose']) > 0:
 					print(execstring)
-				os.system(execstring)
-				if globalsettings['system.platform'] == 'darwin':
+				if os.system(execstring) != 0:
+					raise RuntimeError("GCC linking failed: " + linker.output)
+				if os.path.basename(linker.output) == "client" and globalsettings['system.platform'] == 'darwin':
 					linker.CreateBundle(linker.output)
 	linkers.append(CLinker_gcc)
+
+	class CLinker_clang:
+		name = "clang"
+		supports = []
+		def Init(self, linker):
+			try:
+				clang = os.popen("clang++ -dumpmachine")
+				target = clang.readline().strip()
+				clang.close()
+				target = GetTarget(target)
+				if "unknown" not in target:
+					self.supports.append(target+"-exe")
+			except:
+				pass
+		def Dump(self, linker):
+			pass
+		def link(self, linker, inputs):
+			if linker.type == "executable":
+				inputs = CleanList(inputs)
+				if globalsettings['system.platform'] == 'darwin':
+					execstring = "clang++ -all_load -o " + linker.output + " " + " ".join(inputs)
+				else:
+					execstring = "clang++ -o " + linker.output + " " + " ".join(inputs)
+				if os.path.basename(linker.output) == "client" and globalsettings['system.platform'] == 'darwin':
+					try:
+						vorbis_flags = subprocess.check_output(
+							["pkg-config", "--libs", "vorbisfile"],
+							text=True,
+						).strip()
+						vorbis_libdir = subprocess.check_output(
+							["pkg-config", "--variable=libdir", "vorbisfile"],
+							text=True,
+						).strip()
+					except (OSError, subprocess.CalledProcessError) as error:
+						raise RuntimeError(
+							"The macOS client requires pkg-config and libvorbis (vorbisfile)"
+						) from error
+					execstring += " " + vorbis_flags + " -Wl,-rpath," + vorbis_libdir
+				if int(globalsettings['verbose']) > 0:
+					print(execstring)
+				if os.system(execstring) != 0:
+					raise RuntimeError("Clang linking failed: " + linker.output)
+				if os.path.basename(linker.output) == "client" and globalsettings['system.platform'] == 'darwin':
+					linker.CreateBundle(linker.output)
+	linkers.append(CLinker_clang)
 
 	class CLinker_msvc7:
 		name = "msvc7"
@@ -1115,8 +1206,9 @@ class CLinker(CBasicTool):
 				linker = None
 				for l in CLinker.linkers:
 					if targetname in l.supports:
-						linker = l()
-						break
+						if l.name == 'ar' or globalsettings['cxx.compiler'] in ('unknown', l.name):
+							linker = l()
+							break
 
 				if linker == None:
 					print("Couldn't find a linker that supports "+targetname)
@@ -1126,11 +1218,8 @@ class CLinker(CBasicTool):
 				CreatePath(os.path.dirname(output))
 				
 				print("link("+linker.name+") " + os.path.basename(output))
-				try:
-					sys.stdout.flush()
-					linker.link(self,inputs)
-				except:
-					print("link failed")
+				sys.stdout.flush()
+				linker.link(self,inputs)
 					
 				try:
 					latest = os.stat(output).st_mtime
@@ -1220,22 +1309,25 @@ class XMLHandler(xml.sax.handler.ContentHandler):
 		self.indent = 0
 		self.handlerlist = []
 		self.proj = CProject()
-		self.ignore = 0
+		self.ignore_depth = 0
 
 	def Handler(self):
 		return self.handlerlist[len(self.handlerlist)-1]
 
 	def characters(self, content):
-		self.Handler().xmlChar(content)
+		if self.ignore_depth == 0:
+			self.Handler().xmlChar(content)
 
 	def startElement(self, name, attrs):
 		newhandler = None
-		self.ignore = 0
+		if self.ignore_depth > 0:
+			self.ignore_depth += 1
+			return
 		CObject.xmlinputchar = ""
 		if attrs.get('condition'):
 			list = attrs.get('condition').split("=")
 			if globalsettings[list[0]] != list[1]:
-				self.ignore = 1
+				self.ignore_depth = 1
 				return
 
 		if name == "project":
@@ -1251,7 +1343,8 @@ class XMLHandler(xml.sax.handler.ContentHandler):
 			#self.Handler().xmlStart(name,attrs)
 
 	def endElement(self, name):
-		if self.ignore:
+		if self.ignore_depth > 0:
+			self.ignore_depth -= 1
 			return
 		if self.Handler().xmlEnd(name) == 10:
 			self.handlerlist = self.handlerlist[:len(self.handlerlist)-1]
