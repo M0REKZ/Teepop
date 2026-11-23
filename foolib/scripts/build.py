@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 #
 # todo:
@@ -24,7 +24,8 @@ import string
 import sys
 import stat # premissions
 import shutil # needed for filecopying
-import cPickle # object serialization
+import pickle # object serialization
+import subprocess
 
 ## setup basic vars
 thisscript = os.path.abspath(sys.argv[0])
@@ -38,7 +39,7 @@ class CWorkspaceNode:
 			self.name = ""
 			self.nodes = []
 		def Print(self,indent):
-			print " "*indent+self.name
+			print(" "*indent+self.name)
 			for node in self.nodes:
 				node.Print(indent+4)
 		def Sort(self):
@@ -46,7 +47,7 @@ class CWorkspaceNode:
 			for node in self.nodes:
 				nodes[node.name] = node
 
-			sortedkeys = nodes.keys()
+			sortedkeys = list(nodes.keys())
 			sortedkeys.sort()
 
 			self.nodes = []
@@ -73,22 +74,24 @@ class CWorkspaceNode:
 ## platform tools
 ##
 def GetCPU(s):
-	if string.find(s, "i386") != -1: return "x86"
-	elif string.find(s, "i486") != -1: return "x86"
-	elif string.find(s, "i586") != -1: return "x86"
-	elif string.find(s, "i686") != -1: return "x86"
-	elif string.find(s, "powerpc") != -1: return "ppc"
-	elif string.find(s, "ppc") != -1: return "ppc"
-	elif string.find(s, "mingw32") != -1: return "x86"
+	if "i386" in s: return "x86"
+	elif "i486" in s: return "x86"
+	elif "i586" in s: return "x86"
+	elif "i686" in s: return "x86"
+	elif "aarch64" in s: return "arm64"
+	elif "arm64" in s: return "arm64"
+	elif "powerpc" in s: return "ppc"
+	elif "ppc" in s: return "ppc"
+	elif "mingw32" in s: return "x86"
 	return "unknown"
 
 def GetPlatform(s):
-	if string.find(s, "darwin") != -1: return "darwin"
-	elif string.find(s, "win32") != -1: return "win32"
-	elif string.find(s, "mingw32") != -1: return "win32"
-	elif string.find(s, "linux") != -1: return "linux"
-	elif string.find(s, "freebsd") != -1: return "freebsd"
-	elif string.find(s, "openbsd3") != -1: return "openbsd"
+	if "darwin" in s: return "darwin"
+	elif "win32" in s: return "win32"
+	elif "mingw32" in s: return "win32"
+	elif "linux" in s: return "linux"
+	elif "freebsd" in s: return "freebsd"
+	elif "openbsd3" in s: return "openbsd"
 	return "unknown"
 
 def GetTarget(s):
@@ -103,7 +106,7 @@ def GetSettingList(name):
 		value = globalsettings[key]
 		if len(key) < len(name):
 			continue
-		if key[:len(name)] == name and value > 0:
+		if key[:len(name)] == name and value not in (0, False, "0", "false", "False"):
 			list.append(key[len(name)+1:])
 	return list
 ##
@@ -115,7 +118,7 @@ def GetSettingListValue(name):
 		value = globalsettings[key]
 		if len(key) < len(name):
 			continue
-		if key[:len(name)] == name and value > 0:
+		if key[:len(name)] == name and value not in (0, False, "0", "false", "False"):
 			list.append(value)
 	return list
 	
@@ -126,8 +129,19 @@ def GetSettingListValue(name):
 ##############
 def ProcessVars(str):
 	for var in globalsettings:
-		str = string.replace(str, "{"+var+"}", globalsettings[var])
+		str = str.replace("{"+var+"}", globalsettings[var])
 	return str
+
+def Popen3(command):
+	process = subprocess.Popen(
+		command,
+		stdin=subprocess.PIPE,
+		stdout=subprocess.PIPE,
+		stderr=subprocess.PIPE,
+		text=True,
+		shell=True,
+	)
+	return process.stdin, process.stdout, process.stderr
 
 ##
 ##
@@ -144,7 +158,7 @@ def CleanList(list):
 def PrintFile(f):
 	line = f.readline()
 	while line:
-		print line,
+		print(line, end=' ')
 		line = f.readline()
 ##
 ##
@@ -152,7 +166,7 @@ def PrintFile(f):
 def DeleteFile(filename):
 	try:
 		os.stat(filename)
-		print "deleting " + os.path.basename(filename)
+		print("deleting " + os.path.basename(filename))
 		os.remove(filename)
 	except: pass
 ##
@@ -195,7 +209,7 @@ class CObject:
 		pass
 
 	def Dump(self, indent=0):
-		print "  "*indent+self.tag+" - "+self.name
+		print("  "*indent+self.tag+" - "+self.name)
 		for obj in self.objects:
 			obj.Dump(indent+1)
 
@@ -393,7 +407,7 @@ class CBasicTool(CObject):
 		for input in self.inputs:
 			input['obj'] = self.FindObject(input['name'])
 			if not input['obj']:
-				print "WARNING("+self.GetProject().name+"): Object not found, "+input['name']
+				print("WARNING("+self.GetProject().name+"): Object not found, "+input['name'])
 	def PerformInputs(self, action):
 		output = []
 		latest = 0
@@ -530,11 +544,11 @@ class CCPPCompiler(CBasicTool):
 		supports = []
 		def Init(self, tool):
 			try:
-				mstdin, mstdout, mstderr = os.popen3("cl")
+				mstdin, mstdout, mstderr = Popen3("cl")
 				row = mstdout.readline()
 				mstdin.close(); mstdout.close(); mstderr.close()
-				if string.find(row, "usage: cl") != -1:
-					tool.includepaths += string.split(os.getenv('INCLUDE'), ";")
+				if "usage: cl" in row:
+					tool.includepaths += os.getenv('INCLUDE').split(";")
 					self.supports += ["x86-win32"]
 			except:
 				pass
@@ -559,7 +573,7 @@ class CCPPCompiler(CBasicTool):
 				execstring += "/Ox /O2 /Og "
 			execstring += config['input'] + " " + includes + " " + defines + " /Fo" + config['output'] + " "
 			if int(globalsettings['verbose']) > 0:
-				print execstring
+				print(execstring)
 
 			compile = os.popen(execstring)
 			compile.readline()
@@ -580,7 +594,7 @@ class CCPPCompiler(CBasicTool):
 				target = target[0:len(target)-1]
 				gpp.close()
 				target = GetTarget(target)
-				if string.find(target, "unknown") == -1: # only allow specific targets
+				if "unknown" not in target: # only allow specific targets
 					self.supports.append(target)
 			except:
 				pass
@@ -604,7 +618,7 @@ class CCPPCompiler(CBasicTool):
 			execstring += "-c " + config['input'] + " " + includes+" "+defines + " -o" + config['output'] + " "
 
 			if int(globalsettings['verbose']) > 0:
-				print execstring
+				print(execstring)
 			os.system(execstring)
 	compilers.append(CCompiler_gcc)
 
@@ -632,8 +646,8 @@ class CCPPCompiler(CBasicTool):
 	def Dump(self,indent=0):
 		for comp in self.compilers:
 			i = comp()
-			print "  "+i.name
-			print "    Supports:", comp.supports
+			print("  "+i.name)
+			print("    Supports:", comp.supports)
 			i.Dump(self)
 			
 
@@ -677,15 +691,15 @@ class CCPPCompiler(CBasicTool):
 
 			line = f.readline()
 			while line:
-				line = string.lstrip(line)
-				if string.find(line, '#include') != -1:
-					if string.find(line, '<') != -1:
-						line = string.replace(line, '<', '"')
-						line = string.replace(line, '>', '"')
-						list = string.split(line, '"')
+				line = line.lstrip()
+				if '#include' in line:
+					if '<' in line:
+						line = line.replace('<', '"')
+						line = line.replace('>', '"')
+						list = line.split('"')
 						dep = self.FindFile(list[1])
 					else:
-						list = string.split(line, '"')
+						list = line.split('"')
 						dep = os.path.join(dir, list[1])
 
 					self.GetDependencies(dep)
@@ -720,16 +734,16 @@ class CCPPCompiler(CBasicTool):
 
 			line = f.readline()
 			while line:
-				line = string.lstrip(line)
+				line = line.lstrip()
 				if len(line) > 0 and line[0] == '#': ## opt
 					if line[:len('#include')] == '#include':
-						if string.find(line, '<') != -1:
-							line = string.replace(line, '<', '"')
-							line = string.replace(line, '>', '"')
-							list = string.split(line, '"')
+						if '<' in line:
+							line = line.replace('<', '"')
+							line = line.replace('>', '"')
+							list = line.split('"')
 							dep = self.FindFile(list[1])
 						else:
-							list = string.split(line, '"')
+							list = line.split('"')
 							dep = os.path.join(dir, list[1])
 
 						time = self.GetTimestamp(dep)
@@ -762,7 +776,7 @@ class CCPPCompiler(CBasicTool):
 					break
 	
 			if compiler == None:
-				print "Couldn't find a c++ compiler that supports " + globalsettings['cxx.target']
+				print("Couldn't find a c++ compiler that supports " + globalsettings['cxx.target'])
 				sys.exit()
 
 		## add search paths
@@ -776,7 +790,7 @@ class CCPPCompiler(CBasicTool):
 		config['debuginfo'] = globalsettings['cxx.debuginfo']
 		config['includes'] = GetSettingListValue('cxx.include')
 		config['defines'] = GetSettingList('cxx.define')
-		config['defines'] += ["FOO_COMPILER_"+string.upper(compilername)]
+		config['defines'] += ["FOO_COMPILER_"+compilername.upper()]
 
 		## SPEEDHACK!!!
 		if int(globalsettings['cxx.speedhack']) >= 1:
@@ -794,7 +808,7 @@ class CCPPCompiler(CBasicTool):
 			config['input'] = speedhackcpp
 			config['output'] = output
 				
-			print "speedcxx("+compiler.name+") " + inputfiles
+			print("speedcxx("+compiler.name+") " + inputfiles)
 			sys.stdout.flush()
 			compiler.compile(config)
 			try:
@@ -811,7 +825,7 @@ class CCPPCompiler(CBasicTool):
 
 			## only compile .cpp files
 			validfiles = ["c++","cxx","cpp", "c"]
-			list = string.split(inputfile, ".")
+			list = inputfile.split(".")
 			if not list[len(list)-1] in validfiles:
 				continue
 			
@@ -831,7 +845,7 @@ class CCPPCompiler(CBasicTool):
 					CreatePath(os.path.dirname(output))
 					rebuild = 1
 					if int(globalsettings['verbose']) >= 1:
-						print "rebuild because output doesn't exist"
+						print("rebuild because output doesn't exist")
 
 				## walk thru all files an see if they have a newer timestamp than the object file
 				if rebuild == 0:
@@ -841,7 +855,7 @@ class CCPPCompiler(CBasicTool):
 					timestamp = self.GetTimestamp(inputfile)
 					if timestamp > outputtime.st_mtime:
 						if int(globalsettings['verbose']) >= 1:
-							print "rebuild because of timestamp", outputtime.st_mtime, timestamp
+							print("rebuild because of timestamp", outputtime.st_mtime, timestamp)
 						rebuild = 1
 
 				##
@@ -852,32 +866,32 @@ class CCPPCompiler(CBasicTool):
 				if rebuild == 0:
 					gotconf = 0
 					try:
-						storedconf = cPickle.load(open(conf, "rb"))
+						storedconf = pickle.load(open(conf, "rb"))
 						gotconf = 1
 					except:
 						if int(globalsettings['verbose']) >= 1:
-								print "rebuild because no stored settings where found"
+								print("rebuild because no stored settings where found")
 						rebuild = 1
 					if gotconf:
 						if storedconf != config:
 							if int(globalsettings['verbose']) >= 1:
-								print "rebuild because of settings", config, storedconf
+								print("rebuild because of settings", config, storedconf)
 								for key in config:
 									if key in storedconf:
 										if config[key] != storedconf[key]:
-											print "  ", config[key], " != ", storedconf[key]
+											print("  ", config[key], " != ", storedconf[key])
 									else:
-										print "  ", key, "is new"
+										print("  ", key, "is new")
 								for key in storedconf:
 									if not key in config:
-										print "  ", key, "is old"
+										print("  ", key, "is old")
 							rebuild = 1
 
 				## build if nessasary
 				if rebuild > 0:
 					#try:
-						cPickle.dump(config, open(conf, "wb"))
-						print "cxx("+compiler.name+") " + os.path.basename(inputfile)
+						pickle.dump(config, open(conf, "wb"))
+						print("cxx("+compiler.name+") " + os.path.basename(inputfile))
 						sys.stdout.flush()
 						compiler.compile(config)
 						try:
@@ -904,10 +918,10 @@ class CLinker(CBasicTool):
 		supports = []
 		def Init(self, linker):
 			try:
-				mstdin, mstdout, mstderr = os.popen3("ar")
+				mstdin, mstdout, mstderr = Popen3("ar")
 				usage = mstderr.readline()
 				mstdin.close(); mstdout.close(); mstderr.close()
-				if string.find(usage, "sage: ") != -1: # we have ar
+				if "sage: " in usage: # we have ar
 					self.supports.append(globalsettings['system.cpu'] + "-" + globalsettings['system.platform']+"-lib")
 			except:
 				pass
@@ -918,14 +932,14 @@ class CLinker(CBasicTool):
 		def link(self, linker, inputs):
 			if linker.type == "library":
 				DeleteFile(linker.output)
-				execline = "ar -rcs " + linker.output + " " + string.join(inputs, " ")
+				execline = "ar -rcs " + linker.output + " " + " ".join(inputs)
 				if int(globalsettings['verbose']) > 0:
-					print execline
-				mstdin, mstdout, mstderr = os.popen3(execline)
+					print(execline)
+				mstdin, mstdout, mstderr = Popen3(execline)
 				line = mstderr.readline()
 				while line:
-					if string.find(line, 'has no symbols') != 0:
-						print line,
+					if line.find('has no symbols') != 0:
+						print(line, end=' ')
 					line = mstderr.readline()
 	linkers.append(CLinker_ar)
 
@@ -986,7 +1000,7 @@ class CLinker(CBasicTool):
 				target = target[0:len(target)-1]
 				gpp.close()
 				target = GetTarget(target)
-				if string.find(target, "unknown") == -1: # only allow specific targets
+				if "unknown" not in target: # only allow specific targets
 					self.supports.append(target+"-exe")
 			except:
 				pass
@@ -999,12 +1013,11 @@ class CLinker(CBasicTool):
 				# I don't know what version this was introduced/removed
 				# It doesn't exist on os x 10.3, gcc 3.3
 				if globalsettings['system.platform'] == 'darwin':
-					execstring = "g++ -all_load -o " + linker.output + " " + string.join(inputs, " ") 
+					execstring = "g++ -all_load -o " + linker.output + " " + " ".join(inputs)
 				else:
-					execstring = "g++ -all_load -o " + linker.output + " -Wl,--start-group " + string.join(inputs, " ") + " -Wl,--end-group" 
-				#execstring = "g++ -all_load -o " + linker.output + " " + string.join(inputs, " ") 
+					execstring = "g++ -all_load -o " + linker.output + " -Wl,--start-group " + " ".join(inputs) + " -Wl,--end-group"
 				if int(globalsettings['verbose']) > 0:
-					print execstring
+					print(execstring)
 				os.system(execstring)
 				if globalsettings['system.platform'] == 'darwin':
 					linker.CreateBundle(linker.output)
@@ -1015,10 +1028,10 @@ class CLinker(CBasicTool):
 		supports = []
 		def Init(self, linker):
 			try:
-				mstdin, mstdout, mstderr = os.popen3("cl")
+				mstdin, mstdout, mstderr = Popen3("cl")
 				row = mstdout.readline()
 				mstdin.close(); mstdout.close(); mstderr.close()
-				if string.find(row, "usage: cl") != -1:
+				if "usage: cl" in row:
 					self.supports.append("x86-win32-lib")
 					self.supports.append("x86-win32-exe")
 			except:
@@ -1027,9 +1040,9 @@ class CLinker(CBasicTool):
 			pass
 		def link(self, linker, inputs):
 			if linker.type == "library":
-				execstring = "lib /nologo /out:" + linker.output + " " + string.join(inputs, " ")
+				execstring = "lib /nologo /out:" + linker.output + " " + " ".join(inputs)
 				if int(globalsettings['verbose']) > 0:
-					print execstring
+					print(execstring)
 				link = os.popen(execstring)
 				PrintFile(link)
 			elif linker.type == "executable":
@@ -1039,9 +1052,9 @@ class CLinker(CBasicTool):
 				else:
 					execstring += " /release "
 
-				execstring += " /stack:"+str(linker.stacksize)+" /pdb:"+os.path.basename(linker.output)+".pdb /subsystem:windows /out:" + linker.output + " " + string.join(inputs, " ")
+				execstring += " /stack:"+str(linker.stacksize)+" /pdb:"+os.path.basename(linker.output)+".pdb /subsystem:windows /out:" + linker.output + " " + " ".join(inputs)
 				if int(globalsettings['verbose']) > 0:
-					print execstring
+					print(execstring)
 				try:
 					link = os.popen(execstring)
 					PrintFile(link)
@@ -1049,7 +1062,7 @@ class CLinker(CBasicTool):
 				except:
 					pass
 			else:
-				print "HELP!"
+				print("HELP!")
 	linkers.append(CLinker_msvc7)
 
 	def __init__(self, parent):
@@ -1075,8 +1088,8 @@ class CLinker(CBasicTool):
 	def Dump(self,indent=0):
 		for linker in self.linkers:
 			i = linker()
-			print "  "+i.name
-			print "    Supports:", linker.supports
+			print("  "+i.name)
+			print("    Supports:", linker.supports)
 			i.Dump(self)
 
 	def Perform(self, action):
@@ -1106,27 +1119,27 @@ class CLinker(CBasicTool):
 						break
 
 				if linker == None:
-					print "Couldn't find a linker that supports "+targetname
+					print("Couldn't find a linker that supports "+targetname)
 					sys.exit()
 	
 #				try:
 				CreatePath(os.path.dirname(output))
 				
-				print "link("+linker.name+") " + os.path.basename(output)
+				print("link("+linker.name+") " + os.path.basename(output))
 				try:
 					sys.stdout.flush()
 					linker.link(self,inputs)
 				except:
-					print "link failed"
+					print("link failed")
 					
 				try:
 					latest = os.stat(output).st_mtime
 				except:
 					pass
 				if globalsettings['cxx.compiler'] == 'msvc7':
-					print "\xff" # msvc removes single lines
+					print("\xff") # msvc removes single lines
 				else:
-					print ""
+					print("")
 #				except:
 #					print "linker error"
 		elif action == Action_Clean:
@@ -1158,7 +1171,7 @@ class CGroup(CObject):
 		self.tag = "group"
 		self.handler = "yes"
 	def BuildWorkspace(self, parentnode):
-		print parentnode.name,"->", self.name
+		print(parentnode.name,"->", self.name)
 		thisnode = CWorkspaceNode.CNode()
 		thisnode.name = self.name
 		parentnode.nodes.append(thisnode)
@@ -1186,12 +1199,12 @@ class CProject(CObject, CXMLHandler):
 			return CObject.xmlStart(self, name, attrs)
 
 	def Print(self):
-		print "Project '"+self.name+"'"
-		print "\tDefault Action: '"+self.defaultaction+"'"
-		print "\tObjects:"
+		print("Project '"+self.name+"'")
+		print("\tDefault Action: '"+self.defaultaction+"'")
+		print("\tObjects:")
 
 		for object in self.objects:
-			print "\t\t" + object.name + " ("+object.tag+")"
+			print("\t\t" + object.name + " ("+object.tag+")")
 	def Perform(self, name, action):
 		for object in self.objects:
 			if object.name == name:
@@ -1220,7 +1233,7 @@ class XMLHandler(xml.sax.handler.ContentHandler):
 		self.ignore = 0
 		CObject.xmlinputchar = ""
 		if attrs.get('condition'):
-			list = string.split(attrs.get('condition'), "=")
+			list = attrs.get('condition').split("=")
 			if globalsettings[list[0]] != list[1]:
 				self.ignore = 1
 				return
@@ -1240,7 +1253,7 @@ class XMLHandler(xml.sax.handler.ContentHandler):
 	def endElement(self, name):
 		if self.ignore:
 			return
- 		if self.Handler().xmlEnd(name) == 10:
+		if self.Handler().xmlEnd(name) == 10:
 			self.handlerlist = self.handlerlist[:len(self.handlerlist)-1]
 
 ##
@@ -1278,7 +1291,7 @@ def DoConfig():
 	try:
 		f = open("config.xml")
 		f.close
-		print "Configurating"
+		print("Configurating")
 		DoProject("config.xml", Action_Build)
 	except:
 		pass
@@ -1384,7 +1397,7 @@ for obj in objects:
 ## get settings from the command line
 action = Action_Build
 for arg in sys.argv[2:]: # 0 =exe 1 = project, 2=
-	list = string.split(arg, "=")
+	list = arg.split("=")
 	if len(list) > 1:
 		globalsettings[list[0]] = list[1]
 	else:
@@ -1401,17 +1414,17 @@ for arg in sys.argv[2:]: # 0 =exe 1 = project, 2=
 		elif arg == "dump":
 			action = Action_Dump
 		else:
-			print "Unknown action '"+arg+"'"
+			print("Unknown action '"+arg+"'")
 			sys.exit(0)
 
 ##
 os.environ['PYTHONPATH'] = os.path.dirname(thisscript)
 
 ## print some important settings
-print globalsettings['system.cpu']+"-"+globalsettings['system.platform']+",",
-print globalsettings['conf.name']
-print ""
-import time, fpformat
+print(globalsettings['system.cpu']+"-"+globalsettings['system.platform']+",", end=' ')
+print(globalsettings['conf.name'])
+print("")
+import time
 
 #print ProcessVars(sys.argv[1])
 #sys.exit(0)
@@ -1430,39 +1443,39 @@ if len(sys.argv) > 1:
 	elif action == Action_Export:
 		## Add some kind of option for thiss
 		if globalsettings['system.platform'] == 'darwin':
-			print "exporting to xcode"
+			print("exporting to xcode")
 			import export_xcode
 			export_xcode.export(MakeProjectWorkspace(sys.argv[1]))
 		elif globalsettings['system.platform'] == 'win32':
-			print "exporting to msvc7.1"
+			print("exporting to msvc7.1")
 			import export_msvc7
 			export_msvc7.export(MakeProjectWorkspace(sys.argv[1]))
 		else:
-			print "exporter not found"
+			print("exporter not found")
 	elif action == Action_Nothing:
-		print "Doing jack shit"
+		print("Doing jack shit")
 	else:
 		DoProject(sys.argv[1], action)
 
 if len(sys.argv) <= 1 or action == Action_Dump:
 	# diag
 	if len(sys.argv) <= 1:
-		print "No project supplied, dumping info."
-	print "----------------------------------"
-	print "Global settings"
-	print "----------------------------------"
+		print("No project supplied, dumping info.")
+	print("----------------------------------")
+	print("Global settings")
+	print("----------------------------------")
 	for key in globalsettings:
-		print key+":", globalsettings[key] 
+		print(key+":", globalsettings[key])
 	
-	print ""
-	print "----------------------------------"
-	print "Objects"
-	print "----------------------------------"
+	print("")
+	print("----------------------------------")
+	print("Objects")
+	print("----------------------------------")
 	for obj in objects:
 		i = objects[obj](None)
-		print i.tag #, "-"*(30-len(i.tag))
+		print(i.tag) #, "-"*(30-len(i.tag))
 		i.Dump()
 
 buildtime = time.mktime(time.localtime()) - starttime
 
-print "\nBuild Time: " + str(buildtime) + " s\n"
+print("\nBuild Time: " + str(buildtime) + " s\n")
