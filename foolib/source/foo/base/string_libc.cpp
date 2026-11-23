@@ -15,15 +15,18 @@ void NFoo::StringCopy(int8 *_pDest, const int8 *_pSrc, intr _Max) { strncpy(_pDe
 intr NFoo::StringCompare(const int8 *_pDest, const int8 *_pSrc) { return strcmp(_pDest, _pSrc); }
 intr NFoo::StringCompare(const int8 *_pDest, const int8 *_pSrc, intr _Max) { return strncmp(_pDest, _pSrc, _Max); }
 
-int8 *NFoo::StringCFormatArgList(int8 *_pDst, const int8 **_pFormat)
+int8 *NFoo::StringCFormatV(int8 *_pDst, const int8 *_pFormat, va_list _Args)
 {
-	vsprintf(_pDst, *_pFormat, (int8 *)(_pFormat)+sizeof(int8*));
+	vsprintf(_pDst, _pFormat, _Args);
 	return _pDst;
 }
 
 int8 *NFoo::StringCFormat(int8 *_pDst, const int8 *_pFormat, ...)
 {
-	vsprintf(_pDst, _pFormat, (int8 *)(&_pFormat)+sizeof(int8*));
+	va_list Args;
+	va_start(Args, _pFormat);
+	StringCFormatV(_pDst, _pFormat, Args);
+	va_end(Args);
 	return _pDst;
 }
 

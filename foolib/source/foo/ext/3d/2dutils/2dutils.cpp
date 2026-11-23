@@ -649,7 +649,10 @@ void C2DUtils::Text_Begin(CFont *_pFont)
 void C2DUtils::Text_Draw(fp32 _x, fp32 _y, int32 _Flags, const int8 *_pFormat, ...)
 {
 	int8 aBuffer[1024*4];
-	StringCFormatArgList(aBuffer, &_pFormat);
+	va_list Args;
+	va_start(Args, _pFormat);
+	StringCFormatV(aBuffer, _pFormat, Args);
+	va_end(Args);
 
 	fp32 w = 1.0f/m_pFont->m_XCells;
 	fp32 h = 1.0f/m_pFont->m_YCells;

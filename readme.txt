@@ -15,9 +15,9 @@ menu that sets alot of settings so you can compile this. MSVC 2002 does not like
 this code. You must use 2003. 
 
 macOS Note! Building requires Python 3, Xcode Command Line Tools, pkg-config,
-and libvorbis. With Homebrew, install the audio dependencies with:
+libvorbis, and OpenAL Soft. With Homebrew, install the audio dependencies with:
 
-  brew install pkg-config libvorbis
+  brew install pkg-config libvorbis openal-soft
 
 Run the build with:
 

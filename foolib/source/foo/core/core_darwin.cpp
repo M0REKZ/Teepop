@@ -196,12 +196,13 @@ int main(int argc, char* argv[])
 	}
 
 	NLog::Write("MAIN:Calling FooMain()\n");
-	FooMain("Empty");
+	int8 Cmdline[] = "Empty";
+	int32 Result = FooMain(Cmdline);
 
 	SafeDelete(g_pCore);
 	NMemoryManager::DumpMemInfo();
 
-	return 1;
+	return Result;
 }
 
 #endif

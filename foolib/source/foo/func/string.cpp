@@ -6,6 +6,29 @@
 
 using namespace NFoo;
 
+namespace
+{
+	int32 FindInString(const CString &_String, const int8 *_pNeedle)
+	{
+		int32 NeedleLength = StringLength(_pNeedle);
+		if(NeedleLength > _String.Len())
+			return -1;
+
+		for(int32 i = 0; i <= _String.Len() - NeedleLength; i++)
+		{
+			int32 j = 0;
+			for(; j < NeedleLength; j++)
+				if(_String[i+j] != _pNeedle[j])
+					break;
+
+			if(j == NeedleLength)
+				return i;
+		}
+
+		return -1;
+	}
+}
+
 //
 // Constructor
 //
@@ -27,7 +50,10 @@ CString::CString(const int8 *_pFormat, ...)
 	m_Size = 0;
 
 	int8 Buffer[4092*10];
-	StringCFormatArgList(Buffer, &_pFormat);
+	va_list Args;
+	va_start(Args, _pFormat);
+	StringCFormatV(Buffer, _pFormat, Args);
+	va_end(Args);
 	CopyData(Buffer);
 }
 
@@ -132,7 +158,10 @@ void CString::Set(const int8 *_pFormat, ...)
 //	ASSUME(_pFormat);
 
 	int8 Buffer[4092*10];
-	StringCFormatArgList(Buffer, &_pFormat);
+va_list Args;
+va_start(Args, _pFormat);
+StringCFormatV(Buffer, _pFormat, Args);
+va_end(Args);
 	CopyData(Buffer);
 }
 
@@ -183,8 +212,12 @@ fp64 CString::GetFloat()
 //
 bool CString::Find(const int8 *_pFormat, ...) const
 {
-//	ASSUME(_pFormat);
-	return (FindPos(_pFormat) != -1);
+	int8 Buffer[4092*10];
+	va_list Args;
+	va_start(Args, _pFormat);
+	StringCFormatV(Buffer, _pFormat, Args);
+	va_end(Args);
+	return FindInString(*this, Buffer) != -1;
 }
 
 //
@@ -239,30 +272,11 @@ void CString::TrimWhitespaces()
 int32 CString::FindPos(const int8 *_pFormat, ...) const
 {
 	int8 Buffer[4092*10];
-	StringCFormatArgList(Buffer, &_pFormat);
-	
-	if(StringLength(Buffer) > Len())
-		return -1;
-	
-	bool Found = true;
-	for(int32 i = 0; i <= Len() - StringLength(Buffer); i++)
-	{
-		Found = true;
-		int32 iFound = i;
-		for(int32 j = 0; j < StringLength(Buffer); j++)
-		{
-			if(Buffer[j] != m_pData[i+j])
-			{
-				Found = false;
-				break;
-			}
-		}
-		
-		if(Found)
-			return iFound;
-	}
-	
-	return -1;
+	va_list Args;
+	va_start(Args, _pFormat);
+	StringCFormatV(Buffer, _pFormat, Args);
+	va_end(Args);
+	return FindInString(*this, Buffer);
 }
 
 // Returns string upto given separator, if no separator is found, returns new "complete" string 

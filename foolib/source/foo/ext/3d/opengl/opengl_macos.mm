@@ -334,7 +334,16 @@ public:
 	{
 		CMode mode;
 		if(!GetBestMode(requested, mode))
-			return false;
+		{
+			if(!requested.Get(CMode::EFullscreen))
+				return false;
+
+			CMode windowed(requested.Get(CMode::EWidth), requested.Get(CMode::EHeight), false, 0);
+			if(!GetBestMode(windowed, mode))
+				return false;
+
+			NLog::Write("OpenGL: requested fullscreen mode is unavailable; using windowed mode\n");
+		}
 
 		[NSApplication sharedApplication];
 		[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];

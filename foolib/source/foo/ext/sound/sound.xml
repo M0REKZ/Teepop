@@ -18,7 +18,7 @@
 		</group>
 		<group name="devices">
 			<file name="devices/directsound.cpp"/>
-			<file name="devices/openal.cpp"/>
+			<file name="devices/openal.cpp" condition="system.platform=darwin"/>
 			<file name="devices/waveout.cpp"/>
 		</group>
 		<group name="sources">
@@ -49,7 +49,7 @@
 		<file name="source.cpp"/>
 		<file name="devices/directsound.cpp" condition="system.platform=win32"/>
 		<file name="devices/waveout.cpp" condition="system.platform=win32"/>
-		<file name="devices/openal.cpp"/>
+		<file name="devices/openal.cpp" condition="system.platform=darwin"/>
 		<file name="sources/swmixer.cpp"/>
 		<file name="sources/sinus.cpp"/>
 		<file name="sources/sample.cpp"/>

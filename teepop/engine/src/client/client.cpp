@@ -629,11 +629,31 @@ public:
 	int32 LoadTexture(const int8 *pFilename)
 	{
 		CFileReader File(pFilename);
+		if(!File.IsReady())
+		{
+			NLog::WriteF("Client: failed to open texture %s\n", pFilename);
+			return -1;
+		}
+		File.SetMime("image/png");
+
 		CImage Img;
-		Assert(Img.Load(File));
-		Assert(m_pDevice);
+		if(!Img.Load(File))
+		{
+			NLog::WriteF("Client: failed to load texture %s\n", pFilename);
+			return -1;
+		}
+		if(!m_pDevice)
+		{
+			NLog::Write("Client: cannot load a texture without a graphics device\n");
+			return -1;
+		}
+
 		int32 iTex = m_pDevice->CreateTexture(Img, ETexFlag_NoMipMap);
-		Assert(iTex >= 0);
+		if(iTex < 0)
+		{
+			NLog::WriteF("Client: failed to create texture %s\n", pFilename);
+			return -1;
+		}
 		return iTex;
 	}
 
@@ -744,7 +764,7 @@ public:
 	//
 	//
 	//
-	void Init()
+	bool Init()
 	{
 		//
 		m_ServerAddress = "172.18.26.198";
@@ -762,33 +782,57 @@ public:
 		g_Fullscreen = GetConfigInt("fullscreen", 1) != 0;
 
 		// init modules
-		Assert(m_Core.LoadModule(m_pClient, "NetworkClient"));
-		Assert(m_Core.LoadModule(m_pAuth, "NetworkAuthClient"));
-		Assert(m_Core.LoadModule(m_pChat, "NetworkChatClient"));
-		Assert(m_Core.LoadModule(m_pRoom, "NetworkRoomClient"));
-		Assert(m_Core.LoadModule(m_pGame, "NetworkGameClient"));
+		if(!m_Core.LoadModule(m_pClient, "NetworkClient") ||
+			!m_Core.LoadModule(m_pAuth, "NetworkAuthClient") ||
+			!m_Core.LoadModule(m_pChat, "NetworkChatClient") ||
+			!m_Core.LoadModule(m_pRoom, "NetworkRoomClient") ||
+			!m_Core.LoadModule(m_pGame, "NetworkGameClient") ||
+			!m_Core.LoadModule(m_pRender, "Render") ||
+			!m_Core.LoadModule(m_pKeyboardInput, "KeyboardInput") ||
+			!m_Core.LoadModule(m_pMouseInput, "MouseInput") ||
+			!m_Core.LoadModule(m_pSound, "Sound"))
+			return false;
 
-		Assert(m_Core.LoadModule(m_pRender, "Render"));
-		Assert(m_Core.LoadModule(m_pKeyboardInput, "KeyboardInput"));
-		Assert(m_Core.LoadModule(m_pMouseInput, "MouseInput"));
-		Assert(m_Core.LoadModule(m_pSound, "Sound"));
 
+		m_pDevice = m_pRender->GetDevice();
+		m_pUtils = m_pRender->Get2DUtils();
+		if(!m_pDevice || !m_pUtils)
+		{
+			NLog::Write("Client: render module did not create its device and utilities\n");
+			return false;
+		}
 
-		Assert(m_pDevice = m_pRender->GetDevice());
-		Assert(m_pUtils = m_pRender->Get2DUtils());
-
+		bool DeviceReady;
 		if(g_Fullscreen)
-			Assert(m_pDevice->Init(N3D::CMode(g_ScreenWidth, g_ScreenHeight, true, 0)));
+			DeviceReady = m_pDevice->Init(N3D::CMode(g_ScreenWidth, g_ScreenHeight, true, 0));
 		else
-			Assert(m_pDevice->Init(N3D::CMode(g_ScreenWidth, g_ScreenHeight, false, 0)));
+			DeviceReady = m_pDevice->Init(N3D::CMode(g_ScreenWidth, g_ScreenHeight, false, 0));
+		if(!DeviceReady)
+		{
+			NLog::Write("Client: failed to initialize the graphics device\n");
+			return false;
+		}
 
-		Assert(m_pUtils->Init(m_pDevice));
+		if(!m_pUtils->Init(m_pDevice))
+		{
+			NLog::Write("Client: failed to initialize 2D rendering utilities\n");
+			return false;
+		}
 		m_pUtils->m_ScreenWidth = g_ScreenWidth;
 		m_pUtils->m_ScreenHeight = g_ScreenHeight;
 
-		Assert(m_pSoundDevice = m_pSound->GetDevice());
+		m_pSoundDevice = m_pSound->GetDevice();
+		if(!m_pSoundDevice)
+		{
+			NLog::Write("Client: sound module did not create a sound device\n");
+			return false;
+		}
 
-		Assert(m_pSoundDevice->Init(CFormat(44100, 2, 16), Clamp(GetConfigInt("sndbuffersize", 60), 1, 500)));
+		if(!m_pSoundDevice->Init(CFormat(44100, 2, 16), Clamp(GetConfigInt("sndbuffersize", 60), 1, 500)))
+		{
+			NLog::Write("Client: failed to initialize the sound device\n");
+			return false;
+		}
 
 		m_pDevice->State_SetDefaults(true);
 
@@ -822,12 +866,21 @@ public:
 		m_Core.RegisterCommand("server", this);
 
 		// init input
-		m_pKeyboardInput->GetKeyboard()->UseEvents(true);
-		m_pMouseInput->GetMouse()->UseEvents(true);
-		m_pMouseInput->GetMouse()->SetMode(CMouse::EMode_Loose);
+		CKeyboard *pKeyboard = m_pKeyboardInput->GetKeyboard();
+		CMouse *pMouse = m_pMouseInput->GetMouse();
+		if(!pKeyboard || !pMouse)
+		{
+			NLog::Write("Client: input module did not create keyboard and mouse devices\n");
+			return false;
+		}
+		pKeyboard->UseEvents(true);
+		pMouse->UseEvents(true);
+		pMouse->SetMode(CMouse::EMode_Loose);
 
 		// load and create font (so we can display loading screen)
 		m_iFontTexture = LoadTexture("data/smallfont.png");
+		if(m_iFontTexture < 0)
+			return false;
 
 		m_SmallFont.BuildNormalAscii();
 		m_SmallFont.m_iTexture = m_iFontTexture;
@@ -840,22 +893,55 @@ public:
 		RenderLoading();
 
 		// load textures
-		m_iBlobTexture = LoadTexture("data/blobs.png"); RenderLoading();
-		m_iBackGroundTexture = LoadTexture("data/bgtile.png"); RenderLoading();
-		m_iTitleTexture = LoadTexture("data/title.png"); RenderLoading();
-		m_iGUITexture = LoadTexture("data/guiskin.png"); RenderLoading();
-		m_iYouLoseTexture = LoadTexture("data/youlose.png"); RenderLoading();
-		m_iYouWinTexture = LoadTexture("data/youwin.png"); RenderLoading();
-		m_iTeeTexture = LoadTexture("data/cry.png"); RenderLoading();
-		m_iTextsTexture = LoadTexture("data/text.png"); RenderLoading();
+		m_iBlobTexture = LoadTexture("data/blobs.png");
+		if(m_iBlobTexture < 0)
+			return false;
+		RenderLoading();
+		m_iBackGroundTexture = LoadTexture("data/bgtile.png");
+		if(m_iBackGroundTexture < 0)
+			return false;
+		RenderLoading();
+		m_iTitleTexture = LoadTexture("data/title.png");
+		if(m_iTitleTexture < 0)
+			return false;
+		RenderLoading();
+		m_iGUITexture = LoadTexture("data/guiskin.png");
+		if(m_iGUITexture < 0)
+			return false;
+		RenderLoading();
+		m_iYouLoseTexture = LoadTexture("data/youlose.png");
+		if(m_iYouLoseTexture < 0)
+			return false;
+		RenderLoading();
+		m_iYouWinTexture = LoadTexture("data/youwin.png");
+		if(m_iYouWinTexture < 0)
+			return false;
+		RenderLoading();
+		m_iTeeTexture = LoadTexture("data/cry.png");
+		if(m_iTeeTexture < 0)
+			return false;
+		RenderLoading();
+		m_iTextsTexture = LoadTexture("data/text.png");
+		if(m_iTextsTexture < 0)
+			return false;
+		RenderLoading();
 
 
 		{
 			CMemoryReader Png((void*)g_mlppng, sizeof(g_mlppng));
 			Png.SetMime("image/png");
 			CImage Image;
-			Image.Load(Png);
+			if(!Image.Load(Png))
+			{
+				NLog::Write("Client: failed to load embedded image\n");
+				return false;
+			}
 			m_iMLPTexture = m_pDevice->CreateTexture(Image, ETexFlag_NoMipMap);
+			if(m_iMLPTexture < 0)
+			{
+				NLog::Write("Client: failed to create embedded image texture\n");
+				return false;
+			}
 		}
 
 		
@@ -1085,6 +1171,7 @@ public:
 		// show login
 		ShowLogin();
 		//ShowView(NULL);
+		return true;
 	}
 
 	CView *CreateViewFromReg(CRegistry *pMasterReg, const int8 *pName)
@@ -2008,7 +2095,8 @@ int32 FooMain(int8 *cmdline)
 	
 
 	CPuyoGame Game;
-	Game.Init();
+	if(!Game.Init())
+		return 1;
 
 	int64 StartTime = GetTickCount();
 	bool Run = true;

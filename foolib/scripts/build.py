@@ -33,6 +33,28 @@ currentdir = os.getcwd();
 globalsettings = {}
 doneprojects = {}
 
+def OpenALPkgConfig(options):
+	env = os.environ.copy()
+	try:
+		prefix = subprocess.check_output(
+			["brew", "--prefix", "openal-soft"],
+			text=True,
+		).strip()
+		pkgconfig_path = os.path.join(prefix, "lib", "pkgconfig")
+		existing_path = env.get("PKG_CONFIG_PATH", "")
+		env["PKG_CONFIG_PATH"] = os.pathsep.join(
+			path for path in (pkgconfig_path, existing_path) if path
+		)
+		return subprocess.check_output(
+			["pkg-config"] + options + ["openal"],
+			text=True,
+			env=env,
+		).strip()
+	except (OSError, subprocess.CalledProcessError) as error:
+		raise RuntimeError(
+			"The macOS client requires Homebrew openal-soft and pkg-config"
+		) from error
+
 class CWorkspaceNode:
 	class CNode:
 		def __init__(self):
@@ -615,6 +637,8 @@ class CCPPCompiler(CBasicTool):
 				execstring += "-O3 "
 			if globalsettings['system.platform'] == 'darwin':
 				execstring += "-fmessage-length=0 " ## forces so there will be no line wrapping
+				if os.path.basename(config['input']) == "openal.cpp":
+					execstring += OpenALPkgConfig(["--cflags"]) + " "
 			execstring += "-c " + config['input'] + " " + includes+" "+defines + " -o" + config['output'] + " "
 
 			if int(globalsettings['verbose']) > 0:
@@ -655,6 +679,8 @@ class CCPPCompiler(CBasicTool):
 				execstring += "-O3 "
 			if globalsettings['system.platform'] == 'darwin':
 				execstring += "-fmessage-length=0 "
+				if os.path.basename(config['input']) == "openal.cpp":
+					execstring += OpenALPkgConfig(["--cflags"]) + " "
 			execstring += "-c " + config['input'] + " " + includes+" "+defines + " -o" + config['output'] + " "
 
 			if int(globalsettings['verbose']) > 0:
@@ -1106,6 +1132,9 @@ class CLinker(CBasicTool):
 							"The macOS client requires pkg-config and libvorbis (vorbisfile)"
 						) from error
 					execstring += " " + vorbis_flags + " -Wl,-rpath," + vorbis_libdir
+					openal_flags = OpenALPkgConfig(["--libs"])
+					openal_libdir = OpenALPkgConfig(["--variable=libdir"])
+					execstring += " " + openal_flags + " -Wl,-rpath," + openal_libdir
 				if int(globalsettings['verbose']) > 0:
 					print(execstring)
 				if os.system(execstring) != 0:

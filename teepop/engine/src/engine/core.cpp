@@ -1,5 +1,6 @@
 #include <foo/func/string.h>
 #include <foo/base/string.h>
+#include <foo/base/log.h>
 #include "engine.h"
 
 using namespace NEngine;
@@ -39,12 +40,34 @@ bool CCore::AddModule(CModule *pModule)
 //# Declaration:
 CModule *CCore::LoadModule(const int8 *pName)
 {
-	Assert(pName);
-	CModule *pModule = (CModule *)NClassRegistry::CreateByName(CString("C%s", pName));
-	Assert(pModule);
+	if(!pName)
+	{
+		NLog::Write("Core: cannot load a module with a null name\n");
+		return NULL;
+	}
+
+	CString ClassName("C%s", pName);
+	CModule *pModule = (CModule *)NClassRegistry::CreateByName(ClassName);
+	if(!pModule)
+	{
+		NLog::WriteF("Core: module %s is not registered\n", ClassName.GetData());
+		return NULL;
+	}
+
 	pModule->m_pCore = this;
-	Assert(pModule->Init());
-	Assert(AddModule(pModule));
+	if(!pModule->Init())
+	{
+		NLog::WriteF("Core: module %s failed to initialize\n", ClassName.GetData());
+		delete pModule;
+		return NULL;
+	}
+	if(!AddModule(pModule))
+	{
+		NLog::WriteF("Core: failed to add module %s\n", ClassName.GetData());
+		delete pModule;
+		return NULL;
+	}
+
 	return pModule;
 }
 

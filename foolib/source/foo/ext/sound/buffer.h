@@ -26,7 +26,8 @@ namespace NFoo { namespace NSound {
 
 		void DestroyData()
 		{
-			SafeArrayDelete(m_pData);
+			delete [] (int8 *)m_pData;
+			m_pData = NULL;
 		}
 
 		void Clear()

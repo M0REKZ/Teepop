@@ -79,7 +79,10 @@ CSlotServer::CSlot *CSlotServer::NewSlot()
 void StrAdd(int8 *&_Str, const int8 *_pFormat, ...)
 {
 	int8 Buffer[4092];
-	StringCFormatArgList(Buffer, &_pFormat);
+	va_list Args;
+	va_start(Args, _pFormat);
+	StringCFormatV(Buffer, _pFormat, Args);
+	va_end(Args);
 
 	int32 len = StringLength(Buffer);
 	MemoryCopy(_Str, Buffer, len);

@@ -30,8 +30,8 @@ namespace NFoo { namespace NSound {
 
 		~CSample()
 		{
-			// handle alot of shite
-			SafeArrayDelete(m_pData);
+			delete [] (int8 *)m_pData;
+			m_pData = NULL;
 		}
 
 		virtual CInstance *CreateInstance(CSoundDevice *pDevice);

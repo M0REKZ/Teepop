@@ -1,6 +1,7 @@
 #ifndef __FOO_LOWLEVEL_STRING_H__
 #define __FOO_LOWLEVEL_STRING_H__
 
+#include <stdarg.h>
 #include "base.h"
 
 //# Context: Base/Strings
@@ -59,10 +60,10 @@ namespace NFoo
 	//# Declaration:
 	intr StringLength(const int8 *_pSrc);
 
-	//# Function: StringCFormatArgList
-	//# Remarks: the args must be right after the format string
+	//# Function: StringCFormatV
+	//# Description: Performs printf formatting with a va_list.
 	//# Declaration:
-	int8 *StringCFormatArgList(int8 *_pDst, const int8 **_pFormat);
+	int8 *StringCFormatV(int8 *_pDst, const int8 *_pFormat, va_list _Args);
 
 	//# Function: StringCFormatArg
 	//# Description: Performs printf formating to a string.
