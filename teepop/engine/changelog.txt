@@ -1,0 +1,54 @@
+FIXED (v9):
+	BUG: Autoscroll scrolls too far on long lines
+	FEAT: F5 to F8 control music volume
+	FEAT: Volume in mixing
+	FEAT: Max players option
+	FEAT: Quit button
+	FEAT: Next blocks view
+	FEAT: Increase a modifier over time to increase hardness
+	FEAT: Fullscreen
+	BUG: low FPS when running on a 16bit desktop
+	FEAT: Auto select chat input while ingame
+	FEAT: Change clUpdate command so we can display itteration process
+
+FIXED (v8.1):
+	BUG: Bug that causes crash when typing
+	FEAT: Crash log when stuff goes wrong
+
+FIXED (v8):
+	FEAT: Music hi and low
+	BALANCE: Fix priorities on stone placement
+	FEAT: Broadcast message
+	FEAT: Auto pushout when rotate
+	and some other minor bugs
+
+
+FIXED (v7.2):
+	FEAT: Audio Compression
+
+FIXED (v7.1):
+	BUG: Huge memory leak in the new sound system
+	BUG: some times the boarder and name for your field isn't shown
+
+FIXED (v7):
+	BALANCE: Big is too good
+	BUG: Client should animate last move so you see how you die
+	BUG: You can resize the window
+	BUG: Borders is incorrectly displayed when joining a room
+	FEAT: High Contrast option
+	FEAT: "Game starts" in the chat
+	FEAT: DirectSound
+
+FIXED (Alpha5):
+	FEAT: Who sent the blocks?
+	FEAT: Fix BIIIG combo thingies
+	FEAT: Special Combo: BIG!
+	FEAT: Auto room name
+	FEAT: Log chat messages on server
+	FEAT: Only show fields that got players
+	FEAT: Loading screen (NICE TOUCH!)
+	BUG: Zapping can be done to early because (of the itteration?)
+	BUG: Some error when placing blocks (PRESUMED FIXED)
+	BUG: Room update seams to be broken (Room detached before game?, disconnected?)
+	BUG: m_mOpponents doesn't get deleted
+	BUG: Requires multitexturing.. remove

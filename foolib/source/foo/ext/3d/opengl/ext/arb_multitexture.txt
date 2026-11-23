@@ -1,0 +1,70 @@
+TEXTURE0_ARB                   0x84C0
+TEXTURE1_ARB                   0x84C1
+TEXTURE2_ARB                   0x84C2
+TEXTURE3_ARB                   0x84C3
+TEXTURE4_ARB                   0x84C4
+TEXTURE5_ARB                   0x84C5
+TEXTURE6_ARB                   0x84C6
+TEXTURE7_ARB                   0x84C7
+TEXTURE8_ARB                   0x84C8
+TEXTURE9_ARB                   0x84C9
+TEXTURE10_ARB                  0x84CA
+TEXTURE11_ARB                  0x84CB
+TEXTURE12_ARB                  0x84CC
+TEXTURE13_ARB                  0x84CD
+TEXTURE14_ARB                  0x84CE
+TEXTURE15_ARB                  0x84CF
+TEXTURE16_ARB                  0x84D0
+TEXTURE17_ARB                  0x84D1
+TEXTURE18_ARB                  0x84D2
+TEXTURE19_ARB                  0x84D3
+TEXTURE20_ARB                  0x84D4
+TEXTURE21_ARB                  0x84D5
+TEXTURE22_ARB                  0x84D6
+TEXTURE23_ARB                  0x84D7
+TEXTURE24_ARB                  0x84D8
+TEXTURE25_ARB                  0x84D9
+TEXTURE26_ARB                  0x84DA
+TEXTURE27_ARB                  0x84DB
+TEXTURE28_ARB                  0x84DC
+TEXTURE29_ARB                  0x84DD
+TEXTURE30_ARB                  0x84DE
+TEXTURE31_ARB                  0x84DF
+ACTIVE_TEXTURE_ARB             0x84E0
+CLIENT_ACTIVE_TEXTURE_ARB      0x84E1
+MAX_TEXTURE_UNITS_ARB          0x84E2
+#
+void ActiveTextureARB (enum);
+void ClientActiveTextureARB (enum);
+void MultiTexCoord1dARB (enum, double);
+void MultiTexCoord1dvARB (enum, const double *);
+void MultiTexCoord1fARB (enum, float);
+void MultiTexCoord1fvARB (enum, const float *);
+void MultiTexCoord1iARB (enum, int);
+void MultiTexCoord1ivARB (enum, const int *);
+void MultiTexCoord1sARB (enum, short);
+void MultiTexCoord1svARB (enum, const short *);
+void MultiTexCoord2dARB (enum, double, double);
+void MultiTexCoord2dvARB (enum, const double *);
+void MultiTexCoord2fARB (enum, float, float);
+void MultiTexCoord2fvARB (enum, const float *);
+void MultiTexCoord2iARB (enum, int, int);
+void MultiTexCoord2ivARB (enum, const int *);
+void MultiTexCoord2sARB (enum, short, short);
+void MultiTexCoord2svARB (enum, const short *);
+void MultiTexCoord3dARB (enum, double, double, double);
+void MultiTexCoord3dvARB (enum, const double *);
+void MultiTexCoord3fARB (enum, float, float, float);
+void MultiTexCoord3fvARB (enum, const float *);
+void MultiTexCoord3iARB (enum, int, int, int);
+void MultiTexCoord3ivARB (enum, const int *);
+void MultiTexCoord3sARB (enum, short, short, short);
+void MultiTexCoord3svARB (enum, const short *);
+void MultiTexCoord4dARB (enum, double, double, double, double);
+void MultiTexCoord4dvARB (enum, const double *);
+void MultiTexCoord4fARB (enum, float, float, float, float);
+void MultiTexCoord4fvARB (enum, const float *);
+void MultiTexCoord4iARB (enum, int, int, int, int);
+void MultiTexCoord4ivARB (enum, const int *);
+void MultiTexCoord4sARB (enum, short, short, short, short);
+void MultiTexCoord4svARB (enum, const short *);

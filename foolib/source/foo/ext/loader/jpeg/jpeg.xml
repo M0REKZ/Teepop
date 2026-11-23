@@ -1,0 +1,28 @@
+<project name="fooext_loader_jpeg">
+
+	<workspace base="foolib/ext/loader/jpeg">
+		<file name="jpeg.cpp"/>
+		<file name="dct.h"/>
+	</workspace>
+
+	<default action="build"/>
+
+
+	<set name="subprojects">
+		<subproject file="{path.foolib}/base/base.xml"/>
+		<subproject file="{path.foolib}/func/func.xml"/>
+		<subproject file="{path.foolib}/ext/compr/compr.xml"/>
+	</set>
+
+	<file name="jpeg.cpp"/>
+
+	<cxx name="obj">
+		<input>jpeg.cpp</input>
+		<outputdir>{path.work}/objs/ext/loader/jpeg</outputdir>
+	</cxx>
+
+	<chain name="build">
+		<input>subprojects</input>
+		<input>obj</input>
+	</chain>
+</project>

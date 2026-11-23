@@ -1,0 +1,16 @@
+Creator:
+  * Magnus Auvinen (matricks) is the main contributor.
+    *  Written large portions of foolib
+
+Contributors:
+  * Olle Rosenquist (Phobos <email>) 
+    * Commited several fixes and patches. 
+      Also reponsible for the D3D renderer.
+  * Markus Buretorp (Sunray <email>) 
+    * Provided with design tips when the 3D Device 
+      support was rewritten.
+      He has also submitted several patches and fixes.
+  * Tomas Wilhelmsson (sys2 <email>) 
+    * Done a great work with the x11 support.
+  * Henrik Kinnunen (fluxgen <fluxgen at fluxbox dot org>)
+    * Fixed some x11 stuff

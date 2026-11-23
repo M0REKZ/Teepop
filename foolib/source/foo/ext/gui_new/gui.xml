@@ -1,0 +1,66 @@
+<project name="fooext_gui">
+	
+	<workspace base="foolib/ext/gui">
+		<group name="base">
+			<file name="drawer.cpp"/>
+			<file name="drawer.h"/>
+			<file name="gui.cpp"/>
+			<file name="gui.h"/>
+			<file name="shared.h"/>
+			<file name="view.cpp"/>
+			<file name="view.h"/>
+		</group>
+		<group name="widgets">
+			<file name="button.cpp"/>
+			<file name="button.h"/>
+			<file name="checkbox.cpp"/>
+			<file name="checkbox.h"/>
+			<file name="listbox.cpp"/>
+			<file name="listbox.h"/>
+			<file name="scrollbar.cpp"/>
+			<file name="scrollbar.h"/>
+			<file name="textbox.cpp"/>
+			<file name="textbox.h"/>
+			<file name="window.cpp"/>
+			<file name="window.h"/>
+		</group>
+	</workspace>
+
+	<default action="build"/>
+
+	<set name="subprojects">
+		<subproject file="{path.foolib}/base/base.xml"/>
+		<subproject file="{path.foolib}/core/core.xml"/>
+		<subproject file="{path.foolib}/func/func.xml"/>
+		<subproject file="{path.foolib}/ext/3d/3d.xml"/>
+		<subproject file="{path.foolib}/ext/3d/2dutils/2dutils.xml"/>
+	</set>
+
+	<set name="cppfiles">
+		<file name="button.cpp"/>
+		<file name="checkbox.cpp"/>
+		<file name="drawer.cpp"/>
+		<file name="gui.cpp"/>
+		<file name="listbox.cpp"/>
+		<file name="scrollbar.cpp"/>
+		<file name="textbox.cpp"/>
+		<file name="view.cpp"/>
+		<file name="window.cpp"/>
+	</set>
+
+	<cxx name="obj">
+		<input>cppfiles</input>
+		<outputdir>{path.work}/objs/ext/gui_new</outputdir>
+	</cxx>
+
+	<link name="lib.gui">
+		<input>obj</input>
+		<output>{path.work}/lib/fooext_gui_new.lib</output>
+		<type>library</type>
+	</link>
+
+	<chain name="build">
+		<input ignoreoutput="1">subprojects</input>
+		<input>lib.gui</input>
+	</chain>
+</project>

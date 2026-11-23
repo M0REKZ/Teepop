@@ -1,0 +1,84 @@
+<project name="fooext_sound">
+
+	<workspace base="foolib/ext/sound">
+		<group name="core">
+			<file name="buffer.cpp"/>
+			<file name="buffer.h"/>
+			<file name="device.cpp"/>
+			<file name="format.cpp"/>
+			<file name="format.h"/>
+			<file name="device.h"/>
+			<file name="instance.cpp"/>
+			<file name="instance.h"/>
+			<file name="puller.cpp"/>
+			<file name="puller.h"/>
+			<file name="source.cpp"/>
+			<file name="source.h"/>
+			<file name="touch.cpp"/>
+		</group>
+		<group name="devices">
+			<file name="devices/directsound.cpp"/>
+			<file name="devices/openal.cpp"/>
+			<file name="devices/waveout.cpp"/>
+		</group>
+		<group name="sources">
+			<file name="sources/swmixer.cpp"/>
+			<file name="sources/swmixer.h"/>
+			<file name="sources/sinus.cpp"/>
+			<file name="sources/sinus.h"/>
+			<file name="sources/sample.cpp"/>
+			<file name="sources/sample.h"/>
+			<file name="sources/stream.cpp"/>
+			<file name="sources/stream.h"/>
+		</group>
+	</workspace>
+
+	<default action="build"/>
+
+	<set name="subprojects">
+		<subproject file="{path.foolib}/base/base.xml"/>
+		<subproject file="{path.foolib}/func/func.xml"/>
+		<subproject file="{path.foolib}/core/core.xml"/>
+	</set>
+
+	<set name="cppfiles">
+		<file name="buffer.cpp"/>
+		<file name="instance.cpp"/>
+		<file name="device.cpp"/>
+		<file name="puller.cpp"/>
+		<file name="source.cpp"/>
+		<file name="devices/directsound.cpp"/>
+		<file name="devices/waveout.cpp"/>
+		<file name="devices/openal.cpp"/>
+		<file name="sources/swmixer.cpp"/>
+		<file name="sources/sinus.cpp"/>
+		<file name="sources/sample.cpp"/>
+		<file name="sources/stream.cpp"/>
+	</set>
+
+	<file name="touch.cpp"/>
+
+	<cxx name="obj">
+		<input>cppfiles</input>
+		<outputdir>{path.work}/objs/ext/sound</outputdir>
+	</cxx>
+
+	<file name="touch.cpp"/>
+	<cxx name="touchobj">
+		<input>touch.cpp</input>
+		<outputdir>{path.work}/objs/ext/sound</outputdir>
+	</cxx>
+
+	<link name="lib">
+		<input>obj</input>
+		<output>{path.work}/lib/fooext_sound.lib</output>
+		<type>library</type>
+	</link>
+
+	<chain name="build">
+		<input ignoreoutput="1">subprojects</input>
+		<input>lib</input>
+		<input>touchobj</input>
+		<rawoutput condition="system.platform=win32">winmm.lib</rawoutput>
+	</chain>
+</project>

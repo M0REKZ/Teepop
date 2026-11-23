@@ -1,0 +1,47 @@
+<project name="foocore">
+
+	<workspace base="foolib/core">
+		<file name="core_common.cpp"/>
+		<file name="core_linux.cpp"/>
+		<file name="core_darwin.cpp"/>
+		<file name="core_win32.cpp"/>
+		<file name="core.h"/>
+		<file name="core_win32.h"/>
+		<file name="messages.h"/>
+	</workspace>
+
+	<default action="build"/>
+
+	<set name="subprojects">
+		<subproject name="lib.base" file="{path.foolib}/base/base.xml"/>
+		<subproject name="lib.func" file="{path.foolib}/func/func.xml"/>
+	</set>
+
+
+	<set name="files.cpp">
+		<file name="core_common.cpp"/>
+		<file name="core_linux.cpp"/>
+		<file name="core_darwin.cpp"/>
+		<file name="core_win32.cpp"/>
+	</set>
+
+	<cxx name="objs">
+		<input>files.cpp</input>
+		<outputdir>{path.work}/objs/core</outputdir>
+	</cxx>
+
+	<link name="lib.core">
+		<input>objs</input>
+		<output>{path.work}/lib/foocore.lib</output>
+		<type>library</type>
+	</link>
+	<chain name="build">
+		<input ignoreoutput="1">subprojects</input>
+		<input>lib.core</input>
+
+		<rawoutput condition="system.platform=win32">dxguid.lib</rawoutput>
+		<rawoutput condition="system.platform=win32">dinput8.lib</rawoutput>
+		<rawoutput condition="system.platform=win32">user32.lib</rawoutput>
+		<rawoutput condition="system.platform=darwin">-framework Carbon</rawoutput>
+	</chain>
+</project>

@@ -1,0 +1,27 @@
+<project name="fooext_loader_png">
+
+	<workspace base="foolib/ext/loader/png">
+		<file name="png.cpp"/>
+	</workspace>
+
+	<default action="build"/>
+
+
+	<set name="subprojects">
+		<subproject file="{path.foolib}/base/base.xml"/>
+		<subproject file="{path.foolib}/func/func.xml"/>
+		<subproject file="{path.foolib}/ext/compr/compr.xml"/>
+	</set>
+
+	<file name="png.cpp"/>
+
+	<cxx name="obj">
+		<input>png.cpp</input>
+		<outputdir>{path.work}/objs/ext/loader/png</outputdir>
+	</cxx>
+
+	<chain name="build">
+		<input>subprojects</input>
+		<input>obj</input>
+	</chain>
+</project>

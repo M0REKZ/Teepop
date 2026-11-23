@@ -1,0 +1,37 @@
+<project name="fooext_network">
+	
+	<workspace base="foolib/ext/network">
+		<file name="addr.cpp"/>
+		<file name="socket.cpp"/>
+		<file name="network.h"/>
+	</workspace>
+
+	<default action="build"/>
+
+	<set name="subprojects">
+		<subproject name="base" file="{path.foolib}/base/base.xml"/>
+		<subproject name="func" file="{path.foolib}/func/func.xml"/>
+	</set>
+
+	<set name="cppfiles">
+		<file name="addr.cpp"/>
+		<file name="socket.cpp"/>
+	</set>
+
+	<cxx name="obj">
+		<input>cppfiles</input>
+		<outputdir>{path.work}/objs/ext/network</outputdir>
+	</cxx>
+
+	<link name="lib">
+		<input>obj</input>
+		<output>{path.work}/lib/fooext_network.lib</output>
+		<type>library</type>
+	</link>
+
+	<chain name="build">
+		<input ignoreoutput="1">subprojects</input>
+		<input>lib</input>
+		<rawoutput condition="system.platform=win32">ws2_32.lib</rawoutput>
+	</chain>
+</project>

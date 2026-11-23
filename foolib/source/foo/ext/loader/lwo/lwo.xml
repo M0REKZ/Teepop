@@ -1,0 +1,34 @@
+<project name="fooext_loader_lwo">
+	
+	<workspace base="foolib/ext/loader/lwo">
+		<file name="lwo.cpp"/>
+		<file name="lwo.h"/>
+	</workspace>
+
+	<default action="build"/>
+
+
+	<set name="subprojects">
+		<subproject name="base" file="../../../base/base.xml"/>
+		<subproject name="func" file="../../../func/func.xml"/>
+	</set>
+
+	<file name="lwo.cpp"/>
+	<file name="lwo.h"/>
+
+	<cxx name="obj">
+		<input>lwo.cpp</input>
+		<outputdir>{path.work}/objs/ext/loader/lwo</outputdir>
+	</cxx>
+
+	<link name="lib.lwo">
+		<input>obj</input>
+		<output>{path.work}/lib/fooext_loader_lwo.lib</output>
+		<type>library</type>
+	</link>
+
+	<chain name="build">
+		<input ignoreoutput="1">subprojects</input>
+		<input>lib.lwo</input>
+	</chain>
+</project>

@@ -1,0 +1,35 @@
+<project name="fooext_3d">
+	
+	<workspace base="foolib/ext/3d">
+		<file name="3d.cpp"/>
+		<file name="3d.h"/>
+	</workspace>
+
+	<default action="build"/>
+
+
+	<set name="subprojects">
+		<subproject file="{path.foolib}/base/base.xml"/>
+		<subproject file="{path.foolib}/core/core.xml"/>
+		<subproject file="{path.foolib}/func/func.xml"/>
+	</set>
+
+	<file name="3d.cpp"/>
+	<file name="3d.h"/>
+
+	<cxx name="obj">
+		<input>3d.cpp</input>
+		<outputdir>{path.work}/objs/ext/3d</outputdir>
+	</cxx>
+
+	<link name="lib.3d">
+		<input>obj</input>
+		<output>{path.work}/lib/fooext_3d.lib</output>
+		<type>library</type>
+	</link>
+
+	<chain name="build">
+		<input ignoreoutput="1">subprojects</input>
+		<input>lib.3d</input>
+	</chain>
+</project>

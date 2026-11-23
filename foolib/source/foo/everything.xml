@@ -1,0 +1,18 @@
+<project name="everything">
+
+	<default action="build"/>
+
+	<set name="subprojects">
+		<subproject file="base/base.xml"/>
+		<subproject file="core/core.xml"/>
+		<subproject file="func/func.xml"/>
+		<subproject file="ext/3d/3d.xml"/>
+		<subproject file="ext/3d/opengl/opengl.xml"/>
+		<subproject file="ext/loader/tga/tga.xml"/>
+		<subproject file="ext/loader/lwo/lwo.xml"/>
+	</set>
+	
+	<chain name="build">
+		<input>subprojects</input>
+	</chain>
+</project>

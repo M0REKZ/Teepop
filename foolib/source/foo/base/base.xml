@@ -1,0 +1,119 @@
+<project name="foobase">
+
+	<default action="build"/>
+
+	<setting condition="system.cpu=ppc" name="cxx.define.FOO_CPU_PPC"/>
+	<setting condition="system.cpu=x86" name="cxx.define.FOO_CPU_X86"/>
+	
+	<setting condition="system.platform=darwin" name="cxx.define.FOO_PLATFORM_DARWIN"/>
+	<setting condition="system.platform=freebsd" name="cxx.define.FOO_PLATFORM_FREEBSD"/>
+	<setting condition="system.platform=openbsd" name="cxx.define.FOO_PLATFORM_OPENBSD"/>
+	<setting condition="system.platform=linux" name="cxx.define.FOO_PLATFORM_LINUX"/>
+	<setting condition="system.platform=darwin" name="cxx.define.FOO_PLATFORM_POSIX"/>
+	<setting condition="system.platform=freebsd" name="cxx.define.FOO_PLATFORM_POSIX"/>
+	<setting condition="system.platform=openbsd" name="cxx.define.FOO_PLATFORM_POSIX"/>
+	<setting condition="system.platform=linux" name="cxx.define.FOO_PLATFORM_POSIX"/>
+
+	<setting condition="system.platform=win32" name="cxx.define.FOO_PLATFORM_WIN32"/>
+	
+	<setting condition="cxx.compiler=mw" name="cxx.define.FOO_COMPILER_CW"/>
+	<setting condition="cxx.compiler=gcc" name="cxx.define.FOO_COMPILER_GCC"/>
+	<setting condition="cxx.compiler=msvc7" name="cxx.define.FOO_COMPILER_MSVC7"/>
+
+	<setting condition="conf.name=debug" name="cxx.define.FOO_MODE_DEBUG"/>
+
+	<setting condition="conf.name=release" name="linker.debuginfo" value="false"/>
+	<setting condition="conf.name=release" name="cxx.debuginfo" value="false"/>
+	<setting condition="conf.name=release" name="cxx.optimize" value="true"/>
+	<setting condition="conf.name=release" name="cxx.define.FOO_MODE_RELEASE"/>
+
+	<setting name="cxx.define.FOO_LOWLEVEL_STRING_LIBC"/>
+	<setting name="cxx.define.FOO_LOWLEVEL_MEMORY_LIBC"/>
+	<setting name="cxx.define.FOO_LOWLEVEL_MATH_LIBC"/>
+
+	<setting name="cxx.include.FOOBASE" value="{path.proj}/../.."/>
+
+	<workspace base="foolib/base">
+		<group name="base">
+			<file name="base.h"/>
+			<file name="bytetools.h"/>
+			<file name="commonfunctions.h"/>
+			<file name="datatypes.h"/>
+		</group>
+		<group name="compiler">
+			<file name="compiler_cw.h"/>
+			<file name="compiler_gcc.h"/>
+			<file name="compiler_msvc6.h"/>
+			<file name="compiler_msvc7.h"/>
+			<file name="compiler_template.h"/>
+		</group>
+		<group name="cpu">
+			<file name="cpu_ppc.h"/>
+			<file name="cpu_template.h"/>
+			<file name="cpu_x86.h"/>
+		</group>
+		<group name="log">
+			<file name="log.cpp"/>
+			<file name="log.h"/>
+		</group>
+		<group name="math">
+			<file name="math_libc.cpp"/>
+			<file name="math_std.cpp"/>
+			<file name="math.h"/>
+		</group>
+		<group name="memory">
+			<file name="memory_libc.cpp"/>
+			<file name="memory_std.cpp"/>
+			<file name="memory.h"/>
+			<file name="memorymanager.cpp"/>
+			<file name="memorymanager.h"/>
+		</group>
+		<group name="platform">
+			<file name="platform_posix.h"/>
+			<file name="platform_template.h"/>
+			<file name="platform_win32.h"/>
+		</group>
+		<group name="string">
+			<file name="string_libc.cpp"/>
+			<file name="string_std.cpp"/>
+			<file name="string.h"/>
+		</group>
+		<group name="sys">
+			<file name="sys_posix.cpp"/>
+			<file name="sys_win32.cpp"/>
+			<file name="sys.h"/>
+		</group>
+	</workspace>
+
+	<set name="files.cpp">
+		<file name="log.cpp"/>
+		<file name="memorymanager.cpp"/>
+		<file name="math_libc.cpp"/>
+		<file name="math_std.cpp"/>
+		<file name="memory_libc.cpp"/>
+		<file name="memory_std.cpp"/>
+		<file name="string_libc.cpp"/>
+		<file name="string_std.cpp"/>
+		<file name="sys_win32.cpp"/>
+		<file name="sys_posix.cpp"/>
+	</set>
+
+	
+	<cxx name="objs.all">
+		<input>files.cpp</input>
+		<outputdir>{path.work}/objs/base</outputdir>
+	</cxx>
+
+	<link name="lib.base">
+		<input>objs.all</input>
+		<output>{path.work}/lib/foobase.lib</output>
+		<type>library</type>
+	</link>
+
+	<chain name="build">
+		<input>lib.base</input>
+		<rawoutput condition="system.platform=darwin">-framework System</rawoutput>
+		<rawoutput condition="system.platform=openbsd">-lpthread</rawoutput>
+		<rawoutput condition="system.platform=freebsd">-lpthread</rawoutput>
+	</chain>
+</project>

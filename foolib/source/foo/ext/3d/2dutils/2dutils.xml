@@ -1,0 +1,32 @@
+<project name="fooext_3d_2dutils">
+	
+	<workspace base="foolib/ext/3d/2dutils">
+		<file name="2dutils.cpp"/>
+		<file name="2dutils.h"/>
+	</workspace>
+
+	<default action="build"/>
+
+	<set name="subprojects">
+		<subproject file="../3d.xml"/>
+	</set>
+
+	<file name="2dutils.cpp"/>
+	<file name="2dutils.h"/>
+
+	<cxx name="obj">
+		<input>2dutils.cpp</input>
+		<outputdir>{path.work}/objs/ext/3d</outputdir>
+	</cxx>
+
+	<link name="lib">
+		<input>obj</input>
+		<output>{path.work}/lib/fooext_3d_2dutils.lib</output>
+		<type>library</type>
+	</link>
+
+	<chain name="build">
+		<input ignoreoutput="1">subprojects</input>
+		<input>lib</input>
+	</chain>
+</project>

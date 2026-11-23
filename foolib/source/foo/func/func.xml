@@ -1,0 +1,91 @@
+<project name="foofunc">
+
+	<workspace base="foolib/func">
+
+		<group name="graphics">
+			<file name="image.cpp"/>
+			<file name="image.h"/>
+		</group>
+		<group name="math">
+			<file name="math.h"/>
+			<file name="matrix4.h"/>
+			<file name="math.cpp"/>
+			<file name="plane2.h"/>
+			<file name="ray.h"/>
+			<file name="sphere.h"/>
+			<file name="vector2.h"/>
+			<file name="vector3.h"/>
+			<file name="vector4.h"/>
+		</group>
+		<group name="memory">
+			<file name="classregistry.h"/>
+			<file name="classregistry.cpp"/>
+			<file name="dynamicarray.h"/>
+			<file name="map.h"/>
+			<file name="pair.h"/>
+			<file name="smartptr.h"/>
+			<file name="string.cpp"/>
+			<file name="string.h"/>
+			<file name="stringtree.cpp"/>
+			<file name="stringtree.h"/>
+			<file name="registry.cpp"/>
+			<file name="registry.h"/>
+		</group>
+		<group name="stream">
+			<file name="mime.h"/>
+			<file name="mime.cpp"/>
+			<file name="bitstream.cpp"/>
+			<file name="bitstream.h"/>
+			<file name="stream.cpp"/>
+			<file name="stream.h"/>
+			<file name="filestream.cpp"/>
+			<file name="filestream.h"/>
+			<file name="memorystream.cpp"/>
+			<file name="memorystream.h"/>
+		</group>
+		<group name="thread">
+			<file name="thread.cpp"/>
+			<file name="thread.h"/>
+		</group>
+		<group name="messaging">
+			<file name="message.cpp"/>
+			<file name="message.h"/>
+		</group>
+	</workspace>
+
+	<default action="foofunc"/>
+
+	<subproject name="lib_base" file="../base/base.xml"/>
+
+	<set name="files.cpp">
+		<file name="classregistry.cpp"/>
+		<file name="image.cpp"/>
+		<file name="math.cpp"/>
+		<file name="mime.cpp"/>
+		<file name="filestream.cpp"/>
+		<file name="memorystream.cpp"/>
+		<file name="stream.cpp"/>
+		<file name="bitstream.cpp"/>
+		<file name="message.cpp"/>
+		<file name="string.cpp"/>
+		<file name="stringtree.cpp"/>
+		<file name="registry.cpp"/>
+		<file name="thread.cpp"/>
+	</set>
+
+	<cxx name="objs.all">
+		<input>files.cpp</input>
+		<outputdir>{path.work}/objs/func</outputdir>
+	</cxx>
+
+	<link name="lib_func">
+		<input>objs.all</input>
+		<output>{path.work}/lib/foofunc.lib</output>
+		<type>library</type>
+	</link>
+
+	<chain name="foofunc">
+		<input ignoreoutput="1">lib_base</input>
+		<input>lib_func</input>
+	</chain>
+</project>

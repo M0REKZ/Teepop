@@ -1,0 +1,43 @@
+<project name="fooext_comp">
+	
+	<workspace base="foolib/ext/compr">
+		<file name="deflate.cpp"/>
+		<file name="deflate.h"/>
+		<file name="huffman.cpp"/>
+		<file name="huffman.h"/>
+		<file name="rle.cpp"/>
+		<file name="rle.h"/>
+		<file name="zip.cpp"/>
+		<file name="zip.h"/>
+	</workspace>
+
+	<default action="build"/>
+
+	<set name="subprojects">
+		<subproject name="base" file="{path.foolib}/base/base.xml"/>
+		<subproject name="func" file="{path.foolib}/func/func.xml"/>
+	</set>
+
+	<set name="cppfiles">
+		<file name="huffman.cpp"/>
+		<file name="deflate.cpp"/>
+		<file name="rle.cpp"/>
+		<file name="zip.cpp"/>
+	</set>
+
+	<cxx name="obj">
+		<input>cppfiles</input>
+		<outputdir>{path.work}/objs/ext/compr</outputdir>
+	</cxx>
+
+	<link name="lib">
+		<input>obj</input>
+		<output>{path.work}/lib/fooext_compr.lib</output>
+		<type>library</type>
+	</link>
+
+	<chain name="build">
+		<input ignoreoutput="1">subprojects</input>
+		<input>lib</input>
+	</chain>
+</project>

@@ -1,0 +1,3 @@
+<project name="_global">
+	<setting name="path.foolib" path="../source/foo">
+</project>

@@ -1,0 +1,39 @@
+ARRAY_BUFFER_ARB                             0x8892
+ELEMENT_ARRAY_BUFFER_ARB                     0x8893
+ARRAY_BUFFER_BINDING_ARB                     0x8894
+ELEMENT_ARRAY_BUFFER_BINDING_ARB             0x8895
+VERTEX_ARRAY_BUFFER_BINDING_ARB              0x8896
+NORMAL_ARRAY_BUFFER_BINDING_ARB              0x8897
+COLOR_ARRAY_BUFFER_BINDING_ARB               0x8898
+INDEX_ARRAY_BUFFER_BINDING_ARB               0x8899
+TEXTURE_COORD_ARRAY_BUFFER_BINDING_ARB       0x889A
+EDGE_FLAG_ARRAY_BUFFER_BINDING_ARB           0x889B
+SECONDARY_COLOR_ARRAY_BUFFER_BINDING_ARB     0x889C
+FOG_COORDINATE_ARRAY_BUFFER_BINDING_ARB      0x889D
+WEIGHT_ARRAY_BUFFER_BINDING_ARB              0x889E
+VERTEX_ATTRIB_ARRAY_BUFFER_BINDING_ARB       0x889F
+STREAM_DRAW_ARB                              0x88E0
+STREAM_READ_ARB                              0x88E1
+STREAM_COPY_ARB                              0x88E2
+STATIC_DRAW_ARB                              0x88E4
+STATIC_READ_ARB                              0x88E5
+STATIC_COPY_ARB                              0x88E6
+DYNAMIC_DRAW_ARB                             0x88E8
+DYNAMIC_READ_ARB                             0x88E9
+DYNAMIC_COPY_ARB                             0x88EA
+READ_ONLY_ARB                                0x88B8
+WRITE_ONLY_ARB                               0x88B9
+READ_WRITE_ARB                               0x88BA
+BUFFER_MAP_POINTER_ARB                       0x88BD
+#
+void BindBufferARB (enum target, uint buffer);
+void DeleteBuffersARB (uint n, const uint *buffers);
+void GenBuffersARB (uint n, uint *buffers);
+boolean IsBufferARB (uint buffer);
+void BufferDataARB (enum target, uint size, const void *data, enum usage);
+void BufferSubDataARB (enum target, uint offset, uint size, const void *data);
+void GetBufferSubDataARB (enum target, uint offset, uint size, void *data);
+void* MapBufferARB (enum target, enum access);
+boolean UnmapBufferARB (enum target);
+void GetBufferParameterivARB (enum target, enum pname, int *params);
+void GetBufferPointervARB (enum target, enum pname, void **params);

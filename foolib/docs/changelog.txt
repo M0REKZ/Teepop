@@ -1,0 +1,11 @@
+Changes for (version):
+2004-04-11:
+  (Henrik)
+  * Added new keys:
+    EBtn_Key_Home, EBtn_Key_End, EBtn_Key_Page_Up/Down
+    EBtn_Key_Insert    
+2004-04-10:
+  (Henrik)   
+  * Added CKeyboard::KeySymToString
+    translates key symbol to CString
+  * Fixed opengl_x11.cpp better keyboard handling

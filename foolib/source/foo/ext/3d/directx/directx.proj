@@ -1,0 +1,19 @@
+NAME foo_ext_3d_directx
+OUTPUTTYPE lib
+
+USE base/base.proj
+USE core/core.proj
+USE func/func.proj
+USE ext/3d/3d.proj
+
+IF platform_win32
+{
+    LINKWITH d3d9.lib
+}
+
+
+GROUP platform
+FILE directx.h
+FILE directx.cpp
+FILE directx_state.cpp
+FILE directx_enumeration.cpp

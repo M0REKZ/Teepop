@@ -1,0 +1,79 @@
+<project name="fooext_3d_opengl">
+
+	<workspace base="foolib/ext/3d/opengl">
+		<group name="ext">
+			<file name="ext_arb_multitexture.cpp"/>
+			<file name="ext_arb_multitexture.h"/>
+			<file name="ext_arb_vertex_buffer_object.cpp"/>
+			<file name="ext_arb_vertex_buffer_object.h"/>
+			<file name="ext_arb_vertex_program.cpp"/>
+			<file name="ext_arb_vertex_program.h"/>
+			<file name="ext_ext_swap_control.cpp"/>
+			<file name="ext_ext_swap_control.h"/>
+		</group>
+		<group name="platform">
+			<file name="opengl_darwin.cpp"/>
+			<file name="opengl_win32.cpp"/>
+			<file name="opengl_x11.cpp"/>
+		</group>
+		<group name="shared">
+			<file name="opengl_common.cpp"/>
+			<file name="opengl_states.cpp"/>
+			<file name="opengl.h"/>
+			<file name="opengl_include.h"/>
+			<file name="touch.cpp"/>
+		</group>
+	</workspace>
+
+	<default action="build"/>
+	
+	<subproject name="lib.3d" file="../3d.xml"/>
+
+	<set name="files.cpp">
+		<file name="ext_arb_vertex_buffer_object.cpp"/>
+		<file name="ext_arb_multitexture.cpp"/>
+		<file name="ext_arb_vertex_program.cpp"/>
+		<file name="ext_ext_swap_control.cpp"/>
+		<file name="opengl_common.cpp"/>
+		<file name="opengl_darwin.cpp"/>
+		<file name="opengl_states.cpp"/>
+		<file name="opengl_win32.cpp"/>
+		<file name="opengl_x11.cpp"/>
+	</set>
+
+
+	<cxx name="obj">
+		<input>files.cpp</input>
+		<outputdir>{path.work}/objs/ext/3d/opengl</outputdir>
+	</cxx>
+
+	<file name="touch.cpp"/>
+	<cxx name="touchobj">
+		<input>touch.cpp</input>
+		<outputdir>{path.work}/objs/ext/3d/opengl</outputdir>
+	</cxx>
+
+	<link name="lib.opengl">
+		<input>obj</input>
+		<output>{path.work}/lib/fooext_3d_opengl.lib</output>
+		<type>library</type>
+	</link>
+
+	<chain name="build">
+		<input>lib.3d</input>
+		<input>touchobj</input>
+		<input>lib.opengl</input>
+		
+		<rawoutput condition="system.platform=win32">glu32.lib</rawoutput>
+		<rawoutput condition="system.platform=win32">opengl32.lib</rawoutput>
+		<rawoutput condition="system.platform=win32">gdi32.lib</rawoutput>
+		<rawoutput condition="system.platform=darwin">-framework AGL</rawoutput>
+		<rawoutput condition="system.platform=darwin">-framework OpenGL</rawoutput>
+
+		<rawoutput condition="system.platform=linux">-L/usr/X11R6/lib</rawoutput>
+		<rawoutput condition="system.platform=linux">-lX11</rawoutput>
+		<rawoutput condition="system.platform=linux">-lXxf86vm</rawoutput>
+		<rawoutput condition="system.platform=linux">-lXext</rawoutput>
+		<rawoutput condition="system.platform=linux">-lGL</rawoutput>
+	</chain>
+</project>

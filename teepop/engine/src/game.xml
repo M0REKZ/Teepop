@@ -1,0 +1,171 @@
+<project name="engine">
+
+	<workspace>
+		<group name="teepop">
+			<group name="engine">
+				<group name="modules">
+					<group name="network">
+						<file name="engine/networkconnection.cpp"/>
+						<file name="engine/networkserver.cpp"/>
+						<file name="engine/networkclient.cpp"/>
+						<file name="engine/networkserver.h"/>
+						<file name="engine/networkclient.h"/>
+						<file name="engine/network.h"/>
+						<file name="engine/networkauthclient.cpp"/>
+						<file name="engine/networkauthclient.h"/>
+						<file name="engine/networkauthserver.cpp"/>
+						<file name="engine/networkauthserver.h"/>
+						<file name="engine/networkchatclient.cpp"/>
+						<file name="engine/networkchatclient.h"/>
+						<file name="engine/networkchatserver.cpp"/>
+						<file name="engine/networkchatserver.h"/>
+					</group>
+					<file name="engine/input.cpp"/>
+					<file name="engine/input.h"/>
+					<file name="engine/objects.cpp"/>
+					<file name="engine/objects.h"/>
+					<file name="engine/render.cpp"/>
+					<file name="engine/render.h"/>
+				</group>
+				<file name="engine/core.cpp"/>
+				<file name="engine/engine.cpp"/>
+				<file name="engine/engine.h"/>
+				<file name="engine/module.cpp"/>
+
+			</group>
+			<group name="client">
+				<file name="client/gameclient.cpp"/>
+				<file name="client/gameclient.h"/>
+				<file name="client/roomclient.cpp"/>
+				<file name="client/roomclient.h"/>
+				<file name="client/client.cpp"/>
+			</group>
+			<group name="server">
+				<file name="server/gameserver.cpp"/>
+				<file name="server/gameserver.h"/>
+				<file name="server/roomserver.cpp"/>
+				<file name="server/roomserver.h"/>
+				<file name="server/server.cpp"/>
+			</group>
+			<group name="shared">
+				<file name="shared/board.cpp"/>
+				<file name="shared/board.h"/>
+				<file name="shared/version.h"/>
+			</group>
+		</group>
+	</workspace>
+	
+	<setting name="cxx.include.OGG" value="{path.proj}/client/ogg"/>
+
+
+	<default condition="system.platform=win32" action="build_both"/>
+	<default condition="system.platform=darwin" action="build_both"/>
+	<default condition="system.platform=openbsd" action="build_server"/>
+	<default condition="system.platform=freebsd" action="build_server"/>
+
+	<set name="subprojects">
+		<subproject file="{path.foolib}/base/base.xml"/>
+		<subproject file="{path.foolib}/core/core.xml"/>
+		<subproject file="{path.foolib}/func/func.xml"/>
+		<subproject file="{path.foolib}/ext/network/network.xml"/>
+		<subproject file="{path.foolib}/ext/network/slotserver/slotserver.xml"/>
+	</set>
+
+	<set name="subprojects_client">
+		<subproject file="{path.foolib}/ext/3d/3d.xml"/>
+		<subproject file="{path.foolib}/ext/3d/2dutils/2dutils.xml"/>
+		<subproject file="{path.foolib}/ext/3d/opengl/opengl.xml"/>
+		<subproject file="{path.foolib}/ext/loader/tga/tga.xml"/>
+		<subproject file="{path.foolib}/ext/loader/png/png.xml"/>
+		<subproject file="{path.foolib}/ext/gui_new/gui.xml"/>
+		<subproject file="{path.foolib}/ext/input/input.xml"/>
+		<subproject file="{path.foolib}/ext/sound/sound.xml"/>
+	</set>
+
+	<set name="cppfiles_shared">
+		<file name="engine/networkconnection.cpp"/>
+		<file name="engine/core.cpp"/>
+		<file name="engine/engine.cpp"/>
+		<file name="engine/module.cpp"/>
+		<file name="shared/board.cpp"/>
+	</set>
+
+	<set name="cppfiles_client">
+		<file name="engine/networkclient.cpp"/>
+		<file name="engine/networkauthclient.cpp"/>
+		<file name="engine/networkchatclient.cpp"/>
+		<file name="engine/input.cpp"/>
+		<file name="engine/objects.cpp"/>
+		<file name="engine/render.cpp"/>
+		<file name="client/roomclient.cpp"/>
+		<file name="client/gameclient.cpp"/>
+		<file name="client/client.cpp"/>
+	</set>
+
+	<set name="cppfiles_server">
+		<file name="engine/networkserver.cpp"/>
+		<file name="engine/networkauthserver.cpp"/>
+		<file name="engine/networkchatserver.cpp"/>
+		<file name="server/roomserver.cpp"/>
+		<file name="server/gameserver.cpp"/>
+		<file name="server/server.cpp"/>
+	</set>
+
+	<file name="client/platform/win32/resources.res"/>
+	<file name="client/ogg/ogg_static.lib"/>
+	<file name="client/ogg/vorbis_static.lib"/>
+	<file name="client/ogg/vorbisfile_static.lib"/>
+
+	<cxx name="objs_shared">
+		<input>cppfiles_shared</input>
+		<outputdir>{path.work}/objs/</outputdir>
+	</cxx>
+
+	<cxx name="objs_client">
+		<input>cppfiles_client</input>
+		<outputdir>{path.work}/objs/client/</outputdir>
+	</cxx>
+
+	<cxx name="objs_server">
+		<input>cppfiles_server</input>
+		<outputdir>{path.work}/objs/server/</outputdir>
+	</cxx>
+
+	<link name="exe_client">
+		<input>objs_shared</input>
+		<input>objs_client</input>
+		<input>subprojects</input>
+		<input>subprojects_client</input>
+		<input condition="system.platform=win32">client/platform/win32/resources.res</input>
+		<input condition="system.platform=win32">client/ogg/ogg_static.lib</input>
+		<input condition="system.platform=win32">client/ogg/vorbis_static.lib</input>
+		<input condition="system.platform=win32">client/ogg/vorbisfile_static.lib</input>
+		<output>{path.work}/output/client</output>
+		<type>executable</type>
+	</link>
+
+	<link name="exe_server">
+		<input>objs_shared</input>
+		<input>objs_server</input>
+		<input>subprojects</input>
+		<rawinput condition="system.platform=win32">/SUBSYSTEM:CONSOLE</rawinput>
+		<output>{path.work}/output/server</output>
+		<type>executable</type>
+	</link>
+
+	<chain name="build_client">
+		<input>subprojects</input>
+		<input>subprojects_client</input>
+		<input>exe_client</input>
+	</chain>
+	<chain name="build_server">
+		<input>subprojects</input>
+		<input>exe_server</input>
+	</chain>
+
+	<chain name="build_both">
+		<input>build_client</input>
+		<input>build_server</input>
+	</chain>
+
+</project>

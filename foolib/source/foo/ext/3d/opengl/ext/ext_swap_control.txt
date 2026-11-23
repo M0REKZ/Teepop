@@ -1,0 +1,3 @@
+#
+BOOL wglSwapIntervalEXT (int interval);
+int wglGetSwapIntervalEXT (void);

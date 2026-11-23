@@ -1,0 +1,43 @@
+<project name="fooext_network_slotserver">
+	
+	<workspace base="foolib/ext/network/slotserver">
+		<file name="chunk.cpp"/>
+		<file name="chunk.h"/>
+		<file name="client.cpp"/>
+		<file name="client.h"/>
+		<file name="connection.cpp"/>
+		<file name="connection.h"/>
+		<file name="server.cpp"/>
+		<file name="server.h"/>
+		<file name="slotserver.h"/>
+	</workspace>
+
+	<default action="build"/>
+
+	<set name="subprojects">
+		<subproject file="../network.xml"/>
+	</set>
+
+	<set name="cppfiles">
+		<file name="chunk.cpp"/>
+		<file name="client.cpp"/>
+		<file name="connection.cpp"/>
+		<file name="server.cpp"/>
+	</set>
+
+	<cxx name="obj">
+		<input>cppfiles</input>
+		<outputdir>{path.work}/objs/ext/network/slotserver</outputdir>
+	</cxx>
+
+	<link name="lib">
+		<input>obj</input>
+		<output>{path.work}/lib/fooext_network_slotserver.lib</output>
+		<type>library</type>
+	</link>
+
+	<chain name="build">
+		<input ignoreoutput="1">subprojects</input>
+		<input>lib</input>
+	</chain>
+</project>

@@ -1,0 +1,28 @@
+<project name="fooext_loader_tga">
+	
+	<workspace base="foolib/ext/loader/tga">
+		<file name="tga.cpp"/>
+	</workspace>
+
+	<default action="build"/>
+
+
+	<set name="subprojects">
+		<subproject file="{path.foolib}/base/base.xml"/>
+		<subproject file="{path.foolib}/func/func.xml"/>
+		<subproject file="{path.foolib}/ext/compr/compr.xml"/>
+	</set>
+
+	<file name="tga.cpp"/>
+
+	<cxx name="obj">
+		<input>tga.cpp</input>
+		<outputdir>{path.work}/objs/ext/loader/tga</outputdir>
+	</cxx>
+
+
+	<chain name="build">
+		<input>subprojects</input>
+		<input>obj</input>
+	</chain>
+</project>

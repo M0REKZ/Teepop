@@ -1,0 +1,53 @@
+<project name="fooext_input">
+	
+	<workspace base="foolib/ext/input">
+		<file name="input.cpp"/>
+		<file name="input.h"/>
+		<file name="device.cpp"/>
+		<group name="devices">
+			<file name="keyboard_darwin.cpp"/>
+			<file name="keyboard_win32.cpp"/>
+			<file name="keyboard.h"/>
+			<file name="mouse.h"/>
+		</group>
+		<file name="touch.cpp"/>
+	</workspace>
+
+	<default action="build"/>
+
+	<set name="subprojects">
+		<subproject name="base" file="../../base/base.xml"/>
+		<subproject name="func" file="../../func/func.xml"/>
+		<subproject name="core" file="../../core/core.xml"/>
+	</set>
+
+	<set name="cppfiles">
+		<file name="input.cpp"/>
+		<file name="device.cpp"/>
+		<file name="keyboard_darwin.cpp"/>
+		<file name="keyboard_win32.cpp"/>
+	</set>
+
+	<cxx name="obj">
+		<input>cppfiles</input>
+		<outputdir>{path.work}/objs/ext/input</outputdir>
+	</cxx>
+
+	<link name="lib">
+		<input>obj</input>
+		<output>{path.work}/lib/fooext_input.lib</output>
+		<type>library</type>
+	</link>
+
+	<file name="touch.cpp"/>
+	<cxx name="touchobj">
+		<input>touch.cpp</input>
+		<outputdir>{path.work}/objs/ext/input</outputdir>
+	</cxx>
+
+	<chain name="build">
+		<input ignoreoutput="1">subprojects</input>
+		<input>lib</input>
+		<input>touchobj</input>
+	</chain>
+</project>
