@@ -203,48 +203,31 @@ bool CPNGFormat::Load(CInputStream &_rStream, CImage &rImage)
 
 			for(int32 i = 0; i < Height; i++)
 			{
-				// we should add filter methods here
 				int32 FilterType = ZReader.ReadNE<uint8>();
 				ZReader.Read(pOutputMem, Width*bpp); // read row
-				uint8 *pCurrent = pOutputMem;
-
-				if(FilterType == 0) // no filter
+				uint8 *pPrevious = i > 0 ? pOutputMem-Pitch : NULL;
+				if(FilterType != 0)
 				{
-				}
-				else if(FilterType == 1) // sub
-				{
-					uint8 *pForward = pOutputMem+bpp;
-					for(int32 i = bpp; i < Pitch; i++)
-						*pForward = (*pForward+++*pCurrent++);
-				}
-				else if(FilterType == 2) // up
-				{
-					uint8 *pUp = pOutputMem-Pitch;
-					for(int32 i = 0; i < Pitch; i++)
-						*pCurrent++ += *pUp++;
-				}
-				else if(FilterType == 3) // avg
-				{
-					uint8 *pUp = pOutputMem-Pitch;
-					uint8 *pLeft = pOutputMem; // no need for -bpp
+					if(FilterType < 1 || FilterType > 4)
+						throw "Unable to load. Unknown PNG filter type";
 
-					for(int32 i = 0; i < bpp; i++)
-						*pCurrent++ = *pCurrent + ((*pUp++)>>1);
+					for(int32 x = 0; x < Pitch; x++)
+					{
+						int32 Left = x >= bpp ? pOutputMem[x-bpp] : 0;
+						int32 Up = pPrevious ? pPrevious[x] : 0;
+						int32 UpLeft = pPrevious && x >= bpp ? pPrevious[x-bpp] : 0;
+						int32 Predictor = 0;
 
-					for(int32 i = bpp; i < Pitch; i++)
-						*pCurrent++ = *pCurrent + ((*pLeft+++*pUp++)>>1);
-				}
-				else if(FilterType == 4) // paeth
-				{
-					uint8 *pUp = pOutputMem-Pitch;
-					uint8 *pLeft = pOutputMem; // no need for -bpp
-					uint8 *pUpLeft = pOutputMem-Pitch;
+						switch(FilterType)
+						{
+						case 1: Predictor = Left; break;
+						case 2: Predictor = Up; break;
+						case 3: Predictor = (Left+Up)/2; break;
+						case 4: Predictor = PaethPredict(Left, Up, UpLeft); break;
+						}
 
-					for(int32 i = 0; i < bpp; i++)
-						*pCurrent = *pCurrent++ + PaethPredict(0, *pUp++, 0);
-					for(int32 i = bpp; i < Pitch; i++)
-						*pCurrent = *pCurrent++ + PaethPredict(*pLeft++, *pUp++, *pUpLeft++);
-
+						pOutputMem[x] = (uint8)(pOutputMem[x]+Predictor);
+					}
 				}
 
 				pOutputMem += Width*bpp;

@@ -217,9 +217,10 @@ int32 COpenGLDevice::CreateTexture(CImage &rImage, int32 Flags)
 	}
 
 	GLuint gltexture;
+	GLint previousTexture;
+	glGetIntegerv(GL_TEXTURE_BINDING_2D, &previousTexture);
 	glGenTextures(1, (GLuint *)&gltexture);
 	glBindTexture(GL_TEXTURE_2D, gltexture);
-	glEnable(GL_TEXTURE_2D);
 	
 	while(glGetError() != GL_NO_ERROR); // pump error message???? this solves som strange driver problems
 
@@ -244,6 +245,7 @@ int32 COpenGLDevice::CreateTexture(CImage &rImage, int32 Flags)
 		if(glGetError() != GL_NO_ERROR)
 		{
 			NLog::WriteF("OpenGL: Well, that didn't work. Bailing\n");
+			glBindTexture(GL_TEXTURE_2D, (GLuint)previousTexture);
 			glDeleteTextures(1, (GLuint *)&gltexture);
 			return -1;
 		}
@@ -270,6 +272,7 @@ int32 COpenGLDevice::CreateTexture(CImage &rImage, int32 Flags)
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 	}
+	glBindTexture(GL_TEXTURE_2D, (GLuint)previousTexture);
 
 	// set info
 	//pTexture->m_Info.m_Format = _Format;
@@ -301,9 +304,10 @@ int32 COpenGLDevice::Internal_CreateTexture(int32 _w, int32 _h, int32 _Format, u
 	int32 Flags = _Format;
 
 	GLuint gltexture;
+	GLint previousTexture;
+	glGetIntegerv(GL_TEXTURE_BINDING_2D, &previousTexture);
 	glGenTextures(1, (GLuint *)&gltexture);
 	glBindTexture(GL_TEXTURE_2D, gltexture);
-	glEnable(GL_TEXTURE_2D);
 	
 	// transfer data
 	if(Flags&ETexFlag_NoMipMap)
@@ -320,6 +324,7 @@ int32 COpenGLDevice::Internal_CreateTexture(int32 _w, int32 _h, int32 _Format, u
 	// check for errors
 	if(glGetError() != GL_NO_ERROR)
 	{
+		glBindTexture(GL_TEXTURE_2D, (GLuint)previousTexture);
 		glDeleteTextures(1, (GLuint *)&gltexture);
 		return -1;
 	}
@@ -344,6 +349,7 @@ int32 COpenGLDevice::Internal_CreateTexture(int32 _w, int32 _h, int32 _Format, u
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 	}
+	glBindTexture(GL_TEXTURE_2D, (GLuint)previousTexture);
 
 	// set info
 	pTexture->m_Info.m_Format = _Format;
@@ -910,8 +916,12 @@ void COpenGLDevice::SetViewport(int32 _x, int32 _y, int32 _w, int32 _h)
 
 void COpenGLDevice::SetScissors(int32 _x, int32 _y, int32 _w, int32 _h)
 {
-	//GLint aViewport[4];
-	//glGetIntegerv(GL_VIEWPORT, aViewport);
-	glScissor(_x, m_ScreenHeight-_h-_y, _w, _h);
+	GLint viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	fp32 scaleX = m_ScreenWidth > 0 ? (fp32)viewport[2]/m_ScreenWidth : 1.0f;
+	fp32 scaleY = m_ScreenHeight > 0 ? (fp32)viewport[3]/m_ScreenHeight : 1.0f;
+	glScissor(viewport[0]+(GLint)(_x*scaleX),
+		viewport[1]+(GLint)((m_ScreenHeight-_h-_y)*scaleY),
+		(GLsizei)(_w*scaleX), (GLsizei)(_h*scaleY));
 }
 

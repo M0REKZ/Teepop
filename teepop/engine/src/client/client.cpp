@@ -1595,7 +1595,11 @@ public:
 
 		// poll input
 		CMouse *pMouse = m_pMouseInput->GetMouse();
+#ifdef FOO_PLATFORM_DARWIN
+		m_GUI.MouseMoveRel(pMouse->MovementX(), -pMouse->MovementY());
+#else
 		m_GUI.MouseMoveAbs(pMouse->MovementX(), pMouse->MovementY());
+#endif
 
 		while(pMouse->NumEvents())
 		{
@@ -1819,6 +1823,7 @@ public:
 		m_pUtils->SetDefaults();
 		m_pUtils->Text_Begin(&m_SmallFont);
 		m_pUtils->Text_Draw(10, 10, 0, "NetworkClient: %s", m_pClient->GetStatusString());
+		m_pUtils->Text_End();
 
 		// draw GUI
 		m_pUtils->SetDefaults();
