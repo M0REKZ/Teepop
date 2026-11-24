@@ -1,4 +1,5 @@
 #import <AppKit/AppKit.h>
+#import <ApplicationServices/ApplicationServices.h>
 #import <OpenGL/gl.h>
 #import <OpenGL/glu.h>
 
@@ -16,6 +17,7 @@ using namespace NFoo::N3D::NOpenGL;
 
 static class CMouse_OpenGLDarwin *g_pMouse = NULL;
 static BOOL g_CursorHidden = NO;
+static BOOL g_MouseCaptured = NO;
 
 class CMouse_OpenGLDarwin : public CMouse
 {
@@ -111,6 +113,22 @@ static void SetCursorHidden(BOOL hidden)
 		[NSCursor hide];
 	else
 		[NSCursor unhide];
+}
+
+static void SetMouseCaptured(BOOL captured)
+{
+	if(captured == g_MouseCaptured)
+		return;
+
+	CGError error = CGAssociateMouseAndMouseCursorPosition(!captured);
+	if(error != kCGErrorSuccess)
+	{
+		NLog::WriteF("OpenGL: couldn't %s mouse capture (%d)\n",
+			captured ? "enable" : "disable", (int)error);
+		return;
+	}
+
+	g_MouseCaptured = captured;
 }
 
 @interface TeepopOpenGLView : NSOpenGLView <NSWindowDelegate>
@@ -241,13 +259,24 @@ static void SetCursorHidden(BOOL hidden)
 - (void)mouseEntered:(NSEvent *)event
 {
 	(void)event;
+	SetMouseCaptured(YES);
 	SetCursorHidden(YES);
 }
 
 - (void)mouseExited:(NSEvent *)event
 {
 	(void)event;
-	SetCursorHidden(NO);
+	if(!g_MouseCaptured)
+		SetCursorHidden(NO);
+}
+
+- (void)windowDidBecomeKey:(NSNotification *)notification
+{
+	(void)notification;
+	NSPoint mouseLocation = [self.window mouseLocationOutsideOfEventStream];
+	BOOL mouseInside = NSPointInRect(mouseLocation, [self bounds]);
+	SetMouseCaptured(mouseInside);
+	SetCursorHidden(mouseInside);
 }
 
 - (void)windowDidResignKey:(NSNotification *)notification
@@ -267,6 +296,7 @@ static void SetCursorHidden(BOOL hidden)
 		for(int button = 0; button < 3; ++button)
 			g_pMouse->ReleaseButton(button);
 	}
+	SetMouseCaptured(NO);
 	SetCursorHidden(NO);
 }
 
@@ -386,7 +416,7 @@ public:
 			return false;
 
 		NSWindowStyleMask style = fullscreen ? NSWindowStyleMaskBorderless :
-			(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable);
+			(NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable);
 		m_Window = [[NSWindow alloc] initWithContentRect:frame
 			styleMask:style
 			backing:NSBackingStoreBuffered
@@ -453,6 +483,7 @@ public:
 			m_Window = nil;
 		}
 		m_RenderContext = nil;
+		SetMouseCaptured(NO);
 		SetCursorHidden(NO);
 		return true;
 	}

@@ -39,10 +39,13 @@ using namespace NFoo::NSound;
 using namespace NFoo::NGUI;
 using namespace NEngine;
 
+#ifdef FOO_PLATFORM_DARWIN
+int32 g_ScreenWidth = 640;
+int32 g_ScreenHeight = 480;
+#else
 int32 g_ScreenWidth = 800;
 int32 g_ScreenHeight = 600;
-//int32 g_ScreenWidth = 800;
-//int32 g_ScreenHeight = 600;
+#endif
 
 
 bool g_HighContrast = false;

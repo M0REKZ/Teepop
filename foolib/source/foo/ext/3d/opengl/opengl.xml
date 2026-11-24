@@ -72,6 +72,7 @@
 		<rawoutput condition="system.platform=win32">gdi32.lib</rawoutput>
 		<rawoutput condition="system.platform=darwin">-framework OpenGL</rawoutput>
 		<rawoutput condition="system.platform=darwin">-framework AppKit</rawoutput>
+		<rawoutput condition="system.platform=darwin">-framework ApplicationServices</rawoutput>
 
 		<rawoutput condition="system.platform=linux">-L/usr/X11R6/lib</rawoutput>
 		<rawoutput condition="system.platform=linux">-lX11</rawoutput>
