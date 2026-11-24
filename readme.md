@@ -2,7 +2,7 @@
 
 Yeah this was fixed with AI, and i dont really care... I just wanted to try this game :P.
 
-This based in the source code release linked at https://www.sweclockers.com/forum/post/6081488
+This is based in the source code release linked at https://www.sweclockers.com/forum/post/6081488
 
 The link is down, so i downloaded the file through the Wayback Machine (https://web.archive.org/web/20070101135315/http://teewars.com/~kma/teepop_src.tgz)
 
