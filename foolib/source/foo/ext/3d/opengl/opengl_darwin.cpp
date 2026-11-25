@@ -173,15 +173,15 @@ public:
 			return false;
 		}
 
+		m_Active = true;
+		SDL_HideCursor();
+
 		CMode Mode;
 		if(!GetBestMode(_Params, Mode))
 		{
 			NLog::WriteF("COpenGLDevice_DARWIN::Init(): Couldn't find a displaymode that fits\n");
 			return false;
 		}
-	
-		m_Active = true;
-		SDL_HideCursor();
 
 		// add mouse
 		//NCore::GetCore()->m_lMouse.Add(m_pMouse);

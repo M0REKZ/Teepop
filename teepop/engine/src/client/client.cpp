@@ -39,8 +39,9 @@ using namespace NFoo::NSound;
 using namespace NFoo::NGUI;
 using namespace NEngine;
 
-int32_t g_ScreenWidth = 800;
-int32_t g_ScreenHeight = 600;
+//+KZ workaround: set window size to hardcoded GUI coordinates (to avoid visual bugs)
+int32_t g_ScreenWidth = 640;
+int32_t g_ScreenHeight = 480;
 //int32_t g_ScreenWidth = 800;
 //int32_t g_ScreenHeight = 600;
 
