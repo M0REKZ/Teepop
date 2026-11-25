@@ -1,6 +1,8 @@
 ## +KZ note
 
-Yeah this was fixed with AI, and i dont really care... I just wanted to try this game :P.
+Yeah this branch was fixed with AI, and i dont really care (a lot)... I just wanted to try this game :P.
+
+Later i made a branch with less AI weird ugly code, you can check the [(no AI) fix branch](https://github.com/M0REKZ/Teepop/tree/fix)
 
 This is based in the source code release linked at https://www.sweclockers.com/forum/post/6081488
 
