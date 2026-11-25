@@ -2,6 +2,7 @@
 
 #include <SDL3/SDL.h>
 
+#include <foo/core/core_darwin.h>
 #include <foo/base/base.h>
 #include <foo/base/log.h>
 #include <foo/func/classregistry.h>
@@ -50,6 +51,7 @@ public:
     SDL_GLContext m_RenderContext = NULL;
 	SDL_Window * m_pSDLWindow = nullptr;
 	bool m_GotFocus = false;
+	bool m_QuitEventReceived = false;
 	
 	//CMouse_OpenGLDarwin *m_pMouse;
 
@@ -130,11 +132,12 @@ public:
 	{		
 		int32_t Width = _Params.Get(CMode::EWidth);
 		int32_t Height = _Params.Get(CMode::EHeight);
+		int32_t FullScreen = _Params.Get(CMode::EFullscreen);
 		
 		NLog::WriteF("COpenGLDevice_DARWIN::Init(): Initing display, %dx%dx%d fullscreen=%d\n",
 						Width, Height, 
 						_Params.Get(CMode::EColorBits),
-						_Params.Get(CMode::EFullscreen));
+						FullScreen);
 	
 		//
 		// Create Window
@@ -155,7 +158,7 @@ public:
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 32);
 
-		m_pSDLWindow = SDL_CreateWindow("\4Test", Width, Height, SDL_WINDOW_OPENGL);
+		m_pSDLWindow = SDL_CreateWindow("\4Test", Width, Height, SDL_WINDOW_OPENGL | (FullScreen ? SDL_WINDOW_FULLSCREEN : 0));
 		if(!m_pSDLWindow)
 		{
 			NLog::WriteF("COpenGLDevice_DARWIN::Init(): Error while trying to create SDL3 Window: %s\n", SDL_GetError());
@@ -178,6 +181,7 @@ public:
 		}
 	
 		m_Active = true;
+		SDL_HideCursor();
 
 		// add mouse
 		//NCore::GetCore()->m_lMouse.Add(m_pMouse);
@@ -192,9 +196,15 @@ public:
 	virtual bool Shutdown()
 	{
 		if(m_RenderContext)
+		{
 			SDL_GL_DestroyContext(m_RenderContext);
+			m_RenderContext = NULL;
+		}
 		if(m_pSDLWindow)
+		{
 			SDL_DestroyWindow(m_pSDLWindow);
+			m_pSDLWindow = nullptr;
+		}
 		SDL_Quit();
 		return true;
 	}
@@ -204,16 +214,12 @@ public:
 		if(!m_Active)
 			return true;
 	
-		SDL_Event sdlevent;
-	
-		// handle mouse
-//		if(WaitNextEvent(0, &event, 0, nil))
-//			PollMouse();
-//			DoEvent(&event, this);
-			
-		// the core handles the keyboard messages
-		while(SDL_PollEvent(&sdlevent))
-			DoEvent(sdlevent);
+		NCore::CCore_OSX *pCore = NCore::CCore_OSX::Get();
+
+		for(int32_t i = 0; i < pCore->m_lSDLEvents.Len(); i++)
+		{
+			DoEvent(pCore->m_lSDLEvents[i]);
+		}
 
 		// Mouse Evenets
 		bool LooseFocus = false;
@@ -232,10 +238,10 @@ public:
 			float localMouseY = mouseY - windowY;
 
 			// Is the mouse inside the actual rendered window area?
-			if (localMouseX >= windowX &&
-				localMouseX <  windowX + windowW &&
-				localMouseY >= windowY &&
-				localMouseY <  windowY + windowH)
+			if (localMouseX >= 0 &&
+				localMouseX <  windowW &&
+				localMouseY >= 0 &&
+				localMouseY <  windowH)
 			{
 				g_pMouse->m_pAxis[0] += localMouseX;
 				g_pMouse->m_pAxis[1] += localMouseY;
@@ -265,7 +271,7 @@ public:
 		}
 		
 	
-		return true;
+		return !m_QuitEventReceived;
 	}
 
 	virtual bool SwapBuffers()
@@ -286,6 +292,12 @@ public:
 		//HideCursor
 	    switch (sdlevent.type) 
 	    {
+		case SDL_EVENT_QUIT:
+		{
+			m_QuitEventReceived = true;
+		}
+		break;
+
 		case SDL_EVENT_MOUSE_BUTTON_UP:
 		{
 			if(g_pMouse)

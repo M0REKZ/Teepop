@@ -35,6 +35,7 @@
 //#include <ni/sys/posix.h>
 
 #include "core.h"
+#include "core_darwin.h"
 
 // WaitNextEvent(
 
@@ -111,27 +112,31 @@ public:
 MACRO_REGISTER_CLASS(CKeyboard_OSX, aKeyboardClassTag)
 //*/
 
-class CCore_OSX : public CCore
+void CCore_OSX::Init()
 {
-public:
-	virtual void Init()
+	//CKeyboard_OSX *keyboard = new CKeyboard_OSX;
+	//keyboard->m_pClassHandle = NClassRegistry::FindHandle("CKeyboard_OSX");
+	//m_lKeyboard.Add(keyboard);
+}
+
+bool CCore_OSX::Update()
+{
+	if(g_QuitRequest)
 	{
-		//CKeyboard_OSX *keyboard = new CKeyboard_OSX;
-		//keyboard->m_pClassHandle = NClassRegistry::FindHandle("CKeyboard_OSX");
-		//m_lKeyboard.Add(keyboard);
+		g_QuitRequest = false;
+		AddMessage(CMessage(EMsg_Quit));
 	}
 
-	virtual bool Update()
+	SDL_Event sdlevent;
+	while(SDL_PollEvent(&sdlevent))
 	{
-		if(g_QuitRequest)
-		{
-			g_QuitRequest = false;
-			AddMessage(CMessage(EMsg_Quit));
-		}
-
-		return CCore::Update();
+	    m_lSDLEvents.Add(sdlevent);
 	}
-};
+
+	bool core_res = CCore::Update();
+	m_lSDLEvents.Clear();
+	return core_res;
+}
 
 //
 // Quit Event

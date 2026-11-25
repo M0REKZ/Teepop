@@ -43,8 +43,8 @@ target_link_libraries(Teepop_client
 # copy data
 add_custom_target(TEEPOP_DATA ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/teepop/engine/data/ ${CMAKE_BINARY_DIR}/data/
-    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/teepop/engine/config.registry ${CMAKE_BINARY_DIR}/data/
-    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/teepop/engine/users.cfg ${CMAKE_BINARY_DIR}/data/
-    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/teepop/engine/readme.txt ${CMAKE_BINARY_DIR}/data/
-    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/teepop/engine/changelog.txt ${CMAKE_BINARY_DIR}/data/
+    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/teepop/engine/config.registry ${CMAKE_BINARY_DIR}/
+    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/teepop/engine/users.cfg ${CMAKE_BINARY_DIR}/
+    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/teepop/engine/readme.txt ${CMAKE_BINARY_DIR}/
+    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/teepop/engine/changelog.txt ${CMAKE_BINARY_DIR}/
 )

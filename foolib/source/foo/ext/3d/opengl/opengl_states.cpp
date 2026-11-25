@@ -61,6 +61,7 @@ void COpenGLDevice::Flag_Set(int32_t _Flag, bool _On)
 //
 void COpenGLDevice::Mode_BlendFunc(intr _Src, intr _Dst)
 {
+	glBlendEquation(GL_FUNC_ADD);
 	glBlendFunc(g_aBlendTable[_Src], g_aBlendTable[_Dst]);
 	CState::Mode_BlendFunc(_Src, _Dst);
 }

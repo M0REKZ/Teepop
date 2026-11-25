@@ -215,9 +215,10 @@ int32_t COpenGLDevice::CreateTexture(CImage &rImage, int32_t Flags)
 	}
 
 	GLuint gltexture;
+	GLint previousTexture;
+	glGetIntegerv(GL_TEXTURE_BINDING_2D, &previousTexture);
 	glGenTextures(1, (GLuint *)&gltexture);
 	glBindTexture(GL_TEXTURE_2D, gltexture);
-	glEnable(GL_TEXTURE_2D);
 	
 	while(glGetError() != GL_NO_ERROR); // pump error message???? this solves som strange driver problems
 

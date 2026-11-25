@@ -629,11 +629,31 @@ public:
 	int32_t LoadTexture(const char *pFilename)
 	{
 		CFileReader File(pFilename);
+		if(!File.IsReady())
+		{
+			NLog::WriteF("Client: failed to open texture %s\n", pFilename);
+			return -1;
+		}
+		File.SetMime("image/png");
+
 		CImage Img;
-		Assert(Img.Load(File));
-		Assert(m_pDevice);
+		if(!Img.Load(File))
+		{
+			NLog::WriteF("Client: failed to load texture %s\n", pFilename);
+			return -1;
+		}
+		if(!m_pDevice)
+		{
+			NLog::Write("Client: cannot load a texture without a graphics device\n");
+			return -1;
+		}
+
 		int32_t iTex = m_pDevice->CreateTexture(Img, ETexFlag_NoMipMap);
-		Assert(iTex >= 0);
+		if(iTex < 0)
+		{
+			NLog::WriteF("Client: failed to create texture %s\n", pFilename);
+			return -1;
+		}
 		return iTex;
 	}
 
@@ -783,8 +803,7 @@ public:
 			Assert(m_pDevice->Init(N3D::CMode(g_ScreenWidth, g_ScreenHeight, false, 0)));
 
 		Assert(m_pUtils->Init(m_pDevice));
-		m_pUtils->m_ScreenWidth = g_ScreenWidth;
-		m_pUtils->m_ScreenHeight = g_ScreenHeight;
+		m_pUtils->SetScreenSize(g_ScreenWidth, g_ScreenHeight);
 
 		Assert(m_pSoundDevice = m_pSound->GetDevice());
 
@@ -1732,6 +1751,7 @@ public:
 		m_pUtils->SetDefaults();
 		m_pUtils->Text_Begin(&m_SmallFont);
 		m_pUtils->Text_Draw(10, 10, 0, "NetworkClient: %s", m_pClient->GetStatusString());
+		m_pUtils->Text_End();
 
 		// draw GUI
 		m_pUtils->SetDefaults();
