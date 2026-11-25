@@ -22,6 +22,26 @@
 					return '0';
 				return (key - SDL_SCANCODE_1) + '1';
 			}
+			else if(key == SDL_SCANCODE_SPACE)
+			{
+				return ' ';
+			}
+			else if(key == SDL_SCANCODE_KP_COLON)
+			{
+				return ':';
+			}
+			else if(key == SDL_SCANCODE_PERIOD)
+			{
+				return '.';
+			}
+			else if(key == SDL_SCANCODE_COMMA)
+			{
+				return ',';
+			}
+			else if(key == SDL_SCANCODE_SEMICOLON)
+			{
+				return ';';
+			}
 			else
 			{
 				return 0;
@@ -34,15 +54,6 @@
 				return 0;
 			switch (key)
 			{
-				case SDL_SCANCODE_PERIOD:
-					return '.';
-
-				case SDL_SCANCODE_COMMA:
-					return ',';
-
-				case SDL_SCANCODE_SEMICOLON:
-					return ':';
-
 				case SDL_SCANCODE_BACKSLASH:
 					return NCore::EBtn_Key_Paragraph;
 
@@ -66,9 +77,6 @@
 
 				case SDL_SCANCODE_PAGEDOWN:
 					return NCore::EBtn_Key_Page_Down;
-
-				case SDL_SCANCODE_SPACE:
-					return NCore::EBtn_Key_Space;
 
 				case SDL_SCANCODE_TAB:
 					return NCore::EBtn_Key_Tab;
@@ -164,7 +172,7 @@
 				{
 					char c = SDLScancodeToAscii(sdlevent.key.scancode);
 					if(c)
-						PressButton(sdlevent.key.scancode, c);
+						PressButton(c, c);
 					else
 						PressButton(SDLScancodeToBtnEvent(sdlevent.key.scancode), c);
 				}
@@ -172,7 +180,7 @@
 				{
 					char c = SDLScancodeToAscii(sdlevent.key.scancode);
 					if(c)
-						ReleaseButton(sdlevent.key.scancode, c);
+						ReleaseButton(c, c);
 					else
 						ReleaseButton(SDLScancodeToBtnEvent(sdlevent.key.scancode), c);
 				}

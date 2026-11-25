@@ -32,12 +32,24 @@ file(GLOB TEEPOP_CLIENT_SRC CONFIGURE_DEPENDS
     ${TEEPOP_CLIENT_SRC_DIR}/*.h
 )
 
+set(TEEPOP_SERVER_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/teepop/engine/src/server)
+file(GLOB TEEPOP_SERVER_SRC CONFIGURE_DEPENDS
+    ${TEEPOP_SERVER_SRC_DIR}/*.cpp
+    ${TEEPOP_SERVER_SRC_DIR}/*.h
+)
+
 add_executable(Teepop_client ${TEEPOP_ENGINE_SRC} ${TEEPOP_SHARED_SRC} ${TEEPOP_CLIENT_SRC})
+add_executable(Teepop_server ${TEEPOP_ENGINE_SRC} ${TEEPOP_SHARED_SRC} ${TEEPOP_SERVER_SRC})
 
 target_link_libraries(Teepop_client
     PRIVATE
         "$<LINK_LIBRARY:WHOLE_ARCHIVE,foolib>"
         PkgConfig::VORBIS
+)
+
+target_link_libraries(Teepop_server
+    PRIVATE
+        "$<LINK_LIBRARY:WHOLE_ARCHIVE,foolib>"
 )
 
 # copy data
