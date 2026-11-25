@@ -18,7 +18,7 @@ namespace NFoo {
 		{
 			Init();
 			SetLen(rArray.Len());
-			for(int32 i = 0; i < Len(); i++)
+			for(int32_t i = 0; i < Len(); i++)
 				(*this)[i] = rArray[i];
 		}
 
@@ -42,7 +42,7 @@ namespace NFoo {
 		//
 		void DeleteAll()
 		{
-			for(int32 i = 0; i < Len(); i++)
+			for(int32_t i = 0; i < Len(); i++)
 				delete m_List[i];
 
 			Clear();
@@ -60,9 +60,9 @@ namespace NFoo {
 			m_NumberOfElements = 0;
 		}
 
-		int32 Find(T val)
+		int32_t Find(T val)
 		{
-			for(int32 i = 0; i < Len(); i++)
+			for(int32_t i = 0; i < Len(); i++)
 				if((*this)[i] == val)
 					return i;
 			return -1;
@@ -76,7 +76,7 @@ namespace NFoo {
 		//
 		// returns the number of elements in the list
 		//
-		int32 Len() const
+		int32_t Len() const
 		{
 			return m_NumberOfElements;
 		}
@@ -84,7 +84,7 @@ namespace NFoo {
 		//
 		// This doesn't conserve the order in the list. Be careful
 		//
-		void RemoveByIndexFast(int32 _Pos)
+		void RemoveByIndexFast(int32_t _Pos)
 		{
 			//ASSUME(_Pos >= 0 && _Pos < m_NumberOfElements);
 			m_List[_Pos] = m_List[m_NumberOfElements-1];
@@ -93,7 +93,7 @@ namespace NFoo {
 	
 		void RemoveFast(const T& _Elem)
 		{
-			for(int32 i = 0; i < Len(); i++)
+			for(int32_t i = 0; i < Len(); i++)
 				if(m_List[i] == _Elem)
 				{
 					RemoveByIndexFast(i);
@@ -103,11 +103,11 @@ namespace NFoo {
 
 		//
 		//
-		void RemoveByIndex(int32 _Pos)
+		void RemoveByIndex(int32_t _Pos)
 		{
 			//ASSUME(_Pos >= 0 && _Pos < m_NumberOfElements);
 
-			for(int32 i = _Pos+1; i < m_NumberOfElements; i++)
+			for(int32_t i = _Pos+1; i < m_NumberOfElements; i++)
 				m_List[i-1] = m_List[i];
 			
 			SetLen(Len()-1);
@@ -115,7 +115,7 @@ namespace NFoo {
 	
 		bool Remove(const T& _Elem)
 		{
-			for(int32 i = 0; i < Len(); i++)
+			for(int32_t i = 0; i < Len(); i++)
 				if(m_List[i] == _Elem)
 				{
 					RemoveByIndex(i);
@@ -126,7 +126,7 @@ namespace NFoo {
 	
 		// 
 		//
-		int32 Add(const T& _Elem)
+		int32_t Add(const T& _Elem)
 		{
 			//if(m_NumberOfElements == m_ListSize)
 			SetLen(Len()+1);
@@ -136,12 +136,12 @@ namespace NFoo {
 	
 		// 
 		//
-		int32 Add(const T& _Elem, int32 _Index)
+		int32_t Add(const T& _Elem, int32_t _Index)
 		{
 			//if(m_NumberOfElements == m_ListSize)
 			SetLen(Len()+1);
 			
-			for(int32 i = m_NumberOfElements-1; i > _Index; i--)
+			for(int32_t i = m_NumberOfElements-1; i > _Index; i--)
 				m_List[i] = m_List[i-1];
 	
 			m_List[_Index] = _Elem;
@@ -152,14 +152,14 @@ namespace NFoo {
 	
 		// 
 		//
-		T& operator[] (int32 _Pos)
+		T& operator[] (int32_t _Pos)
 		{
 			return m_List[_Pos];
 		}
 
 		//
 		//
-		const T& operator[] (int32 _Pos) const
+		const T& operator[] (int32_t _Pos) const
 		{
 			return m_List[_Pos];
 		}
@@ -179,13 +179,13 @@ namespace NFoo {
 		// 
 		//
 		/*
-		void SetLen(int32 _Len)
+		void SetLen(int32_t _Len)
 		{
 			m_ListSize = _Len;
 			T *NewList = new T[m_ListSize];
 			
-			int32 end = m_NumberOfElements < m_ListSize ? m_NumberOfElements : m_ListSize;
-			for(int32 i = 0; i < end; i++)
+			int32_t end = m_NumberOfElements < m_ListSize ? m_NumberOfElements : m_ListSize;
+			for(int32_t i = 0; i < end; i++)
 				NewList[i] = m_List[i];
 			
 			SafeArrayDelete(m_List);
@@ -194,7 +194,7 @@ namespace NFoo {
 			m_List = NewList;
 		}*/
 	
-		void SetLen(int32 _Len)
+		void SetLen(int32_t _Len)
 		{
 			if (m_ListSize < _Len)
 				AllocLen(_Len);
@@ -202,15 +202,15 @@ namespace NFoo {
 		}
 
 		// removes unnessasary data, returns how many bytes was earned
-		int32 Optimize()
+		int32_t Optimize()
 		{
-			int32 Before = MemoryUsage();
+			int32_t Before = MemoryUsage();
 			AllocLen(m_NumberOfElements);
 			return Before - MemoryUsage();
 		}
 
 		// returns how much memory this dynamic array is using
-		int32 MemoryUsage()
+		int32_t MemoryUsage()
 		{
 			return sizeof(TDynamicArray) + sizeof(T)*m_ListSize;
 		}
@@ -219,19 +219,19 @@ namespace NFoo {
 		TDynamicArray &operator = (const TDynamicArray &rArray)
 		{
 			SetLen(rArray.Len());
-			for(int32 i = 0; i < Len(); i++)
+			for(int32_t i = 0; i < Len(); i++)
 				(*this)[i] = rArray[i];
 			return *this;
 		}		
 	private:
 
-		void AllocLen(int32 _Len)
+		void AllocLen(int32_t _Len)
 		{
 			m_ListSize = _Len;
 			T *NewList = new T[m_ListSize];
 			
-			int32 end = m_NumberOfElements < m_ListSize ? m_NumberOfElements : m_ListSize;
-			for(int32 i = 0; i < end; i++)
+			int32_t end = m_NumberOfElements < m_ListSize ? m_NumberOfElements : m_ListSize;
+			for(int32_t i = 0; i < end; i++)
 				NewList[i] = m_List[i];
 			
 			SafeArrayDelete(m_List);
@@ -241,8 +241,8 @@ namespace NFoo {
 		}
 
 		T *m_List;
-		int32 m_ListSize;
-		int32 m_NumberOfElements;
+		int32_t m_ListSize;
+		int32_t m_NumberOfElements;
 	};
 
 } // end of namespace

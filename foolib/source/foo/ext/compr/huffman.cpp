@@ -8,10 +8,10 @@ using namespace NFoo;
 //
 //
 //
-int32 ReverseBits(int32 Bits, int32 nBits)
+int32_t ReverseBits(int32_t Bits, int32_t nBits)
 {
-	int32 NewBits = 0;
-	for(int32 b = 0; b < nBits; b++)
+	int32_t NewBits = 0;
+	for(int32_t b = 0; b < nBits; b++)
 		NewBits |= ((Bits>>b)&1)<<(nBits-b-1);
 	return NewBits;
 }
@@ -26,7 +26,7 @@ void SortArray_Bubble(TDynamicArray<T> &lArray)
 	while(Changing)
 	{
 		Changing = false;
-		for(int32 i = 1; i < lArray.Len(); i++)
+		for(int32_t i = 1; i < lArray.Len(); i++)
 		{
 			if(lArray[i] < lArray[i-1])
 			{
@@ -58,7 +58,7 @@ CHuffmanAlphabet::CEntry::CEntry(CEntry &rEntry)
 //
 //
 //
-CHuffmanAlphabet::CEntry::CEntry(int32 Alpha, int32 Code, int32 CodeSize)
+CHuffmanAlphabet::CEntry::CEntry(int32_t Alpha, int32_t Code, int32_t CodeSize)
 {
 	m_Alpha = Alpha;
 	m_Code = Code;
@@ -126,7 +126,7 @@ void CHuffmanAlphabet::Clear()
 //
 //
 //
-void CHuffmanAlphabet::Add(int32 Alpha, int32 CodeSize, int32 Code)
+void CHuffmanAlphabet::Add(int32_t Alpha, int32_t CodeSize, int32_t Code)
 {
 	CEntry Entry(Alpha, Code, CodeSize);
 	m_lEntries.Add(Entry);
@@ -142,9 +142,9 @@ void CHuffmanAlphabet::CalculateCodes()
 #endif
 	SortArray_Bubble(m_lEntries);
 
-	int32 CodeSize = 1;
-	int32 Code = 0;
-	for(int32 i = 0; i < m_lEntries.Len(); i++)
+	int32_t CodeSize = 1;
+	int32_t Code = 0;
+	for(int32_t i = 0; i < m_lEntries.Len(); i++)
 	{
 		CEntry &rEntry = m_lEntries[i];
 		Code <<= rEntry.m_CodeSize-CodeSize;
@@ -174,19 +174,19 @@ void CHuffmanAlphabet::ConstructTree()
 	m_aTree[1] = 0;
 	m_aTree[2] = 0;
 
-	for(int32 i = m_lEntries.Len()-1; i >= 0 ; i--)
+	for(int32_t i = m_lEntries.Len()-1; i >= 0 ; i--)
 	{
 		AddCodeO(m_lEntries[i].m_Alpha, m_lEntries[i].m_CodeSize, m_lEntries[i].m_Code);
 	}
 
 	/*
-	int32 aStackPos[32];
-	int32 aStackCode[32];
-	int32 Depth = 0;
-	int32 Alpha, CodeSize, Code;
+	int32_t aStackPos[32];
+	int32_t aStackCode[32];
+	int32_t Depth = 0;
+	int32_t Alpha, CodeSize, Code;
 	aStackPos[0] = 0;
 	aStackCode[0] = 0;
-	for(int32 i = 0; i < m_lEntries.Len(); i++)
+	for(int32_t i = 0; i < m_lEntries.Len(); i++)
 	{
 		Alpha = m_lEntries[i].m_Alpha;
 		CodeSize = m_lEntries[i].m_CodeSize;
@@ -202,8 +202,8 @@ void CHuffmanAlphabet::ConstructTree()
 
 		// traverse
 		Code >>= Depth;
-		int32 Pos = aStackPos[Depth];
-		int32 CurrentCode = aStackCode[Depth];
+		int32_t Pos = aStackPos[Depth];
+		int32_t CurrentCode = aStackCode[Depth];
 		while(1)
 		{
 			if(Depth == CodeSize)
@@ -218,7 +218,7 @@ void CHuffmanAlphabet::ConstructTree()
 			else if(m_aTree[Pos])
 				DebugBreak();
 
-			int32 *NextPos = &m_aTree[Pos+1];
+			int32_t *NextPos = &m_aTree[Pos+1];
 			//CNode **pAppendNode = &pNode->m_pZero;
 			if(Code&1)
 			{
@@ -247,10 +247,10 @@ void CHuffmanAlphabet::ConstructTree()
 
 }
 
-void CHuffmanAlphabet::AddCodeO(int32 Alpha, int32 CodeSize, int32 Code)
+void CHuffmanAlphabet::AddCodeO(int32_t Alpha, int32_t CodeSize, int32_t Code)
 {
-	//int32 *pPos = m_aTree;
-	int32 Pos = 0;
+	//int32_t *pPos = m_aTree;
+	int32_t Pos = 0;
 	while(1)
 	{
 		if(CodeSize == 0)
@@ -261,7 +261,7 @@ void CHuffmanAlphabet::AddCodeO(int32 Alpha, int32 CodeSize, int32 Code)
 			return;
 		}
 
-		int32 *NextPos = &m_aTree[Pos+1];
+		int32_t *NextPos = &m_aTree[Pos+1];
 		if(Code&1)
 			NextPos = &m_aTree[Pos+2];
 		if(!(*NextPos))
@@ -278,7 +278,7 @@ void CHuffmanAlphabet::AddCodeO(int32 Alpha, int32 CodeSize, int32 Code)
 }
 
 /*
-void CHuffmanAlphabet::AddCode(int32 Alpha, int32 CodeSize, int32 Code)
+void CHuffmanAlphabet::AddCode(int32_t Alpha, int32_t CodeSize, int32_t Code)
 {
 	if(!m_pFirstNode)
 		m_pFirstNode = new CNode;
@@ -313,7 +313,7 @@ void CHuffmanAlphabet::AddCode(int32 Alpha, int32 CodeSize, int32 Code)
 //
 void CHuffmanAlphabet::ReverseCodes()
 {
-	for(int32 i = 0; i < m_lEntries.Len(); i++)
+	for(int32_t i = 0; i < m_lEntries.Len(); i++)
 		m_lEntries[i].m_Code = ReverseBits(m_lEntries[i].m_Code, m_lEntries[i].m_CodeSize);
 }
 

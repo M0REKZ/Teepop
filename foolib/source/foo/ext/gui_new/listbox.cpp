@@ -9,8 +9,8 @@ using namespace NFoo::NGUI;
 //
 //
 //
-void CListItem::SetWidth(int32 _w) { m_Width = _w; OnWidthChange(); }
-int32 CListItem::GetHeight() { return m_Height; }
+void CListItem::SetWidth(int32_t _w) { m_Width = _w; OnWidthChange(); }
+int32_t CListItem::GetHeight() { return m_Height; }
 
 //
 //
@@ -27,14 +27,14 @@ CStringItem::CStringItem(const int8 *_pString, bool _Multiline)
 }
 
 
-int32 GetLines(int32 width, int32 w, const int8 *pText, TDynamicArray<CString> *pLines=NULL)
+int32_t GetLines(int32_t width, int32_t w, const int8 *pText, TDynamicArray<CString> *pLines=NULL)
 {
 	//enum { ESeek, EFlush }
 	const int8 *pLineStart = pText;
 	const int8 *pLineEnd = pText;
-	int32 CurrentWidth = width;
-	int32 NumLines = 0;
-	//int32 State = ESeek;
+	int32_t CurrentWidth = width;
+	int32_t NumLines = 0;
+	//int32_t State = ESeek;
 
 	while(true)
 	{
@@ -104,7 +104,7 @@ void CStringItem::OnDraw(CDrawer &rDrawer, bool Selected)
 		TDynamicArray<CString> lLines;
 		GetLines(m_Width,6,m_Text,&lLines);
 
-		for(int32 i = 0; i < lLines.Len(); i++)
+		for(int32_t i = 0; i < lLines.Len(); i++)
 			rDrawer.DrawText(-2, -3+i*12, lLines[i], r, g, b);
 	}
 	else
@@ -134,13 +134,13 @@ CListBox::~CListBox()
 //
 //
 //
-int32 CListBox::GetStartY()
+int32_t CListBox::GetStartY()
 {
-	int32 iHeight = m_ItemsHeight;
+	int32_t iHeight = m_ItemsHeight;
 	//if(m_lItems.Len())
 	//	iHeight += m_lItems[m_lItems.Len()-1]->GetHeight();
 		
-	int32 y = (int32)((iHeight-GetSize().y)*m_ScrollBar.GetAmount());
+	int32_t y = (int32_t)((iHeight-GetSize().y)*m_ScrollBar.GetAmount());
 	if(y < 0)
 		y = 0;
 	return y;
@@ -149,10 +149,10 @@ int32 CListBox::GetStartY()
 //
 //
 //
-int32 CListBox::GetItemsHeight()
+int32_t CListBox::GetItemsHeight()
 {
-	int32 h = 0;
-	for(int32 i = 0; i < m_lItems.Len(); i++)
+	int32_t h = 0;
+	for(int32_t i = 0; i < m_lItems.Len(); i++)
 		h += m_lItems[i]->GetHeight();
 	return h;
 }
@@ -179,16 +179,16 @@ void CListBox::Clear()
 //
 //
 //
-void CListBox::OnMouseDown(CPoint Pos, int32 Button)
+void CListBox::OnMouseDown(CPoint Pos, int32_t Button)
 {
 	CPoint WorldPos = GetWorldPosition();
-	int32 y = -GetStartY()-(Pos.y-WorldPos.y);
+	int32_t y = -GetStartY()-(Pos.y-WorldPos.y);
 
 	Signal(EEvent_Select);
 
-	for(int32 i = 0; i < m_lItems.Len(); i++)
+	for(int32_t i = 0; i < m_lItems.Len(); i++)
 	{   
-		int32 h = m_lItems[i]->GetHeight();
+		int32_t h = m_lItems[i]->GetHeight();
 		y += h;
 		if(y > 0)
 		{
@@ -200,7 +200,7 @@ void CListBox::OnMouseDown(CPoint Pos, int32 Button)
 	m_SelectedItem = -1;
 }
 
-void CListBox::OnDoubleClick(CPoint _Pos, int32 _Button)
+void CListBox::OnDoubleClick(CPoint _Pos, int32_t _Button)
 {
 	Signal(EEvent_DoubleClicked);
 }
@@ -233,8 +233,8 @@ void CListBox::OnLostFocus()
 //
 void CListBox::OnSize()
 {
-	int32 w = GetSize().x-m_ScrollBar.GetSize().x;
-	for(int32 i = 0; i < m_lItems.Len(); i++)
+	int32_t w = GetSize().x-m_ScrollBar.GetSize().x;
+	for(int32_t i = 0; i < m_lItems.Len(); i++)
 		m_lItems[i]->SetWidth(w);
 	m_ItemsHeight = GetItemsHeight();
 }
@@ -253,12 +253,12 @@ void CListBox::OnDraw(CDrawer &_rDrawer)
 {
 	_rDrawer.DrawRect(_rDrawer.m_aRectTypes[1], 0, 0, GetSize().x-m_ScrollBar.GetSize().x-1, GetSize().y);
 	
-	int32 y = -GetStartY();
+	int32_t y = -GetStartY();
 	
 	CPoint Pos = GetWorldPosition();
-	for(int32 i = 0; i < m_lItems.Len(); i++)
+	for(int32_t i = 0; i < m_lItems.Len(); i++)
 	{   
-		int32 h = m_lItems[i]->GetHeight();
+		int32_t h = m_lItems[i]->GetHeight();
 		if(y > GetSize().y)
 			break;
 			

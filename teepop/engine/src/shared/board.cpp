@@ -36,8 +36,8 @@ void CBoard::ClearExtra()
 {
 	MemorySet(m_aExtra, 0, ESize);
 
-	for(int32 y = 0; y < EHeight; y++)
-		for(int32 x = 0; x < EWidth; x++)
+	for(int32_t y = 0; y < EHeight; y++)
+		for(int32_t x = 0; x < EWidth; x++)
 			m_aExtra[x][y] = m_aField[x][y]<<EExtra_LastShift;
 			
 }
@@ -47,8 +47,8 @@ void CBoard::ClearExtra()
 //
 void CBoard::ClearMarks()
 {
-	for(int32 y = 0; y < EHeight; y++)
-		for(int32 x = 0; x < EWidth; x++)
+	for(int32_t y = 0; y < EHeight; y++)
+		for(int32_t x = 0; x < EWidth; x++)
 			m_aExtra[x][y] &= ~EExtra_Marked;
 }
 
@@ -73,10 +73,10 @@ void CBoard::Reset()
 	ClearAll();
 
 	// generate new blocks
-	m_aCurrentBlocks[0] = (int32)(Random()*3.99999999f)+1;
-	m_aCurrentBlocks[1] = (int32)(Random()*3.99999999f)+1;
-	m_aNextBlocks[0] = (int32)(Random()*3.99999999f)+1;
-	m_aNextBlocks[1] = (int32)(Random()*3.99999999f)+1;
+	m_aCurrentBlocks[0] = (int32_t)(Random()*3.99999999f)+1;
+	m_aCurrentBlocks[1] = (int32_t)(Random()*3.99999999f)+1;
+	m_aNextBlocks[0] = (int32_t)(Random()*3.99999999f)+1;
+	m_aNextBlocks[1] = (int32_t)(Random()*3.99999999f)+1;
 }
 
 
@@ -92,8 +92,8 @@ void CBoard::NewBlock()
 	{
 		m_aCurrentBlocks[0] = m_aNextBlocks[0];
 		m_aCurrentBlocks[1] = m_aNextBlocks[1];
-		m_aNextBlocks[0] = (int32)(Random()*3.99999999f)+1;
-		m_aNextBlocks[1] = (int32)(Random()*3.99999999f)+1;
+		m_aNextBlocks[0] = (int32_t)(Random()*3.99999999f)+1;
+		m_aNextBlocks[1] = (int32_t)(Random()*3.99999999f)+1;
 	}
 }
 
@@ -103,9 +103,9 @@ void CBoard::NewBlock()
 //
 void CBoard::RandomField()
 {
-	for(int32 y = 0; y < EHeight; y++)
-		for(int32 x = 0; x < EWidth; x++)
-			m_aField[x][y] = (int32)(Random()*3.9999999f)+1;
+	for(int32_t y = 0; y < EHeight; y++)
+		for(int32_t x = 0; x < EWidth; x++)
+			m_aField[x][y] = (int32_t)(Random()*3.9999999f)+1;
 }
 
 //
@@ -114,8 +114,8 @@ void CBoard::RandomField()
 bool CBoard::DoGravity()
 {
 	bool Stable = true;
-	for(int32 y = EHeight-2; y >= 0; y--)
-		for(int32 x = 0; x < EWidth; x++)
+	for(int32_t y = EHeight-2; y >= 0; y--)
+		for(int32_t x = 0; x < EWidth; x++)
 		{
 			if(!m_aField[x][y])
 				continue;
@@ -137,10 +137,10 @@ bool CBoard::ZapChains()
 {
 	ClearMarks();
 	bool Stable = true;
-	for(int32 y = 0; y < EHeight; y++)
-		for(int32 x = 0; x < EWidth; x++)
+	for(int32_t y = 0; y < EHeight; y++)
+		for(int32_t x = 0; x < EWidth; x++)
 		{
-			int32 Count = FindChain(x, y);
+			int32_t Count = FindChain(x, y);
 			if(Count >= 4)
 			{
 				ClearMarks();
@@ -159,10 +159,10 @@ bool CBoard::ZapChains()
 
 
 
-int32 CBoard::GetColumnDepth(int32 Col)
+int32_t CBoard::GetColumnDepth(int32_t Col)
 {
-	int32 aColumnBoost[EWidth] = {0,1,2,2,1,0};
-	for(int32 i = 0; i < EHeight; i++)
+	int32_t aColumnBoost[EWidth] = {0,1,2,2,1,0};
+	for(int32_t i = 0; i < EHeight; i++)
 	{
 		if(m_aField[Col][i] != 0)
 		{
@@ -177,9 +177,9 @@ int32 CBoard::GetColumnDepth(int32 Col)
 
 fp32 CBoard::Coverage()
 {
-	int32 Blocks = 0;
-	for(int32 y = 0; y < EHeight; y++)
-		for(int32 x = 0; x < EWidth; x++)
+	int32_t Blocks = 0;
+	for(int32_t y = 0; y < EHeight; y++)
+		for(int32_t x = 0; x < EWidth; x++)
 			if(m_aField[x][y] != 0)
 				Blocks++;
 
@@ -188,13 +188,13 @@ fp32 CBoard::Coverage()
 
 //
 //
-int32 CBoard::DeepestColumn()
+int32_t CBoard::DeepestColumn()
 {
-	int32 BestCount = GetColumnDepth(0);
-	int32 Best = 0;
-	for(int32 i = 1; i < EWidth; i++)
+	int32_t BestCount = GetColumnDepth(0);
+	int32_t Best = 0;
+	for(int32_t i = 1; i < EWidth; i++)
 	{
-		int32 Count = GetColumnDepth(i);
+		int32_t Count = GetColumnDepth(i);
 		if(Count > BestCount)
 		{
 			Best = i;
@@ -214,7 +214,7 @@ bool CBoard::PlaceStones()
 		return true;
 
 	bool PlacedStones = false;
-	for(int32 i = 0; i < m_NumStones && i < EWidth; i++)
+	for(int32_t i = 0; i < m_NumStones && i < EWidth; i++)
 	{
 		if(	m_aField[m_StoneIndex][0] == 0 && m_aField[m_StoneIndex][1] == 0 &&
 			m_aField[m_StoneIndex][2] == 0 && m_aField[m_StoneIndex][3] == 0)
@@ -230,7 +230,7 @@ bool CBoard::PlaceStones()
 	
 	if(!PlacedStones)
 	{
-		int32 Deepest = DeepestColumn();
+		int32_t Deepest = DeepestColumn();
 		if(m_aField[Deepest][0] == 0)
 		{
 			PlacedStones = true;
@@ -249,7 +249,7 @@ bool CBoard::PlaceStones()
 //
 //
 //
-bool CBoard::ValidateDrop(int32 x, int32 r)
+bool CBoard::ValidateDrop(int32_t x, int32_t r)
 {
 	if(r == 3)
 		return ValidatePos(x, 1, r);
@@ -259,12 +259,12 @@ bool CBoard::ValidateDrop(int32 x, int32 r)
 //
 //
 //
-bool CBoard::ValidatePos(int32 x, int32 y, int32 r)
+bool CBoard::ValidatePos(int32_t x, int32_t y, int32_t r)
 {
-	for(int32 i = 0; i < 2; i++)
+	for(int32_t i = 0; i < 2; i++)
 	{
-		int32 fx = x + m_aDirectionOffsets[i][r][0];
-		int32 fy = y + m_aDirectionOffsets[i][r][1];
+		int32_t fx = x + m_aDirectionOffsets[i][r][0];
+		int32_t fy = y + m_aDirectionOffsets[i][r][1];
 
 		if(fx < 0 || fx >= EWidth)
 			return false;
@@ -279,11 +279,11 @@ bool CBoard::ValidatePos(int32 x, int32 y, int32 r)
 //
 //
 //
-bool CBoard::Drop(int32 x, int32 y, int32 r)
+bool CBoard::Drop(int32_t x, int32_t y, int32_t r)
 {
 	if(ValidatePos(x,y,r))
 	{
-		for(int32 i = 0; i < 2; i++)
+		for(int32_t i = 0; i < 2; i++)
 			m_aField[x+m_aDirectionOffsets[i][r][0]][y+m_aDirectionOffsets[i][r][1]] = m_aCurrentBlocks[i];
 
 		m_SendStones = 0;
@@ -306,7 +306,7 @@ bool CBoard::Drop(int32 x, int32 y, int32 r)
 //
 //
 //
-bool CBoard::Drop(int32 x, int32 r)
+bool CBoard::Drop(int32_t x, int32_t r)
 {
 	if(r == 3)
 		return Drop(x, 1, r);
@@ -379,9 +379,9 @@ bool CBoard::Update()
 				
 
 				// count stones
-				for(int32 z = 0; z < m_NumZaps; z++)
+				for(int32_t z = 0; z < m_NumZaps; z++)
 				{
-					int32 s = (m_aZaps[z].m_Count-2)/2;
+					int32_t s = (m_aZaps[z].m_Count-2)/2;
 					if(m_aZaps[z].m_Count > 8)
 						s += (m_aZaps[z].m_Count-8)*2;
 					m_BlobCount += s;
@@ -404,14 +404,14 @@ bool CBoard::Update()
 //
 //
 //
-int32 CBoard::ZapChain(int32 x, int32 y)
+int32_t CBoard::ZapChain(int32_t x, int32_t y)
 {
 	return FindChain(x,y,true);
 }
 
 //# Function: FindChain
 //# Description: Looks for a chain
-int32 CBoard::FindChain(int32 x, int32 y, bool clear, int32 color)
+int32_t CBoard::FindChain(int32_t x, int32_t y, bool clear, int32_t color)
 {
 	if(m_aExtra[x][y]&EExtra_Marked)
 		return 0;
@@ -438,7 +438,7 @@ int32 CBoard::FindChain(int32 x, int32 y, bool clear, int32 color)
 		m_aZaps[m_NumZaps].m_y += y;
 	}
 
-	int32 n = 1;
+	int32_t n = 1;
 	if(y > 0			) n += FindChain(x,y-1,clear,color);
 	if(y < EHeight-1	) n += FindChain(x,y+1,clear,color);
 	if(x > 0			) n += FindChain(x-1,y,clear,color);
@@ -449,11 +449,11 @@ int32 CBoard::FindChain(int32 x, int32 y, bool clear, int32 color)
 //
 //
 //
-int32 CBoard::GetConnectionIndex(int32 x, int32 y)
+int32_t CBoard::GetConnectionIndex(int32_t x, int32_t y)
 {
-	int32 i = 0;
-	int32 c = m_aField[x][y];
-	int32 e = m_aExtra[x][y];
+	int32_t i = 0;
+	int32_t c = m_aField[x][y];
+	int32_t e = m_aExtra[x][y];
 	if(c == EStone)
 		return 16;
 	if(e&EExtra_Falled)
@@ -475,8 +475,8 @@ void CBoard::Pack(COutputStream &rStream) // 6*12/2=36 byte
 {
 	rStream.WriteBE<uint8>(m_StoneIndex); // should be packed into 1 byte?
 	rStream.WriteBE<uint8>(m_NumStones);
-	for(int32 y = 0; y < EHeight; y++)
-		for(int32 x = 0; x < EWidth; x+=2)
+	for(int32_t y = 0; y < EHeight; y++)
+		for(int32_t x = 0; x < EWidth; x+=2)
 			rStream.WriteNE<uint8>((m_aField[x][y]<<4)|m_aField[x+1][y]);
 }
 
@@ -487,8 +487,8 @@ void CBoard::Unpack(CInputStream &rStream)
 {
 	m_StoneIndex = rStream.ReadBE<uint8>();
 	m_NumStones = rStream.ReadBE<uint8>();
-	for(int32 y = 0; y < EHeight; y++)
-		for(int32 x = 0; x < EWidth; x+=2)
+	for(int32_t y = 0; y < EHeight; y++)
+		for(int32_t x = 0; x < EWidth; x+=2)
 		{
 			uint8 b = rStream.ReadNE<uint8>();
 			m_aField[x][y] = b>>4;

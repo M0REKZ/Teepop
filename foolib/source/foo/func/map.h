@@ -18,10 +18,10 @@ namespace NFoo {
 
 
 		// by index access
-		CPair& GetPair(int32 _Index) { return m_lPairs[_Index]; }
-		TKEY GetKey(int32 _Index) { return m_lPairs[_Index].m_First; }
-		TVALUE &GetValue(int32 _Index) { return m_lPairs[_Index].m_Second; }
-		int32 Len(void) { return m_lPairs.Len(); }
+		CPair& GetPair(int32_t _Index) { return m_lPairs[_Index]; }
+		TKEY GetKey(int32_t _Index) { return m_lPairs[_Index].m_First; }
+		TVALUE &GetValue(int32_t _Index) { return m_lPairs[_Index].m_Second; }
+		int32_t Len(void) { return m_lPairs.Len(); }
 
 		// clears the whole map
 		void Clear()
@@ -30,9 +30,9 @@ namespace NFoo {
 		}
 
 		// is this function nessasary?
-		int32 Add(const CPair& _Pair)
+		int32_t Add(const CPair& _Pair)
 		{
-			int32 iIndex = Find(_Pair.first);
+			int32_t iIndex = Find(_Pair.first);
 			if (iIndex == -1)
 				return m_lPairs.Add(_Pair);
 			m_lPairs[iIndex] = _Pair;
@@ -48,16 +48,16 @@ namespace NFoo {
 		// returns the value of the key. if the key isn't found, _Default is returned
 		TVALUE Find(TKEY Key, TVALUE _Default)
 		{
-			int32 iPair = Find(Key);
+			int32_t iPair = Find(Key);
 			if(iPair < 0)
 				return _Default;
 			return m_lPairs[iPair].m_Second;
 		}
 
 		// returns the index of the element, -1 when not found
-		int32 Find(TKEY _Key)
+		int32_t Find(TKEY _Key)
 		{
-			for(int32 i = 0; i < m_lPairs.Len(); i++)
+			for(int32_t i = 0; i < m_lPairs.Len(); i++)
 			{
 				if(m_lPairs[i].m_First == _Key)
 					return i;
@@ -69,7 +69,7 @@ namespace NFoo {
 		// returns true when the key was successfully removed
 		bool Remove(TKEY _Key)
 		{
-			int32 iPair = Find(_Key);
+			int32_t iPair = Find(_Key);
 			if(iPair < 0)
 				return false;
 
@@ -80,7 +80,7 @@ namespace NFoo {
 		// modifies or creates a key
 		TVALUE &operator[](TKEY _Key)
 		{
-			int32 iPair = Find(_Key);
+			int32_t iPair = Find(_Key);
 			if(iPair < 0)
 				iPair = m_lPairs.Add(CPair(_Key));
 
@@ -91,21 +91,21 @@ namespace NFoo {
 		TMap &operator = (const TMap &_rMap)
 		{
 			m_lPairs.Clear();
-			for(int32 i = 0; i < _rMap.m_lPairs.Len(); i++)
+			for(int32_t i = 0; i < _rMap.m_lPairs.Len(); i++)
 				(*this)[_rMap.m_lPairs[i].m_First] = _rMap.m_lPairs[i].m_Second;
 			return *this;
 		}
 
 		// returns how much memory this map is using
-		int32 MemoryUsage()
+		int32_t MemoryUsage()
 		{
 			return sizeof(TMap) + m_lPairs.MemoryUsage();
 		}
 
 		// removes unnessasary data, returns how many bytes was earned
-		int32 Optimize()
+		int32_t Optimize()
 		{
-			int32 Before = MemoryUsage();
+			int32_t Before = MemoryUsage();
 			m_lPairs.Optimize();
 			return Before - MemoryUsage();
 		}

@@ -11,7 +11,7 @@ template<class T>
 class TPtr
 {
 	T *m_pObject;
-	int32 *m_pCounter;
+	int32_t *m_pCounter;
 	
 	void PtrInit()
 	{
@@ -34,7 +34,7 @@ class TPtr
 		}
 	}
 
-	void PtrBind(T *pObject, int32 *pCounter=NULL)
+	void PtrBind(T *pObject, int32_t *pCounter=NULL)
 	{
 		PtrRelease();
 		m_pObject = pObject;
@@ -43,7 +43,7 @@ class TPtr
 		{
 			if(!m_pCounter)
 			{
-				m_pCounter = new int32;
+				m_pCounter = new int32_t;
 				(*m_pCounter) = 1;
 			}
 			else
@@ -187,7 +187,7 @@ class CGCObject
 	
 	template<class T> friend class TPtr;
 	bool m_Deleting;
-	int32 m_RefCount;
+	int32_t m_RefCount;
 
 protected:
 	virtual ~CGCObject()
@@ -239,7 +239,7 @@ public:
 
 	void ReleasePointers
 
-	int32 m_RefCount;
+	int32_t m_RefCount;
 };*/
 /*
 template<class T>

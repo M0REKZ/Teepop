@@ -21,9 +21,9 @@ namespace NFoo { namespace NCore {
 	{
 	public:
 		CMessage() { m_MessageID = EMsg_Empty; }
-		CMessage(int32 _ID) { m_MessageID = _ID; }
-		int32 m_MessageID;
-		int32 m_aParameters[4];
+		CMessage(int32_t _ID) { m_MessageID = _ID; }
+		int32_t m_MessageID;
+		int32_t m_aParameters[4];
 	};
 
 	//
@@ -35,7 +35,7 @@ namespace NFoo { namespace NCore {
 		CSubCore();
 		virtual ~CSubCore();
 	
-		int32 m_iCore;
+		int32_t m_iCore;
 		
 		virtual bool Update() { return true; };
 		//virtual bool OnMessage();
@@ -54,7 +54,7 @@ namespace NFoo { namespace NCore {
 
 		virtual void Init();
 		virtual bool Update();
-		int32 m_iCurrent;
+		int32_t m_iCurrent;
 
 		// Objects
 		NFoo::TDynamicArray<CSubCore *> m_lSubCore;
@@ -88,7 +88,7 @@ namespace NFoo { namespace NCore {
 } } // name spaces
 
 // Entry Point for applications
-int32 FooMain(char *_pCmdLine);
+int32_t FooMain(char *_pCmdLine);
 
 #endif // __FOO_CORE_H__
 

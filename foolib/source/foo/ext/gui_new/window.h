@@ -30,8 +30,8 @@ namespace NGUI {
 	class CMenuBar : public CView
 	{
 	protected:
-		virtual void OnMouseDown(CPoint _Pos, int32 _iButton);
-		virtual void OnMouseUp(CPoint _Pos, int32 _iButton);
+		virtual void OnMouseDown(CPoint _Pos, int32_t _iButton);
+		virtual void OnMouseUp(CPoint _Pos, int32_t _iButton);
 		virtual void OnDraw(CDrawer &_rDrawer);
 	public:
 		CMenuBar(class CGUI &_rGUI);
@@ -65,8 +65,8 @@ namespace NGUI {
 		CString m_Caption;
 
 	protected:
-		virtual void OnMouseDown(CPoint _Pos, int32 _iButton);
-		virtual void OnMouseUp(CPoint _Pos, int32 _iButton);
+		virtual void OnMouseDown(CPoint _Pos, int32_t _iButton);
+		virtual void OnMouseUp(CPoint _Pos, int32_t _iButton);
 		virtual void OnMouseMove(CPoint _Pos);
 		virtual void OnDraw(CDrawer &_rDrawer);
 	public:

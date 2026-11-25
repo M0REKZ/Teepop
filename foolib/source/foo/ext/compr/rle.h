@@ -11,15 +11,15 @@ namespace NFoo
 	class CRLEEncoder : public COutputStream
 	{
 		COutputStream *m_pTarget;
-		int32 m_UnitSize;
+		int32_t m_UnitSize;
 
 	public:
-		CRLEEncoder(COutputStream *_pTarget=NULL, int32 _UnitSize=-1);
+		CRLEEncoder(COutputStream *_pTarget=NULL, int32_t _UnitSize=-1);
 
-		int32 virtual GetSize();
+		int32_t virtual GetSize();
 		bool virtual IsReady();
 		bool virtual Flush();
-		int32 Write(const void *_pBuffer, int32 _Size);
+		int32_t Write(const void *_pBuffer, int32_t _Size);
 	};
 
 	//
@@ -28,15 +28,15 @@ namespace NFoo
 	class CRLEDecoder : public CInputStream
 	{
 		CInputStream *m_pSource;
-		int32 m_UnitSize;
-		int32 m_ReadBytes;
+		int32_t m_UnitSize;
+		int32_t m_ReadBytes;
 
 	public:
-		CRLEDecoder(CInputStream *_pSource=NULL, int32 _UnitSize=-1);
+		CRLEDecoder(CInputStream *_pSource=NULL, int32_t _UnitSize=-1);
 
-		int32 virtual GetSize();
+		int32_t virtual GetSize();
 		bool virtual IsReady();
 		bool virtual EndOfStream();
-		int32 virtual Read(void *_pBuffer, int32 _Size);
+		int32_t virtual Read(void *_pBuffer, int32_t _Size);
 	};
 }

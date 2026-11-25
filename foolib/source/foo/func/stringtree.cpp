@@ -25,7 +25,7 @@ CStringTreeBase::~CStringTreeBase()
 //
 //
 //
-void CStringTreeBase::NodeSetName(NodeIndex iNode, const int8 *pName, int32 Len)
+void CStringTreeBase::NodeSetName(NodeIndex iNode, const int8 *pName, int32_t Len)
 {
 	SafeArrayDelete(m_lNodeNames[iNode]);
 	if(Len < 0)
@@ -66,11 +66,11 @@ void CStringTreeBase::NodeAddChild(NodeIndex iParent, NodeIndex iChild)
 //
 //
 //
-void CStringTreeBase::NodeDump(NodeIndex iNode, COutputStream &rStream, int32 Indent)
+void CStringTreeBase::NodeDump(NodeIndex iNode, COutputStream &rStream, int32_t Indent)
 {
 	static int8 aIndent[] = "  ";
 	static int8 aEnd[] = "\n";
-	for(int32 i = 0; i < Indent; i++)
+	for(int32_t i = 0; i < Indent; i++)
 		rStream.Write(aIndent, StringLength(aIndent));
 	if(NodeName(iNode))
 		rStream.Write(NodeName(iNode), StringLength(NodeName(iNode)));
@@ -93,7 +93,7 @@ void CStringTreeBase::Clear()
 		SafeArrayDelete(m_pStringData);
 	else
 	{
-		for(int32 i = 0; i < m_lNodeNames.Len(); i++)
+		for(int32_t i = 0; i < m_lNodeNames.Len(); i++)
 			delete [] m_lNodeNames[i];
 	}
 	m_lNodeNames.SetLen(0);
@@ -114,10 +114,10 @@ void CStringTreeBase::Dump(COutputStream &rStream)
 //
 bool CStringTreeBase::Save(COutputStream &rStream)
 {
-	rStream.WriteBE<int32>(m_lNodes.Len());
+	rStream.WriteBE<int32_t>(m_lNodes.Len());
 	rStream.Write(&m_lNodes[0], sizeof(CNode)*m_lNodes.Len());
-	int32 StringDataSize = 0;
-	for(int32 i = 0; i < m_lNodes.Len(); i++)
+	int32_t StringDataSize = 0;
+	for(int32_t i = 0; i < m_lNodes.Len(); i++)
 	{
 		if(m_lNodeNames[i])
 			StringDataSize += StringLength(m_lNodeNames[i])+1;
@@ -125,8 +125,8 @@ bool CStringTreeBase::Save(COutputStream &rStream)
 			StringDataSize++;
 	}
 
-	rStream.WriteBE<int32>(StringDataSize);
-	for(int32 i = 0; i < m_lNodes.Len(); i++)
+	rStream.WriteBE<int32_t>(StringDataSize);
+	for(int32_t i = 0; i < m_lNodes.Len(); i++)
 	{
 		if(m_lNodeNames[i])
 			rStream.Write(m_lNodeNames[i], StringLength(m_lNodeNames[i])+1);
@@ -142,17 +142,17 @@ bool CStringTreeBase::Save(COutputStream &rStream)
 bool CStringTreeBase::Load(CInputStream &rStream)
 {
 	Clear();
-	int32 Len = rStream.ReadBE<int32>();
+	int32_t Len = rStream.ReadBE<int32_t>();
 	m_lNodes.SetLen(Len);
 	m_lNodeNames.SetLen(Len);
 	rStream.Read(&m_lNodes[0], sizeof(CNode)*m_lNodes.Len());
 
-	Len = rStream.ReadBE<int32>();
+	Len = rStream.ReadBE<int32_t>();
 	m_pStringData = new int8 [Len];
 	rStream.Read(m_pStringData, Len);
 
 	int8 *pCurrent = m_pStringData;
-	for(int32 i = 0; i < m_lNodeNames.Len(); i++)
+	for(int32_t i = 0; i < m_lNodeNames.Len(); i++)
 	{
 		m_lNodeNames[i] = pCurrent;
 		pCurrent += StringLength(pCurrent)+1;
@@ -168,20 +168,20 @@ CStringTreeBase::NodeIndex CStringTreeBase::GetNode(const int8 *pString)
 {
 	NodeIndex iCurrent = ERootNode;
 	const int8 *pName = pString;
-	int32 NameLen = StringLength(pName);
+	int32_t NameLen = StringLength(pName);
 
 	NodeIndex iBestMatch = ENullNode;
-	int32 BestMatchLen = 0;
+	int32_t BestMatchLen = 0;
 
 	while(NodeValid(iCurrent))
 	{
 		CNode &rNode = Node(iCurrent);
-		int32 NodeLen = 0;
+		int32_t NodeLen = 0;
 		const int8 *pNodeName = NodeName(iCurrent);
 		if(pNodeName)
 			NodeLen = StringLength(pNodeName);
 
-		int32 Len =  NodeLen < NameLen ? NodeLen : NameLen; 
+		int32_t Len =  NodeLen < NameLen ? NodeLen : NameLen; 
 
 		if(StringCompare(pNodeName, pName, Len) == 0)
 		{
@@ -209,21 +209,21 @@ CStringTreeBase::NodeIndex CStringTreeBase::AddNode(const int8 *pString)
 {
 	NodeIndex iCurrent = ERootNode;
 	const int8 *pName = pString;
-	int32 NameLen = StringLength(pName);
+	int32_t NameLen = StringLength(pName);
 
 	NodeIndex iBestMatch = ENullNode;
-	int32 BestMatchLen = 0;
+	int32_t BestMatchLen = 0;
 
 	while(1)
 	{
 		const int8 *pNodeName = NodeName(iCurrent);
-		int32 NodeLen = 0;
+		int32_t NodeLen = 0;
 		if(pNodeName)
 			NodeLen = StringLength(pNodeName);
 
 		// find matching length
-		int32 Len =  NodeLen < NameLen ? NodeLen : NameLen; 
-		int32 MatchLength = 0;
+		int32_t Len =  NodeLen < NameLen ? NodeLen : NameLen; 
+		int32_t MatchLength = 0;
 		for(; MatchLength < Len; MatchLength++)
 			if(pNodeName[MatchLength] != pName[MatchLength])
 				break;

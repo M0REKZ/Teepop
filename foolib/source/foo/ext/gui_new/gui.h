@@ -32,7 +32,7 @@ namespace NGUI {
 		bool m_MouseMoved;
 
 		bool m_KeyPressed;
-		int32 m_KeyStroke;
+		int32_t m_KeyStroke;
 		int8 m_KeyAsciiCode;
 		int64 m_KeyRepeatTime;
 
@@ -58,7 +58,7 @@ namespace NGUI {
 
 		//
 		void AddMapping(const int8 *pName, CMessageReceiver *pReceiver, CMessage &rMsg);
-		void AddMapping(const int8 *pName, CMessageReceiver *pReceiver, int32 iMsg);
+		void AddMapping(const int8 *pName, CMessageReceiver *pReceiver, int32_t iMsg);
 		CMessageTarget GetMapping(const int8 *pName);
 		
 		//
@@ -77,15 +77,15 @@ namespace NGUI {
 		void ReleaseMouse();
 
 		// Mouse
-		void MouseMoveAbs(int32 x, int32 y);
-		void MouseMoveRel(int32 x, int32 y);
+		void MouseMoveAbs(int32_t x, int32_t y);
+		void MouseMoveRel(int32_t x, int32_t y);
 
-		void MouseDown(int32 _Button);
-		void MouseUp(int32 _Button);
+		void MouseDown(int32_t _Button);
+		void MouseUp(int32_t _Button);
 
 		// Keyboard
-		void KeyDown(int32 _Stroke, uint8 _AsciiCode, bool Repeat=false);
-		void KeyUp(int32 _Stroke, uint8 _AsciiCode);
+		void KeyDown(int32_t _Stroke, uint8 _AsciiCode, bool Repeat=false);
+		void KeyUp(int32_t _Stroke, uint8 _AsciiCode);
 	};
 }
 }

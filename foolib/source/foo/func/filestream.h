@@ -18,19 +18,19 @@ namespace NFoo
 		};
 
 		CFileWriter(void *pHandle);
-		CFileWriter(const int8 *_pFilename=NULL, int32 _Mode=EBinary);
+		CFileWriter(const int8 *_pFilename=NULL, int32_t _Mode=EBinary);
 		virtual ~CFileWriter();
 
-		bool Open(const int8 *_pFilename, int32 _Mode=EBinary);
+		bool Open(const int8 *_pFilename, int32_t _Mode=EBinary);
 		bool Close();
 
 		// Various Functions
 		bool virtual IsReady();
 		bool virtual Flush();
-		int32 virtual GetSize();
+		int32_t virtual GetSize();
 
 		// Write
-		int32 virtual Write(const void *Buffer, int32 Size);
+		int32_t virtual Write(const void *Buffer, int32_t Size);
 
 	private:
 		bool operator =(CFileWriter &) { return false; }
@@ -38,7 +38,7 @@ namespace NFoo
 
 	class CFileReader : public CInputStream
 	{
-		int32 m_FileSize;
+		int32_t m_FileSize;
 		void *m_pFileHandle;
 		CString m_Filename;
 	public:
@@ -52,18 +52,18 @@ namespace NFoo
 		// Various Functions
 		bool virtual IsReady();
 		bool virtual EndOfStream();
-		int32 virtual GetSize();
-		int32 virtual GetPosition();
+		int32_t virtual GetSize();
+		int32_t virtual GetPosition();
 
 		bool virtual Seekable() { return true; }
-		void virtual Seek(int32 _Offset,intr _Origin);
+		void virtual Seek(int32_t _Offset,intr _Origin);
 
 		bool virtual Clonable() { return true; }
 		virtual CInputStream *Clone();
 
 		// Read
-		//int32 virtual Skip(int32 _Size);
-		int32 virtual Read(void *Buffer, int32 Size);
+		//int32_t virtual Skip(int32_t _Size);
+		int32_t virtual Read(void *Buffer, int32_t Size);
 
 	private:
 		bool operator =(CFileReader &) { return false; }

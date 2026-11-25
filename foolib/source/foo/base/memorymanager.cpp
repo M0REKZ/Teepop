@@ -17,38 +17,38 @@ CLock NFoo::NMemoryManager::m_Lock;
 //
 void operator delete[](void *_pPtr) { NFoo::NMemoryManager::Free(_pPtr); }
 void operator delete(void *_pPtr) { NFoo::NMemoryManager::Free(_pPtr); }
-void operator delete[](void *_pPtr, const int8 *_pFilename, int32 _Line) { NFoo::NMemoryManager::Free(_pPtr); }
-void operator delete(void *_pPtr, const int8 *_pFilename, int32 _Line) { NFoo::NMemoryManager::Free(_pPtr); }
+void operator delete[](void *_pPtr, const int8 *_pFilename, int32_t _Line) { NFoo::NMemoryManager::Free(_pPtr); }
+void operator delete(void *_pPtr, const int8 *_pFilename, int32_t _Line) { NFoo::NMemoryManager::Free(_pPtr); }
 
 //
 
 void *operator new[](NFoo::NMemoryManager::memsize _Size) { return NFoo::NMemoryManager::Allocate(_Size); }
 void *operator new(NFoo::NMemoryManager::memsize _Size) { return NFoo::NMemoryManager::Allocate(_Size); }
 
-void *operator new[](NFoo::NMemoryManager::memsize _Size, const int8 *_pFilename, int32 _Line)
+void *operator new[](NFoo::NMemoryManager::memsize _Size, const int8 *_pFilename, int32_t _Line)
 { return NFoo::NMemoryManager::Allocate(_Size, _pFilename, _Line); }
 
-void *operator new(NFoo::NMemoryManager::memsize _Size, const int8 *_pFilename, int32 _Line)
+void *operator new(NFoo::NMemoryManager::memsize _Size, const int8 *_pFilename, int32_t _Line)
 { return NFoo::NMemoryManager::Allocate(_Size, _pFilename, _Line); }
 
 #endif
 
 
-int32 g_AllocatedBlocks = 0;
-int32 g_AllocatedSize = 0;
-int32 g_Inited = 0;
-int32 g_MemPeak = 0;
-int32 g_LargestBlock = 0;
+int32_t g_AllocatedBlocks = 0;
+int32_t g_AllocatedSize = 0;
+int32_t g_Inited = 0;
+int32_t g_MemPeak = 0;
+int32_t g_LargestBlock = 0;
 bool g_Trace = false;
 
 NMemoryManager::CStats g_Stats;
 
 struct SBlockHeader
 {
-	uint32 m_Size;
+	uint32_t m_Size;
 	bool m_Deallocated;
 	int8 m_aFilename[256];
-	int32 m_Line;
+	int32_t m_Line;
 	SBlockHeader *m_pPrev;
 	SBlockHeader *m_pNext;
 };
@@ -99,11 +99,11 @@ void NMemoryManager::DumpMemInfo()
 	while(pBlock)
 	{
 		int8 aBuf[1024];
-		StringCFormat(aBuf, "%s(%d)", pBlock->m_aFilename, pBlock->m_Line);
+		StringCFormat(aBuf, sizeof(aBuf), "%s(%d)", pBlock->m_aFilename, pBlock->m_Line);
 		uint8 *pBlockAddr = ((uint8 *)pBlock)+EHeaderSize+EGuardSize;
-		NLog::WriteF("%-80s %8x %10d B  ", aBuf, (int32)pBlockAddr, pBlock->m_Size);
+		NLog::WriteF("%-80s %p %10d B  ", aBuf, pBlockAddr, pBlock->m_Size);
 
-		for(int32 i = 0; i < pBlock->m_Size && i < 32; i++)
+		for(int32_t i = 0; i < pBlock->m_Size && i < 32; i++)
 		{
 			if(*(pBlockAddr+i) > 30 && *(pBlockAddr+i) < 128)
 				NLog::WriteF("%c", *(pBlockAddr+i));
@@ -150,7 +150,7 @@ bool NMemoryManager::CheckMemory(bool _Log)
 			if(_Log)
 			{
 				int8 aBuf[1024];
-				StringCFormat(aBuf, "%s(%d)", pBlock->m_aFilename, pBlock->m_Line);
+				StringCFormat(aBuf, sizeof(aBuf), "%s(%d)", pBlock->m_aFilename, pBlock->m_Line);
 				NLog::WriteF("%-80s %10d KiB %10d B MEMORY DAMAGE!\n", aBuf, pBlock->m_Size/1024, pBlock->m_Size);
 			}
 			else
@@ -191,7 +191,7 @@ void NMemoryManager::Clean()
 //
 //
 //
-void *NMemoryManager::Allocate(int32 _Size, const int8 *_pFilename, int32 _Line)
+void *NMemoryManager::Allocate(int32_t _Size, const int8 *_pFilename, int32_t _Line)
 {
 	CAutoLock Lock(m_Lock);
 	if(!g_Inited)
@@ -210,7 +210,7 @@ void *NMemoryManager::Allocate(int32 _Size, const int8 *_pFilename, int32 _Line)
 		g_MemPeak = g_AllocatedSize;
 	
 	// allocate memory
-	int32 TotalSize = _Size+EHeaderSize+EGuardSize*2;
+	int32_t TotalSize = _Size+EHeaderSize+EGuardSize*2;
 	uint8 *pPtr = (uint8 *)MemoryAllocate(TotalSize);
 
 	// init header
@@ -240,7 +240,7 @@ void *NMemoryManager::Allocate(int32 _Size, const int8 *_pFilename, int32 _Line)
 	return pPtr + EHeaderSize+EGuardSize;
 }
 
-void NMemoryManager::Free(void *_pPtr, const int8 *_pFilename, int32 _Line)
+void NMemoryManager::Free(void *_pPtr, const int8 *_pFilename, int32_t _Line)
 {
 	CAutoLock Lock(m_Lock);
 	if (!_pPtr)
@@ -249,7 +249,7 @@ void NMemoryManager::Free(void *_pPtr, const int8 *_pFilename, int32 _Line)
 	uint8 *pPtr = (uint8*)_pPtr - EHeaderSize - EGuardSize;
 	SBlockHeader *pHeader = (SBlockHeader*)(pPtr);
 
-	int32 Size = pHeader->m_Size;
+	int32_t Size = pHeader->m_Size;
 	if(pHeader->m_Deallocated)
 	{
 		NLog::WriteF("WARNING: 0x%x deleted several times\n", _pPtr);

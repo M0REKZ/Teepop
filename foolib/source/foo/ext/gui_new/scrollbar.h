@@ -15,26 +15,26 @@ namespace NGUI {
 		class CHandle : public CView
 		{
 		protected:
-			virtual void OnMouseDown(CPoint _Pos, int32 _iButton);
-			virtual void OnMouseUp(CPoint _Pos, int32 _iButton);
+			virtual void OnMouseDown(CPoint _Pos, int32_t _iButton);
+			virtual void OnMouseUp(CPoint _Pos, int32_t _iButton);
 			virtual void OnMouseMove(CPoint _Pos);
 			virtual void OnDraw(CDrawer &_rDrawer);
 		public:	
-			int32 m_Amount;
-			int32 m_Offset;
+			int32_t m_Amount;
+			int32_t m_Offset;
 			bool m_Scrubbing;
 
 			CHandle(CView *pParent, CGUI *pGUI);
 		
-			void SetPos(int32 p);
-			int32 GetPos();
-			int32 GetMin();
-			int32 GetMax(int32 py = -1);
+			void SetPos(int32_t p);
+			int32_t GetPos();
+			int32_t GetMin();
+			int32_t GetMax(int32_t py = -1);
 		};
 		
 		CHandle m_Handle;
 
-		int32 ScrollArea(int32 h);
+		int32_t ScrollArea(int32_t h);
 	protected:
 		virtual void OnSize(CPoint _OldSize);
 		virtual void OnDraw(CDrawer &_rDrawer);

@@ -14,11 +14,11 @@ namespace NFoo { namespace NSound {
 			m_Samples = 0;
 		}
 
-		int32 m_Samples;
+		int32_t m_Samples;
 		CFormat m_Format;
 		void *m_pData;
 
-		void CreateData(int32 Samples)
+		void CreateData(int32_t Samples)
 		{
 			m_Samples = Samples;
 			m_pData = new int8[Samples*4];

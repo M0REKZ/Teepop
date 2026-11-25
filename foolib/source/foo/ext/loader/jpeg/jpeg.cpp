@@ -25,9 +25,9 @@ public:
 	bool virtual IsReady() { return m_rSource.IsReady(); }
 	bool virtual EndOfStream() { return false; };
 
-	int32 virtual Read(void *pBuffer, int32 Size)
+	int32_t virtual Read(void *pBuffer, int32_t Size)
 	{
-		int32 r = Size;
+		int32_t r = Size;
 		uint8 *pDst = (uint8 *)pBuffer;
 		while(Size--)
 		{
@@ -42,12 +42,12 @@ public:
 
 struct SComponent
 {
-	int32 m_ID;
-	int32 m_Factors;
-	int32 m_Quat;
+	int32_t m_ID;
+	int32_t m_Factors;
+	int32_t m_Quat;
 
-	int32 m_XSizeUps;
-	int32 m_YSizeUps;
+	int32_t m_XSizeUps;
+	int32_t m_YSizeUps;
 };
 
 //
@@ -59,39 +59,39 @@ class CJPEGFormat : public CImageFormat
 
 	CHuffmanAlphabet m_aHuffmanAlphabet[8];
 	SComponent m_aComponents[3];
-	int32 m_NumComponents;
+	int32_t m_NumComponents;
 	fp32 m_aQuatTable[4][64];
-	int32 m_Width, m_Height;
+	int32_t m_Width, m_Height;
 	//CImage m_aComponentData[3];
 
-	int32 m_NumBlocks;
+	int32_t m_NumBlocks;
 
-	int32 m_MCUCount;
-	int32 m_MCUSizeX;
-	int32 m_MCUSizeY;
+	int32_t m_MCUCount;
+	int32_t m_MCUSizeX;
+	int32_t m_MCUSizeY;
 
 	uint8 m_aVector[64];
-	int32 m_aComponentDC[3];
+	int32_t m_aComponentDC[3];
 
 	//
-	static int32 GetValue(int32 _Cat, int32 _Value)
+	static int32_t GetValue(int32_t _Cat, int32_t _Value)
 	{
-		int32 Base;
-		int32 Sign = (_Value&(1<<(_Cat-1))) ? 1 : -1;
+		int32_t Base;
+		int32_t Sign = (_Value&(1<<(_Cat-1))) ? 1 : -1;
 
 		if(Sign > 0)
 			Base = (1<<(_Cat))/2;
 		else
 			Base = -(1<<(_Cat))+1;
 
-		int32 ValueMask = (1<<(_Cat-1))-1;
-		int32 ValuePart = _Value&ValueMask;
+		int32_t ValueMask = (1<<(_Cat-1))-1;
+		int32_t ValuePart = _Value&ValueMask;
 
-		int32 Final = (Base+ValuePart);
+		int32_t Final = (Base+ValuePart);
 		return Final;
 	}
 
-	void ReadBlock(CBitInputStreamHigh &rBitStream, int32 iDCTable, int32 iACTable, int32 iComp);
+	void ReadBlock(CBitInputStreamHigh &rBitStream, int32_t iDCTable, int32_t iACTable, int32_t iComp);
 
 public:
 	CJPEGFormat()
@@ -115,7 +115,7 @@ CMime CJPEGFormat::ms_Mime("image/jpeg");
 MACRO_REGISTER_CLASS(CJPEGFormat, "imageformat")
 
 // 
-const int32 g_aZigPattern[64] = {
+const int32_t g_aZigPattern[64] = {
 			0, 1, 5, 6,14,15,27,28,
 			2, 4, 7,13,16,26,29,42,
 			3, 8,12,17,25,30,41,43,
@@ -130,20 +130,20 @@ const int32 g_aZigPattern[64] = {
 	//
 	//
 	//
-	int32 GetValue(int32 _Cat, int32 _Value)
+	int32_t GetValue(int32_t _Cat, int32_t _Value)
 	{
-		int32 Base;
-		int32 Sign = (_Value&(1<<(_Cat-1))) ? 1 : -1;
+		int32_t Base;
+		int32_t Sign = (_Value&(1<<(_Cat-1))) ? 1 : -1;
 
 		if(Sign > 0)
 			Base = (1<<(_Cat))/2;
 		else
 			Base = -(1<<(_Cat))+1;
 
-		int32 ValueMask = (1<<(_Cat-1))-1;
-		int32 ValuePart = _Value&ValueMask;
+		int32_t ValueMask = (1<<(_Cat-1))-1;
+		int32_t ValuePart = _Value&ValueMask;
 
-		int32 Final = (Base+ValuePart);
+		int32_t Final = (Base+ValuePart);
 		return Final;
 	}
 
@@ -210,16 +210,16 @@ bool CJPEGFormat::Load(CInputStream &_rStream, CImage &_rImage)
 			//
 			// Start Of Image
 			//
-			int32 Prec = _rStream.ReadNE<uint8>();
+			int32_t Prec = _rStream.ReadNE<uint8>();
 			m_Height = _rStream.ReadBE<uint16>();
 			m_Width = _rStream.ReadBE<uint16>();
 			m_NumComponents = _rStream.ReadNE<uint8>();
 			if(Log)
 				NLog::WriteF("\tsize:%dx%dx%x\n", m_Width, m_Height, m_NumComponents);
 
-			int32 maxx = 0, maxy = 0;
-			int32 minx = 10, miny = 10;
-			for(int32 i = 0; i < m_NumComponents; i++)
+			int32_t maxx = 0, maxy = 0;
+			int32_t minx = 10, miny = 10;
+			for(int32_t i = 0; i < m_NumComponents; i++)
 			{
 				m_aComponents[i].m_ID = _rStream.ReadNE<uint8>();
 				m_aComponents[i].m_Factors = _rStream.ReadNE<uint8>();
@@ -243,12 +243,12 @@ bool CJPEGFormat::Load(CInputStream &_rStream, CImage &_rImage)
 			m_MCUSizeX = 100000;
 			m_MCUSizeY = 100000;
 
-			for(int32 i = 0; i < m_NumComponents; i++)
+			for(int32_t i = 0; i < m_NumComponents; i++)
 			{
-				int32 x = (m_aComponents[i].m_Factors&0xF);
-				int32 y = (m_aComponents[i].m_Factors>>4);
-				int32 sx = m_Width/(maxx-x+1);
-				int32 sy = m_Height/(maxy-y+1);
+				int32_t x = (m_aComponents[i].m_Factors&0xF);
+				int32_t y = (m_aComponents[i].m_Factors>>4);
+				int32_t sx = m_Width/(maxx-x+1);
+				int32_t sy = m_Height/(maxy-y+1);
 				m_NumBlocks += (m_Width/8)*(m_Height/8);
 				m_aComponents[i].m_XSizeUps = m_Width/sx;
 				m_aComponents[i].m_YSizeUps = m_Height/sy;
@@ -277,19 +277,19 @@ bool CJPEGFormat::Load(CInputStream &_rStream, CImage &_rImage)
 			if(Log)
 				NLog::WriteF("\tdefine quat table\n");
 
-			int32 bytes = segsize-2;
-			int32 i = 0;
+			int32_t bytes = segsize-2;
+			int32_t i = 0;
 			while(bytes)
 			{
 				uint8 Info = _rStream.ReadNE<uint8>();
-				int32 QTnum = Info&0xF;
-				int32 Prec = Info>>4;
+				int32_t QTnum = Info&0xF;
+				int32_t Prec = Info>>4;
 				uint8 aTemp[64];
 				_rStream.Read(aTemp, 64*(Prec+1));
 
-				int32 j = 0;
-				for(int32 y = 0; y < 8; y++)
-					for(int32 x = 0; x < 8; x++, j++)
+				int32_t j = 0;
+				for(int32_t y = 0; y < 8; y++)
+					for(int32_t x = 0; x < 8; x++, j++)
 						m_aQuatTable[QTnum][j] = aTemp[j];
 
 				if(Log)
@@ -309,32 +309,32 @@ bool CJPEGFormat::Load(CInputStream &_rStream, CImage &_rImage)
 			//
 			if(Log)
 				NLog::WriteF("\tdefine huffman table\n");
-			int32 bytes = segsize-2;
-			int32 n = 0;
+			int32_t bytes = segsize-2;
+			int32_t n = 0;
 			while(bytes)
 			{
 				uint8 Info;
 				uint8 Counts[16];
-				int32 NumEntires = 0;
+				int32_t NumEntires = 0;
 				
 				Info = _rStream.ReadNE<uint8>();
-				int32 HT = Info&0xF;
+				int32_t HT = Info&0xF;
 				if(HT > 3)
 					throw "HT Error!";
-				int32 Type = (Info>>4)&1;
-				int32 iTable = HT|(Type<<2);
+				int32_t Type = (Info>>4)&1;
+				int32_t iTable = HT|(Type<<2);
 				
 				_rStream.Read(Counts, 16);
-				for(int32 i = 0; i < 16; i++)
+				for(int32_t i = 0; i < 16; i++)
 					NumEntires += Counts[i];
 
 				//NLog::WriteF("FILLING %d\n", iTable);
 				int8 aBin[64];
-				int32 Current = 0;
-				uint32 Code = 0;
-				for(int32 i = 1; i < 17; i++)
+				int32_t Current = 0;
+				uint32_t Code = 0;
+				for(int32_t i = 1; i < 17; i++)
 				{
-					for(int32 j = 0; j < Counts[i-1]; j++)
+					for(int32_t j = 0; j < Counts[i-1]; j++)
 					{
 						m_aHuffmanAlphabet[iTable].Add(_rStream.ReadNE<uint8>(), i, Code);
 						Code++;
@@ -362,7 +362,7 @@ bool CJPEGFormat::Load(CInputStream &_rStream, CImage &_rImage)
 			// Start of Scans
 			//
 			uint8 aScanTables[4] = {0};
-			int32 aScanIDs[4] = {0};
+			int32_t aScanIDs[4] = {0};
 
 			uint8 NumScans = _rStream.ReadNE<uint8>();
 
@@ -380,11 +380,11 @@ bool CJPEGFormat::Load(CInputStream &_rStream, CImage &_rImage)
 				NLog::WriteF("\tscans: %d\n", NumScans);
 
 			// read scan info
-			for(int32 i = 0; i < NumScans; i++)
+			for(int32_t i = 0; i < NumScans; i++)
 			{
 				aScanIDs[i] = _rStream.ReadNE<uint8>();
 				aScanTables[i] = _rStream.ReadNE<uint8>();
-				for(int32 c = 0; c < m_NumComponents; c++)
+				for(int32_t c = 0; c < m_NumComponents; c++)
 				{
 					if(m_aComponents[c].m_ID == aScanIDs[i])
 					{
@@ -405,39 +405,39 @@ bool CJPEGFormat::Load(CInputStream &_rStream, CImage &_rImage)
 			CJPEGScanReader JpegScanReader(_rStream);
 			CBitInputStreamHigh BitStream(JpegScanReader);
 
-			int32 Pitch = _rImage.Format().Pitch();
-			int32 bpp = _rImage.Format().BPP()/8;
+			int32_t Pitch = _rImage.Format().Pitch();
+			int32_t bpp = _rImage.Format().BPP()/8;
 
-			for(int32 m = 0; m < m_MCUCount; m++)
+			for(int32_t m = 0; m < m_MCUCount; m++)
 			{
-				int32 my = m/(m_Width/m_MCUSizeX);
-				int32 mx = m%(m_Width/m_MCUSizeX);
-				for(int32 s = 0; s < NumScans; s++)
+				int32_t my = m/(m_Width/m_MCUSizeX);
+				int32_t mx = m%(m_Width/m_MCUSizeX);
+				for(int32_t s = 0; s < NumScans; s++)
 				{
-					int32 CompID = aScanIDs[s];
-					int32 DCTable = aScanTables[s]>>4;
-					int32 ACTable = aScanTables[s]&0xF;
-					int32 fx = m_aComponents[CompID].m_Factors&0xF;
-					int32 fy = m_aComponents[CompID].m_Factors>>4;
-					int32 sx = m_aComponents[CompID].m_XSizeUps;
-					int32 sy = m_aComponents[CompID].m_YSizeUps;
+					int32_t CompID = aScanIDs[s];
+					int32_t DCTable = aScanTables[s]>>4;
+					int32_t ACTable = aScanTables[s]&0xF;
+					int32_t fx = m_aComponents[CompID].m_Factors&0xF;
+					int32_t fy = m_aComponents[CompID].m_Factors>>4;
+					int32_t sx = m_aComponents[CompID].m_XSizeUps;
+					int32_t sy = m_aComponents[CompID].m_YSizeUps;
 
-					for(int32 y = 0; y < fy; y++)
-						for(int32 x = 0; x < fx; x++)
+					for(int32_t y = 0; y < fy; y++)
+						for(int32_t x = 0; x < fx; x++)
 						{
 							ReadBlock(BitStream, DCTable, (ACTable)|4, CompID);
 
 							//
-							int32 startx = ((m%m_MCUSizeX)*fx*8+x*8)*sx;
-							int32 starty = ((m/m_MCUSizeX)*fy*8+y*8)*sy;
+							int32_t startx = ((m%m_MCUSizeX)*fx*8+x*8)*sx;
+							int32_t starty = ((m/m_MCUSizeX)*fy*8+y*8)*sy;
 
 							// FIXME!!! prevent memory overwrite here when image isn't a power of 8
 							//if(CompID==0)
-							for(int32 iy = 0; iy < 8; iy++)
-								for(int32 ix = 0; ix < 8; ix++)
+							for(int32_t iy = 0; iy < 8; iy++)
+								for(int32_t ix = 0; ix < 8; ix++)
 								{
-									for(int32 siy = 0; siy < sy; siy++)
-										for(int32 six = 0; six < sx; six++)
+									for(int32_t siy = 0; siy < sy; siy++)
+										for(int32_t six = 0; six < sx; six++)
 										{
 											_rImage.Data()[(starty+iy*sy+siy)*Pitch+(startx+ix*sx+six)*bpp+CompID]
 												= m_aVector[iy*8+ix];
@@ -468,18 +468,18 @@ bool CJPEGFormat::Load(CInputStream &_rStream, CImage &_rImage)
 //
 //
 //
-void CJPEGFormat::ReadBlock(CBitInputStreamHigh &rBitStream, int32 iDCTable, int32 iACTable, int32 iComp)
+void CJPEGFormat::ReadBlock(CBitInputStreamHigh &rBitStream, int32_t iDCTable, int32_t iACTable, int32_t iComp)
 {
-	int32 aRawVector[64]= {0};
+	int32_t aRawVector[64]= {0};
 	fp32 aVector[64] = {0};
 
 	// decode DC
-	int32 Diff = 0;
+	int32_t Diff = 0;
 	bool ReadACs = true;
 	{
-		int32 Header = m_aHuffmanAlphabet[iDCTable].DecodeL(rBitStream);
-		int32 Cat = Header&0xf;
-		int32 Prev0 = Header>>4;
+		int32_t Header = m_aHuffmanAlphabet[iDCTable].DecodeL(rBitStream);
+		int32_t Cat = Header&0xf;
+		int32_t Prev0 = Header>>4;
 		if(!Prev0 && !Cat)
 		{
 			//ReadACs = false;
@@ -487,20 +487,20 @@ void CJPEGFormat::ReadBlock(CBitInputStreamHigh &rBitStream, int32 iDCTable, int
 		}
 		else
 		{
-			int32 Value = rBitStream.Read(Cat); //= HuffmanDecoder.Raw(Cat);
+			int32_t Value = rBitStream.Read(Cat); //= HuffmanDecoder.Raw(Cat);
 			m_aComponentDC[iComp] += GetValue(Cat, Value);
 			aRawVector[0] = m_aComponentDC[iComp];
 		}
 	}
 	
 	// decode ACs
-	int32 Count = 1;
-	int32 ACs = 1;
+	int32_t Count = 1;
+	int32_t ACs = 1;
 	while(ACs < 64)
 	{
-		int32 Header = m_aHuffmanAlphabet[iACTable].DecodeL(rBitStream);
-		int32 Cat = Header&0xf;
-		int32 Prev0 = Header>>4;
+		int32_t Header = m_aHuffmanAlphabet[iACTable].DecodeL(rBitStream);
+		int32_t Cat = Header&0xf;
+		int32_t Prev0 = Header>>4;
 
 		if(Prev0==0 && Cat==0)
 			break;
@@ -522,26 +522,26 @@ void CJPEGFormat::ReadBlock(CBitInputStreamHigh &rBitStream, int32 iDCTable, int
 
 	// apply dequatization and reorder
 	{
-		const int32 *pPattern = g_aZigPattern;
+		const int32_t *pPattern = g_aZigPattern;
 		fp32 *pVector = aVector;
-		int32 *pSrcVector = aRawVector;
+		int32_t *pSrcVector = aRawVector;
 		fp32 *pQuat = m_aQuatTable[m_aComponents[iComp].m_Quat];
-		for(int32 i = 0; i < 64; i++)
+		for(int32_t i = 0; i < 64; i++)
 		{
-			int32 z = *pPattern++;
+			int32_t z = *pPattern++;
 			*pVector++ = pSrcVector[z]*pQuat[z];
 		}
 	}
 
 	// IDCT
 	fp32 *pDCTLUT = (fp32*)g_aDCTLookup;
-	for(int32 y = 0; y < 8; y++)
+	for(int32_t y = 0; y < 8; y++)
 	{
-		for(int32 x = 0; x < 8; x++)
+		for(int32_t x = 0; x < 8; x++)
 		{
 			fp32 *pVector = aVector;
 			fp32 Value = 0;
-			for(int32 u = 8*8; u > 0; u--)
+			for(int32_t u = 8*8; u > 0; u--)
 				Value += *pDCTLUT++ * *pVector++;
 			
 			fp32 f = Value+128;

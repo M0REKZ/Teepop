@@ -70,7 +70,7 @@ bool NFoo::CreateThread(void (*pfn)(void*), void *arg)
 	return true;
 }
 
-void NFoo::Sleep(int32 _Milliseconds)
+void NFoo::Sleep(int32_t _Milliseconds)
 {
 	usleep(_Milliseconds*1000);
 }

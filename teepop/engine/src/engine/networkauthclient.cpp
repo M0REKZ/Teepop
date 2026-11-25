@@ -43,7 +43,7 @@ void CNetworkAuthClient::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 {
 	if(iMsg == NETMSG("clAuthResult"))
 	{
-		int32 Result = rStream.ReadBE<uint8>();
+		int32_t Result = rStream.ReadBE<uint8>();
 		m_ErrorMessage = rStream.Read_p8();
 		m_LoggedOn = Result;
 		if(Result)
@@ -80,11 +80,11 @@ void CNetworkAuthClient::OnCommand(CString &rCmd, CString &rArgs)
 
 		CString username = rArgs.GetStrSep(" ");
 		CString password = rArgs.GetStrSep(" ");
-		int32 level = rArgs.GetStrSep(" ").GetInt();
+		int32_t level = rArgs.GetStrSep(" ").GetInt();
 		CNetMessage Msg(NETMSG("svNewUser"), true);
 		Msg.Write_p8(username);
 		Msg.Write_p8(password);
-		Msg.WriteBE<int32>(level);
+		Msg.WriteBE<int32_t>(level);
 		m_pConnection->SendMessage(Msg);
 	}
 }

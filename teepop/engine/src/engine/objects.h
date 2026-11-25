@@ -30,7 +30,7 @@
 	{
 		TDynamicArray<ObjectIndex> m_lFreeIndecies;
 		TDynamicArray<CObject*> m_lObjects;
-		int32 m_NumObjects;
+		int32_t m_NumObjects;
 
 		ObjectIndex NewObject()
 		{

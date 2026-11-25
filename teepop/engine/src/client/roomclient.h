@@ -15,12 +15,12 @@ public:
 		EState_PasswordProtected=0x80
 	};
 
-	int32 m_ID;
-	int32 m_State;
-	int32 m_MaxPlayers;
+	int32_t m_ID;
+	int32_t m_State;
+	int32_t m_MaxPlayers;
 	bool m_PasswordProtected;
 	CString m_Name;
-	TDynamicArray<int32> m_lPlayers;
+	TDynamicArray<int32_t> m_lPlayers;
 
 	CString GetString()
 	{
@@ -55,12 +55,12 @@ public:
 		EEvent_RoomsUpdated
 	};
 
-	int32 m_iCurrentRoom;
-	TMap<int32, CRoom> m_lRooms;
+	int32_t m_iCurrentRoom;
+	TMap<int32_t, CRoom> m_lRooms;
 
 	// room commands
-	void JoinRoom(int32 RoomID);
+	void JoinRoom(int32_t RoomID);
 	void JoinRoom(const int8 *pName);
 	void LeaveRoom();
-	void CreateRoom(const int8 *pName, const int8 *pPassword, int32 Max);
+	void CreateRoom(const int8 *pName, const int8 *pPassword, int32_t Max);
 };

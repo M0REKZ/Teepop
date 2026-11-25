@@ -162,15 +162,15 @@ namespace NFoo
 		//
 		//
 		//
-		TVector3 Round()							const	{ return Convert<int32>().Convert<T>(); }
+		TVector3 Round()							const	{ return Convert<int32_t>().template Convert<T>(); }
 	
 		//
 		// Operators
 		//
-		T& operator [] (int32 _Index)						{ return *(&x + _Index); }
+		T& operator [] (int32_t _Index)						{ return *(&x + _Index); }
 
-		int32 operator == (const TVector3 &t)		const	{ return ((x == t.x) && (y == t.y) && (z == t.z)); }
-		int32 operator != (const TVector3 &t)		const	{ return ((x != t.x) || (y != t.y) || (z != t.z)); }
+		int32_t operator == (const TVector3 &t)		const	{ return ((x == t.x) && (y == t.y) && (z == t.z)); }
+		int32_t operator != (const TVector3 &t)		const	{ return ((x != t.x) || (y != t.y) || (z != t.z)); }
 	
 		void operator = (const TVector3 &t)					{ Set(t); }
 	
@@ -200,7 +200,7 @@ namespace NFoo
 	// Default Vector Type
 	//
 	//#define CVector2D TVector2<fp4>
-	//#define CVector2Di TVector2<int32>
+	//#define CVector2Di TVector2<int32_t>
 
 } // namespaces
 

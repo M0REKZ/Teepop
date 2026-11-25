@@ -51,7 +51,7 @@ template<class T> inline void SafeArrayDelete(T &_Ptr)
 //# Parameters:
 //#		Val, Value.
 //# Declaration:
-void Assert_(const int8 *pFile, int32 Line, bool _bVal);
+void Assert_(const int8 *pFile, int32_t Line, bool _bVal);
 #define Assert(x) Assert_(__FILE__,__LINE__,x)
 
 //# Function: Min

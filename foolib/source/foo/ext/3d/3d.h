@@ -156,11 +156,11 @@ namespace NFoo { namespace N3D {
 
 		struct SParameter
 		{
-			int32 m_Value;
-			int32 m_Type;
-			uint32 m_DeviceParams[4];
-			void Set(int32 _Type, int32 _Value=0, uint32 _DeviceParam0 = 0, 
-				uint32 _DeviceParam1 = 0, uint32 _DeviceParam2 = 0, uint32 _DeviceParam3 = 0) 
+			int32_t m_Value;
+			int32_t m_Type;
+			uint32_t m_DeviceParams[4];
+			void Set(int32_t _Type, int32_t _Value=0, uint32_t _DeviceParam0 = 0, 
+				uint32_t _DeviceParam1 = 0, uint32_t _DeviceParam2 = 0, uint32_t _DeviceParam3 = 0) 
 			{ 
 				m_Type = _Type; 
 				m_Value = _Value; 
@@ -175,15 +175,15 @@ namespace NFoo { namespace N3D {
 		SParameter m_aParams[ENumParams];
 
 		CMode();
-		CMode(int32 _Width, int32 _Height, bool _Fullscreen, int32 _Flags);
+		CMode(int32_t _Width, int32_t _Height, bool _Fullscreen, int32_t _Flags);
 
 		void Clear(); // Sets all to unspecified
-		void Enable(int32 _Param) { m_aParams[_Param].Set(EType_Enable); }
-		void Specify(int32 _Param, int32 _Value=0) { m_aParams[_Param].Set(EType_Specified, _Value); }
-		void Set(int32 _Param, int32 _Type, int32 _Value=0, uint32 _DeviceParam0 = 0, 
-			uint32 _DeviceParam1 = 0, uint32 _DeviceParam2 = 0, uint32 _DeviceParam3 = 0) 
+		void Enable(int32_t _Param) { m_aParams[_Param].Set(EType_Enable); }
+		void Specify(int32_t _Param, int32_t _Value=0) { m_aParams[_Param].Set(EType_Specified, _Value); }
+		void Set(int32_t _Param, int32_t _Type, int32_t _Value=0, uint32_t _DeviceParam0 = 0, 
+			uint32_t _DeviceParam1 = 0, uint32_t _DeviceParam2 = 0, uint32_t _DeviceParam3 = 0) 
 		{ m_aParams[_Param].Set(_Type, _Value, _DeviceParam0, _DeviceParam1, _DeviceParam2, _DeviceParam3); }
-		int32 Get(int32 _Param) { return m_aParams[_Param].m_Value; }
+		int32_t Get(int32_t _Param) { return m_aParams[_Param].m_Value; }
 
 		bool Compare(CMode _Mode) const; // returns true if they are the same
 		bool Acceptable(CMode _Mode) const; // compares this mode to the other. if mode fits this one this will return true
@@ -216,19 +216,19 @@ namespace NFoo { namespace N3D {
 		TVector4<fp32> m_PrimaryColor;
 
 		// streams
-		int32 m_iVertexStream;
-		int32 m_iIndexStream;
-		int32 m_iNormalStream;
-		int32 m_iColorStream;
-		int32 m_aiTextureStreamVB[EMaxTextureUnits];
-		int32 m_aiTextureStreamVBIndex[EMaxTextureUnits];
+		int32_t m_iVertexStream;
+		int32_t m_iIndexStream;
+		int32_t m_iNormalStream;
+		int32_t m_iColorStream;
+		int32_t m_aiTextureStreamVB[EMaxTextureUnits];
+		int32_t m_aiTextureStreamVBIndex[EMaxTextureUnits];
 
 		// shaders
-		int32 m_iVertexShader;
-		int32 m_iPixelShader;
+		int32_t m_iVertexShader;
+		int32_t m_iPixelShader;
 		
 		// textures
-		int32 m_iaTexture[EMaxTextureUnits];
+		int32_t m_iaTexture[EMaxTextureUnits];
 
 		// matrices
 		TMatrix4<fp32> m_ModelMatrix;
@@ -236,7 +236,7 @@ namespace NFoo { namespace N3D {
 
 	public:
 		// flags
-		virtual void Flag_Set(int32 _Flag, bool _On)		{ m_aFlags[_Flag] = _On; }
+		virtual void Flag_Set(int32_t _Flag, bool _On)		{ m_aFlags[_Flag] = _On; }
 		
 		// modes
 		virtual void Mode_BlendFunc(intr _Src, intr _Dst)	{ m_BlendSrc = _Src; m_BlendDst = _Dst; }
@@ -250,37 +250,37 @@ namespace NFoo { namespace N3D {
 		
 		// streams/pointers
 		void Stream_Clear();
-		void Stream_Set(int32 _iVB, int32 _What=EVB_All);
-		virtual void Stream_Vertex(int32 _iVB)				{ m_iVertexStream = _iVB; }
-		virtual void Stream_Index(int32 _iIB)				{ m_iIndexStream = _iIB; }
-		virtual void Stream_Normal(int32 _iVB)				{ m_iNormalStream = _iVB; }
-		virtual void Stream_Color(int32 _iVB)				{ m_iColorStream = _iVB; };
-		virtual void Stream_Texture(int32 _iUnit, int32 _iVB, int32 _Index)	{ m_aiTextureStreamVB[_iUnit] = _iVB;
+		void Stream_Set(int32_t _iVB, int32_t _What=EVB_All);
+		virtual void Stream_Vertex(int32_t _iVB)				{ m_iVertexStream = _iVB; }
+		virtual void Stream_Index(int32_t _iIB)				{ m_iIndexStream = _iIB; }
+		virtual void Stream_Normal(int32_t _iVB)				{ m_iNormalStream = _iVB; }
+		virtual void Stream_Color(int32_t _iVB)				{ m_iColorStream = _iVB; };
+		virtual void Stream_Texture(int32_t _iUnit, int32_t _iVB, int32_t _Index)	{ m_aiTextureStreamVB[_iUnit] = _iVB;
 																				m_aiTextureStreamVBIndex[_iUnit] = _Index; }
 
 		// shaders
-		virtual void Shader_Vertex(int32 _iShader)	{ m_iVertexShader = _iShader; }
-		virtual void Shader_Pixel(int32 _iShader)	{ m_iPixelShader = _iShader; }
+		virtual void Shader_Vertex(int32_t _iShader)	{ m_iVertexShader = _iShader; }
+		virtual void Shader_Pixel(int32_t _iShader)	{ m_iPixelShader = _iShader; }
 		
 		// Maybe these should be moved to the device? Or keep system copy of variables and set with the rest of the state?
 		virtual void Shader_GlobalParam() {}; // ?
 		// _Num == Number of boolean values in the array of constants
-		virtual void Shader_VertexParamBool(int32 _iStartReg, const bool* _pBools, int32 _Num) {}; // ?
+		virtual void Shader_VertexParamBool(int32_t _iStartReg, const bool* _pBools, int32_t _Num) {}; // ?
 		// _Num == Number of four float vectors in the array of constants
-		virtual void Shader_VertexParamFloat(int32 _iStartReg, const TVector4<fp32>* _pFloats, int32 _Num){}; //?
+		virtual void Shader_VertexParamFloat(int32_t _iStartReg, const TVector4<fp32>* _pFloats, int32_t _Num){}; //?
 		// _Num == Number of four integer vectors in the array of constants
-		virtual void Shader_VertexParamInt(int32 _iStartReg, const TVector4<int32>* _pInts, int32 _Num) {}; // ?
+		virtual void Shader_VertexParamInt(int32_t _iStartReg, const TVector4<int32_t>* _pInts, int32_t _Num) {}; // ?
 
 		// _Num == Number of boolean values in the array of constants
-		virtual void Shader_PixelParamBool(int32 _iStartReg, const bool* _pBools, int32 _Num) {}; // ?
+		virtual void Shader_PixelParamBool(int32_t _iStartReg, const bool* _pBools, int32_t _Num) {}; // ?
 		// _Num == Number of four float vectors in the array of constants
-		virtual void Shader_PixelParamFloat(int32 _iStartReg, const TVector4<fp32>* _pFloats, int32 _Num){}; //?
+		virtual void Shader_PixelParamFloat(int32_t _iStartReg, const TVector4<fp32>* _pFloats, int32_t _Num){}; //?
 		// _Num == Number of four integer vectors in the array of constants
-		virtual void Shader_PixelParamInt(int32 _iStartReg, const TVector4<int32>* _pInts, int32 _Num) {}; // ?
+		virtual void Shader_PixelParamInt(int32_t _iStartReg, const TVector4<int32_t>* _pInts, int32_t _Num) {}; // ?
 		virtual void Shader_PixelParam() {}; // ?
 
 		// textures
-		virtual void Texture_Set(intr _iUnit, int32 _iTexture) { m_iaTexture[_iUnit] = _iTexture; }; // -1 disable
+		virtual void Texture_Set(intr _iUnit, int32_t _iTexture) { m_iaTexture[_iUnit] = _iTexture; }; // -1 disable
 		
 		// matrices
 		virtual void Matrix_Model(TMatrix4<fp32> _Matrix)		{ m_ModelMatrix = _Matrix; }
@@ -297,9 +297,9 @@ namespace NFoo { namespace N3D {
 	class CTextureInfo
 	{
 	public:
-		int32 m_iIndex;
-		TVector2<int32> m_Size;
-		int32 m_Format;
+		int32_t m_iIndex;
+		TVector2<int32_t> m_Size;
+		int32_t m_Format;
 	};
 
 	//
@@ -310,14 +310,14 @@ namespace NFoo { namespace N3D {
 	{
 	public:
 		virtual ~CVertexBuffer() {};
-		int32 m_Count;
+		int32_t m_Count;
 
-		int32 What();
+		int32_t What();
 
 		union
 		{
 			TVector3<int16> *m_pVertexint16;
-			TVector3<int32> *m_pVertexint32;
+			TVector3<int32_t> *m_pVertexint32;
 			TVector3<fp32> *m_pVertexfp32;
 			TVector3<fp64> *m_pVertexfp64;
 		};
@@ -326,7 +326,7 @@ namespace NFoo { namespace N3D {
 		{
 			TVector3<int8> *m_pNormalint8;
 			TVector3<int16> *m_pNormalint16;
-			TVector3<int32> *m_pNormalint32;
+			TVector3<int32_t> *m_pNormalint32;
 			TVector3<fp32> *m_pNormalfp32;
 			TVector3<fp64> *m_pNormalfp64;
 		};
@@ -335,7 +335,7 @@ namespace NFoo { namespace N3D {
 		{
 			TVector4<int8> *m_pColorint8;
 			TVector4<int16> *m_pColorint16;
-			TVector4<int32> *m_pColorint32;
+			TVector4<int32_t> *m_pColorint32;
 			TVector4<fp32> *m_pColorfp32;
 			TVector4<fp64> *m_pColorfp64;
 		};
@@ -344,15 +344,15 @@ namespace NFoo { namespace N3D {
 		{
 			TVector2<int8> *m_pTextureint8[EMaxTextureUnits];
 			TVector2<int16> *m_pTextureint16[EMaxTextureUnits];
-			TVector2<int32> *m_pTextureint32[EMaxTextureUnits];
+			TVector2<int32_t> *m_pTextureint32[EMaxTextureUnits];
 			TVector2<fp32> *m_pTexturefp32[EMaxTextureUnits];
 			TVector2<fp64> *m_pTexturefp64[EMaxTextureUnits];
 		};
 
 
-		void *GetPointer(int32 i);
-		int32 GetPointerElementSize(int32 i);
-		int32 GetNumPointers() { return 11; }
+		void *GetPointer(int32_t i);
+		int32_t GetPointerElementSize(int32_t i);
+		int32_t GetNumPointers() { return 11; }
 	};
 
 	//
@@ -363,12 +363,12 @@ namespace NFoo { namespace N3D {
 	{
 	public:
 		virtual ~CIndexBuffer() {};
-		int32 m_Count;
+		int32_t m_Count;
 
 		union
 		{
 			uint16 *m_pIndex16;
-			uint32 *m_pIndex32;
+			uint32_t *m_pIndex32;
 		};
 	};
 
@@ -380,18 +380,18 @@ namespace NFoo { namespace N3D {
 		friend class CDevice;
 		struct SID
 		{
-			int32 m_Type;
+			int32_t m_Type;
 			void *m_pData;
 		};
 
 		TDynamicArray<SID> m_lIDNumbers;
-		TDynamicArray<int32> m_lFreeNumbers; // index in m_lIDNumbers
+		TDynamicArray<int32_t> m_lFreeNumbers; // index in m_lIDNumbers
 	public:
-		int32 GetFree(int32 _Type);
-		void Remove(int32 _ID);
+		int32_t GetFree(int32_t _Type);
+		void Remove(int32_t _ID);
 
-		void SetData(int32 _Index, void *_pData) { m_lIDNumbers[_Index].m_pData = _pData; }
-		template<class T> T GetObject(int32 _Index, int32 _Type)
+		void SetData(int32_t _Index, void *_pData) { m_lIDNumbers[_Index].m_pData = _pData; }
+		template<class T> T GetObject(int32_t _Index, int32_t _Type)
 		{
 			if(_Index < 0 || _Index >= m_lIDNumbers.Len())
 				return NULL;
@@ -401,8 +401,8 @@ namespace NFoo { namespace N3D {
 			return (T)m_lIDNumbers[_Index].m_pData;
 		}
 
-		int32 Len() { return m_lIDNumbers.Len(); }
-		void* GetSIDData(int32 _Index) { return (m_lIDNumbers.Len() > _Index ? &m_lIDNumbers[_Index].m_pData : NULL); }
+		int32_t Len() { return m_lIDNumbers.Len(); }
+		void* GetSIDData(int32_t _Index) { return (m_lIDNumbers.Len() > _Index ? &m_lIDNumbers[_Index].m_pData : NULL); }
 	};
 
 	//
@@ -411,7 +411,7 @@ namespace NFoo { namespace N3D {
 	class CDevice : public CState, public NCore::CSubCore 
 	{
 	protected:
-		uint32 m_CapabilityFlags;
+		uint32_t m_CapabilityFlags;
 
 		// shader versions
 		TDynamicArray<CString> m_lShaderVersion;
@@ -444,8 +444,8 @@ namespace NFoo { namespace N3D {
 
 		// before init operations
 		bool GetBestMode(CMode _Mode, CMode &_rBestMode);	// returns the displaymode that is the best, returns true if found one
-		int32 CheckMode(CMode _Mode);						// returns how many diffrent modes that matches
-		virtual int32 EnumDisplayModes(TDynamicArray<CMode> &_rModes, CMode _Mode) pure;
+		int32_t CheckMode(CMode _Mode);						// returns how many diffrent modes that matches
+		virtual int32_t EnumDisplayModes(TDynamicArray<CMode> &_rModes, CMode _Mode) pure;
 
 		// main operation
 		virtual bool Init(CMode _Mode) pure;	// 
@@ -454,35 +454,35 @@ namespace NFoo { namespace N3D {
 		virtual bool Shutdown() pure;			//
 
 		//
-		uint32 GetCapabilities() { return m_CapabilityFlags; };
-		virtual uint32 GetVertexShaderCapabilities() { return 0; };
-		virtual uint32 GetPixelShaderCapabilities() { return 0; };
+		uint32_t GetCapabilities() { return m_CapabilityFlags; };
+		virtual uint32_t GetVertexShaderCapabilities() { return 0; };
+		virtual uint32_t GetPixelShaderCapabilities() { return 0; };
 		virtual void GetShaderBaseDir(CString& _DirName) { return; };
 
 		// texture handling
-		virtual int32 CreateTexture(CImage::CFormat Format, int32 Flags=0, void *pData=NULL) pure;
-		virtual int32 CreateTexture(CImage &_Image, int32 Flags=0) pure;
-		virtual bool DestroyTexture(int32 _iTexture) pure;
-		virtual CTextureInfo GetTextureInfo(int32 _iTexture) pure;
+		virtual int32_t CreateTexture(CImage::CFormat Format, int32_t Flags=0, void *pData=NULL) pure;
+		virtual int32_t CreateTexture(CImage &_Image, int32_t Flags=0) pure;
+		virtual bool DestroyTexture(int32_t _iTexture) pure;
+		virtual CTextureInfo GetTextureInfo(int32_t _iTexture) pure;
 
 		// Create/destroy vertex buffer
-		virtual int32 CreateVertexBuffer(int32 _Count, int32 _What, int32 _Flags) pure;
-		virtual bool DestroyVertexBuffer(int32 _iBuffer) pure; 
+		virtual int32_t CreateVertexBuffer(int32_t _Count, int32_t _What, int32_t _Flags) pure;
+		virtual bool DestroyVertexBuffer(int32_t _iBuffer) pure; 
 		// Get vertexbuffer from id, Return control of vertexbuffer to device
-		virtual CVertexBuffer* LockVertexBuffer(int32 _iBuffer, int32 _What = EVB_All /*, int32 _Start = 0, int32 _Count = 0*/) pure;
-		virtual void UnlockVertexBuffer(int32 _iBuffer, int32 _What = EVB_All) pure;
+		virtual CVertexBuffer* LockVertexBuffer(int32_t _iBuffer, int32_t _What = EVB_All /*, int32_t _Start = 0, int32_t _Count = 0*/) pure;
+		virtual void UnlockVertexBuffer(int32_t _iBuffer, int32_t _What = EVB_All) pure;
 
-		virtual int32 CreateIndexBuffer(int32 _Count, int32 _Flags) pure;
-		virtual bool DestroyIndexBuffer(int32 _iBuffer) pure; 
+		virtual int32_t CreateIndexBuffer(int32_t _Count, int32_t _Flags) pure;
+		virtual bool DestroyIndexBuffer(int32_t _iBuffer) pure; 
 		// Get indexbuffer from id, Return control of indexbuffer to device
-		virtual CIndexBuffer* LockIndexBuffer(int32 _iBuffer) pure;
-		virtual void UnlockIndexBuffer(int32 _iBuffer) pure;
+		virtual CIndexBuffer* LockIndexBuffer(int32_t _iBuffer) pure;
+		virtual void UnlockIndexBuffer(int32_t _iBuffer) pure;
 
 		// shaders
-		virtual int32 CreateVertexShader(const int8 *_pString) pure;
-		virtual int32 CreatePixelShader(const int8 *_pString) pure;
-		virtual bool DestroyVertexShader(int32 _iShader) pure;
-		virtual bool DestroyPixelShader(int32 _iShader) pure;
+		virtual int32_t CreateVertexShader(const int8 *_pString) pure;
+		virtual int32_t CreatePixelShader(const int8 *_pString) pure;
+		virtual bool DestroyVertexShader(int32_t _iShader) pure;
+		virtual bool DestroyPixelShader(int32_t _iShader) pure;
 
 		// clearing
 		void Clear_Color(fp32 _r=0, fp32 _g=0, fp32 _b=0, fp32 _a=0) { m_ClearColor = TVector4<fp32>(_r,_g,_b,_a); }
@@ -491,35 +491,35 @@ namespace NFoo { namespace N3D {
 		virtual void Clear(intr _What) pure;
 		
 		// draw operation
-		virtual void Draw(int32 _Mode, int32 _Start, int32 _PrimCount) pure;
-		virtual void DrawIndexed(int32 _Mode, int32 _Start, int32 _PrimCount) pure;
-		//virtual void Draw(CIndexBuffer *_pBuffer, int32 _Mode, int32 _Count, int32 _Offset=0) pure;
+		virtual void Draw(int32_t _Mode, int32_t _Start, int32_t _PrimCount) pure;
+		virtual void DrawIndexed(int32_t _Mode, int32_t _Start, int32_t _PrimCount) pure;
+		//virtual void Draw(CIndexBuffer *_pBuffer, int32_t _Mode, int32_t _Count, int32_t _Offset=0) pure;
 
 		// grab
-		virtual bool Grab(int32 _iTexture, int32 _What) pure;
-		virtual bool Grab(NFoo::CImage &_rImage, int32 _What=EBuffer_Color) pure;
+		virtual bool Grab(int32_t _iTexture, int32_t _What) pure;
+		virtual bool Grab(NFoo::CImage &_rImage, int32_t _What=EBuffer_Color) pure;
 		
 		// gamma
 		virtual bool SetGammaRamp(uint16 *_pRamp) { return false; }
 
 		//
-		virtual void SetViewport(int32 _x, int32 _y, int32 _w, int32 _h) pure;
-		virtual void SetScissors(int32 _x, int32 _y, int32 _w, int32 _h) pure;
+		virtual void SetViewport(int32_t _x, int32_t _y, int32_t _w, int32_t _h) pure;
+		virtual void SetScissors(int32_t _x, int32_t _y, int32_t _w, int32_t _h) pure;
 
 		// 
 		//
 		CString LoadShader(CInputStream &_rStream);
 
 		// creates a new vertexbuffer and copies the content to it
-		int32 CreateVertexBuffer(CVertexBuffer *_pVB, int32 _Count=-1, int32 _Mask=EVB_All);
-		int32 CreateIndexBuffer(CIndexBuffer *_pIB, int32 _Count=-1);
+		int32_t CreateVertexBuffer(CVertexBuffer *_pVB, int32_t _Count=-1, int32_t _Mask=EVB_All);
+		int32_t CreateIndexBuffer(CIndexBuffer *_pIB, int32_t _Count=-1);
 
 		bool m_Active;
 	};
 
 	// creates software buffers
-	CVertexBuffer *CreateVertexBufferSW(int32 _Count, int32 _What, int32 _Flags);
-	CIndexBuffer *CreateIndexBufferSW(int32 _Count, int32 _Flags);
+	CVertexBuffer *CreateVertexBufferSW(int32_t _Count, int32_t _What, int32_t _Flags);
+	CIndexBuffer *CreateIndexBufferSW(int32_t _Count, int32_t _Flags);
 
 	// Tools
 	namespace NMatrix

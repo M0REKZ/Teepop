@@ -57,7 +57,7 @@ void CNetworkConnection::DetachRecviver(CNetworkMsgRecviver *pRecviver)
 {
 	Assert(pRecviver);
 	// remove all messages
-	for(int32 i = 0; i < m_mMessageMap.Len(); i++)
+	for(int32_t i = 0; i < m_mMessageMap.Len(); i++)
 	{
 		if(m_mMessageMap.GetValue(i) == pRecviver)
 		{
@@ -106,7 +106,7 @@ bool CNetworkConnection::IsActive()
 //
 //
 //
-void CNetworkConnection::DispatchNetMessage(int32 iMsg, CInputStream &rStream)
+void CNetworkConnection::DispatchNetMessage(int32_t iMsg, CInputStream &rStream)
 {
 	
 }

@@ -141,16 +141,16 @@ namespace NFoo
 		TVector4<TNEWTYPE> Convert()				const	{ return TVector4<TNEWTYPE>((TNEWTYPE)x, (TNEWTYPE)y, (TNEWTYPE)z, (TNEWTYPE)w); }
 
 		//
-		TVector4 Round()							const	{ return Convert<int32>().Convert<T>(); }
+		TVector4 Round()							const	{ return Convert<int32_t>().template Convert<T>(); }
 		
 		//
 		// Operators
 		//
-		T& operator [] (int32 _Index)						{ return *(&x + _Index); }
-		const T& operator [] (int32 _Index)	const			{ return *(&x + _Index); }
+		T& operator [] (int32_t _Index)						{ return *(&x + _Index); }
+		const T& operator [] (int32_t _Index)	const			{ return *(&x + _Index); }
 
-		int32 operator == (const TVector4 &t)		const	{ return ((x == t.x) && (y == t.y) && (z == t.z) && (w == t.w)); }
-		int32 operator != (const TVector4 &t)		const	{ return ((x != t.x) || (y != t.y) || (z != t.z) && (w != t.w)); }
+		int32_t operator == (const TVector4 &t)		const	{ return ((x == t.x) && (y == t.y) && (z == t.z) && (w == t.w)); }
+		int32_t operator != (const TVector4 &t)		const	{ return ((x != t.x) || (y != t.y) || (z != t.z) && (w != t.w)); }
 
 		void operator = (const TVector4 &t)					{ Set(t); }
 	

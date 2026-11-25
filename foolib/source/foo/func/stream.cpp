@@ -3,34 +3,34 @@
 
 using namespace NFoo;
 
-int32 COutputStream::Write_p8(CString Str)
+int32_t COutputStream::Write_p8(CString Str)
 {
-	int32 len = Clamp(Str.Len(), 0, 0xFF);
+	int32_t len = Clamp(Str.Len(), 0, 0xFF);
 	WriteBE<uint8>(len);
 	Write(Str.GetData(), len);
 	return Str.Len();
 }
 
-int32 COutputStream::Write_p16(CString Str)
+int32_t COutputStream::Write_p16(CString Str)
 {
-	int32 len = Clamp(Str.Len(), 0, 0xFFFF);
+	int32_t len = Clamp(Str.Len(), 0, 0xFFFF);
 	WriteBE<uint16>(len);
 	Write(Str.GetData(), len);
 	return Str.Len();
 }
 
 
-int32 CInputStream::Transfer(COutputStream &rOutput, int32 Count, int32 BufferSize)
+int32_t CInputStream::Transfer(COutputStream &rOutput, int32_t Count, int32_t BufferSize)
 {
-	int32 ReadCount = 0;
+	int32_t ReadCount = 0;
 	uint8 aBuffer[16*1024];
 	BufferSize = 16*1024;
 	if(Count > 0)
 	{
 		while(Count)
 		{
-			int32 l = Count>BufferSize?BufferSize:Count;
-			int32 ThisRead = Read(aBuffer, l);
+			int32_t l = Count>BufferSize?BufferSize:Count;
+			int32_t ThisRead = Read(aBuffer, l);
 			ReadCount += ThisRead;
 			rOutput.Write(aBuffer, ThisRead);
 			if(ThisRead < l)
@@ -42,7 +42,7 @@ int32 CInputStream::Transfer(COutputStream &rOutput, int32 Count, int32 BufferSi
 	{
 		while(!EndOfStream())
 		{
-			int32 ThisRead = Read(aBuffer, BufferSize);
+			int32_t ThisRead = Read(aBuffer, BufferSize);
 			ReadCount += ThisRead;
 			rOutput.Write(aBuffer, ThisRead);
 			if(ThisRead < BufferSize)
@@ -91,7 +91,7 @@ int8 *CInputStream::ReadLine(int8 *pDst)
 // Read pascal string (uint16)
 CString CInputStream::Read_p8()
 {
-	int32 StrLen = ReadBE<uint8>();
+	int32_t StrLen = ReadBE<uint8>();
 	CString Str;
 	Str.SetSize(StrLen+1);
 	Str.GetData()[StrLen] = 0;
@@ -101,7 +101,7 @@ CString CInputStream::Read_p8()
 
 CString CInputStream::Read_p16()
 {
-	int32 StrLen = ReadBE<uint16>();
+	int32_t StrLen = ReadBE<uint16>();
 	CString Str;
 	Str.SetSize(StrLen+1);
 	Str.GetData()[StrLen] = 0;
@@ -115,7 +115,7 @@ void CBlockReader::FillBuffer()
 	m_BufferLeft = m_rSource.Read(m_pBuffer, m_BufferSize);
 }
 
-CBlockReader::CBlockReader(CInputStream &rSource, int32 BufferSize)
+CBlockReader::CBlockReader(CInputStream &rSource, int32_t BufferSize)
 : CChainedInputStream(rSource), m_BufferSize(BufferSize)
 {
 	m_pBuffer = new uint8[m_BufferSize];
@@ -129,10 +129,10 @@ CBlockReader::~CBlockReader()
 }
 
 
-int32 CBlockReader::Read(void *pOutput, int32 Size)
+int32_t CBlockReader::Read(void *pOutput, int32_t Size)
 {
 	uint8 *pOut = (uint8 *)pOutput;
-	int32 Left = Size;
+	int32_t Left = Size;
 	while(Left)
 	{
 		if(!m_BufferLeft)
@@ -142,7 +142,7 @@ int32 CBlockReader::Read(void *pOutput, int32 Size)
 				return Size-Left;
 		}
 
-		int32 BlockSize = Left < m_BufferLeft ? Left : m_BufferLeft;
+		int32_t BlockSize = Left < m_BufferLeft ? Left : m_BufferLeft;
 		if(pOut)
 		{
 			MemoryCopy(pOut, m_pBuffer+m_Pos, BlockSize);

@@ -6,6 +6,7 @@
 //# Req_Header: base/base.h
 //# Req_Library: foobase.lib
 
+#include "base.h"
 
 #ifdef FOO_CPU_BYTEORDER_BIGENDIAN
 	inline bool IsCPUBigEndian() { return true; }
@@ -37,7 +38,7 @@ template<class T> inline void ByteSwap32ref(T &x)
 
 template<class T> inline T ByteSwap32(const T y)
 {
-	uint32 x = *((uint32*)&y);
+	uint32_t x = *((uint32_t*)&y);
 	ByteSwap32ref(x);
 	return *((T*)&x);
 }
@@ -80,7 +81,7 @@ void ByteSwapref(T &Value)
 /*
 inline fp4 Swapfp4(const fp4 y)
 {
-	uint32 x = *((uint32*)&y);
+	uint32_t x = *((uint32_t*)&y);
 	x = ((x>>24)|((x&0xFF0000)>>8)|((x&0xFF00)<<8)|((x&0xFF)<<24));
 	return *((fp4*)&x);
 }

@@ -45,9 +45,9 @@ namespace NFoo { namespace N3D {
 		{
 		public:
 			uint8 m_aTranslationTable[256];
-			int32 m_iTexture;
-			int32 m_XCells;
-			int32 m_YCells;
+			int32_t m_iTexture;
+			int32_t m_XCells;
+			int32_t m_YCells;
 			fp32 m_Spacing;
 			fp32 m_Height;
 			fp32 m_Width;
@@ -66,22 +66,22 @@ namespace NFoo { namespace N3D {
 	private:
 		//TDynamicArray<C2DClip> m_lClipStack;
 		NFoo::N3D::CDevice *m_pDevice;
-		int32 m_iVertexBuffer;
+		int32_t m_iVertexBuffer;
 		NFoo::N3D::CVertexBuffer *m_pVertexBuffer;
 		CFont *m_pFont;
-		int32 m_VertexCount;
-		//int32 m_AreaX;
-		//int32 m_AreaY;
+		int32_t m_VertexCount;
+		//int32_t m_AreaX;
+		//int32_t m_AreaY;
 		
 		bool m_aWriteMask[4];
 
 		fp32 m_aColors[4][4];
 		fp32 m_aTexCoords[4][2];
 		fp32 m_QuadRotation; // in rad
-		int32 m_iTexture;
+		int32_t m_iTexture;
 		
-		int32 m_Mode;
-		int32 m_Blend;
+		int32_t m_Mode;
+		int32_t m_Blend;
 
 		enum
 		{
@@ -93,7 +93,7 @@ namespace NFoo { namespace N3D {
 			EMode_Triangles
 		};
 		
-		bool LockVB(int32 _iMode);
+		bool LockVB(int32_t _iMode);
 		void UnlockVB();
 		void SetState();
 
@@ -116,7 +116,7 @@ namespace NFoo { namespace N3D {
 			ETextDraw_TL = 1 << 0
 		};
 
-		int32 m_ScreenWidth, m_ScreenHeight;
+		int32_t m_ScreenWidth, m_ScreenHeight;
 		fp32 m_NudgeX;
 		fp32 m_NudgeY;
 
@@ -127,11 +127,11 @@ namespace NFoo { namespace N3D {
 		// Tex = -1
 		
 		// global
-		bool Init(NFoo::N3D::CDevice *_pDevice, int32 _BufferSize=1024*8);
+		bool Init(NFoo::N3D::CDevice *_pDevice, int32_t _BufferSize=1024*8);
 		void Shutdown();
 		void SetDefaults();
 
-		void SetScreenSize(int32 _AreaX, int32 _AreaY);
+		void SetScreenSize(int32_t _AreaX, int32_t _AreaY);
 
 		/*
 		void PushClip(C2DClip _Clip);
@@ -142,15 +142,15 @@ namespace NFoo { namespace N3D {
 		void SetGlobalTranslate(fp32 x, fp32 y);
 		
 		// color
-		void SetColor(int32 _Index, fp32 _r, fp32 _g, fp32 _b, fp32 _a);
+		void SetColor(int32_t _Index, fp32 _r, fp32 _g, fp32 _b, fp32 _a);
 		void SetColor(fp32 _r, fp32 _g, fp32 _b, fp32 _a);
 		void setColor(TVector4<fp32> color); //[0] = r, [1] = g, [2] = b, [3] = a
-		void SetBlend(int32 _iBlend);
+		void SetBlend(int32_t _iBlend);
 		void SetWriteMask(bool r, bool g, bool b, bool a);
 
 		// texture
-		void SetTexture(int32 _iTex);
-		void SetTexCoord(int32 _Index, fp32 _u, fp32 _v);
+		void SetTexture(int32_t _iTex);
+		void SetTexCoord(int32_t _Index, fp32 _u, fp32 _v);
 		void SetTexCoord(fp32 _u0, fp32 _v0, fp32 _u1, fp32 _v1);
 		
 		// Lines
@@ -186,7 +186,7 @@ namespace NFoo { namespace N3D {
 		// Text
 		//
 		void Text_Begin(CFont *_pFont);
-		void Text_Draw(fp32 _x, fp32 _y, int32 _Flags, const int8 *_pFormat, ...);
+		void Text_Draw(fp32 _x, fp32 _y, int32_t _Flags, const int8 *_pFormat, ...);
 		void Text_End();
 	};
 } }

@@ -4,7 +4,7 @@
 
 using namespace NFoo;
 
-CMessage::CMessage(int32 what, CMessageQueue *pTarget)
+CMessage::CMessage(int32_t what, CMessageQueue *pTarget)
 {
 	m_OrgMsg = what;
 	m_What = what;
@@ -20,11 +20,11 @@ CMessage::CMessage(const CMessage &rMessage)
 	m_OrgMsg = rMessage.m_OrgMsg;
 }
 
-void CMessage::SetInt(const int8 *_pName, int32 _Value) { m_lIntValues[StringGetHash(_pName)] = _Value; }
+void CMessage::SetInt(const int8 *_pName, int32_t _Value) { m_lIntValues[StringGetHash(_pName)] = _Value; }
 void CMessage::SetFloat(const int8 *_pName, fp32 _Value) { m_lFloatValues[StringGetHash(_pName)] = _Value; }
 void CMessage::SetString(const int8 *_pName, const int8 *_pValue) { m_lStringValues[StringGetHash(_pName)] = _pValue; }
 
-int32 CMessage::GetInt(const int8 *_pName, int32 _Default) { return m_lIntValues[StringGetHash(_pName)]; }
+int32_t CMessage::GetInt(const int8 *_pName, int32_t _Default) { return m_lIntValues[StringGetHash(_pName)]; }
 fp32 CMessage::GetFloat(const int8 *_pName, fp32 _Default) { return m_lFloatValues[StringGetHash(_pName)]; }
 CString CMessage::GetString(const int8 *_pName, const int8 *_pDefault) { return m_lStringValues[StringGetHash(_pName)]; }
 
@@ -60,9 +60,9 @@ void CMessageQueue::DispatchMessage()
 //
 //
 //
-void CMessageSender::Signal(int32 iMsg)
+void CMessageSender::Signal(int32_t iMsg)
 {
-	int32 index = m_MessageMap.Find(iMsg);
+	int32_t index = m_MessageMap.Find(iMsg);
 	if(index < 0)
 		return;
 
@@ -73,7 +73,7 @@ void CMessageSender::Signal(int32 iMsg)
 
 void CMessageSender::Signal(CMessage &rMsg)
 {
-	int32 index = m_MessageMap.Find(rMsg.m_What);
+	int32_t index = m_MessageMap.Find(rMsg.m_What);
 	if(index < 0)
 		return;
 
@@ -88,7 +88,7 @@ void CMessageSender::Signal(CMessage &rMsg)
 //
 //
 //
-bool CMessageSender::Bind(int32 iMsg, CMessageTarget Target)
+bool CMessageSender::Bind(int32_t iMsg, CMessageTarget Target)
 {
 	if(Target.m_pReceiver)
 	{
@@ -101,7 +101,7 @@ bool CMessageSender::Bind(int32 iMsg, CMessageTarget Target)
 //
 //
 //
-bool CMessageSender::Bind(int32 iMsg, CMessageReceiver *pReceiver, int32 iTargetMsg)
+bool CMessageSender::Bind(int32_t iMsg, CMessageReceiver *pReceiver, int32_t iTargetMsg)
 {
 	m_MessageMap[iMsg] = CMessageTarget(pReceiver, iTargetMsg);
 	m_MessageMap[iMsg].m_Msg.m_OrgMsg = iMsg;
@@ -111,7 +111,7 @@ bool CMessageSender::Bind(int32 iMsg, CMessageReceiver *pReceiver, int32 iTarget
 //
 //
 //
-bool CMessageSender::Bind(int32 iMsg, CMessageReceiver *pReceiver, CMessage &rMsg)
+bool CMessageSender::Bind(int32_t iMsg, CMessageReceiver *pReceiver, CMessage &rMsg)
 {
 	rMsg.m_OrgMsg = iMsg;
 	m_MessageMap[iMsg] = CMessageTarget(pReceiver, rMsg);

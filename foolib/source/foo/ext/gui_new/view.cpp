@@ -43,7 +43,7 @@ CView::~CView()
 	}
 
 	while(GetNumChildren())
-		RemoveChild((int32)0);
+		RemoveChild((int32_t)0);
 
 	if(m_pParent)
 		m_pParent->RemoveChild(this);
@@ -56,22 +56,22 @@ void CView::Set(CString &rKey, CString &rValue)
 {
 	if(rKey == "position" || rKey == "pos")
 	{
-		int32 x = rValue.GetStrSep(",").GetInt();
-		int32 y = rValue.GetInt();
+		int32_t x = rValue.GetStrSep(",").GetInt();
+		int32_t y = rValue.GetInt();
 		SetPosition(x, y);
 	}
 	else if(rKey == "size")
 	{
-		int32 x = rValue.GetStrSep(",").GetInt();
-		int32 y = rValue.GetInt();
+		int32_t x = rValue.GetStrSep(",").GetInt();
+		int32_t y = rValue.GetInt();
 		SetSize(x, y);
 	}
 	else if(rKey == "geometry" || rKey == "geom")
 	{
-		int32 px = rValue.GetStrSep(",").GetInt();
-		int32 py = rValue.GetStrSep(",").GetInt();
-		int32 sx = rValue.GetStrSep(",").GetInt();
-		int32 sy = rValue.GetInt();
+		int32_t px = rValue.GetStrSep(",").GetInt();
+		int32_t py = rValue.GetStrSep(",").GetInt();
+		int32_t sx = rValue.GetStrSep(",").GetInt();
+		int32_t sy = rValue.GetInt();
 		SetGeometry(px, py, sx, sy);
 	}
 	else if(rKey == "name")
@@ -87,9 +87,9 @@ void CView::DestroyTree()
 {
 	while(GetNumChildren())
 	{
-		CView *pChild = GetChild((int32)0);
+		CView *pChild = GetChild((int32_t)0);
 		pChild->DestroyTree();
-		RemoveChild((int32)0);
+		RemoveChild((int32_t)0);
 		if(!(pChild->Flags()&EFlag_Indestructable))
 			delete pChild;
 	}
@@ -104,7 +104,7 @@ void CView::CheckTree(void *p)
 	if(p == this)
 		DebugBreak();
 
-	for(int32 i = 0; i < GetNumChildren(); i++)
+	for(int32_t i = 0; i < GetNumChildren(); i++)
 	{
 		if(p)
 			GetChild(i)->CheckTree(p);
@@ -114,18 +114,18 @@ void CView::CheckTree(void *p)
 
 
 
-void CView::SetResizeMode(int32 s) { m_Follow = s; }
-int32 CView::GetResizeMode() { return m_Follow; }
+void CView::SetResizeMode(int32_t s) { m_Follow = s; }
+int32_t CView::GetResizeMode() { return m_Follow; }
 
 // Child, CView * handling (is it only layered containers that can have children?)
 CView *CView::GetParent() { return m_pParent; } // returns the CView *
-int32 CView::AddChild(CView *pChild) // Adds a child. returns the local index to the child
+int32_t CView::AddChild(CView *pChild) // Adds a child. returns the local index to the child
 {
 	if(!pChild)
 		return -1;
 	if(pChild->m_pParent != NULL)
 		pChild->m_pParent->RemoveChild(pChild);
-	int32 i = m_lChildren.Find(pChild);
+	int32_t i = m_lChildren.Find(pChild);
 	if(i != -1)
 		return i;
 	pChild->m_pParent = this;
@@ -145,18 +145,18 @@ bool CView::RemoveChild(CView *spChild) // Removes a child by pointer. Returns t
 }
 
 
-bool CView::RemoveChild(int32 _iLocal) // Removes a child by local index. Returns true of removed
+bool CView::RemoveChild(int32_t _iLocal) // Removes a child by local index. Returns true of removed
 {
 	m_lChildren.RemoveByIndexFast(_iLocal);
 	return true;
 }
 
-int32 CView::GetNumChildren() { return m_lChildren.Len(); } // Returns the number of children
-CView *CView::GetChild(int32 _iLocal) { return m_lChildren[_iLocal]; } // returns the child by local index
+int32_t CView::GetNumChildren() { return m_lChildren.Len(); } // Returns the number of children
+CView *CView::GetChild(int32_t _iLocal) { return m_lChildren[_iLocal]; } // returns the child by local index
 bool CView::IsChild(CView *_pContainer) { return m_pParent == _pContainer; } // returns true of _pContainer is a child of this CView
 CView *CView::GetChildByPoint(CPoint _Point, bool HiddensAsWell)
 {
-	for(int32 i = 0; i < GetNumChildren(); i++)
+	for(int32_t i = 0; i < GetNumChildren(); i++)
 	{
 		CView *pChild = GetChild(i);
 		if(!HiddensAsWell && pChild->Flags()&EFlag_Hidden)
@@ -174,14 +174,14 @@ CView *CView::GetChildByPoint(CPoint _Point, bool HiddensAsWell)
 
 CView *CView::GetChild(const int8 *_pName)
 {
-	for(int32 i = 0; i < GetNumChildren(); i++)
+	for(int32_t i = 0; i < GetNumChildren(); i++)
 	{
 		CView *pChild = GetChild(i);
 		if(pChild  != NULL && pChild->m_Name == _pName)
 			return pChild;
 	}
 
-	for(int32 i = 0; i < GetNumChildren(); i++)
+	for(int32_t i = 0; i < GetNumChildren(); i++)
 	{
 		CView *pChild = GetChild(i);
 		if(pChild != NULL)
@@ -198,8 +198,8 @@ CView *CView::GetChild(const int8 *_pName)
 //
 // Geometry handling
 //
-void CView::SetPosition(int32 x, int32 y) { m_Position.Set(x,y); }
-void CView::SetSize(int32 w, int32 h)
+void CView::SetPosition(int32_t x, int32_t y) { m_Position.Set(x,y); }
+void CView::SetSize(int32_t w, int32_t h)
 {
 	CPoint OldSize = m_Size;
 	m_Size.Set(w, h);
@@ -210,7 +210,7 @@ void CView::SetSize(int32 w, int32 h)
 	if(m_MaxSize.x != -1 && m_Size.x > m_MaxSize.x) m_Size.x = m_MaxSize.x;
 	if(m_MaxSize.y != -1 && m_Size.y > m_MaxSize.y) m_Size.y = m_MaxSize.y;
 
-	for(int32 i = 0; i < GetNumChildren(); i++)
+	for(int32_t i = 0; i < GetNumChildren(); i++)
 		GetChild(i)->ParentResized(OldSize, m_Size);
 		
 	OnSize(OldSize);
@@ -275,7 +275,7 @@ void CView::SetMinSize(CPoint _Size)
 //
 //
 //
-void CView::SetGeometry(int32 x, int32 y, int32 w, int32 h) { SetPosition(x,y), SetSize(w,h); } // guess again
+void CView::SetGeometry(int32_t x, int32_t y, int32_t w, int32_t h) { SetPosition(x,y), SetSize(w,h); } // guess again
 
 //
 //
@@ -302,13 +302,13 @@ void CView::MoveToFront()
 		return;
 
 	TDynamicArray<CView *> lChildren;
-	for(int32 i = 0; i < m_pParent->m_lChildren.Len(); i++)
+	for(int32_t i = 0; i < m_pParent->m_lChildren.Len(); i++)
 		lChildren.Add(m_pParent->m_lChildren[i]);
 	
 	m_pParent->m_lChildren.Clear();
 	m_pParent->AddChild(this);
 	
-	for(int32 i = 0; i < lChildren.Len(); i++)
+	for(int32_t i = 0; i < lChildren.Len(); i++)
 		if(lChildren[i] != this)
 			m_pParent->AddChild(lChildren[i]);
 }
@@ -347,14 +347,14 @@ void CView::RenderTree(CDrawer &_rRender, CPoint _Pos)
 	_rRender.SetGlobalTranslate(_Pos.x+GetPosition().x, _Pos.y+GetPosition().y);
 	_rRender.SetClipping(true, _Pos.x+Position.x, _Pos.y+Position.y, Size.x, Size.y);
 	OnDraw(_rRender); // call this view first
-	int32 n = GetNumChildren();
-	for(int32 i = n-1; i >= 0; i--) // reverse order
+	int32_t n = GetNumChildren();
+	for(int32_t i = n-1; i >= 0; i--) // reverse order
 		if(!(GetChild(i)->Flags()&EFlag_Hidden))
 			GetChild(i)->RenderTree(_rRender, _Pos+GetPosition());
 }
 
 
-void CView::OnKeyPress(int32 Key, int8 Char, bool Repeat)
+void CView::OnKeyPress(int32_t Key, int8 Char, bool Repeat)
 {
 	if(Key == NCore::EBtn_Key_Tab)
 	{
@@ -362,7 +362,7 @@ void CView::OnKeyPress(int32 Key, int8 Char, bool Repeat)
 		{
 			TDynamicArray<CView *> lViews;
 			
-			for(int32 i = 0; i < m_pParent->GetNumChildren(); i++)
+			for(int32_t i = 0; i < m_pParent->GetNumChildren(); i++)
 			{
 				CView *pChild = m_pParent->GetChild(i);
 				if(this == &*pChild || !(pChild->Flags()&EFlag_TabStop))
@@ -387,11 +387,11 @@ void CView::OnKeyPress(int32 Key, int8 Char, bool Repeat)
 /*
 void CView::Signal(const int8 *_pName)
 {
-	int32 Hash = StringGetHash(_pName);
+	int32_t Hash = StringGetHash(_pName);
 	if(m_lTargets.Find(Hash) < 0)
 		return;
 
-	for(int32 i = 0; i < m_lTargets[Hash].Len(); i++)
+	for(int32_t i = 0; i < m_lTargets[Hash].Len(); i++)
 		m_lTargets[Hash][i]->m_Pulses++;
 }
 

@@ -2,12 +2,12 @@
 /*
 void CreateDCTLookupTable(fp32 *pTable)
 {
-	for(int32 y = 0; y < 8; y++)
+	for(int32_t y = 0; y < 8; y++)
 	{
-		for(int32 x = 0; x < 8; x++)
+		for(int32_t x = 0; x < 8; x++)
 		{
-			for(int32 v = 0; v < 8; v++)
-				for(int32 u = 0; u < 8; u++)
+			for(int32_t v = 0; v < 8; v++)
+				for(int32_t u = 0; u < 8; u++)
 				{
 					fp32 c = 1;
 					if(u && v)

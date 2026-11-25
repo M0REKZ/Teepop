@@ -35,15 +35,15 @@ CView *CGUI::CreateFromRegistry(CRegistry *pReg)
 	int8 aValue[1024*16];
 	int8 *pPos = aValue;
 	int8 *pNameStart = NULL;
-	int32 NameLen = 0;
+	int32_t NameLen = 0;
 	int8 *pValueStart = NULL;
-	int32 ValueLen = 0;
+	int32_t ValueLen = 0;
 	StringCopy(aValue, pReg->m_Value);
 
 	CString Name, Value;
 
 	enum { ESkip, EName, ESearchForEqual, ESearchForString, EValue, EProcess };
-	int32 State = ESkip;
+	int32_t State = ESkip;
 
 	while(1)
 	{
@@ -125,7 +125,7 @@ CView *CGUI::CreateFromRegistry(CRegistry *pReg)
 	}
 
 	// create children
-	for(int32 i = 0; i < pReg->m_lValues.Len(); i++)
+	for(int32_t i = 0; i < pReg->m_lValues.Len(); i++)
 	{
 		CView *pChild = CreateFromRegistry(pReg->m_lValues[i]);
 		if(pChild != NULL)
@@ -262,7 +262,7 @@ void CGUI::AddMapping(const int8 *pName, CMessageReceiver *pReceiver, CMessage &
 	m_lMappings.Add(pMap);
 }
 
-void CGUI::AddMapping(const int8 *pName, CMessageReceiver *pReceiver, int32 iMsg)
+void CGUI::AddMapping(const int8 *pName, CMessageReceiver *pReceiver, int32_t iMsg)
 {
 	CMessage Msg(iMsg);
 	AddMapping(pName, pReceiver, Msg);
@@ -270,7 +270,7 @@ void CGUI::AddMapping(const int8 *pName, CMessageReceiver *pReceiver, int32 iMsg
 
 CMessageTarget CGUI::GetMapping(const int8 *pName)
 {
-	for(int32 i = 0; i < m_lMappings.Len(); i++)
+	for(int32_t i = 0; i < m_lMappings.Len(); i++)
 		if(m_lMappings[i]->m_Name == pName)
 			return m_lMappings[i]->m_Target;
 	return CMessageTarget(NULL,0);
@@ -285,8 +285,8 @@ void CGUI::ReleaseMouse() { m_pMouseCaptureView = NULL; }
 //
 // Mouse
 //
-void CGUI::MouseMoveAbs(int32 x, int32 y) { m_MousePosition.Set(x, y); m_MouseMoved = true; }
-void CGUI::MouseMoveRel(int32 x, int32 y)
+void CGUI::MouseMoveAbs(int32_t x, int32_t y) { m_MousePosition.Set(x, y); m_MouseMoved = true; }
+void CGUI::MouseMoveRel(int32_t x, int32_t y)
 {
 	m_MousePosition.x += x;
 	m_MousePosition.y += y;
@@ -296,7 +296,7 @@ void CGUI::MouseMoveRel(int32 x, int32 y)
 //
 //
 //
-void CGUI::MouseDown(int32 _Button)
+void CGUI::MouseDown(int32_t _Button)
 {
 	CView *pCurrent = NULL;
 	if(m_pMouseCaptureView != NULL)
@@ -328,7 +328,7 @@ void CGUI::MouseDown(int32 _Button)
 //
 //
 //
-void CGUI::MouseUp(int32 _Button)
+void CGUI::MouseUp(int32_t _Button)
 {
 	CView *pCurrent = NULL;
 	if(m_pMouseCaptureView != NULL)
@@ -342,7 +342,7 @@ void CGUI::MouseUp(int32 _Button)
 }
 
 // Keyboard
-void CGUI::KeyDown(int32 _Stroke, uint8 _AsciiCode, bool Repeat)
+void CGUI::KeyDown(int32_t _Stroke, uint8 _AsciiCode, bool Repeat)
 {
 	if(m_pFocusedView != NULL)
 		m_pFocusedView->OnKeyPress(_Stroke, _AsciiCode, false);
@@ -358,7 +358,7 @@ void CGUI::KeyDown(int32 _Stroke, uint8 _AsciiCode, bool Repeat)
 	}
 }
 
-void CGUI::KeyUp(int32 _Stroke, uint8 _AsciiCode)
+void CGUI::KeyUp(int32_t _Stroke, uint8 _AsciiCode)
 {
 	m_KeyPressed = false;
 	//if(m_pFocusedView)

@@ -20,32 +20,32 @@ uint16 _GET_SWAP_UINT16_MOVE(uint8** _pBuf)
 	return r;
 }
 
-uint32 _GET_SWAP_UINT32(uint8* _pBuf) 
+uint32_t _GET_SWAP_UINT32(uint8* _pBuf) 
 { 
-	return ByteSwap(*((uint32 *)_pBuf));
+	return ByteSwap(*((uint32_t *)_pBuf));
 }
 
 fp32 _GET_FLOAT(uint8* _pBuf) 
 { 
-	uint32 i = ByteSwap(*((uint32 *)_pBuf));
+	uint32_t i = ByteSwap(*((uint32_t *)_pBuf));
 	return *((fp32*)&i);
 }
 
 
-uint32 _GET_VX(uint8* _pBuf) 
+uint32_t _GET_VX(uint8* _pBuf) 
 { 
 	if (*_pBuf == 0xFF)
-		return ByteSwap((*((uint32 *)_pBuf)) & 0xFFFFFF);
+		return ByteSwap((*((uint32_t *)_pBuf)) & 0xFFFFFF);
 	else
 		return _GET_SWAP_UINT16(_pBuf);
 }
 
-uint32 _GET_VX_MOVE(uint8** _pBuf) 
+uint32_t _GET_VX_MOVE(uint8** _pBuf) 
 { 
-	uint32 r;
+	uint32_t r;
 	if (**_pBuf == 0xFF)
 	{
-		r = ByteSwap((*((uint32 *)*_pBuf)) & 0xFFFFFF);
+		r = ByteSwap((*((uint32_t *)*_pBuf)) & 0xFFFFFF);
 		*_pBuf += 4;
 		return r;
 	}
@@ -60,7 +60,7 @@ uint32 _GET_VX_MOVE(uint8** _pBuf)
 uint8 *_GET_S0_MOVE(uint8** _pBuf) 
 { 
 	uint8 *t = *_pBuf;
-	int32 i = StringLength((int8 *)*_pBuf) + 1;
+	int32_t i = StringLength((int8 *)*_pBuf) + 1;
 
 	if (i%2)
 		i++;
@@ -90,7 +90,7 @@ CLWO_Block::CLWO_Block(CLWO_File* _File)
 
 CLWO_Block::~CLWO_Block()
 {
-	int32 i;
+	int32_t i;
 
 	for(i = 0; i < m_lChunks.Len(); i++)
 		SafeDelete(m_lChunks[i]);
@@ -103,7 +103,7 @@ CLWO_Block::~CLWO_Block()
 
 CLWO_File::~CLWO_File()
 {
-	int32 i;
+	int32_t i;
 
 	for(i = 0; i < m_lBlocks.Len(); i++)
 		SafeDelete(m_lBlocks[i]);
@@ -126,7 +126,7 @@ CLWO_File::~CLWO_File()
 //
 // Processes the chunk
 //
-void CLWO_Chunk::Process(int32 _Phase, CLWO_Block* _pBlock)
+void CLWO_Chunk::Process(int32_t _Phase, CLWO_Block* _pBlock)
 {
 	//
 	// Check so we got the right chunk
@@ -162,8 +162,8 @@ void CLWO_Chunk::Process(int32 _Phase, CLWO_Block* _pBlock)
 				//
 				_pBlock->m_pPointInfo = new TDynamicArray<SLWO_PointInfo>[_pBlock->m_NumPoints];
 
-				for(int32 f = 0; f < _pBlock->m_NumPolygons; f++)
-					for(int32 i = 0; i < 3; i++)
+				for(int32_t f = 0; f < _pBlock->m_NumPolygons; f++)
+					for(int32_t i = 0; i < 3; i++)
 					{
 						SLWO_PointInfo Info;
 						Info.m_FaceIndex = f;
@@ -174,7 +174,7 @@ void CLWO_Chunk::Process(int32 _Phase, CLWO_Block* _pBlock)
 				//
 				// Load Verts
 				//
-				for(int32 i = 0; i < _pBlock->m_NumPoints; i++, pTempPtr+=4)
+				for(int32_t i = 0; i < _pBlock->m_NumPoints; i++, pTempPtr+=4)
 				{	
 					//
 					// Get Choords
@@ -183,7 +183,7 @@ void CLWO_Chunk::Process(int32 _Phase, CLWO_Block* _pBlock)
 					y = _GET_FLOAT(pTempPtr+=4);
 					z = -_GET_FLOAT(pTempPtr+=4);
 
-					for(int32 v = 0; v < _pBlock->m_pPointInfo[i].Len(); v++)
+					for(int32_t v = 0; v < _pBlock->m_pPointInfo[i].Len(); v++)
 						_pBlock->m_lFaceBuildData[_pBlock->m_pPointInfo[i][v].m_FaceIndex]->m_lVertices[_pBlock->m_pPointInfo[i][v].m_VertexIndex].Set(x, y, z);
 				}
 			} break;
@@ -236,7 +236,7 @@ void CLWO_Chunk::Process(int32 _Phase, CLWO_Block* _pBlock)
 						//
 						// This rutine can only hande polygons with 3 points
 						//
-						int32 i = 0;
+						int32_t i = 0;
 						if(NumVerts > 2)
 						{
 							for (; i < 3; i++)
@@ -297,14 +297,14 @@ void CLWO_Chunk::Process(int32 _Phase, CLWO_Block* _pBlock)
 					//
 					while (pTempPtr < pEndPos - 1)
 					{
-						int32 id = _GET_VX_MOVE(&pTempPtr);
+						int32_t id = _GET_VX_MOVE(&pTempPtr);
 						fp32 u = _GET_FLOAT(pTempPtr);
 						fp32 v = _GET_FLOAT(pTempPtr + 4);
 						pTempPtr += 8;
 						
-						for(int32 k = 0; k < _pBlock->m_lFaceBuildData.Len(); k++)
+						for(int32_t k = 0; k < _pBlock->m_lFaceBuildData.Len(); k++)
 						{
-							for(int32 l = 0; l < 3; l++)
+							for(int32_t l = 0; l < 3; l++)
 							{
 								if (_pBlock->m_lFaceBuildData[k]->m_VertexIndex[l] != id)
 									continue;
@@ -324,15 +324,15 @@ void CLWO_Chunk::Process(int32 _Phase, CLWO_Block* _pBlock)
 					//
 					while (pTempPtr < pEndPos - 1)
 					{
-						int32 id = _GET_VX_MOVE(&pTempPtr);
+						int32_t id = _GET_VX_MOVE(&pTempPtr);
 						fp4 x = _GET_FLOAT(pTempPtr);
 						fp4 y = _GET_FLOAT(pTempPtr + 4);
 						fp4 z = -_GET_FLOAT(pTempPtr + 8);
 						pTempPtr += 12;
 						
-						for(int32 k = 0; k < _pBlock->m_lFaceBuildData.Len(); k++)
+						for(int32_t k = 0; k < _pBlock->m_lFaceBuildData.Len(); k++)
 						{
-							for(int32 l = 0; l < 3; l++)
+							for(int32_t l = 0; l < 3; l++)
 							{
 								if (_pBlock->m_lFaceBuildData[k]->m_VertexIndex[l] != id)
 									continue;
@@ -376,8 +376,8 @@ void CLWO_Chunk::Process(int32 _Phase, CLWO_Block* _pBlock)
 
 				while (pTempPtr < pEndPos)
 				{
-					int32 vid = _GET_VX_MOVE(&pTempPtr);
-					int32 pid = _GET_VX_MOVE(&pTempPtr);
+					int32_t vid = _GET_VX_MOVE(&pTempPtr);
+					int32_t pid = _GET_VX_MOVE(&pTempPtr);
 					fp32 u = _GET_FLOAT(pTempPtr);
 					fp32 v = _GET_FLOAT(pTempPtr + 4);
 					pTempPtr += 8;
@@ -411,10 +411,10 @@ void CLWO_Chunk::Process(int32 _Phase, CLWO_Block* _pBlock)
 
 				while(pTempPtr < pEndPos - 1)
 				{
-					int32 pid = _GET_VX_MOVE(&pTempPtr);
-					int32 surf = _GET_SWAP_UINT16_MOVE(&pTempPtr);
+					int32_t pid = _GET_VX_MOVE(&pTempPtr);
+					int32_t surf = _GET_SWAP_UINT16_MOVE(&pTempPtr);
 
-					for(int32 j = 0; j < _pBlock->m_pFile->m_lSurfaces.Len(); j++)
+					for(int32_t j = 0; j < _pBlock->m_pFile->m_lSurfaces.Len(); j++)
 					{
 						if (_pBlock->m_pFile->m_lSurfaces[j]->m_LWOIDNumber == surf)
 							_pBlock->m_lFaceBuildData[pid]->m_Surf = surf;
@@ -429,12 +429,12 @@ void CLWO_Chunk::Process(int32 _Phase, CLWO_Block* _pBlock)
 //
 void CLWO_Block::CalculateNormals()
 {
-	int32 f, v;
+	int32_t f, v;
 
 	fp32 relx1, rely1, relz1, relx2, rely2, relz2;
 	fp32 len;
 	fp32 nx, ny, nz;
-	int32 cn;
+	int32_t cn;
 
 	//
 	// Build Point to PlyList
@@ -442,7 +442,7 @@ void CLWO_Block::CalculateNormals()
 	//TFeDynamicList<CVector3D *> *_pPolygons = new TFeDynamicList<CVector3D *>[m_NumPoints];
 
 	//for(f = 0; f < m_NumPolygons; f++)
-	//	for(int32 i = 0; i < 3; i++)
+	//	for(int32_t i = 0; i < 3; i++)
 	//		_pPolygons[m_lFaceBuildData[f]->m_VertexIndex[i]].Add(&m_lFaceBuildData[f]->m_lNVertices[i]);
 
 	for (v = 0; v < m_NumPoints; v++)
@@ -509,7 +509,7 @@ void CLWO_Block::CalculateNormals()
 
 			/*
 			for(f = 0; f < m_NumPolygons; f++)
-				for(int32 i = 0; i < 3; i++)
+				for(int32_t i = 0; i < 3; i++)
 				{
 					if (m_lFaceBuildData[f]->m_VertexIndex[i] != v)
 						continue;
@@ -527,19 +527,19 @@ void CLWO_Block::CalculateNormals()
 //
 // Just sends the command over to every chunk in the block
 //
-void CLWO_Block::Process(int32 _Phase)
+void CLWO_Block::Process(int32_t _Phase)
 {
-	for(int32 i = 0; i < m_lChunks.Len(); i++)
+	for(int32_t i = 0; i < m_lChunks.Len(); i++)
 		m_lChunks[i]->Process(_Phase, this);
 }
 
 //
 //
 //
-void CLWO_File::Load(uint8* _pBuffer, int32 _Size)
+void CLWO_File::Load(uint8* _pBuffer, int32_t _Size)
 {
 	// Local Variabels
-	uint32*	pDWORDBuffer = (uint32*)_pBuffer;
+	uint32_t*	pDWORDBuffer = (uint32_t*)_pBuffer;
 	uint8*	pBuffer = (uint8*)_pBuffer;
 
 	// Inital format check
@@ -547,13 +547,13 @@ void CLWO_File::Load(uint8* _pBuffer, int32 _Size)
 		if (_Size < 12)
 			return;
 		
-		if (*pDWORDBuffer != (uint32)ByteSwap('FORM'))
+		if (*pDWORDBuffer != (uint32_t)ByteSwap('FORM'))
 			return;
 		
-		if (pDWORDBuffer[1] != (uint32)ByteSwap(_Size-8))
+		if (pDWORDBuffer[1] != (uint32_t)ByteSwap(_Size-8))
 			return;
 		
-		if (pDWORDBuffer[2] != (uint32)ByteSwap('LWO2'))
+		if (pDWORDBuffer[2] != (uint32_t)ByteSwap('LWO2'))
 			return;
 	}
 
@@ -570,14 +570,14 @@ void CLWO_File::Load(uint8* _pBuffer, int32 _Size)
 		CLWO_Block* pCurrentBlock = NULL;
 
 		// Where begins the SubChunks
-		int32 CurrentPosition = 12;
+		int32_t CurrentPosition = 12;
 
 		// Main Loop
 		while(CurrentPosition < _Size)
 		{
-			int32 SubChunkID = ByteSwap(*((uint32 *)&_pBuffer[CurrentPosition]));
-			int32 SubChunkSize = ByteSwap(*((uint32 *)&_pBuffer[CurrentPosition+4]));
-			int32 SubChunkSubType = ByteSwap(*((uint32 *)&_pBuffer[CurrentPosition+8]));
+			int32_t SubChunkID = ByteSwap(*((uint32_t *)&_pBuffer[CurrentPosition]));
+			int32_t SubChunkSize = ByteSwap(*((uint32_t *)&_pBuffer[CurrentPosition+4]));
+			int32_t SubChunkSubType = ByteSwap(*((uint32_t *)&_pBuffer[CurrentPosition+8]));
 
 			// The PNTS subchunk is the begining of a new block
 			if (SubChunkID == 'PNTS')
@@ -645,16 +645,16 @@ void CLWO_File::Load(uint8* _pBuffer, int32 _Size)
 					//
 					// Start Digout the VMAP name
 					//
-					int32 CurPosition = 0;
-					int32 Size = SubChunkSize-1;
+					int32_t CurPosition = 0;
+					int32_t Size = SubChunkSize-1;
 
 					//
 					// Main Loop
 					//
 					while(CurPosition < Size-4)
 					{
-						int32 SubSubChunkID = ByteSwap32(*((uint32 *)&pTemp[CurPosition]));
-						int32 SubSubChunkSize = ByteSwap16(*((uint16 *)&pTemp[CurPosition+4]));
+						int32_t SubSubChunkID = ByteSwap32(*((uint32_t *)&pTemp[CurPosition]));
+						int32_t SubSubChunkSize = ByteSwap16(*((uint16 *)&pTemp[CurPosition+4]));
 
 						if(SubSubChunkID == 'BLOK')
 						{
@@ -677,7 +677,7 @@ void CLWO_File::Load(uint8* _pBuffer, int32 _Size)
 						}
 					}
 
-					for (int32 j = 0; j < m_lTags.Len(); j++)
+					for (int32_t j = 0; j < m_lTags.Len(); j++)
 					{
 						Surf->m_LWOIDNumber = CMovE(stricmp(m_lTags[j], Name), 0, Surf->m_LWOIDNumber, j);
 						//if ( == 0)
@@ -709,12 +709,12 @@ void CLWO_File::Process()
 
 	// Count Morphtargets
 	{
-		int32 b, c;
+		int32_t b, c;
 			
 		// All blocks
 		for(b = 0; b < m_lBlocks.Len(); b++)
 		{
-			int32 Count = 1;
+			int32_t Count = 1;
 
 			// All chunks
 			for(c = 0; c < m_lBlocks[b]->m_lChunks.Len(); c++)
@@ -733,7 +733,7 @@ void CLWO_File::Process()
 	}
 
 	// Do the processing
-	int32 i, n;
+	int32_t i, n;
 	n = m_lBlocks.Len();									//
 	for(i = 0; i < n; i++) m_lBlocks[i]->Process('POLS');	// Polygon List 
 	for(i = 0; i < n; i++) m_lBlocks[i]->Process('PNTS');	// Point List
@@ -753,7 +753,7 @@ bool NLWO::Load(CStorage &_Storage, CLWO_File &_rFile)
 		return false;
 
 	// Get Size
-	int32 Size = _Storage.GetSize();
+	int32_t Size = _Storage.GetSize();
 
 	// Load File and close
 	int8 *pBuffer = new int8[Size];

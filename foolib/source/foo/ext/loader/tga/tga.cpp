@@ -138,8 +138,8 @@ bool CTGAFormat::Load(CInputStream &rStream, CImage &rImage)
 	rStream.Read(NULL, Header.m_ColorMap_Length);
 
 	// Create Image
-	int32 Count = Header.m_Width*Header.m_Height;
-	int32 DataSize = Count*(Header.m_PixelDepth/8);
+	int32_t Count = Header.m_Width*Header.m_Height;
+	int32_t DataSize = Count*(Header.m_PixelDepth/8);
 
 	CImage::CFormat Format;
 	Format.SetType(CImage::EType_Channels);
@@ -175,7 +175,7 @@ bool CTGAFormat::Load(CInputStream &rStream, CImage &rImage)
 
 	//if(Header.m_PixelDepth == 16)
 	//	_rImage.m_Desc.m_Format = 15;
-	//_rImage.Create(TVector2<int32>(Header.m_Width, Header.m_Height), Header.m_PixelDepth);
+	//_rImage.Create(TVector2<int32_t>(Header.m_Width, Header.m_Height), Header.m_PixelDepth);
 
 	uint8 *pPtr = rImage.Data();
 	
@@ -191,7 +191,7 @@ bool CTGAFormat::Load(CInputStream &rStream, CImage &rImage)
 		else if(Header.m_ImageType == EImageType_RLE_TrueColor ||
 				Header.m_ImageType == EImageType_RLE_BlackAndWhite)
 		{
-			int32 RLEDataSize = rStream.GetSize()-rStream.GetPosition();
+			int32_t RLEDataSize = rStream.GetSize()-rStream.GetPosition();
 			unsigned char *pImageData = new unsigned char[RLEDataSize];
 			rStream.Read(pImageData, RLEDataSize);			// RLE Compressed True Color Format
 			CMemoryReader MemoryReader(pImageData);
@@ -206,7 +206,7 @@ bool CTGAFormat::Load(CInputStream &rStream, CImage &rImage)
 			break; // failure
 	
 		// Flip Image if needed
-		int32 Origin = (Header.m_ImageDescriptor>>4)&3;
+		int32_t Origin = (Header.m_ImageDescriptor>>4)&3;
 	
 		if(1-(Origin>>1))
 			rImage.FlipY();

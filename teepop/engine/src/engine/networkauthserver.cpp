@@ -59,7 +59,7 @@ void CNetworkAuthServer::OnDetach(CNetworkConnection *pConnection)
 //
 CNetworkAuthServer::CUser *CNetworkAuthServer::GetUser(const int8 *pName)
 {
-	for(int32 i = 0; i < m_lUsers.Len(); i++)
+	for(int32_t i = 0; i < m_lUsers.Len(); i++)
 		if(m_lUsers[i]->m_Name == pName)
 			return m_lUsers[i];
 	return NULL;
@@ -68,7 +68,7 @@ CNetworkAuthServer::CUser *CNetworkAuthServer::GetUser(const int8 *pName)
 //
 //
 //
-int32 CNetworkAuthServer::GetAuthLevel(CNetworkConnection *pConnection)
+int32_t CNetworkAuthServer::GetAuthLevel(CNetworkConnection *pConnection)
 {
 	CUser *pUser = pConnection->GetData<CUser>(this);
 	if(!pUser)
@@ -79,7 +79,7 @@ int32 CNetworkAuthServer::GetAuthLevel(CNetworkConnection *pConnection)
 //
 //
 //
-bool CNetworkAuthServer::NewUser(CString Name, CString Password, int32 Level, bool Guest)
+bool CNetworkAuthServer::NewUser(CString Name, CString Password, int32_t Level, bool Guest)
 {
 	NLog::WriteF("AuthServer: Creating new user, name=%s pw=%s level=%d guest=%d\n",
 						Name.GetData(), Password.GetData(), Level, Guest);
@@ -89,7 +89,7 @@ bool CNetworkAuthServer::NewUser(CString Name, CString Password, int32 Level, bo
 		return false;
 	if(Password.Len() < 1 && !Guest)
 		return false;
-	for(int32 i = 0; i < Name.Len(); i++)
+	for(int32_t i = 0; i < Name.Len(); i++)
 		if((Name[i] >= 'a' && Name[i] <= 'z') || (Name[i] >= 'A' && Name[i] <= 'Z') ||
 			(Name[i] >= '0' && Name[i] <= '9') || Name[i] == '_')
 		{
@@ -219,7 +219,7 @@ void CNetworkAuthServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 		{
 			CString name = rStream.Read_p8();
 			CString pw = rStream.Read_p8();
-			int32 level = rStream.ReadBE<int32>();
+			int32_t level = rStream.ReadBE<int32_t>();
 			NewUser(name, pw, level, false);
 		}
 	}

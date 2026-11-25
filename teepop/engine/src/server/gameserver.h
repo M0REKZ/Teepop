@@ -20,11 +20,11 @@ protected:
 	class CInfo
 	{
 	public:
-		int32 m_iRoom;
-		int32 m_State;
+		int32_t m_iRoom;
+		int32_t m_State;
 		CBoard m_Board;
 		int64 m_StartTime;
-		int32 m_Level;
+		int32_t m_Level;
 	};
 
 	class CNetworkRoomServer *m_pRoom;
@@ -33,12 +33,12 @@ protected:
 
 	//
 	//
-	void CheckWinConditions(int32 roomid, int32 iClientIgnore=-1);
+	void CheckWinConditions(int32_t roomid, int32_t iClientIgnore=-1);
 
 	//
 	//
 	void SendNewBlocks(CNetworkConnection *pConnection);
-	void SendGameStateChange(CNetworkConnection *pConnection, int32 State);
+	void SendGameStateChange(CNetworkConnection *pConnection, int32_t State);
 
 	//
 	//

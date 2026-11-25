@@ -19,7 +19,7 @@ namespace NEngine
 		CString m_Username;
 		CString m_Password;
 		
-		int32 m_LoggedOn;
+		int32_t m_LoggedOn;
 		CString m_ErrorMessage;
 
 	public:

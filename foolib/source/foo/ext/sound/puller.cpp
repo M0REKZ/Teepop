@@ -15,7 +15,7 @@ CPuller::CPuller(CInstance *pInstance)
 
 CPuller::~CPuller()
 {
-	for(int32 i = 0; i < m_lBuffers.Len(); i++)
+	for(int32_t i = 0; i < m_lBuffers.Len(); i++)
 		m_lBuffers[i].DestroyData();
 	m_lStartPositions.Clear();
 	m_lBuffers.Clear();
@@ -24,16 +24,16 @@ CPuller::~CPuller()
 //
 //
 //
-int32 CPuller::Fill(void *pData, int64 Position, int32 Samples) // should do convertion
+int32_t CPuller::Fill(void *pData, int64 Position, int32_t Samples) // should do convertion
 {
 	if(!m_pInstance)
 		return 0;
 
-	int32 StartSamples = Samples;
+	int32_t StartSamples = Samples;
 	uint8 *pDst = (uint8 *)pData;
 
 	// remove old buffers
-	for(int32 i = 0; i < m_lStartPositions.Len(); i++)
+	for(int32_t i = 0; i < m_lStartPositions.Len(); i++)
 	{
 		if(m_lStartPositions[i]+m_lBuffers[i].m_Samples+40000 < Position)
 		{
@@ -47,14 +47,14 @@ int32 CPuller::Fill(void *pData, int64 Position, int32 Samples) // should do con
 	}
 
 	// fill with existing buffers
-	for(int32 i = 0; i < m_lStartPositions.Len(); i++)
+	for(int32_t i = 0; i < m_lStartPositions.Len(); i++)
 	{
 		if(m_lStartPositions[i]+m_lBuffers[i].m_Samples < Position)
 			continue;
-		int32 bufpos = Position-m_lStartPositions[i];
+		int32_t bufpos = Position-m_lStartPositions[i];
 		if(bufpos < 0)
 			bufpos = 0;
-		int32 CopySize = Min(Samples, m_lBuffers[i].m_Samples-bufpos);
+		int32_t CopySize = Min(Samples, m_lBuffers[i].m_Samples-bufpos);
 		MemoryCopy(pDst, (uint8*)m_lBuffers[i].m_pData+(bufpos)*4, CopySize*4);
 		pDst += CopySize*4;
 		Samples -= CopySize;
@@ -79,7 +79,7 @@ int32 CPuller::Fill(void *pData, int64 Position, int32 Samples) // should do con
 		m_lStartPositions.Add(Position);
 		m_lBuffers.Add(Buffer);
 
-		int32 CopySize = Min(Samples, Buffer.m_Samples);
+		int32_t CopySize = Min(Samples, Buffer.m_Samples);
 		MemoryCopy(pDst, Buffer.m_pData, CopySize*4);
 		pDst += CopySize*4;
 		Samples -= CopySize;
@@ -91,18 +91,18 @@ int32 CPuller::Fill(void *pData, int64 Position, int32 Samples) // should do con
 }
 
 /*
-int32 CPuller::Fill(void *pData, int32 Position, int32 Samples) // should do convertion
+int32_t CPuller::Fill(void *pData, int32_t Position, int32_t Samples) // should do convertion
 {
 	if(!m_pInstance)
 		return 0;
 
-	int32 StartSamples = Samples;
+	int32_t StartSamples = Samples;
 	int8 *pDst = (int8 *)pData;
-	int32 ss = m_Buffer.m_Format.SampleSize();
+	int32_t ss = m_Buffer.m_Format.SampleSize();
 
 	if(m_SamplesLeft)
 	{
-		int32 ToCopy = m_SamplesLeft < Samples ? m_SamplesLeft : Samples;
+		int32_t ToCopy = m_SamplesLeft < Samples ? m_SamplesLeft : Samples;
 		MemoryCopy(pDst, (int8*)(m_Buffer.m_pData)+(m_Buffer.m_Samples-m_SamplesLeft)*ss, ToCopy*ss);
 		pDst+=ToCopy*ss;
 		m_SamplesLeft -= ToCopy;
@@ -118,7 +118,7 @@ int32 CPuller::Fill(void *pData, int32 Position, int32 Samples) // should do con
 		if(!m_SamplesLeft) // empty
 			break;
 
-		int32 ToCopy = m_SamplesLeft < Samples ? m_SamplesLeft : Samples;
+		int32_t ToCopy = m_SamplesLeft < Samples ? m_SamplesLeft : Samples;
 		MemoryCopy(pDst, m_Buffer.m_pData, ToCopy*ss);
 		pDst+=ToCopy*ss;
 

@@ -6,7 +6,7 @@ using namespace NFoo::NGUI;
 //
 //
 //
-void CDrawer::CPart::Set(int32 _x, int32 _y, int32 _w, int32 _h)
+void CDrawer::CPart::Set(int32_t _x, int32_t _y, int32_t _w, int32_t _h)
 {
 	x = _x;
 	y = _y;
@@ -17,7 +17,7 @@ void CDrawer::CPart::Set(int32 _x, int32 _y, int32 _w, int32 _h)
 //
 //
 //
-void CDrawer::CRectParts::Init(int32 _x, int32 _y)
+void CDrawer::CRectParts::Init(int32_t _x, int32_t _y)
 {
 	m_aParts[ECornerTL].Set(0,0,4,4);
 	m_aParts[ECornerTR].Set(20,0,4,4);
@@ -31,7 +31,7 @@ void CDrawer::CRectParts::Init(int32 _x, int32 _y)
 
 	m_aParts[EFill].Set(5,5,14,14);
 
-	for(int32 i = 0; i < ENum; i++)
+	for(int32_t i = 0; i < ENum; i++)
 		m_aParts[i].x += _x, m_aParts[i].y += _y;
 		
 }
@@ -65,7 +65,7 @@ void CDrawer::Init()
 //
 //
 /*
-void CDrawer::Begin(int32 _Blend, fp32 r, fp32 g, fp32 b, fp32 a)
+void CDrawer::Begin(int32_t _Blend, fp32 r, fp32 g, fp32 b, fp32 a)
 {
 	/*
 	m_pUtils->SetDefaults();
@@ -79,7 +79,7 @@ void CDrawer::Begin(int32 _Blend, fp32 r, fp32 g, fp32 b, fp32 a)
 //
 //
 //
-void CDrawer::SetUV(int32 _u, int32 _v, int32 _w, int32 _h)
+void CDrawer::SetUV(int32_t _u, int32_t _v, int32_t _w, int32_t _h)
 {
 	m_pPainter->SetUV(_u, _v, _w, _h);
 }
@@ -87,7 +87,7 @@ void CDrawer::SetUV(int32 _u, int32 _v, int32 _w, int32 _h)
 //
 //
 //
-void CDrawer::DrawPart(CPart &_rPart, int32 _Origo, int32 _x, int32 _y, int32 _w, int32 _h)
+void CDrawer::DrawPart(CPart &_rPart, int32_t _Origo, int32_t _x, int32_t _y, int32_t _w, int32_t _h)
 {
 	SetUV(_rPart.x, _rPart.y, _rPart.w, _rPart.h);
 
@@ -109,7 +109,7 @@ void CDrawer::DrawPart(CPart &_rPart, int32 _Origo, int32 _x, int32 _y, int32 _w
 //
 //
 //
-void CDrawer::DrawRect(CRectParts &_rRect, int32 _x, int32 _y, int32 _w, int32 _h)
+void CDrawer::DrawRect(CRectParts &_rRect, int32_t _x, int32_t _y, int32_t _w, int32_t _h)
 {
 	DrawPart(_rRect.m_aParts[CRectParts::EFill], EOrigo_TL,
 				_x+_rRect.m_aParts[CRectParts::ECornerTL].w,
@@ -132,7 +132,7 @@ void CDrawer::DrawRect(CRectParts &_rRect, int32 _x, int32 _y, int32 _w, int32 _
 //
 //
 //
-void CDrawer::Draw(int32 _x, int32 _y, int32 _w, int32 _h)
+void CDrawer::Draw(int32_t _x, int32_t _y, int32_t _w, int32_t _h)
 {
 	m_pPainter->DrawRect(_x, _y, _w, _h);
 }
@@ -149,7 +149,7 @@ void CDrawer::End()
 //
 //
 //
-void CDrawer::DrawText(int32 _x, int32 _y, const int8 *_pText, fp32 _r, fp32 _g, fp32 _b)
+void CDrawer::DrawText(int32_t _x, int32_t _y, const int8 *_pText, fp32 _r, fp32 _g, fp32 _b)
 {
 	m_pPainter->DrawText(_x, _y, _pText, _r, _g, _b);
 	/*
@@ -167,7 +167,7 @@ void CDrawer::DrawText(int32 _x, int32 _y, const int8 *_pText, fp32 _r, fp32 _g,
 //
 //
 /*
-void CDrawer::DrawTextWhite(int32 _x, int32 _y, const int8 *_pText)
+void CDrawer::DrawTextWhite(int32_t _x, int32_t _y, const int8 *_pText)
 {
 	m_pPainter->DrawText(_x, _y, _pText);
 	/*
@@ -182,12 +182,12 @@ void CDrawer::DrawTextWhite(int32 _x, int32 _y, const int8 *_pText)
 //}
 
 
-void CDrawer::SetGlobalTranslate(int32 _x, int32 _y)
+void CDrawer::SetGlobalTranslate(int32_t _x, int32_t _y)
 {
 	m_pPainter->SetGlobalTranslate(_x, _y);
 }
 
-void CDrawer::SetClipping(bool _Use, int32 _x, int32 _y, int32 _w, int32 _h)
+void CDrawer::SetClipping(bool _Use, int32_t _x, int32_t _y, int32_t _w, int32_t _h)
 {
 	m_pPainter->SetClipping(_Use, _x, _y, _w, _h);
 }
@@ -225,27 +225,27 @@ void CPainter_2DUtils::End()
 }
 
 
-int32 CPainter_2DUtils::CreateImage(CImage &_Image)
+int32_t CPainter_2DUtils::CreateImage(CImage &_Image)
 {
 	return 1;
 }
 
-void CPainter_2DUtils::SetImage(int32 _iImage)
+void CPainter_2DUtils::SetImage(int32_t _iImage)
 {
 }
 
-void CPainter_2DUtils::SetGlobalTranslate(int32 _x, int32 _y)
+void CPainter_2DUtils::SetGlobalTranslate(int32_t _x, int32_t _y)
 {
 	m_pUtils->SetGlobalTranslate(_x, _y);
 }
 
-void CPainter_2DUtils::SetClipping(bool _Use, int32 _x, int32 _y, int32 _w, int32 _h)
+void CPainter_2DUtils::SetClipping(bool _Use, int32_t _x, int32_t _y, int32_t _w, int32_t _h)
 {
 	m_pUtils->SetClipping(_Use, _x, _y, _w, _h);
 }
 
 
-void CPainter_2DUtils::SetUV(int32 _u, int32 _v, int32 _w, int32 _h)
+void CPainter_2DUtils::SetUV(int32_t _u, int32_t _v, int32_t _w, int32_t _h)
 {
 	m_pUtils->SetTexCoord(  (fp32)_u/(fp32)m_TextureWidth,
 							(fp32)_v/(fp32)m_TextureHeight,
@@ -253,7 +253,7 @@ void CPainter_2DUtils::SetUV(int32 _u, int32 _v, int32 _w, int32 _h)
 							(fp32)_v/(fp32)m_TextureHeight+(fp32)_h/(fp32)m_TextureHeight);
 }
 
-void CPainter_2DUtils::DrawRect(int32 _x, int32 _y, int32 _w, int32 _h)
+void CPainter_2DUtils::DrawRect(int32_t _x, int32_t _y, int32_t _w, int32_t _h)
 {
 	
 	//m_pUtils->SetBlend(N3D::C2DUtils::EBlend_Alpha);
@@ -263,7 +263,7 @@ void CPainter_2DUtils::DrawRect(int32 _x, int32 _y, int32 _w, int32 _h)
 	//m_UtilsRect.Quad_End();
 }
 
-void CPainter_2DUtils::DrawText(int32 _x, int32 _y, const int8 *_pText, fp32 _r, fp32 _g, fp32 _b)
+void CPainter_2DUtils::DrawText(int32_t _x, int32_t _y, const int8 *_pText, fp32 _r, fp32 _g, fp32 _b)
 {
 	//m_pUtils->SetDefaults();
 	//m_pUtils->SetColor(121/255.0f, 108/255.0f, 92/255.0f, 1);
@@ -288,12 +288,12 @@ void CPainter_2DUtils::Init()
 	m_Font.m_Spacing = 6;
 }
 
-int32 CPainter_2DUtils::CreateImage(CImage &_Image)
+int32_t CPainter_2DUtils::CreateImage(CImage &_Image)
 {
 	return 1;
 }
 
-void CPainter_2DUtils::SetImage(int32 _iImage)
+void CPainter_2DUtils::SetImage(int32_t _iImage)
 {
 }
 
@@ -307,18 +307,18 @@ void CPainter_2DUtils::End()
 
 
 
-void CPainter_2DUtils::SetGlobalTranslate(int32 _x, int32 _y)
+void CPainter_2DUtils::SetGlobalTranslate(int32_t _x, int32_t _y)
 {
 	m_pUtils->SetGlobalTranslate(_x, _y);
 }
 
-void CPainter_2DUtils::SetClipping(bool _Use, int32 _x, int32 _y, int32 _w, int32 _h)
+void CPainter_2DUtils::SetClipping(bool _Use, int32_t _x, int32_t _y, int32_t _w, int32_t _h)
 {
 	m_pUtils->SetClipping(_Use, _x, _y, _w, _h);
 }
 
 
-void CPainter_2DUtils::SetUV(int32 _u, int32 _v, int32 _w, int32 _h)
+void CPainter_2DUtils::SetUV(int32_t _u, int32_t _v, int32_t _w, int32_t _h)
 {
 	m_pUtils->SetTexCoord(  (fp32)_u/(fp32)m_TextureWidth,
 							(fp32)_v/(fp32)m_TextureHeight,
@@ -326,7 +326,7 @@ void CPainter_2DUtils::SetUV(int32 _u, int32 _v, int32 _w, int32 _h)
 							(fp32)_v/(fp32)m_TextureHeight+(fp32)_h/(fp32)m_TextureHeight);
 }
 
-void CPainter_2DUtils::DrawRect(int32 _x, int32 _y, int32 _w, int32 _h)
+void CPainter_2DUtils::DrawRect(int32_t _x, int32_t _y, int32_t _w, int32_t _h)
 {
 	m_pUtils->SetTexture(m_iTexture);
 	m_pUtils->SetBlend(N3D::C2DUtils::EBlend_Alpha);
@@ -336,7 +336,7 @@ void CPainter_2DUtils::DrawRect(int32 _x, int32 _y, int32 _w, int32 _h)
 	m_pUtils->Quad_End();
 }
 
-void CPainter_2DUtils::DrawText(int32 _x, int32 _y, const int8 *_pText, fp32 _r, fp32 _g, fp32 _b)
+void CPainter_2DUtils::DrawText(int32_t _x, int32_t _y, const int8 *_pText, fp32 _r, fp32 _g, fp32 _b)
 {
 	m_pUtils->SetDefaults();
 	m_pUtils->SetBlend(N3D::C2DUtils::EBlend_Alpha);

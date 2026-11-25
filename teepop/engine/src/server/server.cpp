@@ -119,7 +119,7 @@ public:
 				CString Line = CfgFile.ReadLine();
 				CString Name = Line.GetStrSep(" ");
 				CString Password = Line.GetStrSep(" ");
-				int32 Level = Line.GetStrSep(" ").GetInt();
+				int32_t Level = Line.GetStrSep(" ").GetInt();
 				if(Name.Len() && Password.Len())
 					m_pAuth->NewUser(Name, Password, Level, false);
 			}
@@ -144,7 +144,7 @@ public:
 			{
 			case EAuthEvent_Success:
 				{
-					int32 iClient = rMsg.GetInt("client", -1);
+					int32_t iClient = rMsg.GetInt("client", -1);
 					if(iClient < 0)
 						break;
 					
@@ -153,8 +153,8 @@ public:
 						break;
 
 					CString Name = rMsg.GetString("username", "");
-					int32 Guest = rMsg.GetInt("guest", 0);
-					int32 Level = rMsg.GetInt("level", 0);
+					int32_t Guest = rMsg.GetInt("guest", 0);
+					int32_t Level = rMsg.GetInt("level", 0);
 
 					pPlayer->AttachRecviver(m_pChat);
 					pPlayer->AttachRecviver(m_pRoom);
@@ -171,7 +171,7 @@ public:
 			case EEvent_LeftRoom:
 			case EEvent_JoinedRoom:
 				{
-					int32 iClient = rMsg.GetInt("client", -1);
+					int32_t iClient = rMsg.GetInt("client", -1);
 					if(iClient < 0)
 						break;
 					
@@ -180,7 +180,7 @@ public:
 						break;
 
 					/*
-					int32 roomid = -1;
+					int32_t roomid = -1;
 					CRoom *pRoom = m_pRoom->GetRoom(pPlayer);
 
 					if(pRoom)
@@ -221,7 +221,7 @@ public:
 	class CPacket
 	{
 	public:
-		int32 m_Size;
+		int32_t m_Size;
 		int8 m_aData[1500];
 		
 		int64 m_SendTime;
@@ -230,7 +230,7 @@ public:
 	
 	TDynamicArray<CPacket*> m_lPackets;
 
-	int32 m_OtherPort;
+	int32_t m_OtherPort;
 	
 	void Init()
 	{
@@ -242,7 +242,7 @@ public:
 	void Update()
 	{
 		// send packets
-		for(int32 i = 0; i < m_lPackets.Len(); i++)
+		for(int32_t i = 0; i < m_lPackets.Len(); i++)
 		{
 			if(m_lPackets[i]->m_SendTime < GetTickCount())
 			{
@@ -263,7 +263,7 @@ public:
 		NNetwork::CAddr SrcAddr;
 		NNetwork::CAddr DstAddr;
 		int8 aData[1500];
-		int32 ReadBytes;
+		int32_t ReadBytes;
 		
 		if((ReadBytes = m_aSocket.RecvFrom(aData, 1500, SrcAddr)) > 0)
 		{
@@ -285,7 +285,7 @@ public:
 			MemoryCopy(pPacket->m_aData, aData, 1500);
 			pPacket->m_Target = DstAddr;
 			pPacket->m_Size = ReadBytes;
-			int32 Ping = 250+(int32)(Random()*100); // 150 - 400
+			int32_t Ping = 250+(int32_t)(Random()*100); // 150 - 400
 			pPacket->m_SendTime = GetTickCount()+(int64)(GetTickFrequency()*(Ping/1000.0f)); // 250ms
 		}
 	}
@@ -306,7 +306,7 @@ public:
 
 //
 //
-int32 FooMain(int8 *cmdline)
+int32_t FooMain(int8 *cmdline)
 {
 	CStdOutLogger stdlogger;
 	//CBadConnectionSimulator Simulator;

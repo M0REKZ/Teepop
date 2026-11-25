@@ -2,6 +2,8 @@
 
 #include "string.h"
 #include "log.h"
+#include <cstdarg>
+#include <cstdio>
 
 using namespace NFoo;
 
@@ -25,8 +27,15 @@ void NLog::Write(const int8 *_pBuf)
 void NLog::WriteF(const int8 *_pFormat, ...)
 {
 	int8 Buffer[4092];
-	StringCFormatArgList(Buffer, &_pFormat);
-	Write(Buffer);
+
+    va_list Args;
+    va_start(Args, _pFormat);
+
+    vsnprintf(Buffer, sizeof(Buffer), _pFormat, Args);
+
+    va_end(Args);
+
+    Write(Buffer);
 }
 
 //
@@ -65,7 +74,7 @@ void NLog::Detach(CLogger *_pLogger)
 	m_Lock.Release();
 }
 
-void Assert_(const int8 *pFile, int32 Line, bool _bVal)
+void Assert_(const int8 *pFile, int32_t Line, bool _bVal)
 {
 	if (!_bVal)
 	{

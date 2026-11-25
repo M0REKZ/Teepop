@@ -42,7 +42,7 @@ void CNetworkChatClient::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 {
 	if(iMsg == NETMSG("clChatMessage"))
 	{
-		int32 UserID = rStream.ReadBE<int32>();
+		int32_t UserID = rStream.ReadBE<int32_t>();
 		//CString user = rStream.Read_p16();
 		CString message = rStream.Read_p16();
 
@@ -56,14 +56,14 @@ void CNetworkChatClient::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 	}
 	else if(iMsg == NETMSG("clUserJoined"))
 	{
-		int32 UserID = rStream.ReadBE<int32>();
+		int32_t UserID = rStream.ReadBE<int32_t>();
 		CString user = rStream.Read_p8();
 		//if(!m_lUsers.Exist(user))
 		m_lUsers[UserID] = user;
 	}
 	else if(iMsg == NETMSG("clUserLeft"))
 	{
-		int32 UserID = rStream.ReadBE<int32>();
+		int32_t UserID = rStream.ReadBE<int32_t>();
 		//CString user = rStream.Read_p16();
 		m_lUsers.Remove(UserID);
 	}
@@ -72,18 +72,18 @@ void CNetworkChatClient::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 		m_lUsers.Clear();
 
 		m_Channel = rStream.Read_p8();
-		int32 nUsers = rStream.ReadBE<uint16>();
+		int32_t nUsers = rStream.ReadBE<uint16>();
 
-		for(int32 i = 0; i < nUsers; i++)
+		for(int32_t i = 0; i < nUsers; i++)
 		{
-			int32 id = rStream.ReadBE<int32>();
+			int32_t id = rStream.ReadBE<int32_t>();
 			m_lUsers[id] = rStream.Read_p8();
 		}
 
 		Signal(EEvent_ChannelSwitched);
 
 		NLog::WriteF("ChatClient: Switched channel to '%s'\n", m_Channel.GetData());
-		for(int32 i = 0; i < m_lUsers.Len(); i++)
+		for(int32_t i = 0; i < m_lUsers.Len(); i++)
 			NLog::WriteF("\t%s\n", m_lUsers.GetValue(i).GetData());
 	}
 }
@@ -124,9 +124,9 @@ void CNetworkChatClient::Chat(const int8 *pMsg)
 //
 //
 //
-const int8 *CNetworkChatClient::GetUserName(int32 id)
+const int8 *CNetworkChatClient::GetUserName(int32_t id)
 {
-	int32 pos = m_lUsers.Find(id);
+	int32_t pos = m_lUsers.Find(id);
 	if(pos >= 0)
 		return m_lUsers.GetValue(pos).GetData();
 	return "(null)";

@@ -36,8 +36,8 @@ namespace NFoo { namespace NNetwork {
 		void SetAny(uint16 _Port);
 
 		//
-		int32 operator=(CAddr &_pAddr);
-		int32 operator==(CAddr &_pAddr);
+		int32_t operator=(CAddr &_pAddr);
+		int32_t operator==(CAddr &_pAddr);
 
 	};
 	
@@ -45,7 +45,7 @@ namespace NFoo { namespace NNetwork {
 
 	class CSocket
 	{
-		int32 m_hSocket;
+		int32_t m_hSocket;
 		CAddr m_BoundAddress;
 	
 	public:
@@ -58,13 +58,13 @@ namespace NFoo { namespace NNetwork {
 		};
 
 		CSocket();
-		CSocket(int32 _hSocket);
+		CSocket(int32_t _hSocket);
 		virtual ~CSocket();
 		
 		//
 		bool Valid();
 
-		bool Create(int32 _Type);
+		bool Create(int32_t _Type);
 		void SetBlocking(bool _Block);
 		bool Bind(CAddr _Address);
 
@@ -74,12 +74,12 @@ namespace NFoo { namespace NNetwork {
 		bool Listen();
 		CSocket *Accept();
 
-		bool Send(const void *_pData, int32 _DataSize);
-		int32 Recv(void *_pData, int32 _DataSize);
+		bool Send(const void *_pData, int32_t _DataSize);
+		int32_t Recv(void *_pData, int32_t _DataSize);
 
 		// UDP
-		bool SendTo(const void *_pData, int32 _DataSize, CAddr &_Target);
-		int32 RecvFrom(void *_pData, int32 _DataSize, CAddr &_Source);
+		bool SendTo(const void *_pData, int32_t _DataSize, CAddr &_Target);
+		int32_t RecvFrom(void *_pData, int32_t _DataSize, CAddr &_Source);
 	};
 } } // namespaces
 

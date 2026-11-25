@@ -51,7 +51,7 @@ const intr g_aStencilOpTable[] =
 	D3DSTENCILOP_INVERT
 };
 
-void CDirectXDevice::Flag_Set(int32 _Flag, bool _On)
+void CDirectXDevice::Flag_Set(int32_t _Flag, bool _On)
 {
 	if (m_p3DDevice)
 	{
@@ -69,7 +69,7 @@ void CDirectXDevice::Flag_Set(int32 _Flag, bool _On)
 			}
 		case EFlag_ColorWrite:
 			{
-				int32 Mask = (_On ? (D3DCOLORWRITEENABLE_ALPHA | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_RED): 0);
+				int32_t Mask = (_On ? (D3DCOLORWRITEENABLE_ALPHA | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_RED): 0);
 				MACRO_DXCHECKERROR(m_p3DDevice->SetRenderState(D3DRS_COLORWRITEENABLE,Mask),"Error: CDirectXDevice::Flag_Set\n");
 				break;
 			}
@@ -157,7 +157,7 @@ void CDirectXDevice::Mode_StencilOp(intr _StencilFail, intr _ZFail, intr _Pass)
 	CState::Mode_StencilOp(_StencilFail, _ZFail, _Pass);
 }
 // Vertexbuffer operations, hmm, do we need to accumulate declarations along the way...
-void CDirectXDevice::Stream_Vertex(int32 _iVB)
+void CDirectXDevice::Stream_Vertex(int32_t _iVB)
 {
 	// Set vertexbuffer
 	if (_iVB != -1)
@@ -165,7 +165,7 @@ void CDirectXDevice::Stream_Vertex(int32 _iVB)
 		CDirectXVertexBuffer *pVertexBuffer = m_IndexHandler.GetObject<CDirectXVertexBuffer*>(_iVB, EID_VertexBuffer);
 		if (m_p3DDevice && pVertexBuffer && pVertexBuffer->m_pD3DPositionBuffer)
 		{
-			int32 ElementSize = GetBufferElementSize(EFormat_fp32) * ED3D_ELEMENTSPERPOSITION;
+			int32_t ElementSize = GetBufferElementSize(EFormat_fp32) * ED3D_ELEMENTSPERPOSITION;
 			MACRO_DXCHECKERROR(m_p3DDevice->SetStreamSource(ED3D_STREAMSOURCEINDEX_POSITION,pVertexBuffer->m_pD3DPositionBuffer,0,ElementSize),"Error: CDirectXDevice::Stream_Position\n");
 			m_StreamFlags |= ED3D_STREAMFLAG_POSITION;
 		}
@@ -182,7 +182,7 @@ void CDirectXDevice::Stream_Vertex(int32 _iVB)
 	CState::Stream_Vertex(_iVB);
 }
 
-void CDirectXDevice::Stream_Index(int32 _iIB)
+void CDirectXDevice::Stream_Index(int32_t _iIB)
 {
 	// Set indexbuffer
 	if (_iIB != -1)
@@ -204,7 +204,7 @@ void CDirectXDevice::Stream_Index(int32 _iIB)
 	CState::Stream_Index(_iIB);
 }
 
-void CDirectXDevice::Stream_Normal(int32 _iVB)
+void CDirectXDevice::Stream_Normal(int32_t _iVB)
 {
 	// Set normalbuffer
 	if (_iVB != -1)
@@ -212,7 +212,7 @@ void CDirectXDevice::Stream_Normal(int32 _iVB)
 		CDirectXVertexBuffer *pVertexBuffer = m_IndexHandler.GetObject<CDirectXVertexBuffer*>(_iVB, EID_VertexBuffer);
 		if (m_p3DDevice && pVertexBuffer && pVertexBuffer->m_pD3DNormalBuffer)
 		{
-			int32 ElementSize = GetBufferElementSize(EFormat_fp32) * ED3D_ELEMENTSPERNORMAL;
+			int32_t ElementSize = GetBufferElementSize(EFormat_fp32) * ED3D_ELEMENTSPERNORMAL;
 			MACRO_DXCHECKERROR(m_p3DDevice->SetStreamSource(ED3D_STREAMSOURCEINDEX_NORMAL,pVertexBuffer->m_pD3DNormalBuffer,0,ElementSize),"Error: CDirectXDevice::Stream_Normal\n");
 			m_StreamFlags |= ED3D_STREAMFLAG_NORMAL;
 		}
@@ -229,7 +229,7 @@ void CDirectXDevice::Stream_Normal(int32 _iVB)
 	CState::Stream_Normal(_iVB);
 }
 
-void CDirectXDevice::Stream_Color(int32 _iVB)
+void CDirectXDevice::Stream_Color(int32_t _iVB)
 {
 	// Set color buffer
 	if (_iVB != -1)
@@ -237,7 +237,7 @@ void CDirectXDevice::Stream_Color(int32 _iVB)
 		CDirectXVertexBuffer *pVertexBuffer = m_IndexHandler.GetObject<CDirectXVertexBuffer*>(_iVB, EID_VertexBuffer);
 		if (m_p3DDevice && pVertexBuffer && pVertexBuffer->m_pD3DColorBuffer)
 		{
-			int32 ElementSize = GetBufferElementSize(EFormat_int32) * ED3D_ELEMENTSPERCOLOR;
+			int32_t ElementSize = GetBufferElementSize(EFormat_int32) * ED3D_ELEMENTSPERCOLOR;
 			MACRO_DXCHECKERROR(m_p3DDevice->SetStreamSource(ED3D_STREAMSOURCEINDEX_COLOR,pVertexBuffer->m_pD3DColorBuffer,0,ElementSize),"Error: CDirectXDevice::Stream_Color\n");
 			m_StreamFlags |= ED3D_STREAMFLAG_COLOR;
 		}
@@ -254,7 +254,7 @@ void CDirectXDevice::Stream_Color(int32 _iVB)
 	CState::Stream_Color(_iVB);
 }
 
-void CDirectXDevice::Stream_Texture(int32 _iTex, int32 _iVB)
+void CDirectXDevice::Stream_Texture(int32_t _iTex, int32_t _iVB)
 {
 	// Set texture coordinate index
 	if (_iVB != -1)
@@ -262,7 +262,7 @@ void CDirectXDevice::Stream_Texture(int32 _iTex, int32 _iVB)
 		CDirectXVertexBuffer *pVertexBuffer = m_IndexHandler.GetObject<CDirectXVertexBuffer*>(_iVB, EID_VertexBuffer);
 		if (m_p3DDevice && pVertexBuffer && pVertexBuffer->m_lpD3DTexCoordbuffer[_iTex])
 		{
-			int32 ElementSize = GetBufferElementSize(EFormat_fp32) * ED3D_ELEMENTSPERTEXCOORD;
+			int32_t ElementSize = GetBufferElementSize(EFormat_fp32) * ED3D_ELEMENTSPERTEXCOORD;
 			MACRO_DXCHECKERROR(m_p3DDevice->SetStreamSource(ED3D_STREAMSOURCEINDEX_TEXCOORD_BASE+_iTex,pVertexBuffer->m_lpD3DTexCoordbuffer[_iTex],0,ElementSize),"Error: CDirectXDevice::Stream_Texture\n");
 			m_StreamFlags |= (ED3D_STREAMFLAG_TEXCOORD_BASE << _iTex);
 		}
@@ -280,7 +280,7 @@ void CDirectXDevice::Stream_Texture(int32 _iTex, int32 _iVB)
 }
 
 // shaders
-void CDirectXDevice::Shader_Vertex(int32 _iShader)
+void CDirectXDevice::Shader_Vertex(int32_t _iShader)
 {
 	if (m_p3DDevice)
 	{
@@ -305,7 +305,7 @@ void CDirectXDevice::Shader_Vertex(int32 _iShader)
 	CState::Shader_Vertex(_iShader);
 }
 
-void CDirectXDevice::Shader_Pixel(int32 _iShader)
+void CDirectXDevice::Shader_Pixel(int32_t _iShader)
 {
 	if (m_p3DDevice)
 	{
@@ -330,21 +330,21 @@ void CDirectXDevice::Shader_Pixel(int32 _iShader)
 	CState::Shader_Pixel(_iShader);
 }
 
-void CDirectXDevice::Shader_VertexParamBool(int32 _iStartReg, const bool* _pBools, int32 _Num)
+void CDirectXDevice::Shader_VertexParamBool(int32_t _iStartReg, const bool* _pBools, int32_t _Num)
 {
 	if (m_p3DDevice)
 		MACRO_DXCHECKERROR(m_p3DDevice->SetVertexShaderConstantB(_iStartReg,(const BOOL*)_pBools,_Num),"Error: CDirectXDevice::Shader_VertexParamBool\n");
 	CState::Shader_VertexParamBool(_iStartReg, _pBools, _Num);
 }
 
-void CDirectXDevice::Shader_VertexParamFloat(int32 _iStartReg, const TVector4<fp32>* _pFloats, int32 _Num)
+void CDirectXDevice::Shader_VertexParamFloat(int32_t _iStartReg, const TVector4<fp32>* _pFloats, int32_t _Num)
 {
 	if (m_p3DDevice)
 		MACRO_DXCHECKERROR(m_p3DDevice->SetVertexShaderConstantF(_iStartReg,(const float*)_pFloats,_Num),"Error: CDirectXDevice::Shader_VertexParamFloat\n");
 	CState::Shader_VertexParamFloat(_iStartReg, _pFloats, _Num);
 }
 
-void CDirectXDevice::Shader_VertexParamInt(int32 _iStartReg, const TVector4<int32>* _pInts, int32 _Num)
+void CDirectXDevice::Shader_VertexParamInt(int32_t _iStartReg, const TVector4<int32_t>* _pInts, int32_t _Num)
 {
 	if (m_p3DDevice)
 		MACRO_DXCHECKERROR(m_p3DDevice->SetVertexShaderConstantI(_iStartReg,(const int*)_pInts,_Num),"Error: CDirectXDevice::Shader_VertexParamInt\n");
@@ -352,14 +352,14 @@ void CDirectXDevice::Shader_VertexParamInt(int32 _iStartReg, const TVector4<int3
 }
 
 // _Num == Number of boolean values in the array of constants
-void CDirectXDevice::Shader_PixelParamBool(int32 _iStartReg, const bool* _pBools, int32 _Num)
+void CDirectXDevice::Shader_PixelParamBool(int32_t _iStartReg, const bool* _pBools, int32_t _Num)
 {
 	if (m_p3DDevice)
 		MACRO_DXCHECKERROR(m_p3DDevice->SetPixelShaderConstantB(_iStartReg,(const BOOL*)_pBools,_Num),"Error: CDirectXDevice::Shader_PixelParamBool\n");
 	CState::Shader_PixelParamBool(_iStartReg, _pBools, _Num);
 }
 // _Num == Number of four float vectors in the array of constants
-void CDirectXDevice::Shader_PixelParamFloat(int32 _iStartReg, const TVector4<fp32>* _pFloats, int32 _Num)
+void CDirectXDevice::Shader_PixelParamFloat(int32_t _iStartReg, const TVector4<fp32>* _pFloats, int32_t _Num)
 {
 	if (m_p3DDevice)
 		MACRO_DXCHECKERROR(m_p3DDevice->SetPixelShaderConstantF(_iStartReg,(const float*)_pFloats,_Num),"Error: CDirectXDevice::Shader_PixelParamFloat\n");
@@ -367,7 +367,7 @@ void CDirectXDevice::Shader_PixelParamFloat(int32 _iStartReg, const TVector4<fp3
 }
 
 // _Num == Number of four integer vectors in the array of constants
-void CDirectXDevice::Shader_PixelParamInt(int32 _iStartReg, const TVector4<int32>* _pInts, int32 _Num)
+void CDirectXDevice::Shader_PixelParamInt(int32_t _iStartReg, const TVector4<int32_t>* _pInts, int32_t _Num)
 {
 	if (m_p3DDevice)
 		MACRO_DXCHECKERROR(m_p3DDevice->SetPixelShaderConstantI(_iStartReg,(const int*)_pInts,_Num),"Error: CDirectXDevice::Shader_PixelParamInt\n");
@@ -376,7 +376,7 @@ void CDirectXDevice::Shader_PixelParamInt(int32 _iStartReg, const TVector4<int32
 
 // textures
 // -1 disable
-void CDirectXDevice::Texture_Set(intr _iUnit, int32 _iTexture)
+void CDirectXDevice::Texture_Set(intr _iUnit, int32_t _iTexture)
 {
 	if (m_p3DDevice)
 	{

@@ -9,7 +9,7 @@
 namespace NFoo {
 namespace NGUI {
 
-	typedef TVector2<int32> CPoint;
+	typedef TVector2<int32_t> CPoint;
 
 }
 }

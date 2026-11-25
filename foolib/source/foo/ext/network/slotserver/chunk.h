@@ -44,14 +44,14 @@ namespace NFoo { namespace NSlotServer {
 		
 		const int8 *String();
 
-		int32 GetSize();
+		int32_t GetSize();
 
 		NFoo::CMemoryWriter m_Writer; // used for costruction purposes
 		NFoo::CMemoryReader m_Reader; // used for costruction purposes
 		void ResetStreams();
 
 		//NFoo::CMemoryWriter &BeginWrite();
-		//int32 EndWrite();
+		//int32_t EndWrite();
 
 		//NFoo::NNetwork::CAddr m_Address; // Target / Source address
 
@@ -71,8 +71,8 @@ namespace NFoo { namespace NSlotServer {
 	class CChunkSocket : public NFoo::NNetwork::CSocket
 	{
 	public:
-		int32 RecvChunks(NFoo::TDynamicArray<CChunk*> &rlChunks, NFoo::NNetwork::CAddr &rSource);
-		int32 SendChunks(NFoo::TDynamicArray<CChunk*> &rlChunks, NFoo::NNetwork::CAddr &rTarget);
+		int32_t RecvChunks(NFoo::TDynamicArray<CChunk*> &rlChunks, NFoo::NNetwork::CAddr &rSource);
+		int32_t SendChunks(NFoo::TDynamicArray<CChunk*> &rlChunks, NFoo::NNetwork::CAddr &rTarget);
 	};
 } }
 #endif // __CHUNK_H__

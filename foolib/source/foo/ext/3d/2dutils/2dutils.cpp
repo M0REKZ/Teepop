@@ -21,7 +21,7 @@ bool C2DClip::Clip(const TVector2<fp32>& _P1, const TVector2<fp32>& _P2, const T
 	if (!m_bClip)
 		return false;
 
-	int32 Clipped = 0;
+	int32_t Clipped = 0;
 
 	if (m_bClipAny)
 	{
@@ -56,7 +56,7 @@ bool C2DClip::Clip(const TVector2<fp32>& _P1, const TVector2<fp32>& _P2, const T
 	if (!m_bClip)
 		return false;
 	
-	int32 Clipped = 0;
+	int32_t Clipped = 0;
 
 	if (m_bClipAny)
 	{
@@ -87,7 +87,7 @@ bool C2DClip::Clip(const TVector2<fp32>& _P1, const TVector2<fp32>& _P2)
 	if (!m_bClip)
 		return false;
 
-	int32 Clipped = 0;
+	int32_t Clipped = 0;
 
 	if (m_bClipAny)
 	{
@@ -134,7 +134,7 @@ bool C2DClip::Clip(const TVector2<fp32>& _P1)
 
 void C2DUtils::CFont::BuildNormalAscii()
 {
-	for(int32 i = 0; i < 256; i++)
+	for(int32_t i = 0; i < 256; i++)
 		m_aTranslationTable[i] = i;
 }
 
@@ -142,7 +142,7 @@ void C2DUtils::CFont::BuildTranslationTable(const uint8 *_pString)
 {
 	MemorySet(m_aTranslationTable, 0, 256);
 
-	int32 i = 0;
+	int32_t i = 0;
 	while(*_pString)
 	{
 		m_aTranslationTable[*_pString] = i;
@@ -181,7 +181,7 @@ C2DUtils::~C2DUtils()
 //
 //
 //
-bool C2DUtils::Init(NFoo::N3D::CDevice *_pDevice, int32 _BufferSize)
+bool C2DUtils::Init(NFoo::N3D::CDevice *_pDevice, int32_t _BufferSize)
 {
 	while(true)
 	{
@@ -220,7 +220,7 @@ void C2DUtils::Shutdown()
 //
 //
 //
-bool C2DUtils::LockVB(int32 _iMode)
+bool C2DUtils::LockVB(int32_t _iMode)
 {
 	if(m_Mode != EMode_Idle)
 	{
@@ -288,7 +288,7 @@ void C2DUtils::SetWriteMask(bool r, bool g, bool b, bool a)
 	m_aWriteMask[3] = a;
 }
 
-void C2DUtils::SetScreenSize(int32 width, int32 height)
+void C2DUtils::SetScreenSize(int32_t width, int32_t height)
 {
 	m_ScreenWidth = width;
 	m_ScreenHeight = height;
@@ -323,14 +323,14 @@ void C2DUtils::PushClip(C2DClip _Clip)
 
 void C2DUtils::PopClip()
 {
-	int32 Len = m_lClipStack.Len();
+	int32_t Len = m_lClipStack.Len();
 	if (Len > 0)
 		m_lClipStack.RemoveByIndex(Len - 1);
 }
 
 C2DClip C2DUtils::GetClip() const
 {
-	int32 Len = m_lClipStack.Len();
+	int32_t Len = m_lClipStack.Len();
 	if (Len > 0)
 		return m_lClipStack[Len - 1];
 
@@ -347,13 +347,13 @@ void C2DUtils::Quad_SetRotation(fp32 _r)
 //
 //
 //
-void C2DUtils::SetTexture(int32 _iTex)
+void C2DUtils::SetTexture(int32_t _iTex)
 {
 	m_iTexture = _iTex;
 }
 
 
-void C2DUtils::SetBlend(int32 _iBlend)
+void C2DUtils::SetBlend(int32_t _iBlend)
 {
 	m_Blend = _iBlend;
 }
@@ -362,7 +362,7 @@ void C2DUtils::SetBlend(int32 _iBlend)
 //
 //
 //
-void C2DUtils::SetTexCoord(int32 _Index, fp32 _u, fp32 _v)
+void C2DUtils::SetTexCoord(int32_t _Index, fp32 _u, fp32 _v)
 {
 	m_aTexCoords[_Index][0] = _u;
 	m_aTexCoords[_Index][1] = _v;
@@ -382,7 +382,7 @@ void C2DUtils::SetTexCoord(fp32 _u0, fp32 _v0, fp32 _u1, fp32 _v1)
 //
 //
 //
-void C2DUtils::SetColor(int32 _Index, fp32 _r, fp32 _g, fp32 _b, fp32 _a)
+void C2DUtils::SetColor(int32_t _Index, fp32 _r, fp32 _g, fp32 _b, fp32 _a)
 {
 	m_aColors[_Index][0] = _r;
 	m_aColors[_Index][1] = _g;
@@ -549,7 +549,7 @@ void C2DUtils::Quad_DrawTL(fp32 _x, fp32 _y, fp32 _w, fp32 _h)
 	aVectors[2].Set(_x, _y+_h);
 	aVectors[3].Set(_x+_w, _y+_h);
 
-	for(int32 i = 0; i < 4; i++)
+	for(int32_t i = 0; i < 4; i++)
 	{
 		TVector2<fp32> Temp = aVectors[i] - Center;
 		Temp.Rotate(m_QuadRotation);
@@ -557,7 +557,7 @@ void C2DUtils::Quad_DrawTL(fp32 _x, fp32 _y, fp32 _w, fp32 _h)
 	}
 
 	//if(m_UseClip)
-	for(int32 i = 0; i < 4; i++)
+	for(int32_t i = 0; i < 4; i++)
 		aVectors[i] += m_GlobalTranslate;
 
 	/*
@@ -616,8 +616,8 @@ void C2DUtils::Quad_End()
 	//
 	if(m_UseClip)
 	{
-		m_pDevice->SetScissors((int32)m_ClipRect.m_Position.x, (int32)m_ClipRect.m_Position.y,
-								(int32)m_ClipRect.m_Size.x, (int32)m_ClipRect.m_Size.y);
+		m_pDevice->SetScissors((int32_t)m_ClipRect.m_Position.x, (int32_t)m_ClipRect.m_Position.y,
+								(int32_t)m_ClipRect.m_Size.x, (int32_t)m_ClipRect.m_Size.y);
 		m_pDevice->Flag_Set(EFlag_ScissorTest, true);
 	}
 	
@@ -646,10 +646,15 @@ void C2DUtils::Text_Begin(CFont *_pFont)
 //
 //
 //
-void C2DUtils::Text_Draw(fp32 _x, fp32 _y, int32 _Flags, const int8 *_pFormat, ...)
+void C2DUtils::Text_Draw(fp32 _x, fp32 _y, int32_t _Flags, const int8 *_pFormat, ...)
 {
 	int8 aBuffer[1024*4];
-	StringCFormatArgList(aBuffer, &_pFormat);
+	va_list Args;
+    va_start(Args, _pFormat);
+
+    StringCFormatArgList(aBuffer, sizeof(aBuffer), _pFormat, Args);
+
+    va_end(Args);
 
 	fp32 w = 1.0f/m_pFont->m_XCells;
 	fp32 h = 1.0f/m_pFont->m_YCells;
@@ -663,7 +668,7 @@ void C2DUtils::Text_Draw(fp32 _x, fp32 _y, int32 _Flags, const int8 *_pFormat, .
 		{
 			pCurrent++;
 			fp32 colors[4] = {1};
-			for(int32 i = 0; i < 4 && *pCurrent; i++)
+			for(int32_t i = 0; i < 4 && *pCurrent; i++)
 			{
 				c = *pCurrent;
 				pCurrent++;

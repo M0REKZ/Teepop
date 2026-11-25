@@ -8,17 +8,17 @@ namespace NEngine
 	class CNetworkServer : public CModule // : public CNetworkBase
 	{
 		CSlotServer m_SlotServer;
-		TMap<int32, CNetworkConnection*> m_mConnections;
+		TMap<int32_t, CNetworkConnection*> m_mConnections;
 		CString m_VersionString;
 	public:
 
 		//
-		void Start(int32 Port);
-		void GetClients(TDynamicArray<int32> &lClients);
+		void Start(int32_t Port);
+		void GetClients(TDynamicArray<int32_t> &lClients);
 		void SetVersion(const int8 *pVersion) { m_VersionString = pVersion; }
-		//int32 SendMessage(int32 iClient, CNetMessage &rMsg);
+		//int32_t SendMessage(int32_t iClient, CNetMessage &rMsg);
 
-		CNetworkConnection *GetClient(int32 iClient) { return m_mConnections.Find(iClient, NULL); }
+		CNetworkConnection *GetClient(int32_t iClient) { return m_mConnections.Find(iClient, NULL); }
 		virtual const int8 *GetStatusString();
 		virtual void Update();
 

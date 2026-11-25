@@ -14,7 +14,7 @@ namespace NEngine
 
 		CString m_Channel;
 	public:
-		TMap<int32, CString> m_lUsers;
+		TMap<int32_t, CString> m_lUsers;
 
 		enum
 		{
@@ -22,7 +22,7 @@ namespace NEngine
 			EEvent_ChatMessage
 		};
 
-		const int8 *GetUserName(int32 id);
+		const int8 *GetUserName(int32_t id);
 		void SetChannel(const int8 *pChannel);
 		void Chat(const int8 *pMsg);
 	};

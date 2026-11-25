@@ -10,13 +10,13 @@ CZReader::CZReader(CInputStream &rSource)
 {
 	m_pError = NULL;
 	m_Ready = true;
-	int32 CMF = m_rSource.ReadNE<uint8>();
-	int32 Flags = m_rSource.ReadNE<uint8>();
-	int32 Method = CMF&0xF;
-	int32 CompInfo = CMF>>4;
-	int32 Check = Flags&0xf;
+	int32_t CMF = m_rSource.ReadNE<uint8>();
+	int32_t Flags = m_rSource.ReadNE<uint8>();
+	int32_t Method = CMF&0xF;
+	int32_t CompInfo = CMF>>4;
+	int32_t Check = Flags&0xf;
 	bool Dict = (Flags>>5)&1;
-	int32 Level = Flags>>6;
+	int32_t Level = Flags>>6;
 
 	if((CMF*256+Flags)%31)
 		m_pError = "Unable to load. zlib header check failed";
@@ -34,7 +34,7 @@ CZReader::CZReader(CInputStream &rSource)
 bool CZReader::IsReady() { return m_Ready && m_rSource.IsReady(); }
 bool CZReader::EndOfStream() { return m_rSource.EndOfStream(); }
 
-int32 CZReader::Read(void *pBuffer, int32 Size)
+int32_t CZReader::Read(void *pBuffer, int32_t Size)
 {
 	return m_DeflateReader.Read(pBuffer, Size);
 }

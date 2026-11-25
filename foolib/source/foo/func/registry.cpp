@@ -18,7 +18,7 @@ CRegistry::~CRegistry()
 //
 CRegistry *CRegistry::GetChild(const int8 *pName)
 {
-	for(int32 i = 0; i < m_lValues.Len(); i++)
+	for(int32_t i = 0; i < m_lValues.Len(); i++)
 		if(m_lValues[i]->m_Name == pName)
 			return m_lValues[i];
 	return NULL;
@@ -29,7 +29,7 @@ CRegistry *CRegistry::GetChild(const int8 *pName)
 //
 CRegistry *CRegistry::GetChild(const int8 *pName, const int8 *pValue)
 {
-	for(int32 i = 0; i < m_lValues.Len(); i++)
+	for(int32_t i = 0; i < m_lValues.Len(); i++)
 		if(m_lValues[i]->m_Name == pName && m_lValues[i]->m_Value == pValue)
 			return m_lValues[i];
 	return NULL;
@@ -38,13 +38,13 @@ CRegistry *CRegistry::GetChild(const int8 *pName, const int8 *pValue)
 //
 //
 //
-void CRegistry::Dump(int32 Indent)
+void CRegistry::Dump(int32_t Indent)
 {
-	for(int32 i = 0; i < Indent; i++)
+	for(int32_t i = 0; i < Indent; i++)
 		NLog::Write("\t");
 	NLog::WriteF("%s %s\n", m_Name.GetData(), m_Value.GetData());
 
-	for(int32 i = 0; i < m_lValues.Len(); i++)
+	for(int32_t i = 0; i < m_lValues.Len(); i++)
 		m_lValues[i]->Dump(Indent+1);
 }
 
@@ -57,13 +57,13 @@ bool CRegistry::Read(CInputStream &rStream)
 
 	CRegistry *pLastChild = NULL;
 	CRegistry *pStackChild[32] = {0};
-	int32 Level = 0;
-	int32 State = ERead;
+	int32_t Level = 0;
+	int32_t State = ERead;
 	
 	int8 *pLine = NULL;
 	int8 *pName = NULL;
 	int8 *pValue = NULL;
-	int32 LineLevel = 0;
+	int32_t LineLevel = 0;
 
 	pStackChild[0] = this;
 
@@ -76,7 +76,7 @@ bool CRegistry::Read(CInputStream &rStream)
 				if(rStream.EndOfStream())
 					return true;
 				pLine = rStream.ReadLine();
-				int32 len = StringLength(pLine);
+				int32_t len = StringLength(pLine);
 				if(len == 0)
 					break; // empty line, read again
 

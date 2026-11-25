@@ -83,14 +83,14 @@ void CAddr::SetAny(uint16 _Port)
 	m_aAddress[0] = m_aAddress[1] = m_aAddress[2] = m_aAddress[3] = 0;
 }
 
-int32 CAddr::operator=(CAddr &_pAddr)
+int32_t CAddr::operator=(CAddr &_pAddr)
 {
 	m_Port = _pAddr.m_Port;
 	memcpy(m_aAddress, _pAddr.m_aAddress, sizeof(int8)*4);
 	return 0;
 }
 
-int32 CAddr::operator==(CAddr &_pAddr)
+int32_t CAddr::operator==(CAddr &_pAddr)
 {
 	if(m_aAddress[0] == _pAddr.m_aAddress[0] &&	m_aAddress[1] == _pAddr.m_aAddress[1] &&
 		m_aAddress[2] == _pAddr.m_aAddress[2] &&m_aAddress[3] == _pAddr.m_aAddress[3] &&

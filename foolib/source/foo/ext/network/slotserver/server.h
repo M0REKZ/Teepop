@@ -17,10 +17,10 @@ namespace NFoo { namespace NSlotServer {
 		public:
 			CSlot();
 			NFoo::CString m_Name;
-			uint32 m_UserData;
-			int32 m_iClient;		// Unique client id
+			uint32_t m_UserData;
+			int32_t m_iClient;		// Unique client id
 
-			//int32 m_SwitchState; // 0 = normal, 1 = turned online, 2 = turned offline
+			//int32_t m_SwitchState; // 0 = normal, 1 = turned online, 2 = turned offline
 
 			CSlot &operator = (const CSlot &rSlot)
 			{
@@ -38,12 +38,12 @@ namespace NFoo { namespace NSlotServer {
 		CChunkSocket m_Socket;
 		TDynamicArray<CSlot*> m_lSlot;
 		CSlot *NewSlot();
-		int32 m_CurrentClientID;
+		int32_t m_CurrentClientID;
 	public:
-		int32 GetNumClients();
-		int32 GetClientID(int32 Index);
-		CConnection *GetClient(int32 Index);
-		CConnection *FindClient(int32 iClient);
+		int32_t GetNumClients();
+		int32_t GetClientID(int32_t Index);
+		CConnection *GetClient(int32_t Index);
+		CConnection *FindClient(int32_t iClient);
 		
 		CSlotServer();
 		~CSlotServer();

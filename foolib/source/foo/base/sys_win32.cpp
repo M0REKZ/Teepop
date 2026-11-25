@@ -29,7 +29,7 @@ void NFoo::MessageBox(const int8 *_pMsg,const int8 *_pCaption)
 	::MessageBoxA(0,_pMsg,_pCaption,MB_ICONINFORMATION);
 }
 
-void NFoo::Sleep(int32 _Milliseconds)
+void NFoo::Sleep(int32_t _Milliseconds)
 {
 	::Sleep(_Milliseconds);
 }

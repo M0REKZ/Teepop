@@ -24,7 +24,7 @@ const D3DPRIMITIVETYPE g_aDrawTable[] =
 };
 
 
-const int32 g_aBaseTable[] = 
+const int32_t g_aBaseTable[] = 
 {
 	1,//D3DPT_POINTLIST,
 	2,//D3DPT_LINELIST,
@@ -35,7 +35,7 @@ const int32 g_aBaseTable[] =
 	0,//(D3DPRIMITIVETYPE)0 /*Quads not supported*/
 };
 
-const int32 g_aExtraTable[] = 
+const int32_t g_aExtraTable[] = 
 {
 	1,//D3DPT_POINTLIST,
 	2,//D3DPT_LINELIST,
@@ -88,7 +88,7 @@ bool CDirectXDevice::Init(CMode _Mode)
 		RegisterClass(&WndClass );
 
 		// Set the window's initial style
-		uint32 WindowStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | 
+		uint32_t WindowStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | 
 			WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_VISIBLE;
 
 		// Set the window's initial width
@@ -150,7 +150,7 @@ CDirectXDevice::~CDirectXDevice()
 }
 
 // Texture handling
-int32 CDirectXDevice::Internal_CreateTexture(int32 _Width, int32 _Height, int32 _Format, 
+int32_t CDirectXDevice::Internal_CreateTexture(int32_t _Width, int32_t _Height, int32_t _Format, 
 											 uint8 *_pData)
 {
 	if (!m_p3DDevice)
@@ -210,7 +210,7 @@ int32 CDirectXDevice::Internal_CreateTexture(int32 _Width, int32 _Height, int32 
 	SafeRelease(pTexture);
 	
 	// Add it to the index
-	int32 iTexture = m_IndexHandler.GetFree(EID_Texture);
+	int32_t iTexture = m_IndexHandler.GetFree(EID_Texture);
 	m_IndexHandler.SetData(iTexture, pTextureInfo);
 	pTextureInfo->m_pTexture = pVideoMemTexture;
 	pTextureInfo->m_Info.m_Format = _Format;
@@ -329,7 +329,7 @@ void SetTextureData(D3DFORMAT _DestFormat, uint8* _pDest, const uint8 _RGBA[4])
 	}
 }
 
-void GetTextureData(int32 _ImageFormat, uint8* _pData, uint8 _RGBA[4])
+void GetTextureData(int32_t _ImageFormat, uint8* _pData, uint8 _RGBA[4])
 {
 	switch (_ImageFormat)
 	{
@@ -375,18 +375,18 @@ void GetTextureData(int32 _ImageFormat, uint8* _pData, uint8 _RGBA[4])
 	}
 }
 
-bool CDirectXDevice::CopyTextureData(int32 _Width, int32 _Height, const D3DLOCKED_RECT& _LockedRect, 
-									 D3DFORMAT _TexFormat, uint8* _pData, int32 _Format)
+bool CDirectXDevice::CopyTextureData(int32_t _Width, int32_t _Height, const D3DLOCKED_RECT& _LockedRect, 
+									 D3DFORMAT _TexFormat, uint8* _pData, int32_t _Format)
 {
-	int32 TexelSize = GetTexelSize(_TexFormat);
+	int32_t TexelSize = GetTexelSize(_TexFormat);
 	// Don't support 64 bit textures at this time
 	if (TexelSize <= 0 || TexelSize > 4)
 		return false;
 
-	for (int32 iY = 0; iY < _Height; iY++)
+	for (int32_t iY = 0; iY < _Height; iY++)
 	{
 		uint8* pCurrentPos = (uint8*)(_LockedRect.pBits) + iY * _LockedRect.Pitch;
-		for (int32 iX = 0; iX < _Width; iX++)
+		for (int32_t iX = 0; iX < _Width; iX++)
 		{
 			uint8 RGBA[4];
 			GetTextureData(_Format, _pData, RGBA);
@@ -397,20 +397,20 @@ bool CDirectXDevice::CopyTextureData(int32 _Width, int32 _Height, const D3DLOCKE
 	return true;
 }
 
-int32 CDirectXDevice::CreateTexture(int32 _Width, int32 _Height, int32 _Format)
+int32_t CDirectXDevice::CreateTexture(int32_t _Width, int32_t _Height, int32_t _Format)
 {
 	uint8 *pData = new uint8 [_Width*_Height*4]; // Worst case, temporary data
-	int32 iTex = Internal_CreateTexture(_Width, _Height, _Format, pData);
+	int32_t iTex = Internal_CreateTexture(_Width, _Height, _Format, pData);
 	SafeArrayDelete(pData);
 	return iTex;
 }
 
-int32 CDirectXDevice::CreateTexture(CImage &_Image)
+int32_t CDirectXDevice::CreateTexture(CImage &_Image)
 {
 	return Internal_CreateTexture(_Image.m_Desc.m_Size.x, _Image.m_Desc.m_Size.y, _Image.m_Desc.m_Format, _Image.m_pData);
 }
 
-bool CDirectXDevice::DestroyTexture(int32 _iTexture)
+bool CDirectXDevice::DestroyTexture(int32_t _iTexture)
 {
 	CDirectXTexture *pTexture = m_IndexHandler.GetObject<CDirectXTexture*>(_iTexture, EID_Texture);
 	if(!pTexture)
@@ -422,7 +422,7 @@ bool CDirectXDevice::DestroyTexture(int32 _iTexture)
 	return true;
 }
 
-CTextureInfo CDirectXDevice::GetTextureInfo(int32 _iTexture)
+CTextureInfo CDirectXDevice::GetTextureInfo(int32_t _iTexture)
 {
 	CDirectXTexture *pTexture = m_IndexHandler.GetObject<CDirectXTexture*>(_iTexture, EID_Texture);
 	if (pTexture)
@@ -430,7 +430,7 @@ CTextureInfo CDirectXDevice::GetTextureInfo(int32 _iTexture)
 	return CTextureInfo();
 }
 
-int32 CDirectXDevice::CreateVertexBuffer(int32 _Count, int32 _What, int32 _Flags)
+int32_t CDirectXDevice::CreateVertexBuffer(int32_t _Count, int32_t _What, int32_t _Flags)
 {
 	CDirectXVertexBuffer* pVertexBuffer = new CDirectXVertexBuffer();
 	if (!pVertexBuffer || !m_p3DDevice)
@@ -442,7 +442,7 @@ int32 CDirectXDevice::CreateVertexBuffer(int32 _Count, int32 _What, int32 _Flags
 	if (_What & EVB_Vertex)
 	{
 		// Assume fp32 for now
-		int32 BufferSize = GetBufferElementSize(EFormat_fp32) * _Count * ED3D_ELEMENTSPERPOSITION;
+		int32_t BufferSize = GetBufferElementSize(EFormat_fp32) * _Count * ED3D_ELEMENTSPERPOSITION;
 		if (!SUCCEEDED(m_p3DDevice->CreateVertexBuffer(BufferSize,0/*Usage*/,0/*FVF*/,MemPlacement,
 			&pVertexBuffer->m_pD3DPositionBuffer,NULL)))
 		{
@@ -452,8 +452,8 @@ int32 CDirectXDevice::CreateVertexBuffer(int32 _Count, int32 _What, int32 _Flags
 	}
 	if (_What & EVB_Color)
 	{
-		// Must have uint32 colors?
-		int32 ColorBufferSize = GetBufferElementSize(EFormat_int32) * _Count * ED3D_ELEMENTSPERCOLOR;
+		// Must have uint32_t colors?
+		int32_t ColorBufferSize = GetBufferElementSize(EFormat_int32) * _Count * ED3D_ELEMENTSPERCOLOR;
 		if (!SUCCEEDED(m_p3DDevice->CreateVertexBuffer(ColorBufferSize,0/*Usage*/,0/*FVF*/,MemPlacement,
 			&pVertexBuffer->m_pD3DColorBuffer,NULL)))
 		{
@@ -463,8 +463,8 @@ int32 CDirectXDevice::CreateVertexBuffer(int32 _Count, int32 _What, int32 _Flags
 	}
 	if (_What & EVB_Normal)
 	{
-		// Must have uint32 colors?
-		int32 NormalBufferSize = GetBufferElementSize(EFormat_fp32) * _Count * ED3D_ELEMENTSPERNORMAL;
+		// Must have uint32_t colors?
+		int32_t NormalBufferSize = GetBufferElementSize(EFormat_fp32) * _Count * ED3D_ELEMENTSPERNORMAL;
 		if (!SUCCEEDED(m_p3DDevice->CreateVertexBuffer(NormalBufferSize,0/*Usage*/,0/*FVF*/,MemPlacement,
 			&pVertexBuffer->m_pD3DNormalBuffer,NULL)))
 		{
@@ -474,10 +474,10 @@ int32 CDirectXDevice::CreateVertexBuffer(int32 _Count, int32 _What, int32 _Flags
 	}
 	if (_What & EVB_TextureMask)
 	{
-		for (int32 iTex = 0; iTex < EMaxTextureUnits; iTex++)
+		for (int32_t iTex = 0; iTex < EMaxTextureUnits; iTex++)
 		{
 			// Assume float2?
-			int32 TextureBufferSize = GetBufferElementSize(EFormat_fp32) * _Count * ED3D_ELEMENTSPERTEXCOORD;
+			int32_t TextureBufferSize = GetBufferElementSize(EFormat_fp32) * _Count * ED3D_ELEMENTSPERTEXCOORD;
 			if (_What & (EVB_TextureBase << iTex))
 			{
 				if (!SUCCEEDED(m_p3DDevice->CreateVertexBuffer(TextureBufferSize,0/*Usage*/,0/*FVF*/,MemPlacement,
@@ -498,14 +498,14 @@ int32 CDirectXDevice::CreateVertexBuffer(int32 _Count, int32 _What, int32 _Flags
 	pVertexBuffer->m_Count = _Count;
 	
 	// Add it to the index
-	int32 iVertexBuffer = m_IndexHandler.GetFree(EID_VertexBuffer);
+	int32_t iVertexBuffer = m_IndexHandler.GetFree(EID_VertexBuffer);
 	m_IndexHandler.SetData(iVertexBuffer, pVertexBuffer);
 	
 	return iVertexBuffer;
 }
 
 // Get vertexbuffer from id
-CVertexBuffer* CDirectXDevice::LockVertexBuffer(int32 _iBuffer, int32 _What)
+CVertexBuffer* CDirectXDevice::LockVertexBuffer(int32_t _iBuffer, int32_t _What)
 {
 	CDirectXVertexBuffer *pVertexBuffer = m_IndexHandler.GetObject<CDirectXVertexBuffer*>(_iBuffer, EID_VertexBuffer);
 	if (!pVertexBuffer)
@@ -548,7 +548,7 @@ CVertexBuffer* CDirectXDevice::LockVertexBuffer(int32 _iBuffer, int32 _What)
 	if (_What & EVB_TextureMask)
 	{
 		// Assume float2?
-		for (int32 iTex = 0; iTex < EMaxTextureUnits; iTex++)
+		for (int32_t iTex = 0; iTex < EMaxTextureUnits; iTex++)
 		{
 			if ((_What & (EVB_TextureBase << iTex)) && pVertexBuffer->m_lpD3DTexCoordbuffer[iTex])
 			{
@@ -566,7 +566,7 @@ CVertexBuffer* CDirectXDevice::LockVertexBuffer(int32 _iBuffer, int32 _What)
 }
 
 // Return control of vertexbuffer to device
-void CDirectXDevice::UnlockVertexBuffer(int32 _iBuffer, int32 _What)
+void CDirectXDevice::UnlockVertexBuffer(int32_t _iBuffer, int32_t _What)
 {
 	CDirectXVertexBuffer *pVertexBuffer = m_IndexHandler.GetObject<CDirectXVertexBuffer*>(_iBuffer, EID_VertexBuffer);
 	if (!pVertexBuffer)
@@ -605,7 +605,7 @@ void CDirectXDevice::UnlockVertexBuffer(int32 _iBuffer, int32 _What)
 
 	if (_What & EVB_TextureMask)
 	{
-		for (int32 iTex = 0; iTex < EMaxTextureUnits; iTex++)
+		for (int32_t iTex = 0; iTex < EMaxTextureUnits; iTex++)
 		{
 			if ((_What & (EVB_TextureBase << iTex)) && pVertexBuffer->m_lpD3DTexCoordbuffer[iTex])
 			{
@@ -620,7 +620,7 @@ void CDirectXDevice::UnlockVertexBuffer(int32 _iBuffer, int32 _What)
 	}
 }
 
-bool CDirectXDevice::DestroyVertexBuffer(int32 _iBuffer)
+bool CDirectXDevice::DestroyVertexBuffer(int32_t _iBuffer)
 {
 	CDirectXVertexBuffer *pVertexBuffer = m_IndexHandler.GetObject<CDirectXVertexBuffer*>(_iBuffer, EID_VertexBuffer);
 	// Let destructor handle it
@@ -630,7 +630,7 @@ bool CDirectXDevice::DestroyVertexBuffer(int32 _iBuffer)
 }
 
 // Index buffers
-int32 CDirectXDevice::CreateIndexBuffer(int32 _Count, int32 _Flags)
+int32_t CDirectXDevice::CreateIndexBuffer(int32_t _Count, int32_t _Flags)
 {
 	CDirectXIndexBuffer* pIndexBuffer = new CDirectXIndexBuffer();
 	if (!pIndexBuffer || !m_p3DDevice)
@@ -641,7 +641,7 @@ int32 CDirectXDevice::CreateIndexBuffer(int32 _Count, int32 _Flags)
 	// Assume uint16 for now
 	D3DFORMAT IndexFormat = D3DFMT_INDEX16;
 	// Assume fp32 for now
-	int32 BufferSize = GetBufferElementSize(EFormat_int16) * _Count * ED3D_ELEMENTSPERINDEX;
+	int32_t BufferSize = GetBufferElementSize(EFormat_int16) * _Count * ED3D_ELEMENTSPERINDEX;
 	if (!SUCCEEDED(m_p3DDevice->CreateIndexBuffer(BufferSize,0/*Usage*/,IndexFormat,MemPlacement,
 		&pIndexBuffer->m_pD3DIndexBuffer,NULL)))
 	{
@@ -653,13 +653,13 @@ int32 CDirectXDevice::CreateIndexBuffer(int32 _Count, int32 _Flags)
 	pIndexBuffer->m_Count = _Count;
 
 	// Add it to the index
-	int32 iIndexBuffer = m_IndexHandler.GetFree(EID_IndexBuffer);
+	int32_t iIndexBuffer = m_IndexHandler.GetFree(EID_IndexBuffer);
 	m_IndexHandler.SetData(iIndexBuffer, pIndexBuffer);
 
 	return iIndexBuffer;
 }
 
-bool CDirectXDevice::DestroyIndexBuffer(int32 _iBuffer)
+bool CDirectXDevice::DestroyIndexBuffer(int32_t _iBuffer)
 {
 	CDirectXIndexBuffer *pIndexBuffer = m_IndexHandler.GetObject<CDirectXIndexBuffer*>(_iBuffer, EID_IndexBuffer);
 	// Let destructor handle it
@@ -669,7 +669,7 @@ bool CDirectXDevice::DestroyIndexBuffer(int32 _iBuffer)
 }
 
 // Get indexbuffer from id, Return control of indexbuffer to device
-CIndexBuffer* CDirectXDevice::LockIndexBuffer(int32 _iBuffer)
+CIndexBuffer* CDirectXDevice::LockIndexBuffer(int32_t _iBuffer)
 {
 	CDirectXIndexBuffer *pIndexBuffer = m_IndexHandler.GetObject<CDirectXIndexBuffer*>(_iBuffer, EID_IndexBuffer);
 	if (!pIndexBuffer)
@@ -688,7 +688,7 @@ CIndexBuffer* CDirectXDevice::LockIndexBuffer(int32 _iBuffer)
 	return pIndexBuffer;
 }
 
-void CDirectXDevice::UnlockIndexBuffer(int32 _iBuffer)
+void CDirectXDevice::UnlockIndexBuffer(int32_t _iBuffer)
 {
 	CDirectXIndexBuffer *pIndexBuffer = m_IndexHandler.GetObject<CDirectXIndexBuffer*>(_iBuffer, EID_IndexBuffer);
 	if (!pIndexBuffer)
@@ -702,7 +702,7 @@ void CDirectXDevice::UnlockIndexBuffer(int32 _iBuffer)
 }
 
 // Shaders
-int32 CDirectXDevice::CreateVertexShader(const int8 *_pString)
+int32_t CDirectXDevice::CreateVertexShader(const int8 *_pString)
 {
 	if((m_DeviceCaps.VertexShaderVersion < D3DVS_VERSION(1,1)) || !_pString)
 		return -1;
@@ -719,7 +719,7 @@ int32 CDirectXDevice::CreateVertexShader(const int8 *_pString)
 			// Add it to the index handler
 			CDirectXVertexShader *pShader = new CDirectXVertexShader;
 			pShader->m_pVertexShader = pVertexShader;
-			int32 iShader = m_IndexHandler.GetFree(EID_VertexShader);
+			int32_t iShader = m_IndexHandler.GetFree(EID_VertexShader);
 			m_IndexHandler.SetData(iShader, pShader);
 			// Release code/errormsgs
 			SafeRelease(pShaderCode);
@@ -734,7 +734,7 @@ int32 CDirectXDevice::CreateVertexShader(const int8 *_pString)
 	return -1;
 }
 
-int32 CDirectXDevice::CreatePixelShader(const int8 *_pString)
+int32_t CDirectXDevice::CreatePixelShader(const int8 *_pString)
 {
 	if((m_DeviceCaps.PixelShaderVersion < D3DPS_VERSION(1,1)) || !_pString)
 		return -1;
@@ -751,7 +751,7 @@ int32 CDirectXDevice::CreatePixelShader(const int8 *_pString)
 			// Add it to the index handler
 			CDirectXPixelShader *pShader = new CDirectXPixelShader;
 			pShader->m_pPixelShader = pPixelShader;
-			int32 iShader = m_IndexHandler.GetFree(EID_PixelShader);
+			int32_t iShader = m_IndexHandler.GetFree(EID_PixelShader);
 			m_IndexHandler.SetData(iShader, pShader);
 			// Release code/error msgs
 			SafeRelease(pShaderCode);
@@ -765,7 +765,7 @@ int32 CDirectXDevice::CreatePixelShader(const int8 *_pString)
 	return -1;
 }
 
-bool CDirectXDevice::DestroyVertexShader(int32 _iShader)
+bool CDirectXDevice::DestroyVertexShader(int32_t _iShader)
 {
 	if (_iShader == -1)
 		return false;
@@ -779,7 +779,7 @@ bool CDirectXDevice::DestroyVertexShader(int32 _iShader)
 	return false;
 }
 
-bool CDirectXDevice::DestroyPixelShader(int32 _iShader)
+bool CDirectXDevice::DestroyPixelShader(int32_t _iShader)
 {
 	if (_iShader == -1)
 		return false;
@@ -793,7 +793,7 @@ bool CDirectXDevice::DestroyPixelShader(int32 _iShader)
 	return false;
 }
 
-void CDirectXDevice::SetViewport(int32 _X, int32 _Y, int32 _Width, int32 _Height)
+void CDirectXDevice::SetViewport(int32_t _X, int32_t _Y, int32_t _Width, int32_t _Height)
 {
 	// Set viewport
 	D3DVIEWPORT9 ViewPort;
@@ -811,7 +811,7 @@ void CDirectXDevice::Clear(intr _What)
 {
 	if (m_p3DDevice)
 	{
-		int32 ClearFlags = 0;
+		int32_t ClearFlags = 0;
 		if (_What & EBuffer_Color)
 			ClearFlags |= D3DCLEAR_TARGET;
 		if (_What & EBuffer_Depth)
@@ -819,10 +819,10 @@ void CDirectXDevice::Clear(intr _What)
 		if (_What & EBuffer_Stencil)
 			ClearFlags |= D3DCLEAR_STENCIL;
 
-		int32 ClearColor = (int32)(255.0f * m_ClearColor[3]) << 24; //A
-		ClearColor |= (int32)(255.0f * m_ClearColor[0]) << 16; // R
-		ClearColor |= (int32)(255.0f * m_ClearColor[1]) << 8; // G
-		ClearColor |= (int32)(255.0f * m_ClearColor[2]) << 0; // B
+		int32_t ClearColor = (int32_t)(255.0f * m_ClearColor[3]) << 24; //A
+		ClearColor |= (int32_t)(255.0f * m_ClearColor[0]) << 16; // R
+		ClearColor |= (int32_t)(255.0f * m_ClearColor[1]) << 8; // G
+		ClearColor |= (int32_t)(255.0f * m_ClearColor[2]) << 0; // B
 		m_p3DDevice->Clear(0,NULL,ClearFlags,ClearColor,m_ClearDepth,m_ClearStencil);
 	}
 }
@@ -855,7 +855,7 @@ bool CDirectXDevice::Update()
 	return true;
 }
 
-void CDirectXDevice::Draw(int32 _Mode, int32 _Start, int32 _Count)
+void CDirectXDevice::Draw(int32_t _Mode, int32_t _Start, int32_t _Count)
 {
 	// Mmkay then, if the stream declaration isn't the same as the current stream status
 	// renew declaration
@@ -877,7 +877,7 @@ void CDirectXDevice::Draw(int32 _Mode, int32 _Start, int32 _Count)
 	}
 }
 
-void CDirectXDevice::DrawIndexed(int32 _Mode, int32 _Start, int32 _Count)
+void CDirectXDevice::DrawIndexed(int32_t _Mode, int32_t _Start, int32_t _Count)
 {
 	// Mmkay then, if the stream declaration isn't the same as the current stream status
 	// renew declaration
@@ -893,13 +893,13 @@ void CDirectXDevice::DrawIndexed(int32 _Mode, int32 _Start, int32 _Count)
 	if (m_p3DDevice)
 	{
 		MACRO_DXCHECKERROR(m_p3DDevice->BeginScene(),"Error: CDirectXDevice::DrawIndexed: Begin Scene\n");
-		int32 NumVertices = g_aBaseTable[_Mode] + g_aExtraTable[_Mode] * (_Count - 1);
+		int32_t NumVertices = g_aBaseTable[_Mode] + g_aExtraTable[_Mode] * (_Count - 1);
 		MACRO_DXCHECKERROR(m_p3DDevice->DrawIndexedPrimitive(g_aDrawTable[_Mode],0,0,NumVertices,_Start,_Count),"Error: CDirectXDevice::DrawIndexed: DrawIndexed\n");
 		MACRO_DXCHECKERROR(m_p3DDevice->EndScene(),"Error: CDirectXDevice::DrawIndexed: End Scene\n");
 	}
 }
 
-D3DFORMAT CDirectXDevice::VerifyColorFormat(uint32 _Format)
+D3DFORMAT CDirectXDevice::VerifyColorFormat(uint32_t _Format)
 {
 	D3DFORMAT Format = (D3DFORMAT)_Format;
 	switch (Format)
@@ -924,7 +924,7 @@ D3DFORMAT CDirectXDevice::VerifyColorFormat(uint32 _Format)
 	}
 }
 
-D3DFORMAT CDirectXDevice::VerifyDepthStencil(uint32 _Format)
+D3DFORMAT CDirectXDevice::VerifyDepthStencil(uint32_t _Format)
 {
 	D3DFORMAT Format = (D3DFORMAT)_Format;
 	switch(Format)
@@ -942,7 +942,7 @@ D3DFORMAT CDirectXDevice::VerifyDepthStencil(uint32 _Format)
 }
 
 // D3d Texture format from CImage::Eformat...
-D3DFORMAT CDirectXDevice::GetTextureFormat(int32 _Format)
+D3DFORMAT CDirectXDevice::GetTextureFormat(int32_t _Format)
 {
 	switch (_Format)
 	{
@@ -962,7 +962,7 @@ D3DFORMAT CDirectXDevice::GetTextureFormat(int32 _Format)
 	}
 }
 
-int32 CDirectXDevice::ColorBits(D3DFORMAT _Format)
+int32_t CDirectXDevice::ColorBits(D3DFORMAT _Format)
 {
 	switch( _Format )
 	{
@@ -995,7 +995,7 @@ int32 CDirectXDevice::ColorBits(D3DFORMAT _Format)
 	}
 }
 
-int32 CDirectXDevice::GetTexelSize(D3DFORMAT _Format)
+int32_t CDirectXDevice::GetTexelSize(D3DFORMAT _Format)
 {
 	switch( _Format )
 	{
@@ -1066,7 +1066,7 @@ int32 CDirectXDevice::GetTexelSize(D3DFORMAT _Format)
 	}
 }
 
-int32 CDirectXDevice::GetBufferElementSize(int32 _What)
+int32_t CDirectXDevice::GetBufferElementSize(int32_t _What)
 {
 	switch (_What)
 	{
@@ -1109,7 +1109,7 @@ void CDirectXDevice::SetStreamDeclaration()
 	// Max declarations
 	// StreamId, Offset,Type,Method,Usage,Usageindex
 	D3DVERTEXELEMENT9 aDecl[ED3D_STREAMSOURCE_NUMSTREAMS];
-	int32 CurrentIndex = 0;
+	int32_t CurrentIndex = 0;
 	if (m_StreamFlags & ED3D_STREAMFLAG_POSITION)
 	{
 		aDecl[CurrentIndex] = GetDecl(ED3D_STREAMSOURCEINDEX_POSITION, 0,D3DDECLTYPE_FLOAT3,D3DDECLMETHOD_DEFAULT,D3DDECLUSAGE_POSITION,0);
@@ -1166,7 +1166,7 @@ CDirectXDevice::CDirectXVertexBuffer::CDirectXVertexBuffer()
 	m_pD3DPositionBuffer = NULL;
 	m_pD3DNormalBuffer = NULL;
 	m_pD3DColorBuffer = NULL;
-	for (int32 iTex = 0; iTex < EMaxTextureUnits; iTex++)
+	for (int32_t iTex = 0; iTex < EMaxTextureUnits; iTex++)
 		m_lpD3DTexCoordbuffer[iTex] = NULL;
 }
 CDirectXDevice::CDirectXVertexBuffer::~CDirectXVertexBuffer()
@@ -1174,7 +1174,7 @@ CDirectXDevice::CDirectXVertexBuffer::~CDirectXVertexBuffer()
 	SafeRelease(m_pD3DPositionBuffer);
 	SafeRelease(m_pD3DNormalBuffer);
 	SafeRelease(m_pD3DColorBuffer);
-	for (int32 iTex = 0; iTex < EMaxTextureUnits; iTex++)
+	for (int32_t iTex = 0; iTex < EMaxTextureUnits; iTex++)
 		SafeRelease(m_lpD3DTexCoordbuffer[iTex]);
 }
 
@@ -1183,7 +1183,7 @@ void CDirectXDevice::CDirectXVertexBuffer::ClearBasePointers()
 	m_pVertexfp32 = NULL;
 	m_pNormalfp32 = NULL;
 	m_pColorint8 = NULL;
-	for (int32 i = 0; i < EMaxTextureUnits; i++)
+	for (int32_t i = 0; i < EMaxTextureUnits; i++)
 		m_pTexturefp32[i] = NULL;
 }
 

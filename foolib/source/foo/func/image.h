@@ -21,8 +21,8 @@ namespace NFoo
 			fp32 c[4]; // Components, 0-1 = 0-255, RGBA, YUVA
 		};
 
-		CPixel GetPixelRGBA(int32 x, int32 y); // these are slow as hell and should only beused as a last resort.
-		void SetPixelRGBA(int32 x, int32 y, CPixel Pixel);
+		CPixel GetPixelRGBA(int32_t x, int32_t y); // these are slow as hell and should only beused as a last resort.
+		void SetPixelRGBA(int32_t x, int32_t y, CPixel Pixel);
 	public:
 		enum
 		{
@@ -59,7 +59,7 @@ namespace NFoo
 		class CFormat
 		{	
 			friend class CImage;
-			int32 m_Type; // None, Indexed, Channels,
+			int32_t m_Type; // None, Indexed, Channels,
 			union
 			{
 				// Indexed
@@ -85,43 +85,43 @@ namespace NFoo
 			uint16 m_Height; // in pixels
 
 			// redundant variables, speed optimizations
-			uint32 m_DataSize;
-			uint32 m_Pitch;
+			uint32_t m_DataSize;
+			uint32_t m_Pitch;
 			uint16 m_BPP;
 
 			// updates the redunant variables
 			void Refresh();
 		public:
-			CFormat(int32 i = EQuick_None, int32 w=-1, int32 h=-1);
-			void QuickSet(int32 i, int32 w, int32 h);
+			CFormat(int32_t i = EQuick_None, int32_t w=-1, int32_t h=-1);
+			void QuickSet(int32_t i, int32_t w, int32_t h);
 
-			void SetType(int32 Type);
-			void SetSize(int32 w, int32 h);
-			void SetChannels(int32 colorspace, int32 c0=0xff, int32 c1=0xff, int32 c2=0xff, int32 c3=0xff);
-			void SetChannelDepths(int32 c0=0, int32 c1=0, int32 c2=0, int32 c3=0);
+			void SetType(int32_t Type);
+			void SetSize(int32_t w, int32_t h);
+			void SetChannels(int32_t colorspace, int32_t c0=0xff, int32_t c1=0xff, int32_t c2=0xff, int32_t c3=0xff);
+			void SetChannelDepths(int32_t c0=0, int32_t c1=0, int32_t c2=0, int32_t c3=0);
 
-			int32 Type() const { return m_Type; }
+			int32_t Type() const { return m_Type; }
 
-			int32 NumChannels() const { return m_ChannelInfo.m_NumChannels; }
-			int32 ColorSpace() const { return m_ChannelInfo.m_ColorSpace; }
-			int32 ChannelType() const { return m_ChannelInfo.m_ChannelType; }
-			int32 ChannelDepth(intr i) const { return m_ChannelInfo.m_aChannelDepth[i]; }
-			uint32 ChannelDepths() const { return ( m_ChannelInfo.m_aChannelDepth[0]<<24)|
+			int32_t NumChannels() const { return m_ChannelInfo.m_NumChannels; }
+			int32_t ColorSpace() const { return m_ChannelInfo.m_ColorSpace; }
+			int32_t ChannelType() const { return m_ChannelInfo.m_ChannelType; }
+			int32_t ChannelDepth(intr i) const { return m_ChannelInfo.m_aChannelDepth[i]; }
+			uint32_t ChannelDepths() const { return ( m_ChannelInfo.m_aChannelDepth[0]<<24)|
 													(m_ChannelInfo.m_aChannelDepth[1]<<16)|
 													(m_ChannelInfo.m_aChannelDepth[2]<<8)|
 													m_ChannelInfo.m_aChannelDepth[3]; }
-			//uint32 ChannelDepths() const { return *((uint32*)m_aChannelDepth); }
-			int32 Channel(intr i) const { return m_ChannelInfo.m_aChannels[i]; }
-			uint32 Channels() const { return (  m_ChannelInfo.m_aChannels[0]<<24)|
+			//uint32_t ChannelDepths() const { return *((uint32_t*)m_aChannelDepth); }
+			int32_t Channel(intr i) const { return m_ChannelInfo.m_aChannels[i]; }
+			uint32_t Channels() const { return (  m_ChannelInfo.m_aChannels[0]<<24)|
 												(m_ChannelInfo.m_aChannels[1]<<16)|
 												(m_ChannelInfo.m_aChannels[2]<<8)|
 												m_ChannelInfo.m_aChannels[3]; }
 
-			int32 Height() const { return m_Height; }
-			int32 Width() const { return m_Width; }
-			int32 Pitch() const { return m_Pitch; }
-			int32 BPP() const { return m_BPP; }
-			int32 DataSize() const { return m_DataSize; }
+			int32_t Height() const { return m_Height; }
+			int32_t Width() const { return m_Width; }
+			int32_t Pitch() const { return m_Pitch; }
+			int32_t BPP() const { return m_BPP; }
+			int32_t DataSize() const { return m_DataSize; }
 		};
 
 		/*
@@ -167,8 +167,8 @@ namespace NFoo
 			CKernelFilter();
 			CKernelFilter(fp32);
 
-			fp32* operator [] (int32 _y) { return m_aFilter[_y]; }
-			const fp32* operator [] (int32 _y) const { return m_aFilter[_y]; }
+			fp32* operator [] (int32_t _y) { return m_aFilter[_y]; }
+			const fp32* operator [] (int32_t _y) const { return m_aFilter[_y]; }
 
 			void SetScale(fp32 _Scale);
 			void SetOffset(fp32 _Offset);
@@ -190,10 +190,10 @@ namespace NFoo
 		{
 		public:
 			// Data
-			int32 m_Format;
-			int32 m_Pitch;
+			int32_t m_Format;
+			int32_t m_Pitch;
 		
-			TVector2<int32> m_Size;
+			TVector2<int32_t> m_Size;
 		
 			// Operators
 			intr operator == (const CImageDesc &t) { return (MemoryCompare(this, &t, sizeof(CImageDesc)) == 0); }
@@ -228,27 +228,27 @@ namespace NFoo
 		bool Write(COutputStream &rStream);
 
 		// Convertion (ignores width, height in format)
-		void Convert(CFormat Format, CImage &rImage, int32 Flags=0); // colorspace convertion, etc
+		void Convert(CFormat Format, CImage &rImage, int32_t Flags=0); // colorspace convertion, etc
 		void Convert(CFormat Format);
 
 		// operations
 		void FlipX();
 		void FlipY();
-		void Blit(CImage *Src, int32 _x, int32 _y);
-		void Clear(uint32 = 0);
+		void Blit(CImage *Src, int32_t _x, int32_t _y);
+		void Clear(uint32_t = 0);
 
 		// Not complete! Proposal..
-		void SetR(int32 _x, int32 _y, uint8 _r);
-		void SetG(int32 _x, int32 _y, uint8 _g);
-		void SetB(int32 _x, int32 _y, uint8 _b);
-		void SetA(int32 _x, int32 _y, uint8 _a);
-		void SetColor(int32 _x, int32 _y, uint32 _Color);
+		void SetR(int32_t _x, int32_t _y, uint8 _r);
+		void SetG(int32_t _x, int32_t _y, uint8 _g);
+		void SetB(int32_t _x, int32_t _y, uint8 _b);
+		void SetA(int32_t _x, int32_t _y, uint8 _a);
+		void SetColor(int32_t _x, int32_t _y, uint32_t _Color);
 
-		uint8 GetR(int32 _x, int32 _y);
-		uint8 GetG(int32 _x, int32 _y);
-		uint8 GetB(int32 _x, int32 _y);
-		uint8 GetA(int32 _x, int32 _y);
-		uint32 GetColor(int32 _x, int32 _y);
+		uint8 GetR(int32_t _x, int32_t _y);
+		uint8 GetG(int32_t _x, int32_t _y);
+		uint8 GetB(int32_t _x, int32_t _y);
+		uint8 GetA(int32_t _x, int32_t _y);
+		uint32_t GetColor(int32_t _x, int32_t _y);
 
 		//
 		void ApplyKernelFilter(const CKernelFilter &_rFilter);
@@ -257,39 +257,39 @@ namespace NFoo
 		void BuildNormalMap(CImage &_rDst,fp32 _Slope = 255.0f);
 
 		//
-		//void ExtractChannel(int32 iChannel, CImage &rChannel);
-		//void AddChannel(int32 _iChannel, CImage &_rChannel);
+		//void ExtractChannel(int32_t iChannel, CImage &rChannel);
+		//void AddChannel(int32_t _iChannel, CImage &_rChannel);
 
 		//
-		//void Sizeup(int32 _Steps, CImage &_rDst);
+		//void Sizeup(int32_t _Steps, CImage &_rDst);
 
 		// Internal operation
 		/*
-		virtual void Clear(uint32 Color=0);
+		virtual void Clear(uint32_t Color=0);
 		virtual void FlipRB();
 		virtual void FlipX();
 		virtual void FlipY();
 		virtual void RotCCW90();
-		virtual void SetFormat(int32 _Format);
+		virtual void SetFormat(int32_t _Format);
 	
-		virtual void Darken(const TVector2<int32> &_Position, const TVector2<int32> &_Size);
+		virtual void Darken(const TVector2<int32_t> &_Position, const TVector2<int32_t> &_Size);
 
 		//
-		void ExtractChannel(int32 _iChannel, CImage &_rChannel);
-		void AddChannel(int32 _iChannel, CImage &_rChannel);
+		void ExtractChannel(int32_t _iChannel, CImage &_rChannel);
+		void AddChannel(int32_t _iChannel, CImage &_rChannel);
 		void ConvertRGBtoYUV();
 		void ConvertYUVtoRGB();
 
 		//
-		void Sizedown(int32 _Steps, CImage &_rDst);
-		void Sizeup(int32 _Steps, CImage &_rDst);
+		void Sizedown(int32_t _Steps, CImage &_rDst);
+		void Sizeup(int32_t _Steps, CImage &_rDst);
 
-		int32 SizeX() const { return m_Desc.m_Size.x; }
-		int32 SizeY() const { return m_Desc.m_Size.y; }
+		int32_t SizeX() const { return m_Desc.m_Size.x; }
+		int32_t SizeY() const { return m_Desc.m_Size.y; }
 		*/
 
 	private:
-		void WrapCoord(int32 &_rX,int32 &_rY);
+		void WrapCoord(int32_t &_rX,int32_t &_rY);
 	};
 
 	//

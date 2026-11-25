@@ -14,7 +14,7 @@ CMenu::CMenu(CView *pParent, const int8 *pName, CGUI *pGUI)
 CPoint CMenu::FindDimentions()
 {
 	CPoint Size(0,0);
-	for(int32 i = 0; i < m_lItems.Len(); i++)
+	for(int32_t i = 0; i < m_lItems.Len(); i++)
 	{
 		if(m_lItems[i]->GetSize().x > Size.x)
 			Size.x = m_lItems[i]->GetSize().x;
@@ -75,7 +75,7 @@ void CWindow::SetCaption(const int8 *_pCap)
 //
 //
 //
-void CWindow::OnMouseDown(CPoint _Pos, int32 _iButton)
+void CWindow::OnMouseDown(CPoint _Pos, int32_t _iButton)
 {
 	MoveToFront();
 	
@@ -97,7 +97,7 @@ void CWindow::OnMouseDown(CPoint _Pos, int32 _iButton)
 //
 //
 //
-void CWindow::OnMouseUp(CPoint _Pos, int32 _iButton)
+void CWindow::OnMouseUp(CPoint _Pos, int32_t _iButton)
 {
 	m_pGUI->ReleaseMouse();
 	m_Draging = false;

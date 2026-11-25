@@ -18,7 +18,7 @@ namespace NGUI {
 	//
 	class CView : public CMessageSender
 	{
-		//TMap<int32, TDynamicArray<CSlot*> > m_lTargets;
+		//TMap<int32_t, TDynamicArray<CSlot*> > m_lTargets;
 		TDynamicArray<CView *> m_lChildren;
 		CView *m_pParent;
 	  
@@ -27,8 +27,8 @@ namespace NGUI {
 		CPoint m_Position; // relative to parent
 		CPoint m_Size; // (10,10)  = 10 width, 10 height
 
-		int32 m_Flags;
-		//int32 m_TabId;
+		int32_t m_Flags;
+		//int32_t m_TabId;
 
 		// sizing
 		CPoint m_MinSize;
@@ -50,14 +50,14 @@ namespace NGUI {
 		virtual void OnFocus() {}
 		virtual void OnLostFocus() {}
 
-		virtual void OnDoubleClick(CPoint _Pos, int32 _Button) {}
-		virtual void OnMouseDown(CPoint _Pos, int32 _Button) {}
-		virtual void OnMouseUp(CPoint _Pos, int32 _Button) {}
+		virtual void OnDoubleClick(CPoint _Pos, int32_t _Button) {}
+		virtual void OnMouseDown(CPoint _Pos, int32_t _Button) {}
+		virtual void OnMouseUp(CPoint _Pos, int32_t _Button) {}
 		virtual void OnMouseMove(CPoint _Pos) {}
 		virtual void OnMouseEnter() {}
 		virtual void OnMouseExit() {}
 
-		virtual void OnKeyPress(int32 _Key, int8 _Char, bool Repeat);
+		virtual void OnKeyPress(int32_t _Key, int8 _Char, bool Repeat);
 
 		virtual void OnDraw(CDrawer &_rDrawer) {}
 
@@ -103,41 +103,41 @@ namespace NGUI {
 		//
 		//
 		//
-		int32 Flags() { return m_Flags; }
-		void SetFlags(int32 flags) { m_Flags |= flags; }
-		void ClearFlags(int32 flags) { m_Flags &= ~flags; }
+		int32_t Flags() { return m_Flags; }
+		void SetFlags(int32_t flags) { m_Flags |= flags; }
+		void ClearFlags(int32_t flags) { m_Flags &= ~flags; }
 
 		//
 		// resize mode
 		//
-		void SetResizeMode(int32 s);
-		int32 GetResizeMode();
+		void SetResizeMode(int32_t s);
+		int32_t GetResizeMode();
 
 		//
 		// Child, parent handling (is it only layered containers that can have children?)
 		//
 		CView *GetParent();
-		int32 AddChild(CView *pChild);
+		int32_t AddChild(CView *pChild);
 		bool RemoveChild(CView *pChild);
-		bool RemoveChild(int32 iLocal);
+		bool RemoveChild(int32_t iLocal);
 		bool IsChild(CView *pView);
-		int32 GetNumChildren();
-		CView *GetChild(int32 _iLocal);
+		int32_t GetNumChildren();
+		CView *GetChild(int32_t _iLocal);
 		CView *GetChild(const int8 *_pName); // recursive
 		CView *GetChildByPoint(CPoint _Point, bool HiddensAsWell=true);
 
 		//
 		// Geometry handling
 		//
-		void SetPosition(int32 x, int32 y);
+		void SetPosition(int32_t x, int32_t y);
 		void SetPosition(CPoint p) { SetPosition(p.x, p.y); }
-		void SetSize(int32 w, int32 h);
+		void SetSize(int32_t w, int32_t h);
 		void SetSize(CPoint p) { SetSize(p.x, p.y); }
 
 		void SetSizeLimits(CPoint _MinSize, CPoint _MaxSize);
 		void SetMaxSize(CPoint _Size);
 		void SetMinSize(CPoint _Size);
-		void SetGeometry(int32 x, int32 y, int32 w, int32 h);
+		void SetGeometry(int32_t x, int32_t y, int32_t w, int32_t h);
 		void SetGeometry(CPoint p, CPoint s) { SetGeometry(p.x, p.y, s.x, s.y); }
 
 		CPoint GetPosition();

@@ -11,8 +11,8 @@ namespace NGUI {
 		bool m_Pressed;
 		CString m_Caption;
 	protected:
-		virtual void OnMouseDown(CPoint _Pos, int32 _iButton);
-		virtual void OnMouseUp(CPoint _Pos, int32 _iButton);
+		virtual void OnMouseDown(CPoint _Pos, int32_t _iButton);
+		virtual void OnMouseUp(CPoint _Pos, int32_t _iButton);
 		virtual void OnDraw(CDrawer &_rDrawer);
 	public:
 		enum

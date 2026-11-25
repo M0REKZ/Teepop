@@ -17,7 +17,7 @@ namespace NFoo { namespace NSound {
 		CFormat m_Format;
 		CBuffer m_MixBuffer;
 		CBuffer m_SrcBuffer;
-		int32 m_Samples;
+		int32_t m_Samples;
 
 		CSoftwareMixerInstance(CSource *pSource, CSoundDevice *pDevice)
 		: CInstance(pSource, pDevice)
@@ -42,7 +42,7 @@ namespace NFoo { namespace NSound {
 		{
 			MemoryZero(m_MixBuffer.m_pData, m_Format.SampleSize()*m_Samples); // seams wrong
 
-			for(int32 s = 0; s < m_lSources.Len(); s++)
+			for(int32_t s = 0; s < m_lSources.Len(); s++)
 			{
 				CInstance *pInstance = m_lSources[s]->m_pInstance;
 
@@ -60,7 +60,7 @@ namespace NFoo { namespace NSound {
 				if(pInstance->m_Start < 0) // set start position if we don't have one
 					pInstance->m_Start = Position;
 
-				int32 Samples = m_lSources[s]->Fill(m_SrcBuffer.m_pData, Position, m_Samples);
+				int32_t Samples = m_lSources[s]->Fill(m_SrcBuffer.m_pData, Position, m_Samples);
 
 				if(Samples == 0)
 				{
@@ -68,13 +68,13 @@ namespace NFoo { namespace NSound {
 					continue;
 				}
 
-				int32 Volume = (int32)(pInstance->m_Volume*(1<<12));
+				int32_t Volume = (int32_t)(pInstance->m_Volume*(1<<12));
 
 				if(m_Format.m_Bits == 16)
 				{
-					for(int32 i = 0; i < Samples*m_Format.m_Channels; i++) // can anyone say MMX?
+					for(int32_t i = 0; i < Samples*m_Format.m_Channels; i++) // can anyone say MMX?
 					{
-						int32 Value = *pDst16+((*pSrc16*Volume)>>12);
+						int32_t Value = *pDst16+((*pSrc16*Volume)>>12);
 						if(Value > (int16)0x7FFF)
 							*pDst16++ = (int16)0x7FFF;
 						else if(Value < (int16)0x8000)

@@ -14,11 +14,11 @@ namespace NFoo
 	//
 	class CBitInputStream
 	{
-		int32 m_NumBits;
-		uint32 m_Bits;
+		int32_t m_NumBits;
+		uint32_t m_Bits;
 		CInputStream &m_rInput;
 
-		void Fill(int32 nBitsNeeded)
+		void Fill(int32_t nBitsNeeded)
 		{
 			while(m_NumBits < nBitsNeeded)
 			{
@@ -37,22 +37,22 @@ namespace NFoo
 			m_NumBits = 0;
 		}
 			
-		int32 Peek(int32 nBits)
+		int32_t Peek(int32_t nBits)
 		{
 			Fill(nBits);
 			return m_Bits&((1<<nBits)-1);
 		}
 
-		void Discard(int32 nBits)
+		void Discard(int32_t nBits)
 		{
 			Fill(nBits);
 			m_NumBits -= nBits;
 			m_Bits >>= nBits;
 		}
 		
-		int32 Read(int32 nBits)
+		int32_t Read(int32_t nBits)
 		{
-			int32 v = Peek(nBits);
+			int32_t v = Peek(nBits);
 			Discard(nBits);
 			return v;
 		}
@@ -67,11 +67,11 @@ namespace NFoo
 	//
 	class CBitOutputStream
 	{
-		int32 m_NumBits;
-		uint32 m_Bits;
+		int32_t m_NumBits;
+		uint32_t m_Bits;
 		COutputStream &m_rOutput;
 
-		int32 written;
+		int32_t written;
 
 		void WriteOut()
 		{
@@ -96,7 +96,7 @@ namespace NFoo
 			m_NumBits = 0;
 		}
 			
-		int32 Write(uint32 Bits, int32 nBits)
+		int32_t Write(uint32_t Bits, int32_t nBits)
 		{
 			m_Bits |= Bits<<m_NumBits;
 			m_NumBits += nBits;
@@ -114,11 +114,11 @@ namespace NFoo
 	//
 	class CBitInputStreamHigh
 	{
-		int32 m_NumBits;
-		uint32 m_Bits;
+		int32_t m_NumBits;
+		uint32_t m_Bits;
 		CInputStream &m_rInput;
 
-		void Fill(int32 nBitsNeeded)
+		void Fill(int32_t nBitsNeeded)
 		{
 			while(m_NumBits < nBitsNeeded)
 			{
@@ -137,22 +137,22 @@ namespace NFoo
 			m_NumBits = 0;
 		}
 			
-		int32 Peek(int32 nBits)
+		int32_t Peek(int32_t nBits)
 		{
 			Fill(nBits);
 			return m_Bits>>(32-nBits);
 		}
 
-		void Discard(int32 nBits)
+		void Discard(int32_t nBits)
 		{
 			Fill(nBits);
 			m_NumBits -= nBits;
 			m_Bits <<= nBits;
 		}
 		
-		int32 Read(int32 nBits)
+		int32_t Read(int32_t nBits)
 		{
-			int32 v = Peek(nBits);
+			int32_t v = Peek(nBits);
 			Discard(nBits);
 			return v;
 		}

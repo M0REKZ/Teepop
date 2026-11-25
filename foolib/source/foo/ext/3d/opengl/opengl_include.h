@@ -15,8 +15,8 @@
     #include <GL/glu.h>
 
 #elif defined(FOO_PLATFORM_DARWIN)
-	#include </System/Library/Frameworks/AGL.framework/Headers/gl.h>
-	#include </System/Library/Frameworks/AGL.framework/Headers/glu.h>
+	#include <OpenGL/gl.h>
+	#include <OpenGL/glu.h>
 	#define GLFUNC
 
 #elif defined(FOO_PLATFORM_LINUX) || defined(FOO_PLATFORM_FREEBSD)

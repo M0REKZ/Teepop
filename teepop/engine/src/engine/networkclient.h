@@ -7,7 +7,7 @@ namespace NEngine
 	//
 	class CNetworkClient : public CNetworkConnection, public CConsoleClient, public CMessageSender, public CModule
 	{
-		int32 m_LastState;
+		int32_t m_LastState;
 		CSlotClient m_SlotClient;
 		CString m_VersionString;
 	protected:

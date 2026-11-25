@@ -16,12 +16,12 @@ public:
 		EState_PasswordProtected=0x80
 	};
 
-	int32 m_SinglePlayer;
-	int32 m_UpdateNeeds;
-	int32 m_State;
+	int32_t m_SinglePlayer;
+	int32_t m_UpdateNeeds;
+	int32_t m_State;
 
-	int32 m_ID;
-	int32 m_MaxPlayers;
+	int32_t m_ID;
+	int32_t m_MaxPlayers;
 	CString m_Name;
 	CString m_Password;
 	TDynamicArray<CNetworkConnection*> m_lPlayers;
@@ -38,13 +38,13 @@ class CNetworkRoomServer : public CNetworkMsgRecviver, public CConsoleClient, pu
 protected:
 	int64 m_LastUpdate;
 	
-	int32 m_CurrentRoomID;
-	TMap<int32, CRoom*> m_lRooms;
+	int32_t m_CurrentRoomID;
+	TMap<int32_t, CRoom*> m_lRooms;
 	TDynamicArray<CNetworkConnection*> m_lPlayers;
 	
-	TDynamicArray<int32> m_lRoomCreations;
-	TDynamicArray<int32> m_lRoomDeletions;
-	TDynamicArray<int32> m_lRoomUpdates;
+	TDynamicArray<int32_t> m_lRoomCreations;
+	TDynamicArray<int32_t> m_lRoomDeletions;
+	TDynamicArray<int32_t> m_lRoomUpdates;
 	
 	//
 	virtual bool Init();
@@ -56,7 +56,7 @@ protected:
 
 	//
 	void JoinRoom(CNetworkConnection *pConnection, CRoom *pRoom);
-	const int8 *CreateRoom(CNetworkConnection *pConnection, const int8 *pName, const int8 *pPassword=NULL, int32 MaxPlayers=4);
+	const int8 *CreateRoom(CNetworkConnection *pConnection, const int8 *pName, const int8 *pPassword=NULL, int32_t MaxPlayers=4);
 	void LeaveRoom(CNetworkConnection *pConnection, bool SendNetMessage = true);
 
 	//
@@ -82,10 +82,10 @@ public:
 
 	//
 	//
-	void SetRoomState(CNetworkConnection *pConnection, int32 State);
-	void SetRoomState(int32 iRoom, int32 State);
+	void SetRoomState(CNetworkConnection *pConnection, int32_t State);
+	void SetRoomState(int32_t iRoom, int32_t State);
 	CRoom *GetRoom(CNetworkConnection *pConnection) { return pConnection->GetData<CRoom>(this); }
-	CRoom *GetRoom(int32 iRoom) { return m_lRooms.Find(iRoom, NULL); }
+	CRoom *GetRoom(int32_t iRoom) { return m_lRooms.Find(iRoom, NULL); }
 
 	// howswapping
 	bool HotswapWrite(COutputStream &rStream);

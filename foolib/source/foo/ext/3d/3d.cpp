@@ -22,7 +22,7 @@ void CState::Stream_Clear()
 //
 //
 //
-void CState::Stream_Set(int32 _iVB, int32 _What)
+void CState::Stream_Set(int32_t _iVB, int32_t _What)
 {
 	if(_What&EVB_Vertex) Stream_Vertex(_iVB);
 	if(_What&EVB_Normal) Stream_Normal(_iVB);
@@ -223,7 +223,7 @@ CMode::CMode()
 //
 //
 //
-CMode::CMode(int32 _Width, int32 _Height, bool _Fullscreen, int32 _Flags)
+CMode::CMode(int32_t _Width, int32_t _Height, bool _Fullscreen, int32_t _Flags)
 {
 	Clear();
 	Set(EWidth, EType_Specified, _Width);
@@ -279,11 +279,11 @@ bool CMode::Acceptable(CMode _Mode) const
 //
 //
 //
-int32 CIndexHandler::GetFree(int32 _Type)
+int32_t CIndexHandler::GetFree(int32_t _Type)
 {
 	if(m_lFreeNumbers.Len())
 	{
-		int32 id = m_lFreeNumbers[0];
+		int32_t id = m_lFreeNumbers[0];
 		m_lFreeNumbers.RemoveByIndexFast(0);
 		m_lIDNumbers[id].m_Type = _Type;
 		m_lIDNumbers[id].m_pData = NULL;
@@ -296,7 +296,7 @@ int32 CIndexHandler::GetFree(int32 _Type)
 	return m_lIDNumbers.Add(id);
 }
 
-void CIndexHandler::Remove(int32 _ID)
+void CIndexHandler::Remove(int32_t _ID)
 {
 	if(_ID >= m_lIDNumbers.Len())
 		return;
@@ -313,7 +313,7 @@ void CIndexHandler::Remove(int32 _ID)
 //
 bool CDevice::GetBestMode(CMode _Mode, CMode &_rBestMode)
 {
-	const int32 aPriority[] = {	CMode::ERefreshRate,
+	const int32_t aPriority[] = {	CMode::ERefreshRate,
 								CMode::EColorBits,
 								CMode::EDepthBits,
 								CMode::EWidth,
@@ -329,11 +329,11 @@ bool CDevice::GetBestMode(CMode _Mode, CMode &_rBestMode)
 		return NULL;
 
 	//
-	int32 Disables = 0;
+	int32_t Disables = 0;
 	for(intr i = 0; i < lModes.Len(); i++)
 	{
-		int32 thisone = 0;
-		for(int32 p = 0; p < CMode::ENumParams; p++)
+		int32_t thisone = 0;
+		for(int32_t p = 0; p < CMode::ENumParams; p++)
 			if(!lModes[i].m_aParams[p].m_Value)
 				thisone++;
 
@@ -343,8 +343,8 @@ bool CDevice::GetBestMode(CMode _Mode, CMode &_rBestMode)
 
 	for(intr i = 0; i < lModes.Len(); i++)
 	{
-		int32 thisone = 0;
-		for(int32 p = 0; p < CMode::ENumParams; p++)
+		int32_t thisone = 0;
+		for(int32_t p = 0; p < CMode::ENumParams; p++)
 			if(!lModes[i].m_aParams[p].m_Value)
 				thisone++;
 
@@ -356,9 +356,9 @@ bool CDevice::GetBestMode(CMode _Mode, CMode &_rBestMode)
 	}
 
 	//
-	for(intr p = 0; p < sizeof(aPriority)/sizeof(int32); p++)
+	for(intr p = 0; p < sizeof(aPriority)/sizeof(int32_t); p++)
 	{
-		int32 Highest = -1;
+		int32_t Highest = -1;
 		for(intr i = 0; i < lModes.Len(); i++)
 		{
 			if(lModes[i].Get(aPriority[p]) > Highest)
@@ -399,7 +399,7 @@ bool CDevice::GetBestMode(CMode _Mode, CMode &_rBestMode)
 //
 //
 //
-int32 CDevice::CheckMode(CMode _Params)
+int32_t CDevice::CheckMode(CMode _Params)
 {
 	// IMPLEMENT ME
 	return true;
@@ -409,12 +409,12 @@ int32 CDevice::CheckMode(CMode _Params)
 //
 //
 //
-int32 CDevice::CreateIndexBuffer(CIndexBuffer *_pIB, int32 _Count)
+int32_t CDevice::CreateIndexBuffer(CIndexBuffer *_pIB, int32_t _Count)
 {
 	if(_Count < 0)
 		_Count = _pIB->m_Count;
 
-	int32 iIndexBuffer = CreateIndexBuffer(_pIB->m_Count, 0);
+	int32_t iIndexBuffer = CreateIndexBuffer(_pIB->m_Count, 0);
 	CIndexBuffer *pIB = LockIndexBuffer(iIndexBuffer);
 	MemoryCopy(pIB->m_pIndex16, _pIB->m_pIndex16, _pIB->m_Count*sizeof(uint16));
 	UnlockIndexBuffer(iIndexBuffer);
@@ -424,16 +424,16 @@ int32 CDevice::CreateIndexBuffer(CIndexBuffer *_pIB, int32 _Count)
 //
 //
 //
-int32 CDevice::CreateVertexBuffer(CVertexBuffer *_pVB, int32 _Count, int32 _Mask)
+int32_t CDevice::CreateVertexBuffer(CVertexBuffer *_pVB, int32_t _Count, int32_t _Mask)
 {
 	if(_Count < 0)
 		_Count = _pVB->m_Count;
 
-	int32 What = _pVB->What()&_Mask;
-	int32 iVertexBuffer = CreateVertexBuffer(_Count, What, 0);
+	int32_t What = _pVB->What()&_Mask;
+	int32_t iVertexBuffer = CreateVertexBuffer(_Count, What, 0);
 	CVertexBuffer *pVB = LockVertexBuffer(iVertexBuffer);
 
-	for(int32 i = 0; i < _pVB->GetNumPointers(); i++, What>>=1)
+	for(int32_t i = 0; i < _pVB->GetNumPointers(); i++, What>>=1)
 	{
 		if(What&1 && _pVB->GetPointer(i))
 			MemoryCopy(pVB->GetPointer(i), _pVB->GetPointer(i), _Count*_pVB->GetPointerElementSize(i));
@@ -449,7 +449,7 @@ int32 CDevice::CreateVertexBuffer(CVertexBuffer *_pVB, int32 _Count, int32 _Mask
 //
 void CDevice::ClearAllAllocatedIndexes()
 {
-	for(int32 i = 0; i < m_IndexHandler.m_lIDNumbers.Len(); i++)
+	for(int32_t i = 0; i < m_IndexHandler.m_lIDNumbers.Len(); i++)
 	{
 		switch(m_IndexHandler.m_lIDNumbers[i].m_Type)
 		{
@@ -468,7 +468,7 @@ void CDevice::ClearAllAllocatedIndexes()
 /*
 int8 *LoadStorageAsString(CStorage &_rStorage)
 {
-	int32 Size = _rStorage.GetSize();
+	int32_t Size = _rStorage.GetSize();
 	int8 *pString = new int8[Size+1];
 	_rStorage.Read(pString, Size);
 	pString[Size] = 0;
@@ -484,7 +484,7 @@ CString CDevice::LoadShader(CInputStream &_rStream)
 
 	// read file
 	{
-		int32 Size = _rStream.GetSize();
+		int32_t Size = _rStream.GetSize();
 		File.SetSize(Size+1);
 		_rStream.Read(File.GetData(), Size);
 		File.GetData()[Size] = 0;
@@ -492,7 +492,7 @@ CString CDevice::LoadShader(CInputStream &_rStream)
 		
 	CString Shader;
 	CString Version;
-	int32 Mode = 0; // 0 = base, 1 = in shader
+	int32_t Mode = 0; // 0 = base, 1 = in shader
 	
 	while(File.Len())
 	{
@@ -503,7 +503,7 @@ CString CDevice::LoadShader(CInputStream &_rStream)
 			if(Line.GetData()[0] == '}')
 			{
 				Mode = 0;
-				for(int32 i = 0; i < m_lShaderVersion.Len(); i++)
+				for(int32_t i = 0; i < m_lShaderVersion.Len(); i++)
 					if(m_lShaderVersion[i] == Version)
 						return Shader;
 			}
@@ -538,14 +538,14 @@ CString CDevice::LoadShader(CInputStream &_rStream)
 //
 //
 //
-int32 CVertexBuffer::What()
+int32_t CVertexBuffer::What()
 {
-	int32 Content = 0;
+	int32_t Content = 0;
 	Content |= m_pVertexfp32 ? EVB_Vertex : 0;
 	Content |= m_pNormalfp32 ? EVB_Normal : 0;
 	Content |= m_pColorfp32 ? EVB_Color : 0;
 
-	for(int32 i = 0; i < EMaxTextureUnits; i++)
+	for(int32_t i = 0; i < EMaxTextureUnits; i++)
 		Content |= m_pTexturefp32[i] ? (EVB_TextureBase<<i) : 0;
 
 	return Content;
@@ -554,7 +554,7 @@ int32 CVertexBuffer::What()
 //
 //
 //
-void *CVertexBuffer::GetPointer(int32 i)
+void *CVertexBuffer::GetPointer(int32_t i)
 {
 	switch(i)
 	{
@@ -577,7 +577,7 @@ void *CVertexBuffer::GetPointer(int32 i)
 //
 //
 //
-int32 CVertexBuffer::GetPointerElementSize(int32 i)
+int32_t CVertexBuffer::GetPointerElementSize(int32_t i)
 {
 	switch(i)
 	{
@@ -599,7 +599,7 @@ public:
 		m_pVertexfp32 = NULL;
 		m_pNormalfp32 = NULL;
 		m_pColorfp32 = NULL;
-		for(int32 i = 0; i < EMaxTextureUnits; i++)
+		for(int32_t i = 0; i < EMaxTextureUnits; i++)
 			m_pTexturefp32[i] = NULL;
 		m_Count = 0;
 	}
@@ -608,7 +608,7 @@ public:
 		SafeArrayDelete(m_pVertexfp32);
 		SafeArrayDelete(m_pNormalfp32);
 		SafeArrayDelete(m_pColorfp32);
-		for(int32 i = 0; i < EMaxTextureUnits; i++)
+		for(int32_t i = 0; i < EMaxTextureUnits; i++)
 			SafeArrayDelete(m_pTexturefp32[i]);
 	}
 };
@@ -633,12 +633,12 @@ public:
 //
 //
 //
-CVertexBuffer *N3D::CreateVertexBufferSW(int32 _Count, int32 _What, int32 _Flags)
+CVertexBuffer *N3D::CreateVertexBufferSW(int32_t _Count, int32_t _What, int32_t _Flags)
 {
 	CVertexBufferSW *pBuffer = new CVertexBufferSW;
 	pBuffer->m_Count = _Count;
 
-	for(int32 i = 0; i < EMaxTextureUnits; i++)
+	for(int32_t i = 0; i < EMaxTextureUnits; i++)
 	{
 		if(_What&(EVB_TextureBase<<i))
 			pBuffer->m_pTexturefp32[i] = new TVector2<fp32>[_Count];
@@ -658,7 +658,7 @@ CVertexBuffer *N3D::CreateVertexBufferSW(int32 _Count, int32 _What, int32 _Flags
 //
 //
 //
-N3D::CIndexBuffer *N3D::CreateIndexBufferSW(int32 _Count, int32 _Flags)
+N3D::CIndexBuffer *N3D::CreateIndexBufferSW(int32_t _Count, int32_t _Flags)
 {
 	CIndexBuffer *pIB = new CIndexBufferSW;
 	pIB->m_Count = _Count;
@@ -794,8 +794,8 @@ CShaderManager::CShaderManager()
 CShaderManager::~CShaderManager()
 {
 	//	Go through each shader in indexhandler and delete them
-	int32 Len = m_IndexHandler.Len();
-	for (int32 i = 0; i < Len; i++)
+	int32_t Len = m_IndexHandler.Len();
+	for (int32_t i = 0; i < Len; i++)
 	{
 		CShaderEntry* pEntry = (CShaderEntry*)m_IndexHandler.GetSIDData(i);
 		if (pEntry)
@@ -812,10 +812,10 @@ void CShaderManager::Create(CDevice* _pDevice)
 	FindMaxPixelShaderVersion();
 }
 
-int32 CShaderManager::CreateVertexShader(const NFoo::CString& _Name)
+int32_t CShaderManager::CreateVertexShader(const NFoo::CString& _Name)
 {
 	CFile ShaderFile;
-	int32 VersionReceived = OpenVertexShader(m_MaxVSVersion,_Name,ShaderFile);
+	int32_t VersionReceived = OpenVertexShader(m_MaxVSVersion,_Name,ShaderFile);
 	if (VersionReceived != 0)
 	{
 		if(!ShaderFile.IsReady())
@@ -825,14 +825,14 @@ int32 CShaderManager::CreateVertexShader(const NFoo::CString& _Name)
 		ShaderFile.Read(pFileAsString, ShaderFile.GetSize());
 		pFileAsString[ShaderFile.GetSize()] = 0;
 		ShaderFile.Close();
-		int32 iVertexShader = m_pDevice->CreateVertexShader(pFileAsString);
+		int32_t iVertexShader = m_pDevice->CreateVertexShader(pFileAsString);
 		delete pFileAsString;
 
 		if (iVertexShader != -1)
 		{
 			// Add it to the index handler
 			CShaderEntry *pShader = new CShaderEntry(_Name,VersionReceived,iVertexShader);
-			int32 iShader = m_IndexHandler.GetFree(EID_SMVertexShader);
+			int32_t iShader = m_IndexHandler.GetFree(EID_SMVertexShader);
 			m_IndexHandler.SetData(iShader, pShader);
 			return iShader;
 		}
@@ -840,10 +840,10 @@ int32 CShaderManager::CreateVertexShader(const NFoo::CString& _Name)
 	return -1;
 }
 
-int32 CShaderManager::CreatePixelShader(const NFoo::CString& _Name)
+int32_t CShaderManager::CreatePixelShader(const NFoo::CString& _Name)
 {
 	CFile ShaderFile;
-	int32 VersionReceived = OpenPixelShader(m_MaxPSVersion,_Name,ShaderFile);
+	int32_t VersionReceived = OpenPixelShader(m_MaxPSVersion,_Name,ShaderFile);
 	if (VersionReceived != 0)
 	{
 		if(!ShaderFile.IsReady())
@@ -853,14 +853,14 @@ int32 CShaderManager::CreatePixelShader(const NFoo::CString& _Name)
 		ShaderFile.Read(pFileAsString, ShaderFile.GetSize());
 		pFileAsString[ShaderFile.GetSize()] = 0;
 		ShaderFile.Close();
-		int32 iPixelShader = m_pDevice->CreatePixelShader(pFileAsString);
+		int32_t iPixelShader = m_pDevice->CreatePixelShader(pFileAsString);
 		delete pFileAsString;
 
 		if (iPixelShader != -1)
 		{
 			// Add it to the index handler
 			CShaderEntry *pShader = new CShaderEntry(_Name,VersionReceived,iPixelShader);
-			int32 iShader = m_IndexHandler.GetFree(EID_SMPixelShader);
+			int32_t iShader = m_IndexHandler.GetFree(EID_SMPixelShader);
 			m_IndexHandler.SetData(iShader, pShader);
 			return iShader;
 		}
@@ -868,7 +868,7 @@ int32 CShaderManager::CreatePixelShader(const NFoo::CString& _Name)
 	return -1;
 }
 
-int32 CShaderManager::GetShader(int32 _iShader)
+int32_t CShaderManager::GetShader(int32_t _iShader)
 {
 	CShaderEntry* pEntry = m_IndexHandler.GetObject<CShaderEntry*>(_iShader,EID_SMVertexShader);
 	if (pEntry)
@@ -882,7 +882,7 @@ int32 CShaderManager::GetShader(int32 _iShader)
 	}
 }
 
-void CShaderManager::DestroyShader(int32 _iShader)
+void CShaderManager::DestroyShader(int32_t _iShader)
 {
 	CShaderEntry* pEntry = m_IndexHandler.GetObject<CShaderEntry*>(_iShader,EID_SMVertexShader);
 	if (pEntry)
@@ -901,7 +901,7 @@ void CShaderManager::DestroyShader(int32 _iShader)
 	}
 }
 
-bool CShaderManager::DirFromVSVersion(int32 _VSVersion, NFoo::CString& _DirName)
+bool CShaderManager::DirFromVSVersion(int32_t _VSVersion, NFoo::CString& _DirName)
 {
 	switch (_VSVersion)
 	{
@@ -925,7 +925,7 @@ bool CShaderManager::DirFromVSVersion(int32 _VSVersion, NFoo::CString& _DirName)
 	}
 }
 
-bool CShaderManager::DirFromPSVersion(int32 _PSVersion, NFoo::CString& _DirName)
+bool CShaderManager::DirFromPSVersion(int32_t _PSVersion, NFoo::CString& _DirName)
 {
 	switch (_PSVersion)
 	{
@@ -964,11 +964,11 @@ bool CShaderManager::DirFromPSVersion(int32 _PSVersion, NFoo::CString& _DirName)
 	}
 }
 
-int32 CShaderManager::OpenVertexShader(int32 _VSVersion, const NFoo::CString& _Name, NFoo::CFile& _File)
+int32_t CShaderManager::OpenVertexShader(int32_t _VSVersion, const NFoo::CString& _Name, NFoo::CFile& _File)
 {
 	NFoo::CString BaseDir;
 	m_pDevice->GetShaderBaseDir(BaseDir);
-	int32 Version = OpenVertexShader(_VSVersion,BaseDir,_Name,_File);
+	int32_t Version = OpenVertexShader(_VSVersion,BaseDir,_Name,_File);
 	if (Version == EShaderManager_VertexVersion_Undefined)
 	{
 		BaseDir = "shared/";
@@ -977,9 +977,9 @@ int32 CShaderManager::OpenVertexShader(int32 _VSVersion, const NFoo::CString& _N
 	return Version;
 }
 
-int32 CShaderManager::OpenVertexShader(int32 _VSVersion, const NFoo::CString& _BaseDir, const NFoo::CString& _Name, NFoo::CFile& _File)
+int32_t CShaderManager::OpenVertexShader(int32_t _VSVersion, const NFoo::CString& _BaseDir, const NFoo::CString& _Name, NFoo::CFile& _File)
 {
-	for (int32 Version = _VSVersion; Version >= EShaderManager_VertexVersion_1_1; Version--)
+	for (int32_t Version = _VSVersion; Version >= EShaderManager_VertexVersion_1_1; Version--)
 	{
 		NFoo::CString FileName = _BaseDir;
 		if (DirFromVSVersion(Version,FileName))
@@ -996,12 +996,12 @@ int32 CShaderManager::OpenVertexShader(int32 _VSVersion, const NFoo::CString& _B
 	return EShaderManager_VertexVersion_Undefined;
 }
 
-int32 CShaderManager::OpenPixelShader(int32 _VSVersion, const NFoo::CString& _Name, NFoo::CFile& _File)
+int32_t CShaderManager::OpenPixelShader(int32_t _VSVersion, const NFoo::CString& _Name, NFoo::CFile& _File)
 {
 	// First try device specific then shared
 	NFoo::CString BaseDir;
 	m_pDevice->GetShaderBaseDir(BaseDir);
-	int32 Version = OpenPixelShader(_VSVersion,BaseDir,_Name,_File);
+	int32_t Version = OpenPixelShader(_VSVersion,BaseDir,_Name,_File);
 	if (Version == EShaderManager_VertexVersion_Undefined)
 	{
 		BaseDir = "shared/";
@@ -1010,9 +1010,9 @@ int32 CShaderManager::OpenPixelShader(int32 _VSVersion, const NFoo::CString& _Na
 	return Version;
 }
 
-int32 CShaderManager::OpenPixelShader(int32 _PSVersion, const NFoo::CString& _BaseDir, const NFoo::CString& _Name, NFoo::CFile& _File)
+int32_t CShaderManager::OpenPixelShader(int32_t _PSVersion, const NFoo::CString& _BaseDir, const NFoo::CString& _Name, NFoo::CFile& _File)
 {
-	for (int32 Version = _PSVersion; Version >= EShaderManager_PixelVersion_1_1; Version--)
+	for (int32_t Version = _PSVersion; Version >= EShaderManager_PixelVersion_1_1; Version--)
 	{
 		NFoo::CString FileName = _BaseDir;
 		if (DirFromPSVersion(Version,FileName))
@@ -1030,11 +1030,11 @@ int32 CShaderManager::OpenPixelShader(int32 _PSVersion, const NFoo::CString& _Ba
 #define VS_VERSION(_Major,_Minor) (0xFFFE0000|((_Major)<<8)|(_Minor))
 #define PS_VERSION(_Major,_Minor) (0xFFFF0000|((_Major)<<8)|(_Minor))
 
-int32 CShaderManager::FindMaxVertexShaderVersion()
+int32_t CShaderManager::FindMaxVertexShaderVersion()
 {
-	int32 VSCaps = m_pDevice->GetVertexShaderCapabilities();
+	int32_t VSCaps = m_pDevice->GetVertexShaderCapabilities();
 
-	int32 Max = 0;
+	int32_t Max = 0;
 	if (VSCaps >= VS_VERSION(3,0))
 		Max = EShaderManager_VertexVersion_3_0;
 	else if (VSCaps >= VS_VERSION(2,0))
@@ -1046,11 +1046,11 @@ int32 CShaderManager::FindMaxVertexShaderVersion()
 	return m_MaxVSVersion;
 }
 
-int32 CShaderManager::FindMaxPixelShaderVersion()
+int32_t CShaderManager::FindMaxPixelShaderVersion()
 {
-	int32 PSCaps = m_pDevice->GetPixelShaderCapabilities();
+	int32_t PSCaps = m_pDevice->GetPixelShaderCapabilities();
 
-	int32 Max = 0;
+	int32_t Max = 0;
 	if (PSCaps >= PS_VERSION(3,0))
 		Max = EShaderManager_PixelVersion_3_0;
 	else if (PSCaps >= PS_VERSION(2,0))

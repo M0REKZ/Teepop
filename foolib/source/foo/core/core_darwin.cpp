@@ -68,9 +68,9 @@ public:
 		EventRecord	event;
 		while(WaitNextEvent(keyDownMask|keyUpMask, &event, 0, nil))
 		{
-			int32 CharKey = event.message & charCodeMask;
-			int32 Key = event.message & charCodeMask;
-			int32 KeyCode = (event.message & keyCodeMask)>>8;
+			int32_t CharKey = event.message & charCodeMask;
+			int32_t Key = event.message & charCodeMask;
+			int32_t KeyCode = (event.message & keyCodeMask)>>8;
 			//CMessage Message;
 
 			if(Key >= 'a' && Key <= 'z')
@@ -175,7 +175,7 @@ int main(int argc, char* argv[])
 	
 	if(StringLength(aDir) < 2)
 	{
-		for(int32 i = strlen(argv[0])-1; i > 0; i--)
+		for(int32_t i = strlen(argv[0])-1; i > 0; i--)
 			if(argv[0][i] == '/')
 			{
 				argv[0][i] = 0;
@@ -191,10 +191,8 @@ int main(int argc, char* argv[])
 	// Init
 	//
 	{
-		InitCursor();
-
-		if(AEInstallEventHandler(kCoreEventClass, kAEQuitApplication, NewAEEventHandlerUPP((AEEventHandlerProcPtr)QuitAppleEventHandler), 0, false) != noErr)
-			ExitToShell();
+		//+KZ: This probably only existed in old Carbon?
+		//InitCursor();
 	}
 
 	NLog::Write("MAIN:Calling FooMain()\n");

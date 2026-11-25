@@ -18,7 +18,7 @@ namespace NFoo
 			EThread_Terminate
 		};
 
-		int32 m_ThreadState; // Lock: m_CommandLock
+		int32_t m_ThreadState; // Lock: m_CommandLock
 		
 		//
 		// The function that is passed to CreateThread
@@ -36,7 +36,7 @@ namespace NFoo
 		//
 		// The thread main function.
 		//
-		virtual int32 ThreadMain() pure;
+		virtual int32_t ThreadMain() pure;
 
 		bool AwaitingTermination();
 		bool Running();

@@ -22,7 +22,7 @@ namespace NFoo
 		bool virtual IsReady();
 		bool virtual EndOfStream();
 		
-		int32 virtual Read(void *pBuffer, int32 Size);
+		int32_t virtual Read(void *pBuffer, int32_t Size);
 	};
 }
 

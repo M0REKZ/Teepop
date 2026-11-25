@@ -38,7 +38,7 @@ protected:
 
 	NodeIndex AddNode(const int8 *pString);
 	NodeIndex GetNode(const int8 *pString);
-	int32 NodeCount() { return m_lNodes.Len(); }
+	int32_t NodeCount() { return m_lNodes.Len(); }
 
 	//
 	virtual NodeIndex NewNode(const int8 *pString);
@@ -73,9 +73,9 @@ private:
 	NodeIndex &NodeChild(NodeIndex iNode) { return m_lNodes[iNode].m_iChild; }
 	int8 *NodeName(NodeIndex iNode) { return m_lNodeNames[iNode]; }
 
-	void NodeSetName(NodeIndex iNode, const int8 *pName, int32 Len=-1);
+	void NodeSetName(NodeIndex iNode, const int8 *pName, int32_t Len=-1);
 	void NodeAddChild(NodeIndex iParent, NodeIndex iChild);
-	void NodeDump(NodeIndex iNode, COutputStream &rStream, int32 Indent=0);
+	void NodeDump(NodeIndex iNode, COutputStream &rStream, int32_t Indent=0);
 };
 
 //

@@ -39,16 +39,16 @@ using namespace NFoo::NSound;
 using namespace NFoo::NGUI;
 using namespace NEngine;
 
-int32 g_ScreenWidth = 800;
-int32 g_ScreenHeight = 600;
-//int32 g_ScreenWidth = 800;
-//int32 g_ScreenHeight = 600;
+int32_t g_ScreenWidth = 800;
+int32_t g_ScreenHeight = 600;
+//int32_t g_ScreenWidth = 800;
+//int32_t g_ScreenHeight = 600;
 
 
 bool g_HighContrast = false;
 bool g_Music = true;
 bool g_Fullscreen = false;
-int32 g_FrameLimit = 60;
+int32_t g_FrameLimit = 60;
 
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
@@ -310,19 +310,19 @@ class CPatternStreamInstance : public CInstance
 {
 public:
 	CPatternStream *m_pPatternStream;
-	TDynamicArray<int32> m_lQueue;
-	int32 m_Sample;
-	int32 m_Last;
+	TDynamicArray<int32_t> m_lQueue;
+	int32_t m_Sample;
+	int32_t m_Last;
 	
-	int32 m_Queued;
-	int32 m_Current;
-	int32 m_Wanted;
+	int32_t m_Queued;
+	int32_t m_Current;
+	int32_t m_Wanted;
 
 	bool m_Loop;
 	bool m_HardBreak;
-	//int32 m_Current;
+	//int32_t m_Current;
 
-	int32 m_Position;
+	int32_t m_Position;
 
 	CPatternStreamInstance(CSource *pSource, CSoundDevice *pDevice)
 	: CInstance(pSource, pDevice)
@@ -337,7 +337,7 @@ public:
 		m_HardBreak = false;
 	}
 
-	virtual bool Set(int32 What, int32 Value)
+	virtual bool Set(int32_t What, int32_t Value)
 	{
 		if(What == CPatternStream::ESet_Wanted)
 		{
@@ -382,8 +382,8 @@ public:
 		if(m_Current >= 0 && m_Current < m_pPatternStream->m_lSamples.Len() && m_Position >= 0)
 		{
 			CSample *pSample = m_pPatternStream->m_lSamples[m_Current];
-			int32 Left = (pSample->m_DataSize/4-m_Position);
-			int32 ChunkSize = Left < 4092 ? Left : 4092;
+			int32_t Left = (pSample->m_DataSize/4-m_Position);
+			int32_t ChunkSize = Left < 4092 ? Left : 4092;
 			rBuffer.m_pData = (uint8*)pSample->m_pData + m_Position*4;
 			rBuffer.m_Samples = ChunkSize; //m_pPatternStream->m_lSamples[m_Wanted]->m_DataSize/4;
 			m_Position += ChunkSize;
@@ -432,7 +432,7 @@ public:
 	}
 
 	C2DUtils Utils;
-	int32 m_iTexture;
+	int32_t m_iTexture;
 	fp32 r, g, b;
 };
 
@@ -442,9 +442,9 @@ public:
 class CRoomItem : public CStringItem
 {
 public:
-	int32 m_iRoom;
+	int32_t m_iRoom;
 
-	CRoomItem(int32 iRoom, const int8 *pString)
+	CRoomItem(int32_t iRoom, const int8 *pString)
 	: m_iRoom(iRoom), CStringItem(pString, true)
 	{}
 };
@@ -456,7 +456,7 @@ class CSpecialText
 {
 public:
 	fp32 x, y;
-	int32 m_Type;
+	int32_t m_Type;
 	int64 m_StartTick;
 	int64 m_Duration;
 	fp32 m_Scale;
@@ -500,17 +500,17 @@ public:
 	C2DUtils::CFont m_SmallFont;
 
 	// textures
-	int32 m_iBlobTexture;
-	int32 m_iTitleTexture;
-	int32 m_iFontTexture;
-	int32 m_iTextsTexture;
-	int32 m_iGUITexture;
-	int32 m_iBackGroundTexture;
-	int32 m_iYouLoseTexture;
-	int32 m_iYouWinTexture; //    \o/
-	int32 m_iMLPTexture;
+	int32_t m_iBlobTexture;
+	int32_t m_iTitleTexture;
+	int32_t m_iFontTexture;
+	int32_t m_iTextsTexture;
+	int32_t m_iGUITexture;
+	int32_t m_iBackGroundTexture;
+	int32_t m_iYouLoseTexture;
+	int32_t m_iYouWinTexture; //    \o/
+	int32_t m_iMLPTexture;
 
-	int32 m_iTeeTexture;
+	int32_t m_iTeeTexture;
 
 	//
 	TDynamicArray<CSpecialText> m_lTexts;
@@ -534,7 +534,7 @@ public:
 	CSample m_RotateSample;
 
 	CPatternStream m_PatternStream;
-	int32 m_iPatternSound;
+	int32_t m_iPatternSound;
 
 	//
 	CGUI m_GUI;
@@ -626,20 +626,20 @@ public:
 	//
 	//
 	//
-	int32 LoadTexture(const int8 *pFilename)
+	int32_t LoadTexture(const int8 *pFilename)
 	{
 		CFileReader File(pFilename);
 		CImage Img;
 		Assert(Img.Load(File));
 		Assert(m_pDevice);
-		int32 iTex = m_pDevice->CreateTexture(Img, ETexFlag_NoMipMap);
+		int32_t iTex = m_pDevice->CreateTexture(Img, ETexFlag_NoMipMap);
 		Assert(iTex >= 0);
 		return iTex;
 	}
 
-	int32 FindRect(const int8 *pName)
+	int32_t FindRect(const int8 *pName)
 	{
-		for(int32 i = 0; i < m_lRects.Len(); i++)
+		for(int32_t i = 0; i < m_lRects.Len(); i++)
 			if(m_lRects[i].m_Name == pName)
 				return i;
 			
@@ -666,7 +666,7 @@ public:
 		rSample.m_DataSize = ov_pcm_total(&vf, -1)*4;
 		rSample.m_pData = new int8 [rSample.m_DataSize];
 		int8 *pDst = (int8 *)rSample.m_pData;
-		int32 Left = rSample.m_DataSize;
+		int32_t Left = rSample.m_DataSize;
 
 		while(1)
 		{
@@ -701,12 +701,12 @@ public:
 	//
 	void RenderLoading()
 	{
-		static int32 a = 0;
+		static int32_t a = 0;
 		m_pDevice->Clear_Color(0,0,0,1);
 		m_pDevice->Clear(N3D::EBuffer_Color);
 		m_pUtils->Text_Begin(&m_SmallFont);
 		CString s = "Loading ";
-		for(int32 i = 0; i < a; i++)
+		for(int32_t i = 0; i < a; i++)
 			s += ".";
 		m_pUtils->Text_Draw(15, 480-15-6, 0, "%s", s.GetData());
 		m_pUtils->Text_End();
@@ -721,7 +721,7 @@ public:
 	//
 	//
 	//
-	int32 GetConfigInt(const int8 *pName, int32 Default)
+	int32_t GetConfigInt(const int8 *pName, int32_t Default)
 	{
 		CRegistry *pReg = m_Config.GetChild(pName);
 		if(!pReg)
@@ -1005,7 +1005,7 @@ public:
 		}
 		RenderLoading();
 
-		for(int32 i = 0; i < RectReg.m_lValues.Len(); i++)
+		for(int32_t i = 0; i < RectReg.m_lValues.Len(); i++)
 		{
 			CRect Rect;
 			CString Name = RectReg.m_lValues[i]->m_Name;
@@ -1228,7 +1228,7 @@ public:
 
 				if(pRoomname != NULL && pPassword != NULL && pMaxPlayers != NULL)
 				{
-					int32 MaxPlayers = Clamp(pMaxPlayers->GetText().GetInt(), 1, 4);
+					int32_t MaxPlayers = Clamp(pMaxPlayers->GetText().GetInt(), 1, 4);
 					
 					SetMessage("Creating room...", NULL);
 					m_pRoom->CreateRoom(pRoomname->GetText(), pPassword->GetText(), MaxPlayers);
@@ -1289,8 +1289,8 @@ public:
 					break;
 				case CNetworkGameClient::EEvent_EvadedStones:
 					{
-						int32 iClient = rMsg.GetInt("clientid",0);
-						int32 Stones = rMsg.GetInt("numstones",0);
+						int32_t iClient = rMsg.GetInt("clientid",0);
+						int32_t Stones = rMsg.GetInt("numstones",0);
 						CString ClientName = m_pChat->GetUserName(iClient);
 
 						if(Stones > 1)
@@ -1300,8 +1300,8 @@ public:
 					} break;
 				case CNetworkGameClient::EEvent_SentStones:
 					{
-						int32 iClient = rMsg.GetInt("clientid",0);
-						int32 Stones = rMsg.GetInt("numstones",0);
+						int32_t iClient = rMsg.GetInt("clientid",0);
+						int32_t Stones = rMsg.GetInt("numstones",0);
 						CString ClientName = m_pChat->GetUserName(iClient);
 
 						if(iClient == m_pClient->ClientID())
@@ -1392,7 +1392,7 @@ public:
 				{
 					pListBox->Clear();
 
-					for(int32 i = 0; i < m_pRoom->m_lRooms.Len(); i++)
+					for(int32_t i = 0; i < m_pRoom->m_lRooms.Len(); i++)
 					{
 						CRoom &rRoom = m_pRoom->m_lRooms.GetValue(i);
 						pListBox->AddItem(new CRoomItem(rRoom.m_ID, rRoom.GetString()));
@@ -1408,7 +1408,7 @@ public:
 
 		case ERoomEvent_ChangedRoom:
 			{
-				int32 roomid = rMsg.GetInt("roomid");
+				int32_t roomid = rMsg.GetInt("roomid");
 
 				if(roomid == -1)
 				{
@@ -1502,7 +1502,7 @@ public:
 		{
 			pListBox->Clear();
 
-			for(int32 i = 0; i < m_pChat->m_lUsers.Len(); i++)
+			for(int32_t i = 0; i < m_pChat->m_lUsers.Len(); i++)
 				pListBox->AddItem(new CStringItem(m_pChat->m_lUsers.GetValue(i)));
 		}
 
@@ -1530,7 +1530,7 @@ public:
 	//
 	//
 	//
-	void RenderBlockPrepare(int32 color, fp32 mod=1)
+	void RenderBlockPrepare(int32_t color, fp32 mod=1)
 	{
 		fp32 aColors[][5] = {{0,0,0,1},{1,0.7f,0.7f,1},{0.7f,1,0.7f,1},{0.7f,0.7f,1,1},{1,1,0.7f,1}, {1,1,0.95f,1}};
 		fp32 aHigh[][5] = {{0,0,0,1},{1,0,0,1},{0.0f,1,0.0f,1},{0,1,1,1},{1,0,1,1},{1,1,0.95f,1}};
@@ -1540,14 +1540,14 @@ public:
 			m_pUtils->SetColor(aColors[color][0]*mod, aColors[color][1]*mod, aColors[color][2]*mod, aColors[color][3]*mod);
 	}
 
-	void RenderBlock(fp32 x, fp32 y, int32 connectionindex, int32 color, fp32 scale)
+	void RenderBlock(fp32 x, fp32 y, int32_t connectionindex, int32_t color, fp32 scale)
 	{
 		RenderBlockPrepare(color);
 		fp32 u = (connectionindex%4)/8.0f;
 		fp32 v = (connectionindex/4)/8.0f;
 		m_pUtils->SetTexCoord(u,v,u+1/8.0f,v+1/8.0f);
-		x = (fp32)((int32)x);
-		y = (fp32)((int32)y);
+		x = (fp32)((int32_t)x);
+		y = (fp32)((int32_t)y);
 		m_pUtils->Quad_DrawTL(x, y, scale, scale);
 	}
 
@@ -1570,14 +1570,14 @@ public:
 	void RenderBoard(CBoard *pBoard, fp32 basex, fp32 basey, fp32 scale, fp32 IntertickTime)
 	{
 		fp32 time = IntertickTime;
-		for(int32 y = 0; y < CBoard::EHeight; y++)
-			for(int32 x = 0; x < CBoard::EWidth; x++)
+		for(int32_t y = 0; y < CBoard::EHeight; y++)
+			for(int32_t x = 0; x < CBoard::EWidth; x++)
 			{
-				int32 c = pBoard->m_aField[x][y];
-				int32 e = pBoard->m_aExtra[x][y];
+				int32_t c = pBoard->m_aField[x][y];
+				int32_t e = pBoard->m_aExtra[x][y];
 				if(c)
 				{
-					int32 i = pBoard->GetConnectionIndex(x,y);
+					int32_t i = pBoard->GetConnectionIndex(x,y);
 					if(e&CBoard::EExtra_Falled)
 						RenderBlock(basex+x*scale, basey+y*scale-scale*(1-time), i, c, scale);
 					else
@@ -1586,10 +1586,10 @@ public:
 
 				if(e&CBoard::EExtra_Zapped)
 				{
-					int32 Last = e>>CBoard::EExtra_LastShift;
+					int32_t Last = e>>CBoard::EExtra_LastShift;
 					RenderBlockPrepare(Last, 1.2f);
 					//RenderBlockPrepare(5);
-					int32 Frame = time*5.0f;
+					int32_t Frame = time*5.0f;
 					if(Frame < 4)
 					{
 						fp32 u = 1/8.0f*(Frame);
@@ -1648,7 +1648,7 @@ public:
 
 				fp32 cx = 0;
 				fp32 cy = 0;
-				for(int32 i = 0; i < m_pGame->m_LocalBoard.m_NumZaps; i++)
+				for(int32_t i = 0; i < m_pGame->m_LocalBoard.m_NumZaps; i++)
 				{
 					cx += m_pGame->m_LocalBoard.m_aZaps[0].m_x;
 					cy += m_pGame->m_LocalBoard.m_aZaps[0].m_y;
@@ -1667,7 +1667,7 @@ public:
 				m_pSoundDevice->Play(&m_ZapSample[Clamp(m_pGame->m_LocalBoard.m_Multiplyer, 0, 9)]);
 				if(m_pGame->m_LocalBoard.m_NumZaps > 1)
 				{
-					for(int32 i = 0; i < m_pGame->m_LocalBoard.m_NumZaps; i++)
+					for(int32_t i = 0; i < m_pGame->m_LocalBoard.m_NumZaps; i++)
 					{
 						if(m_pGame->m_LocalBoard.m_aZaps[0].m_Count >= 6)
 							continue;
@@ -1718,8 +1718,8 @@ public:
 		m_pUtils->SetColor(0.7f, 0.4f, 0.3f, 1.0f);
 		//m_pUtils->SetColor(0.3f, 0.6f, 0.4f, 1.0f);
 
-		int32 bgsize = 256;
-		int32 s = (GetTickCount()/(GetTickFrequency()/10000))%(1000*bgsize);
+		int32_t bgsize = 256;
+		int32_t s = (GetTickCount()/(GetTickFrequency()/10000))%(1000*bgsize);
 		fp32 xstart = -s/1000.0f;
 		fp32 ystart = s/1000.0f*2;
 		m_pUtils->Quad_Begin();
@@ -1759,11 +1759,11 @@ public:
 			CView *pNextBlock = m_GUI.GetRoot()->GetChild("nextblocks");
 
 			fp32 aScales[4] = {32,16,16,16};
-			int32 LocalID = m_pClient->ClientID();
-			int32 aID[4] = {LocalID, -1, -1, -1};
+			int32_t LocalID = m_pClient->ClientID();
+			int32_t aID[4] = {LocalID, -1, -1, -1};
 			//CString aNames[4] = {m_pChat->m_lUsers.Find(LocalID, ""), "", "", ""};
 
-			for(int32 i = 0; i < 4; i++)
+			for(int32_t i = 0; i < 4; i++)
 			{
 				if(apPlayerBox[i])
 					apPlayerBox[i]->SetText("");
@@ -1771,10 +1771,10 @@ public:
 					apBoards[i]->SetFlags(CView::EFlag_Hidden);
 			}
 
-			int32 c=1;
-			for(int32 i = 0; i < m_pChat->m_lUsers.Len(); i++)
+			int32_t c=1;
+			for(int32_t i = 0; i < m_pChat->m_lUsers.Len(); i++)
 			{
-				int32 id = m_pChat->m_lUsers.GetKey(i);
+				int32_t id = m_pChat->m_lUsers.GetKey(i);
 				if(id != LocalID)
 				{
 					if(c < 4)
@@ -1801,7 +1801,7 @@ public:
 			m_pUtils->SetBlend(C2DUtils::EBlend_Alpha);
 
 			// render boards
-			for(int32 i = 0; i < c; i++)
+			for(int32_t i = 0; i < c; i++)
 			{
 				if(apBoards[i] == NULL)
 					continue;
@@ -1834,19 +1834,19 @@ public:
 						fp32 xpos = m_pGame->m_XPos;
 						fp32 ypos = m_pGame->m_YPos;
 						fp32 yoffset = -scale*(1-m_pGame->m_LocalBoard.m_IntertickTime);
-						int32 rot = m_pGame->m_Rotation;
+						int32_t rot = m_pGame->m_Rotation;
 
 						// draw halo
 						m_pUtils->SetColor(1,1,1,0.75f);
 						m_pUtils->SetTexCoord(3/8.0f,4/8.0f, 3/8.0f+1/8.0f, 4/8.0f+1/8.0f);
 						fp32 hx = x+(xpos+m_aDirectionOffsets[0][rot][0])*scale+scale/2;
 						fp32 hy = y+(ypos+m_aDirectionOffsets[0][rot][1])*scale+scale/2+yoffset;
-						hx = (fp32)((int32)hx);
-						hy = (fp32)((int32)hy);
+						hx = (fp32)((int32_t)hx);
+						hy = (fp32)((int32_t)hy);
 						m_pUtils->Quad_Draw(hx, hy, scale*1.4f, scale*1.4f);
 
 						// Draw BALLS!
-						for(int32 i = 0; i < 2; i++)
+						for(int32_t i = 0; i < 2; i++)
 						{
 							fp32 fx = x+(xpos+m_aDirectionOffsets[i][rot][0])*scale;
 							fp32 fy = y+(ypos+m_aDirectionOffsets[i][rot][1])*scale+yoffset;
@@ -1873,8 +1873,8 @@ public:
 			if(pNextBlock)
 			{
 				m_pUtils->Quad_Begin();
-				int32 x = pNextBlock->GetPosition().x;
-				int32 y = pNextBlock->GetPosition().y;
+				int32_t x = pNextBlock->GetPosition().x;
+				int32_t y = pNextBlock->GetPosition().y;
 
 				RenderBlock(x, y, 0, m_pGame->m_LocalBoard.m_aNextBlocks[0], aScales[0]);
 				RenderBlock(x+aScales[0], y, 0, m_pGame->m_LocalBoard.m_aNextBlocks[1], aScales[0]);
@@ -1890,7 +1890,7 @@ public:
 			int64 Tick = GetTickCount();
 			fp32 BaseX = apBoards[0]->GetPosition().x;
 			fp32 BaseY = apBoards[0]->GetPosition().y;
-			for(int32 t = 0; t < m_lTexts.Len(); t++)
+			for(int32_t t = 0; t < m_lTexts.Len(); t++)
 			{
 				CSpecialText Text = m_lTexts[t];
 				if(Tick > (Text.m_StartTick+Text.m_Duration))
@@ -1959,7 +1959,7 @@ public:
 
 				if(m_pGame->m_GameState == CNetworkGameClient::EGameState_Lose)
 				{
-					int32 Frame = (GetTickCount()/(GetTickFrequency()/10))%4;
+					int32_t Frame = (GetTickCount()/(GetTickFrequency()/10))%4;
 					m_pUtils->SetTexture(m_iTeeTexture);
 					m_pUtils->Quad_Begin();
 					fp32 Start = Frame/4.0f;
@@ -1997,7 +1997,7 @@ void ThreadTest(void *)
 
 
 //
-int32 FooMain(int8 *cmdline)
+int32_t FooMain(int8 *cmdline)
 {
 	/*
 	g_TestLock.Aquire();

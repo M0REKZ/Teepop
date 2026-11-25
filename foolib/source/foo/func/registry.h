@@ -22,7 +22,7 @@ namespace NFoo
 		CRegistry *GetChild(const int8 *pName);
 		CRegistry *GetChild(const int8 *pName, const int8 *pValue);
 
-		void Dump(int32 Indent=0);
+		void Dump(int32_t Indent=0);
 		bool Read(class CInputStream &rStream);
 	};
 

@@ -14,7 +14,7 @@ using namespace NFoo::N3D::NDirectX;
 	if (!##mode1.m_aParams[##mode].Accaptable(##mode2.m_aParams[##mode]))\
 	bCheck = false;
 
-int32 CDirectXDevice::EnumDisplayModes(TDynamicArray<CMode> &_rModes, CMode _Mode)
+int32_t CDirectXDevice::EnumDisplayModes(TDynamicArray<CMode> &_rModes, CMode _Mode)
 {
 	// No direct3d created
 	if (!m_pD3D)
@@ -31,11 +31,11 @@ int32 CDirectXDevice::EnumDisplayModes(TDynamicArray<CMode> &_rModes, CMode _Mod
 			D3DFMT_R5G6B5,
 	};
 
-	int32 AllowedFormatsLen = sizeof(AllowedFormats) / sizeof(D3DFORMAT);
+	int32_t AllowedFormatsLen = sizeof(AllowedFormats) / sizeof(D3DFORMAT);
 
-	int32 NumAdapters = m_pD3D->GetAdapterCount();
+	int32_t NumAdapters = m_pD3D->GetAdapterCount();
 
-	for (int32 iAdapter = 0; iAdapter < NumAdapters; iAdapter++)
+	for (int32_t iAdapter = 0; iAdapter < NumAdapters; iAdapter++)
 	{
 		D3DADAPTER_IDENTIFIER9 Identifier;
 		//TDynamicArray<D3DFORMAT> AdapterFormats;
@@ -43,11 +43,11 @@ int32 CDirectXDevice::EnumDisplayModes(TDynamicArray<CMode> &_rModes, CMode _Mod
 
 		// Get list of all display modes on this adapter.  
 		// Also build a temporary list of all display adapter formats.
-		for (int32 iFormat = 0; iFormat < AllowedFormatsLen; iFormat++)
+		for (int32_t iFormat = 0; iFormat < AllowedFormatsLen; iFormat++)
 		{
 			D3DFORMAT AdapterFormat = AllowedFormats[iFormat];
-			int32 NumAdapterModes = m_pD3D->GetAdapterModeCount(iAdapter, AdapterFormat);
-			for (int32 iMode = 0; iMode < NumAdapterModes; iMode++)
+			int32_t NumAdapterModes = m_pD3D->GetAdapterModeCount(iAdapter, AdapterFormat);
+			for (int32_t iMode = 0; iMode < NumAdapterModes; iMode++)
 			{
 				D3DDISPLAYMODE DisplayMode;
 				if (m_pD3D->EnumAdapterModes(iAdapter, AdapterFormat, iMode, &DisplayMode) != D3D_OK)
@@ -79,8 +79,8 @@ int32 CDirectXDevice::EnumDisplayModes(TDynamicArray<CMode> &_rModes, CMode _Mod
 				// Find Backbuffermodes for both windowed and fullscreen
 				GetBackBufferFormats(iAdapter, DisplayMode.Format, lBackBufferFormat, false, _Mode);
 				GetBackBufferFormats(iAdapter, DisplayMode.Format, lBackBufferFormat, true, _Mode);
-				int32 BBufferFormatLen = lBackBufferFormat.Len();
-				for (int32 iBBuffer = 0; iBBuffer < BBufferFormatLen; iBBuffer++)
+				int32_t BBufferFormatLen = lBackBufferFormat.Len();
+				for (int32_t iBBuffer = 0; iBBuffer < BBufferFormatLen; iBBuffer++)
 				{
 					TDynamicArray<D3DFORMAT> lDepthModes;
 					GetDepthModes(iAdapter,DisplayMode.Format,lBackBufferFormat[iBBuffer].m_Format,lDepthModes,_Mode);
@@ -88,14 +88,14 @@ int32 CDirectXDevice::EnumDisplayModes(TDynamicArray<CMode> &_rModes, CMode _Mod
 					TempMode.Set(CMode::EFullscreen, CMode::EType_Specified, !lBackBufferFormat[iBBuffer].m_bWindowed);
 
 					// Hum hum, ok depthmodes can be used for both stencil/z buffer so make a nice 
-					int32 DepthModeLen = lDepthModes.Len();
-					for (int32 iDepth = 0; iDepth < DepthModeLen; iDepth++)
+					int32_t DepthModeLen = lDepthModes.Len();
+					for (int32_t iDepth = 0; iDepth < DepthModeLen; iDepth++)
 					{
 						TempMode.Set(CMode::EAlphaBits, CMode::EType_Specified, AlphaBits(lBackBufferFormat[iBBuffer].m_Format), lBackBufferFormat[iBBuffer].m_Format);
 						TempMode.Set(CMode::EDepthBits,CMode::EType_Specified, DepthBits(lDepthModes[iDepth]),lDepthModes[iDepth]);
 						TempMode.Set(CMode::EStencilBits, CMode::EType_Specified, StencilBits(lDepthModes[iDepth]),lDepthModes[iDepth]);
 						AddDeviceMode(_rModes,TempMode,_Mode);
-						/*for (int32 iStencil = 0; iStencil < DepthModeLen; iStencil++)
+						/*for (int32_t iStencil = 0; iStencil < DepthModeLen; iStencil++)
 						{
 						// No way to find d3d acceptable in fullscreen?
 						TempMode.Set(CMode::EStencilBits, CMode::EType_Specified,lDepthModes[iStencil]);
@@ -114,7 +114,7 @@ bool CDirectXDevice::AddDeviceMode(TDynamicArray<CMode>& _rModes, const CMode& _
 {
 	if (_ModeRef.Acceptable(_AddMode))
 	{
-		int32 CurrentLen = _rModes.Len();
+		int32_t CurrentLen = _rModes.Len();
 		bool bFound = false;
 		for(intr m = 0; m < CurrentLen; m++)
 		{
@@ -139,7 +139,7 @@ bool CDirectXDevice::AddDeviceMode(TDynamicArray<CMode>& _rModes, const CMode& _
 	return false;
 }
 
-int32 CDirectXDevice::AlphaBits(D3DFORMAT _Format)
+int32_t CDirectXDevice::AlphaBits(D3DFORMAT _Format)
 {
 	switch (_Format)
 	{
@@ -172,7 +172,7 @@ int32 CDirectXDevice::AlphaBits(D3DFORMAT _Format)
 	}
 }
 
-int32 CDirectXDevice::DepthBits(D3DFORMAT _Format)
+int32_t CDirectXDevice::DepthBits(D3DFORMAT _Format)
 {
 	switch (_Format)
 	{
@@ -193,7 +193,7 @@ int32 CDirectXDevice::DepthBits(D3DFORMAT _Format)
 	}
 }
 
-int32 CDirectXDevice::StencilBits(D3DFORMAT _Format)
+int32_t CDirectXDevice::StencilBits(D3DFORMAT _Format)
 {
 	switch (_Format)
 	{
@@ -214,7 +214,7 @@ int32 CDirectXDevice::StencilBits(D3DFORMAT _Format)
 	}
 }
 
-void CDirectXDevice::GetBackBufferFormats(uint32 _iAdapter, D3DFORMAT _DisplayFormat, 
+void CDirectXDevice::GetBackBufferFormats(uint32_t _iAdapter, D3DFORMAT _DisplayFormat, 
 										  TDynamicArray<SBBufferMode>& _BBModes, bool _bWindowed, const CMode& _Mode)
 {
 	// Just assume that we always want hardware acc
@@ -228,10 +228,10 @@ void CDirectXDevice::GetBackBufferFormats(uint32 _iAdapter, D3DFORMAT _DisplayFo
 			D3DFMT_R5G6B5,
 	};
 
-	int32 FormatLen = sizeof(BBFormats) / sizeof(D3DFORMAT);
+	int32_t FormatLen = sizeof(BBFormats) / sizeof(D3DFORMAT);
 
 	// Check all stencil modes
-	for (int32 i = 0; i < FormatLen; i++)
+	for (int32_t i = 0; i < FormatLen; i++)
 	{
 		// Check format
 		if (SUCCEEDED(m_pD3D->CheckDeviceType(_iAdapter, D3DDEVTYPE_HAL, _DisplayFormat, 
@@ -247,7 +247,7 @@ void CDirectXDevice::GetBackBufferFormats(uint32 _iAdapter, D3DFORMAT _DisplayFo
 }
 
 // Finds surface types for given diplayformat
-void CDirectXDevice::GetDepthModes(uint32 _iAdapter, D3DFORMAT _DisplayFormat, D3DFORMAT _BBufferFormat,
+void CDirectXDevice::GetDepthModes(uint32_t _iAdapter, D3DFORMAT _DisplayFormat, D3DFORMAT _BBufferFormat,
 								   TDynamicArray<D3DFORMAT>& _DepthModes, const CMode& _Mode)
 {
 	// Just assume that we always want hardware acc
@@ -267,10 +267,10 @@ void CDirectXDevice::GetDepthModes(uint32 _iAdapter, D3DFORMAT _DisplayFormat, D
 			D3DFMT_INDEX32,
 	};
 
-	int32 FormatLen = sizeof(DepthFormats) / sizeof(D3DFORMAT);
+	int32_t FormatLen = sizeof(DepthFormats) / sizeof(D3DFORMAT);
 
 	// Check all stencil modes
-	for (int32 i = 0; i < FormatLen; i++)
+	for (int32_t i = 0; i < FormatLen; i++)
 	{
 		// Check format
 		if (SUCCEEDED(m_pD3D->CheckDeviceFormat(_iAdapter, D3DDEVTYPE_HAL, _DisplayFormat, 

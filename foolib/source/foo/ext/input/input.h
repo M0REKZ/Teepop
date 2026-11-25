@@ -20,8 +20,8 @@ namespace NFoo
 		{
 		public:
 			CEvent() {}
-			CEvent(int32 _Key, bool _Pressed, int8 _Char = 0) { m_Key = _Key; m_Pressed = _Pressed; m_Char = _Char; }
-			int32 m_Key;
+			CEvent(int32_t _Key, bool _Pressed, int8 _Char = 0) { m_Key = _Key; m_Pressed = _Pressed; m_Char = _Char; }
+			int32_t m_Key;
 			int8 m_Char;
 			bool m_Pressed;
 			//class CInput::CDevice *m_pDevice;
@@ -35,18 +35,18 @@ namespace NFoo
 		public:
 			//static const int8 ms_aTag[] = "InputDevice";
 			// events
-			int32	NumEvents()						{ return m_lEvents.Len(); };
+			int32_t	NumEvents()						{ return m_lEvents.Len(); };
 			CEvent	GetEvent();
 			void	UseEvents(bool _Yes)			{ m_UseEvents = _Yes; };
 
-			int32	GetNumButtons()					{ return m_NumButtons; }
-			int32	GetNumAxis()					{ return m_NumAxis; }
-			fp32	GetAxis(int32 _iAxel)			{ return m_pAxis[_iAxel]; }
-			void	ResetAxis()						{ for(int32 i = 0; i < GetNumAxis(); i++) m_pAxis[i] = 0; }
+			int32_t	GetNumButtons()					{ return m_NumButtons; }
+			int32_t	GetNumAxis()					{ return m_NumAxis; }
+			fp32	GetAxis(int32_t _iAxel)			{ return m_pAxis[_iAxel]; }
+			void	ResetAxis()						{ for(int32_t i = 0; i < GetNumAxis(); i++) m_pAxis[i] = 0; }
 
-			bool	IsButtonPressed(int32 _iButton) { return m_pButtonStates[_iButton]&EMask_Pressed; };
-			void	PressButton(int32 _iButton, int8 _Char = 0);
-			void	ReleaseButton(int32 _iButton, int8 _Char = 0);
+			bool	IsButtonPressed(int32_t _iButton) { return m_pButtonStates[_iButton]&EMask_Pressed; };
+			void	PressButton(int32_t _iButton, int8 _Char = 0);
+			void	ReleaseButton(int32_t _iButton, int8 _Char = 0);
 
 		protected:
 			// buttons
@@ -55,7 +55,7 @@ namespace NFoo
 				EMask_Pressed = 1
 			};
 
-			CDevice(int32 _NumButtons, int32 _NumAxis);
+			CDevice(int32_t _NumButtons, int32_t _NumAxis);
 			virtual ~CDevice();
 
 			// events
@@ -63,10 +63,10 @@ namespace NFoo
 			bool m_UseEvents;
 
 			uint8 *m_pButtonStates;
-			int32 m_NumButtons;
+			int32_t m_NumButtons;
 
 			fp32 *m_pAxis;
-			int32 m_NumAxis;
+			int32_t m_NumAxis;
 		};
 
 		CInput();

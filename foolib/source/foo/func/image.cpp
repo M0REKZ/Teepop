@@ -16,9 +16,9 @@ void CImage::CFormat::Refresh()
 		m_BPP = m_IndexInfo.m_Bits;
 	else if(m_Type == EType_Channels)
 	{
-		for(int32 i = 0; i < NumChannels(); i++)
+		for(int32_t i = 0; i < NumChannels(); i++)
 			m_BPP += ChannelDepth(i);
-		for(int32 i = NumChannels(); i < 4; i++)
+		for(int32_t i = NumChannels(); i < 4; i++)
 		{
 			m_ChannelInfo.m_aChannelDepth[i] = 0;
 			m_ChannelInfo.m_aChannels[i] = 0xFF;
@@ -35,13 +35,13 @@ void CImage::CFormat::Refresh()
 };
 
 
-CImage::CFormat::CFormat(int32 i, int32 w, int32 h)
+CImage::CFormat::CFormat(int32_t i, int32_t w, int32_t h)
 {
 	MemorySet(this, 0, sizeof(*this));
 	QuickSet(i, w, h);
 }
 
-void CImage::CFormat::QuickSet(int32 i, int32 w, int32 h)
+void CImage::CFormat::QuickSet(int32_t i, int32_t w, int32_t h)
 {
 	SetSize(w, h);
 	switch(i)
@@ -78,7 +78,7 @@ void CImage::CFormat::QuickSet(int32 i, int32 w, int32 h)
 //
 //
 //
-void CImage::CFormat::SetType(int32 Type)
+void CImage::CFormat::SetType(int32_t Type)
 {
 	m_Type = Type;
 }
@@ -86,7 +86,7 @@ void CImage::CFormat::SetType(int32 Type)
 //
 //
 //
-void CImage::CFormat::SetSize(int32 w, int32 h)
+void CImage::CFormat::SetSize(int32_t w, int32_t h)
 {
 	m_Width = w;
 	m_Height = h;
@@ -96,7 +96,7 @@ void CImage::CFormat::SetSize(int32 w, int32 h)
 //
 //
 //
-void CImage::CFormat::SetChannels(int32 colorspace, int32 c0, int32 c1, int32 c2, int32 c3)
+void CImage::CFormat::SetChannels(int32_t colorspace, int32_t c0, int32_t c1, int32_t c2, int32_t c3)
 {
 	if(m_Type != EType_Channels)
 		throw "CImage::CFormat::SetChannels: Wrong type.";
@@ -105,7 +105,7 @@ void CImage::CFormat::SetChannels(int32 colorspace, int32 c0, int32 c1, int32 c2
 	m_ChannelInfo.m_aChannels[1] = c1;
 	m_ChannelInfo.m_aChannels[2] = c2;
 	m_ChannelInfo.m_aChannels[3] = c3;
-	for(int32 i = 0; i < 4; i++)
+	for(int32_t i = 0; i < 4; i++)
 		if(m_ChannelInfo.m_aChannels[i] != 0xff)
 			m_ChannelInfo.m_NumChannels = i+1;
 	Refresh();
@@ -114,7 +114,7 @@ void CImage::CFormat::SetChannels(int32 colorspace, int32 c0, int32 c1, int32 c2
 //
 //
 //
-void CImage::CFormat::SetChannelDepths(int32 c0, int32 c1, int32 c2, int32 c3)
+void CImage::CFormat::SetChannelDepths(int32_t c0, int32_t c1, int32_t c2, int32_t c3)
 {
 	if(m_Type != EType_Channels)
 		throw "CImage::CFormat::SetChannelDepths: Wrong type.";
@@ -122,7 +122,7 @@ void CImage::CFormat::SetChannelDepths(int32 c0, int32 c1, int32 c2, int32 c3)
 	m_ChannelInfo.m_aChannelDepth[1] = c1;
 	m_ChannelInfo.m_aChannelDepth[2] = c2;
 	m_ChannelInfo.m_aChannelDepth[3] = c3;
-	for(int32 i = 0; i < 4; i++)
+	for(int32_t i = 0; i < 4; i++)
 		if(m_ChannelInfo.m_aChannelDepth[i] != 0)
 			m_ChannelInfo.m_NumChannels = i+1;
 	Refresh();
@@ -265,7 +265,7 @@ class CFormatHandler
 		TDynamicArray<NClassRegistry::CHandle*> lHandles;
 		NClassRegistry::FindHandleByTag("imageformat", lHandles);
 
-		for(int32 i = 0; i < lHandles.Len(); i++)
+		for(int32_t i = 0; i < lHandles.Len(); i++)
 		{
 			CImageFormat *pFormat = (CImageFormat*)NClassRegistry::CreateByHandle(lHandles[i]);
 			if(pFormat)
@@ -283,7 +283,7 @@ public:
 	{
 		if(!m_lFormats.Len())
 			Load();
-		for(int32 i = 0; i < m_lFormats.Len(); i++)
+		for(int32_t i = 0; i < m_lFormats.Len(); i++)
 		{
 			if(m_lFormats[i]->CanHandle(rMime))
 				return m_lFormats[i];
@@ -316,11 +316,11 @@ bool CImage::Write(COutputStream &rStream)
 //
 void CImage::FlipY()
 {
-	int32 Pitch = m_Format.Pitch();
+	int32_t Pitch = m_Format.Pitch();
 	uint8 *pBuffer = new uint8[Pitch];
 	uint8 *pEnd = (uint8 *)m_pData + m_Format.Height()*Pitch - Pitch;
 
-	for(int32 y = 0; y < m_Format.Height()/2; y++)
+	for(int32_t y = 0; y < m_Format.Height()/2; y++)
 	{
 		MemoryCopy(pBuffer, m_pData+y*Pitch, Pitch);
 		MemoryCopy(m_pData+y*Pitch, pEnd-y*Pitch, Pitch);
@@ -330,7 +330,7 @@ void CImage::FlipY()
 	SafeArrayDelete(pBuffer);
 }
 /*
-CPixel CImage::GetPixelRGBA(int32 x, int32 y)
+CPixel CImage::GetPixelRGBA(int32_t x, int32_t y)
 {
 	CPixel Pixel;
 	Pixel.c[0] = Pixel.c[1] = Pixel.c[2] = 0;
@@ -340,7 +340,7 @@ CPixel CImage::GetPixelRGBA(int32 x, int32 y)
 		uint8 *p = Data()+y*m_Format.Pitch()+x*m_Format.BPP();
 		if(m_Format.ColorSpace() == EColorSpace_GrayScale)
 		{
-			for(int32 i = 0; i < m_Format.NumChannels(); i++)
+			for(int32_t i = 0; i < m_Format.NumChannels(); i++)
 			{
 				if(m_Format.Channel(i) == EChannel_Y && m_Format.ChannelDepth(i) == 8)
 				{
@@ -361,7 +361,7 @@ CPixel CImage::GetPixelRGBA(int32 x, int32 y)
 		throw "CImage::GetPixelRGBA: unsupported types";
 }
 
-void CImage::SetPixelRGBA(int32 x, int32 y, CPixel Pixel)
+void CImage::SetPixelRGBA(int32_t x, int32_t y, CPixel Pixel)
 {
 	if(m_Format.Type() == EType_Channels)
 	{
@@ -371,7 +371,7 @@ void CImage::SetPixelRGBA(int32 x, int32 y, CPixel Pixel)
 		throw "CImage::GetPixelRGBA: unsupported types";
 }*/
 
-#define FIXEDP(f) ((int32)(f*0x7ff))
+#define FIXEDP(f) ((int32_t)(f*0x7ff))
 #define FPSIZE 11
 
 #define A_NONE 0
@@ -379,18 +379,18 @@ void CImage::SetPixelRGBA(int32 x, int32 y, CPixel Pixel)
 #define A_ONE 2
 #define A_COPY 3
 
-template<int32 RC, int32 GC, int32 BC, int32 ALPHAMODE>
-void YUV8toRGB8(uint8 *pSrc, uint8 *pDst, int32 w, int32 h)
+template<int32_t RC, int32_t GC, int32_t BC, int32_t ALPHAMODE>
+void YUV8toRGB8(uint8 *pSrc, uint8 *pDst, int32_t w, int32_t h)
 {
-	for(int32 y = 0; y < h; y++)
-		for(int32 x = 0; x < w; x++)
+	for(int32_t y = 0; y < h; y++)
+		for(int32_t x = 0; x < w; x++)
 		{
-			int32 Y = FIXEDP(*pSrc++);
-			int32 U = FIXEDP(*pSrc++);
-			int32 V = FIXEDP(*pSrc++);
-			int32 R = (int32)(Y + ((FIXEDP(1.4075f) * (V - FIXEDP(128)))>>FPSIZE))>>FPSIZE;
-			int32 G = (int32)(Y - ((FIXEDP(0.3455f) * (U - FIXEDP(128)))>>FPSIZE) - ((FIXEDP(0.7169) * (V - FIXEDP(128))>>FPSIZE)))>>FPSIZE;
-			int32 B = (int32)(Y + ((FIXEDP(1.7790f) * (U - FIXEDP(128)))>>FPSIZE))>>FPSIZE;
+			int32_t Y = FIXEDP(*pSrc++);
+			int32_t U = FIXEDP(*pSrc++);
+			int32_t V = FIXEDP(*pSrc++);
+			int32_t R = (int32_t)(Y + ((FIXEDP(1.4075f) * (V - FIXEDP(128)))>>FPSIZE))>>FPSIZE;
+			int32_t G = (int32_t)(Y - ((FIXEDP(0.3455f) * (U - FIXEDP(128)))>>FPSIZE) - ((FIXEDP(0.7169) * (V - FIXEDP(128))>>FPSIZE)))>>FPSIZE;
+			int32_t B = (int32_t)(Y + ((FIXEDP(1.7790f) * (U - FIXEDP(128)))>>FPSIZE))>>FPSIZE;
 			
 			R = R&(~(R>>31)); // if(x < 0) x = 0
 			G = G&(~(G>>31));
@@ -412,15 +412,15 @@ void YUV8toRGB8(uint8 *pSrc, uint8 *pDst, int32 w, int32 h)
 //
 //
 //
-template<int32 RC, int32 GC, int32 BC, int32 ALPHAMODE>
-void RGB8toYUV8(uint8 *pSrc, uint8 *pDst, int32 w, int32 h)
+template<int32_t RC, int32_t GC, int32_t BC, int32_t ALPHAMODE>
+void RGB8toYUV8(uint8 *pSrc, uint8 *pDst, int32_t w, int32_t h)
 {
-	for(int32 y = 0; y < h; y++)
-		for(int32 x = 0; x < w; x++)
+	for(int32_t y = 0; y < h; y++)
+		for(int32_t x = 0; x < w; x++)
 		{
-			int32 R = FIXEDP(pSrc[RC]);
-			int32 G = FIXEDP(pSrc[GC]);
-			int32 B = FIXEDP(pSrc[BC]);
+			int32_t R = FIXEDP(pSrc[RC]);
+			int32_t G = FIXEDP(pSrc[GC]);
+			int32_t B = FIXEDP(pSrc[BC]);
 			pSrc+=3;
 			*pDst++ = (uint8)(((R * FIXEDP(0.299f)>>FPSIZE) + (G * FIXEDP(0.587f)>>FPSIZE) + (B *  FIXEDP(0.114f)>>FPSIZE))>>FPSIZE);
 			*pDst++ = (uint8)(((R * FIXEDP(-0.169f)>>FPSIZE) + (G * FIXEDP(-0.332f)>>FPSIZE) + (B * FIXEDP(0.500f)>>FPSIZE) + FIXEDP(128.0f))>>FPSIZE);
@@ -438,13 +438,13 @@ void RGB8toYUV8(uint8 *pSrc, uint8 *pDst, int32 w, int32 h)
 //
 //
 //
-template<int32 ALPHAMODE>
-void RGB8toY8(uint8 *pSrc, uint8 *pDst, int32 w, int32 h)
+template<int32_t ALPHAMODE>
+void RGB8toY8(uint8 *pSrc, uint8 *pDst, int32_t w, int32_t h)
 {
-	for(int32 y = 0; y < h; y++)
-		for(int32 x = 0; x < w; x++)
+	for(int32_t y = 0; y < h; y++)
+		for(int32_t x = 0; x < w; x++)
 		{
-			int32 Value = *pSrc++;
+			int32_t Value = *pSrc++;
 			Value += *pSrc++;
 			Value += *pSrc++;
 			Value /= 3;
@@ -462,10 +462,10 @@ void RGB8toY8(uint8 *pSrc, uint8 *pDst, int32 w, int32 h)
 //
 //
 //
-template<int32 C0, int32 C1, int32 C2, int32 ALPHAMODE>
-void SwizzleX8(uint8 *pSrc, uint8 *pDst, int32 w, int32 h)
+template<int32_t C0, int32_t C1, int32_t C2, int32_t ALPHAMODE>
+void SwizzleX8(uint8 *pSrc, uint8 *pDst, int32_t w, int32_t h)
 {
-	for(int32 x = 0; x < w*h; x++)
+	for(int32_t x = 0; x < w*h; x++)
 	{
 		pDst[0] = pSrc[C0];
 		pDst[1] = pSrc[C1];
@@ -481,9 +481,9 @@ void SwizzleX8(uint8 *pSrc, uint8 *pDst, int32 w, int32 h)
 	}
 }
 
-typedef void (*PFNImageConverter)(uint8 *pSrc, uint8 *pDst, int32 w, int32 h);
+typedef void (*PFNImageConverter)(uint8 *pSrc, uint8 *pDst, int32_t w, int32_t h);
 
-CImage::CFormat iFormat(int32 ColorSpace, uint32 Depth, uint32 Channels)
+CImage::CFormat iFormat(int32_t ColorSpace, uint32_t Depth, uint32_t Channels)
 {
 	CImage::CFormat Format;
 	Format.SetType(CImage::EType_Channels);
@@ -492,17 +492,17 @@ CImage::CFormat iFormat(int32 ColorSpace, uint32 Depth, uint32 Channels)
 	return Format;
 }
 
-CImage::CFormat RGBiFormat(uint32 Depth, uint32 Channels)
+CImage::CFormat RGBiFormat(uint32_t Depth, uint32_t Channels)
 {
 	return iFormat(CImage::EColorSpace_RGB, Depth, Channels);
 }
 
-CImage::CFormat YUViFormat(uint32 Depth, uint32 Channels)
+CImage::CFormat YUViFormat(uint32_t Depth, uint32_t Channels)
 {
 	return iFormat(CImage::EColorSpace_YUV, Depth, Channels);
 }
 
-CImage::CFormat GrayiFormat(uint32 Depth, uint32 Channels)
+CImage::CFormat GrayiFormat(uint32_t Depth, uint32_t Channels)
 {
 	return iFormat(CImage::EColorSpace_GrayScale, Depth, Channels);
 }
@@ -598,7 +598,7 @@ PFNImageConverter GetConverter(CImage::CFormat SrcFormat, CImage::CFormat DstFor
 	{YUViFormat(0x08080808, 0x00010203), YUViFormat(0x08080800, 0x000102FF), SwizzleX8<0,1,2,A_DROP>},		// YUVA -> YUV
 	};
 	
-	for(int32 i = 0; i < sizeof(aTable)/sizeof(CConverter); i++)
+	for(int32_t i = 0; i < sizeof(aTable)/sizeof(CConverter); i++)
 	{
 		if(aTable[i].Match(SrcFormat, DstFormat))
 			return aTable[i].m_pfnFunc;
@@ -610,7 +610,7 @@ PFNImageConverter GetConverter(CImage::CFormat SrcFormat, CImage::CFormat DstFor
 //
 //
 //
-CImage::CPixel CImage::GetPixelRGBA(int32 x, int32 y)
+CImage::CPixel CImage::GetPixelRGBA(int32_t x, int32_t y)
 {
 	CMemoryReader Stream(Data()+x*m_Format.BPP()+y*m_Format.m_Pitch);
 	CBitInputStream BitStream(Stream);
@@ -620,9 +620,9 @@ CImage::CPixel CImage::GetPixelRGBA(int32 x, int32 y)
 	Pixel.c[0] = Pixel.c[1] = Pixel.c[2] = 0;
 	Pixel.c[3] = 1;
 
-	for(int32 c = 0; c < m_Format.NumChannels(); c++)
+	for(int32_t c = 0; c < m_Format.NumChannels(); c++)
 	{
-		int32 b = BitStream.Read(m_Format.ChannelDepth(c));
+		int32_t b = BitStream.Read(m_Format.ChannelDepth(c));
 		Pixel.c[m_Format.Channel(c)] = b/(fp32)((1<<m_Format.ChannelDepth(c))-1)*255.0f;
 	}
 
@@ -634,9 +634,9 @@ CImage::CPixel CImage::GetPixelRGBA(int32 x, int32 y)
 		uint8 Y = (uint8)Pixel.c[0];	// YUV -> RGB
 		uint8 U = (uint8)Pixel.c[1];
 		uint8 V = (uint8)Pixel.c[2];
-		int32 R = (int32)(Y + (1.4075f * (V - 128)));
-		int32 G = (int32)(Y - 0.3455f * (U - 128) - (0.7169 * (V - 128)));
-		int32 B = (int32)(Y + (1.7790f * (U - 128)));
+		int32_t R = (int32_t)(Y + (1.4075f * (V - 128)));
+		int32_t G = (int32_t)(Y - 0.3455f * (U - 128) - (0.7169 * (V - 128)));
+		int32_t B = (int32_t)(Y + (1.7790f * (U - 128)));
 		Pixel.c[0] = R > 255 ? 255 : R < 0 ? 0 : R;
 		Pixel.c[1] = G > 255 ? 255 : G < 0 ? 0 : G;
 		Pixel.c[2] = B > 255 ? 255 : B < 0 ? 0 : B;
@@ -645,7 +645,7 @@ CImage::CPixel CImage::GetPixelRGBA(int32 x, int32 y)
 	return Pixel;
 }
 
-void CImage::SetPixelRGBA(int32 x, int32 y, CPixel Pixel)
+void CImage::SetPixelRGBA(int32_t x, int32_t y, CPixel Pixel)
 {
 	CMemoryWriter Stream(Data()+x*m_Format.BPP()+y*m_Format.m_Pitch);
 	CBitOutputStream BitStream(Stream);	// convert from rgb to dst colorspace
@@ -663,8 +663,8 @@ void CImage::SetPixelRGBA(int32 x, int32 y, CPixel Pixel)
 	}
 
 	// write pixel
-	for(int32 c = 0; c < m_Format.NumChannels(); c++)
-		BitStream.Write((int32)(Pixel.c[m_Format.Channel(c)]/255.0f*((1<<m_Format.ChannelDepth(c))-1)),
+	for(int32_t c = 0; c < m_Format.NumChannels(); c++)
+		BitStream.Write((int32_t)(Pixel.c[m_Format.Channel(c)]/255.0f*((1<<m_Format.ChannelDepth(c))-1)),
 						m_Format.ChannelDepth(c));
 }
 
@@ -681,7 +681,7 @@ void CImage::Convert(CFormat Format)
 //
 //
 //
-void CImage::Convert(CFormat Format, CImage &rImage, int32 Flags)
+void CImage::Convert(CFormat Format, CImage &rImage, int32_t Flags)
 {
 	bool ColorSpace = false;
 	bool ChannelSwizzle = false; // RGB -> BGR
@@ -707,7 +707,7 @@ void CImage::Convert(CFormat Format, CImage &rImage, int32 Flags)
 			ChannelExtend = true;
 		else
 		{
-			for(int32 i = 0; i < m_Format.NumChannels(); i++)
+			for(int32_t i = 0; i < m_Format.NumChannels(); i++)
 			{
 				if(m_Format.Channel(i) != Format.Channel(i))
 					ChannelSwizzle = true;
@@ -751,17 +751,17 @@ void CImage::Convert(CFormat Format, CImage &rImage, int32 Flags)
 			CMemoryWriter DstStream(rImage.Data());
 			CBitOutputStream DstBitStream(DstStream);
 
-			for(int32 y = 0; y < m_Format.Height(); y++)
-				for(int32 x = 0; x < m_Format.Width(); x++)
+			for(int32_t y = 0; y < m_Format.Height(); y++)
+				for(int32_t x = 0; x < m_Format.Width(); x++)
 				{
 					// read pixel
 					CPixel Pixel;
 					Pixel.c[0] = Pixel.c[1] = Pixel.c[2] = 0;
 					Pixel.c[3] = 255;
 
-					for(int32 c = 0; c < m_Format.NumChannels(); c++)
+					for(int32_t c = 0; c < m_Format.NumChannels(); c++)
 					{
-						int32 b = SrcBitStream.Read(m_Format.ChannelDepth(c));
+						int32_t b = SrcBitStream.Read(m_Format.ChannelDepth(c));
 						Pixel.c[m_Format.Channel(c)] = b/(fp32)((1<<m_Format.ChannelDepth(c))-1)*255.0f;
 					}
 
@@ -777,9 +777,9 @@ void CImage::Convert(CFormat Format, CImage &rImage, int32 Flags)
 						uint8 Y = (uint8)Pixel.c[0];	// YUV -> RGB
 						uint8 U = (uint8)Pixel.c[1];
 						uint8 V = (uint8)Pixel.c[2];
-						int32 R = (int32)(Y + (1.4075f * (V - 128)));
-						int32 G = (int32)(Y - 0.3455f * (U - 128) - (0.7169 * (V - 128)));
-						int32 B = (int32)(Y + (1.7790f * (U - 128)));
+						int32_t R = (int32_t)(Y + (1.4075f * (V - 128)));
+						int32_t G = (int32_t)(Y - 0.3455f * (U - 128) - (0.7169 * (V - 128)));
+						int32_t B = (int32_t)(Y + (1.7790f * (U - 128)));
 						Pixel.c[0] = R > 255 ? 255 : R < 0 ? 0 : R;
 						Pixel.c[1] = G > 255 ? 255 : G < 0 ? 0 : G;
 						Pixel.c[2] = B > 255 ? 255 : B < 0 ? 0 : B;
@@ -799,8 +799,8 @@ void CImage::Convert(CFormat Format, CImage &rImage, int32 Flags)
 					}
 
 					// write pixel
-					for(int32 c = 0; c < DstFormat.NumChannels(); c++)
-						DstBitStream.Write((int32)(Pixel.c[DstFormat.Channel(c)]/255.0f*((1<<DstFormat.ChannelDepth(c))-1)),
+					for(int32_t c = 0; c < DstFormat.NumChannels(); c++)
+						DstBitStream.Write((int32_t)(Pixel.c[DstFormat.Channel(c)]/255.0f*((1<<DstFormat.ChannelDepth(c))-1)),
 								DstFormat.ChannelDepth(c));
 				}
 
@@ -817,7 +817,7 @@ void CImage::Convert(CFormat Format, CImage &rImage, int32 Flags)
 }
 
 /*
-void CImage::ExtractChannel(int32 iChannel, CImage &rChannel)
+void CImage::ExtractChannel(int32_t iChannel, CImage &rChannel)
 {
 }*/
 
@@ -825,7 +825,7 @@ void CImage::ExtractChannel(int32 iChannel, CImage &rChannel)
 // Clearing to color 0 supports all bitdepth, else only 32 bit is supported
 //
 /*
-void CImage::Clear(uint32 _Color)
+void CImage::Clear(uint32_t _Color)
 {
 	//ASSUME(m_pData);
 
@@ -835,8 +835,8 @@ void CImage::Clear(uint32 _Color)
 	}
 	else if(m_Desc.m_Format == EFormat_RGBA32)
 	{
-		uint32 *pDat = (uint32 *)m_pData;
-		for(int32 c = m_Desc.m_Size.y*m_Desc.m_Size.x; c > 0; c--)
+		uint32_t *pDat = (uint32_t *)m_pData;
+		for(int32_t c = m_Desc.m_Size.y*m_Desc.m_Size.x; c > 0; c--)
 			*pDat++ = _Color;
 	}
 	else
@@ -849,7 +849,7 @@ void CImage::Clear(uint32 _Color)
 // Should be optimized
 //
 /*
-void CImage::Blit(CImage *_pSrc, int32 _x, int32 _y)
+void CImage::Blit(CImage *_pSrc, int32_t _x, int32_t _y)
 {
 	if(_pSrc->m_Desc.m_Format != m_Desc.m_Format)
 		throw "Can't perform blit between diffrent formats";
@@ -858,7 +858,7 @@ void CImage::Blit(CImage *_pSrc, int32 _x, int32 _y)
 	// Get number of rows to copy
 	//
 	/*
-	int32 Rows = Src->m_Format.m_Size.y;
+	int32_t Rows = Src->m_Format.m_Size.y;
 
 	if(m_Format.m_Size.y < Rows)
 		Rows = m_Format.m_Size.y;
@@ -871,11 +871,11 @@ void CImage::Blit(CImage *_pSrc, int32 _x, int32 _y)
 	
 	//if(m_Format.m_Size.x*m_Format.m_Size.y < Src->m_Format.m_Size.x*Src->m_Format.m_Size.y)
 	//{
-	int32 DstPosY = _y;
-	int32 SrcPosY = 0;
-	int32 DstPosX = _x;
-	int32 SrcPosX = 0;
-	int32 Width = _pSrc->m_Desc.m_Size.x;
+	int32_t DstPosY = _y;
+	int32_t SrcPosY = 0;
+	int32_t DstPosX = _x;
+	int32_t SrcPosX = 0;
+	int32_t Width = _pSrc->m_Desc.m_Size.x;
 	
 	if(DstPosY < 0)
 	{
@@ -897,9 +897,9 @@ void CImage::Blit(CImage *_pSrc, int32 _x, int32 _y)
 
 	uint8 *pDstData = m_pData + DstPosY*m_Desc.m_Pitch + DstPosX*(m_Desc.m_Format>>3);
 	uint8 *pSrcData = _pSrc->m_pData + SrcPosY*_pSrc->m_Desc.m_Pitch + SrcPosX*(_pSrc->m_Desc.m_Format>>3);
-	int32 SrcPitch = (_pSrc->m_Desc.m_Size.x - Width)*(_pSrc->m_Desc.m_Format>>3);
-	int32 DstPitch = (m_Desc.m_Size.x - Width)*(m_Desc.m_Format>>3);
-	int32 NumBytes = Width*(m_Desc.m_Format>>3);
+	int32_t SrcPitch = (_pSrc->m_Desc.m_Size.x - Width)*(_pSrc->m_Desc.m_Format>>3);
+	int32_t DstPitch = (m_Desc.m_Size.x - Width)*(m_Desc.m_Format>>3);
+	int32_t NumBytes = Width*(m_Desc.m_Format>>3);
 	
 	for(; DstPosY < m_Desc.m_Size.y && SrcPosY < _pSrc->m_Desc.m_Size.y; DstPosY++, SrcPosY++)
 	{
@@ -922,8 +922,8 @@ void CImage::Blit(CImage *_pSrc, int32 _x, int32 _y)
 void CImage::ConvertRGBtoYUV()
 {
 	register uint8 *pPtr = m_pData;
-	register int32 Count = m_Desc.m_Size.x*m_Desc.m_Size.y;
-	register uint32 bpp = m_Desc.m_Format/8;
+	register int32_t Count = m_Desc.m_Size.x*m_Desc.m_Size.y;
+	register uint32_t bpp = m_Desc.m_Format/8;
 
 	while(Count--)
 	{
@@ -947,51 +947,51 @@ void CImage::ConvertRGBtoYUV()
 void CImage::ConvertYUVtoRGB()
 {
 	register uint8 *pPtr = m_pData;
-	register int32 Count = m_Desc.m_Size.x*m_Desc.m_Size.y;
-	register uint32 bpp = m_Desc.m_Format/8;
+	register int32_t Count = m_Desc.m_Size.x*m_Desc.m_Size.y;
+	register uint32_t bpp = m_Desc.m_Format/8;
 
 	while(Count--)
 	{
 		uint8 Y = pPtr[EChannel_Y];
 		uint8 U = pPtr[EChannel_U];
 		uint8 V = pPtr[EChannel_V];
-		int32 R = (int32)(Y + (1.4075f * (V - 128)));
-		int32 G = (int32)(Y - 0.3455f * (U - 128) - (0.7169 * (V - 128)));
-		int32 B = (int32)(Y + (1.7790f * (U - 128)));
+		int32_t R = (int32_t)(Y + (1.4075f * (V - 128)));
+		int32_t G = (int32_t)(Y - 0.3455f * (U - 128) - (0.7169 * (V - 128)));
+		int32_t B = (int32_t)(Y + (1.7790f * (U - 128)));
 		pPtr[EChannel_R] = R > 255 ? 255 : R < 0 ? 0 : R;
 		pPtr[EChannel_G] = G > 255 ? 255 : G < 0 ? 0 : G;
 		pPtr[EChannel_B] = B > 255 ? 255 : B < 0 ? 0 : B;
 		pPtr+=bpp;
 	}
 }
-//		virtual void Sizedown(int32 _Steps);
-//		virtual void Sizeup(int32 _Steps);
+//		virtual void Sizedown(int32_t _Steps);
+//		virtual void Sizeup(int32_t _Steps);
 
 //
 //
 //
 /*
-void CImage::Sizeup(int32 _Steps, CImage &_rDst)
+void CImage::Sizeup(int32_t _Steps, CImage &_rDst)
 {
-	int32 Factor = (1<<_Steps);
+	int32_t Factor = (1<<_Steps);
 	_rDst.Create(m_Desc.m_Size*Factor, m_Desc.m_Format);
 
 	register uint8 *pSrcPtr = m_pData;
 	register uint8 *pDstPtr = _rDst.m_pData;
-	register uint32 bpp = m_Desc.m_Format/8;
-	register uint32 spitch = m_Desc.m_Pitch;
-	register uint32 dpitch = _rDst.m_Desc.m_Pitch;
+	register uint32_t bpp = m_Desc.m_Format/8;
+	register uint32_t spitch = m_Desc.m_Pitch;
+	register uint32_t dpitch = _rDst.m_Desc.m_Pitch;
 
 	if(bpp == 1)
 	{
 		// fix this.
-		for(int32 y = 0; y < m_Desc.m_Size.y; y++)
+		for(int32_t y = 0; y < m_Desc.m_Size.y; y++)
 		{
 			uint8 *pNextRow = pSrcPtr+spitch;
 			if(y+1 == m_Desc.m_Size.y)
 				pNextRow = pSrcPtr;
 
-			for(int32 x = 0; x < m_Desc.m_Size.x; x++)
+			for(int32_t x = 0; x < m_Desc.m_Size.x; x++)
 			{
 				uint8 r00 = *pSrcPtr;
 				uint8 r10 = r00;
@@ -1004,15 +1004,15 @@ void CImage::Sizeup(int32 _Steps, CImage &_rDst)
 					r11 = *(pNextRow+bpp);
 				}
 
-				for(int32 iy = 0; iy < Factor; iy++)
+				for(int32_t iy = 0; iy < Factor; iy++)
 				{
 					fp32 yf = iy/(fp32)Factor;
 					uint8 y0r = Lerp(r00, r01, yf);
 					uint8 y1r = Lerp(r10, r11, yf);
-					for(int32 ix = 0; ix < Factor; ix++)
+					for(int32_t ix = 0; ix < Factor; ix++)
 					{
 						fp32 xf = ix/(fp32)Factor;
-						int32 e = (x*Factor+ix)*bpp+(y*Factor+iy)*dpitch;
+						int32_t e = (x*Factor+ix)*bpp+(y*Factor+iy)*dpitch;
 						*(pDstPtr + e) = Lerp(y0r, y1r, xf);
 					}
 				}
@@ -1029,26 +1029,26 @@ void CImage::Sizeup(int32 _Steps, CImage &_rDst)
 //
 //
 //
-void CImage::Sizedown(int32 _Steps, CImage &_rDst)
+void CImage::Sizedown(int32_t _Steps, CImage &_rDst)
 {
-	int32 Factor = (1<<_Steps);
+	int32_t Factor = (1<<_Steps);
 	_rDst.Create(m_Desc.m_Size/Factor, m_Desc.m_Format);
 	
 	register uint8 *pSrcPtr = m_pData;
 	register uint8 *pDstPtr = _rDst.m_pData;
-	register uint32 bpp = m_Desc.m_Format/8;
-	register uint32 pitch = m_Desc.m_Pitch;
+	register uint32_t bpp = m_Desc.m_Format/8;
+	register uint32_t pitch = m_Desc.m_Pitch;
 
-	for(int32 y = 0; y < _rDst.m_Desc.m_Size.y; y++)
-		for(int32 x = 0; x < _rDst.m_Desc.m_Size.x; x++)
+	for(int32_t y = 0; y < _rDst.m_Desc.m_Size.y; y++)
+		for(int32_t x = 0; x < _rDst.m_Desc.m_Size.x; x++)
 		{
-			int32 R = 0;
-			int32 G = 0;
-			int32 B = 0;
-			for(int32 iy = 0; iy < Factor; iy++)
-				for(int32 ix = 0; ix < Factor; ix++)
+			int32_t R = 0;
+			int32_t G = 0;
+			int32_t B = 0;
+			for(int32_t iy = 0; iy < Factor; iy++)
+				for(int32_t ix = 0; ix < Factor; ix++)
 				{
-					int32 e = (x*Factor+ix)*bpp+(y*Factor+iy)*pitch;
+					int32_t e = (x*Factor+ix)*bpp+(y*Factor+iy)*pitch;
 					R += *(pSrcPtr + e + EChannel_R);
 					G += *(pSrcPtr + e + EChannel_G);
 					B += *(pSrcPtr + e + EChannel_B);
@@ -1067,14 +1067,14 @@ void CImage::Sizedown(int32 _Steps, CImage &_rDst)
 //
 //
 //
-void CImage::ExtractChannel(int32 _iChannel, CImage &_rChannel)
+void CImage::ExtractChannel(int32_t _iChannel, CImage &_rChannel)
 {
 	_rChannel.Create(m_Desc.m_Size, EFormat_BW);
 
-	register int32 Count = m_Desc.m_Size.x*m_Desc.m_Size.y; // pixel count
+	register int32_t Count = m_Desc.m_Size.x*m_Desc.m_Size.y; // pixel count
 	register uint8 *pSrcPtr = m_pData+_iChannel;
 	register uint8 *pDstPtr = _rChannel.m_pData;
-	register uint32 bpp = m_Desc.m_Format/8;
+	register uint32_t bpp = m_Desc.m_Format/8;
 	while(Count--)
 	{
 		*pDstPtr++ = *pSrcPtr;
@@ -1082,12 +1082,12 @@ void CImage::ExtractChannel(int32 _iChannel, CImage &_rChannel)
 	}
 }
 
-void CImage::AddChannel(int32 _iChannel, CImage &_rChannel)
+void CImage::AddChannel(int32_t _iChannel, CImage &_rChannel)
 {
-	register int32 Count = m_Desc.m_Size.x*m_Desc.m_Size.y; // pixel count
+	register int32_t Count = m_Desc.m_Size.x*m_Desc.m_Size.y; // pixel count
 	register uint8 *pSrcPtr = _rChannel.m_pData;
 	register uint8 *pDstPtr = m_pData+_iChannel;
-	register uint32 bpp = m_Desc.m_Format/8;
+	register uint32_t bpp = m_Desc.m_Format/8;
 	while(Count--)
 	{
 		*pDstPtr = *pSrcPtr++;
@@ -1101,8 +1101,8 @@ void CImage::AddChannel(int32 _iChannel, CImage &_rChannel)
 void CImage::FlipRB()
 {
 //	ASSUME(m_pData);
-	int32 Count = m_Desc.m_Size.x*m_Desc.m_Size.y;
-	int32 Jump = m_Desc.m_Format/8;
+	int32_t Count = m_Desc.m_Size.x*m_Desc.m_Size.y;
+	int32_t Jump = m_Desc.m_Format/8;
 	uint8 *pPtr = m_pData;
 
 	if(Jump == 3 || Jump == 4)
@@ -1130,11 +1130,11 @@ void CImage::FlipX()
 {
 //	ASSUME(m_pData);
 
-	int32 Temp;
-	int32 *pPtr = (int32 *)m_pData;
+	int32_t Temp;
+	int32_t *pPtr = (int32_t *)m_pData;
 
-	for(int32 y = 0; y < m_Desc.m_Size.y; y++)
-		for(int32 x = 0; x < m_Desc.m_Size.x/2; x++)
+	for(int32_t y = 0; y < m_Desc.m_Size.y; y++)
+		for(int32_t x = 0; x < m_Desc.m_Size.x/2; x++)
 		{
 			Temp = pPtr[y*m_Desc.m_Size.x+x];
 			pPtr[y*m_Desc.m_Size.x+x] = pPtr[y*m_Desc.m_Size.x+(m_Desc.m_Size.x-x-1)];
@@ -1154,12 +1154,12 @@ void CImage::RotCCW90()
 
 //	ASSUME(m_pData);
 
-	uint32 *pPtr = (uint32 *)m_pData;
-	uint32 *pBuffer = new uint32[m_Desc.m_Size.x*m_Desc.m_Size.y];
+	uint32_t *pPtr = (uint32_t *)m_pData;
+	uint32_t *pBuffer = new uint32_t[m_Desc.m_Size.x*m_Desc.m_Size.y];
 	MemoryCopy(pBuffer, m_pData, m_Desc.m_Size.x*m_Desc.m_Size.y*sizeof(pBuffer));
 
-	for(int32 y = 0; y < m_Desc.m_Size.y; y++)
-		for(int32 x = 0; x < m_Desc.m_Size.x; x++)
+	for(int32_t y = 0; y < m_Desc.m_Size.y; y++)
+		for(int32_t x = 0; x < m_Desc.m_Size.x; x++)
 		{
 			pPtr[x*m_Desc.m_Size.y+(m_Desc.m_Size.x-y-1)] = pBuffer[y*m_Desc.m_Size.y+x];
 		}
@@ -1170,7 +1170,7 @@ void CImage::RotCCW90()
 //
 // 24 to 32 is the only that is supported
 //
-void CImage::SetFormat(int32 _NewFormat)
+void CImage::SetFormat(int32_t _NewFormat)
 {
 	//
 	// 24 -> 32
@@ -1186,7 +1186,7 @@ void CImage::SetFormat(int32 _NewFormat)
 		uint8 *pPtr = m_pData;
 		uint8 *pSrc = pBitmap;
 		
-		for(int32 i = 0; i < m_Desc.m_Size.y*m_Desc.m_Size.x; i++)
+		for(int32_t i = 0; i < m_Desc.m_Size.y*m_Desc.m_Size.x; i++)
 		{
 			*pPtr++ = *pSrc++;
 			*pPtr++ = *pSrc++;
@@ -1205,7 +1205,7 @@ void CImage::SetFormat(int32 _NewFormat)
 		uint8 *pPtr = m_pData;
 		uint8 *pSrc = pBitmap;
 		
-		for(int32 i = 0; i < m_Desc.m_Size.y*m_Desc.m_Size.x; i++)
+		for(int32_t i = 0; i < m_Desc.m_Size.y*m_Desc.m_Size.x; i++)
 		{
 			*pPtr++ = *pSrc++;
 			*pPtr++ = *pSrc++;
@@ -1223,19 +1223,19 @@ void CImage::SetFormat(int32 _NewFormat)
 //
 // 32 is the only that is supported
 //
-void CImage::Darken(const TVector2<int32> &_Position, const TVector2<int32> &_Size)
+void CImage::Darken(const TVector2<int32_t> &_Position, const TVector2<int32_t> &_Size)
 {
 	if(m_Desc.m_Format == EFormat_RGBA32)
 	{
 		uint8 *pDataPtr = m_pData;
-		int32 Skip = m_Desc.m_Pitch - ((m_Desc.m_Size.x - _Size.x)*(m_Desc.m_Format/8));
+		int32_t Skip = m_Desc.m_Pitch - ((m_Desc.m_Size.x - _Size.x)*(m_Desc.m_Format/8));
 		
 		pDataPtr += m_Desc.m_Pitch*_Position.y;
 		pDataPtr += _Size.x * (m_Desc.m_Format/8);
 
-		for(int32 y = 0; y < _Size.y; y++)
+		for(int32_t y = 0; y < _Size.y; y++)
 		{
-			for(int32 x = 0; x < _Size.x; x++)
+			for(int32_t x = 0; x < _Size.x; x++)
 			{
 				*pDataPtr++ = (*pDataPtr)>>1;
 				*pDataPtr++ = (*pDataPtr)>>1;
@@ -1251,7 +1251,7 @@ void CImage::Darken(const TVector2<int32> &_Position, const TVector2<int32> &_Si
 //
 // Supports 8, 24 and 32
 //
-void CImage::Clear(uint32 _Color)
+void CImage::Clear(uint32_t _Color)
 {
 	if (Format().BPP() == 8)
 	{
@@ -1259,15 +1259,15 @@ void CImage::Clear(uint32 _Color)
 	}
 	else if (Format().BPP() == 24)
 	{
-		for (int32 x = 0; x < Format().Width(); x++)
-			for (int32 y = 0; y < Format().Height(); y++)
+		for (int32_t x = 0; x < Format().Width(); x++)
+			for (int32_t y = 0; y < Format().Height(); y++)
 				SetColor(x,y,_Color);
 	}
 	else if (Format().BPP() == 32)
 	{
-		uint32 *pDat = (uint32 *)m_pData;
+		uint32_t *pDat = (uint32_t *)m_pData;
 
-		for (int32 c = Format().Height() * Format().Width(); c > 0; c--)
+		for (int32_t c = Format().Height() * Format().Width(); c > 0; c--)
 			*pDat++ = _Color;
 	}
 	else
@@ -1279,7 +1279,7 @@ void CImage::Clear(uint32 _Color)
 // Doesn't support Blitting between diffrent formats
 // Should be optimized
 //
-void CImage::Blit(CImage *_pSrc, int32 _x, int32 _y)
+void CImage::Blit(CImage *_pSrc, int32_t _x, int32_t _y)
 {
 	if(_pSrc->Format().BPP() != Format().BPP())
 		throw "Can't perform blit between diffrent formats";
@@ -1287,7 +1287,7 @@ void CImage::Blit(CImage *_pSrc, int32 _x, int32 _y)
 	//
 	// Get number of rows to copy
 	//
-	int32 Rows = _pSrc->Format().Height();
+	int32_t Rows = _pSrc->Format().Height();
 
 	if(m_Format.Height() < Rows)
 		Rows = m_Format.Height();
@@ -1300,11 +1300,11 @@ void CImage::Blit(CImage *_pSrc, int32 _x, int32 _y)
 	
 	//if(m_Format.m_Size.x*m_Format.m_Size.y < Src->m_Format.m_Size.x*Src->m_Format.m_Size.y)
 	//{
-	int32 DstPosY = _y;
-	int32 SrcPosY = 0;
-	int32 DstPosX = _x;
-	int32 SrcPosX = 0;
-	int32 Width = _pSrc->m_Format.Width();
+	int32_t DstPosY = _y;
+	int32_t SrcPosY = 0;
+	int32_t DstPosX = _x;
+	int32_t SrcPosX = 0;
+	int32_t Width = _pSrc->m_Format.Width();
 	
 	if(DstPosY < 0)
 	{
@@ -1326,9 +1326,9 @@ void CImage::Blit(CImage *_pSrc, int32 _x, int32 _y)
 
 	uint8 *pDstData = m_pData + DstPosY*Format().Pitch() + DstPosX*(Format().BPP()>>3);
 	uint8 *pSrcData = _pSrc->m_pData + SrcPosY*_pSrc->Format().Pitch() + SrcPosX*(_pSrc->Format().BPP()>>3);
-	int32 SrcPitch = (_pSrc->Format().Width() - Width)*(_pSrc->Format().BPP()>>3);
-	int32 DstPitch = (Format().Width() - Width)*(Format().BPP()>>3);
-	int32 NumBytes = Width*(Format().BPP()>>3);
+	int32_t SrcPitch = (_pSrc->Format().Width() - Width)*(_pSrc->Format().BPP()>>3);
+	int32_t DstPitch = (Format().Width() - Width)*(Format().BPP()>>3);
+	int32_t NumBytes = Width*(Format().BPP()>>3);
 	
 	for(; DstPosY < Format().Height() && SrcPosY < _pSrc->Format().Height(); DstPosY++, SrcPosY++)
 	{
@@ -1347,7 +1347,7 @@ void CImage::Blit(CImage *_pSrc, int32 _x, int32 _y)
 //
 // 24, 32
 //
-void CImage::SetR(int32 _x, int32 _y, uint8 _R)
+void CImage::SetR(int32_t _x, int32_t _y, uint8 _R)
 {
 	if (Format().BPP() == 16)
 	{
@@ -1365,7 +1365,7 @@ void CImage::SetR(int32 _x, int32 _y, uint8 _R)
 //
 // 24, 32
 //
-void CImage::SetG(int32 _x, int32 _y, uint8 _G)
+void CImage::SetG(int32_t _x, int32_t _y, uint8 _G)
 {
 	if (Format().BPP() == 16)
 	{
@@ -1383,7 +1383,7 @@ void CImage::SetG(int32 _x, int32 _y, uint8 _G)
 //
 // 24, 32
 //
-void CImage::SetB(int32 _x, int32 _y, uint8 _B)
+void CImage::SetB(int32_t _x, int32_t _y, uint8 _B)
 {
 	if (Format().BPP() == 16)
 	{
@@ -1401,7 +1401,7 @@ void CImage::SetB(int32 _x, int32 _y, uint8 _B)
 //
 // 32
 //
-void CImage::SetA(int32 _x, int32 _y, uint8 _A)
+void CImage::SetA(int32_t _x, int32_t _y, uint8 _A)
 {
 	if (Format().BPP() == 32)
 	{
@@ -1413,7 +1413,7 @@ void CImage::SetA(int32 _x, int32 _y, uint8 _A)
 // 8, 16, 24, 32
 // Color should be a 32 bit RGBA value
 //
-void CImage::SetColor(int32 _x, int32 _y, uint32 _Color)
+void CImage::SetColor(int32_t _x, int32_t _y, uint32_t _Color)
 {
 	if (Format().BPP() == 8)
 	{
@@ -1433,14 +1433,14 @@ void CImage::SetColor(int32 _x, int32 _y, uint32 _Color)
 	}
 	else if(Format().BPP() == 32)
 	{	
-		((uint32 *)m_pData)[_y * Format().Width() + _x] = _Color;
+		((uint32_t *)m_pData)[_y * Format().Width() + _x] = _Color;
 	}
 }
 
 //
 // 24, 32
 //
-uint8 CImage::GetR(int32 _x, int32 _y)
+uint8 CImage::GetR(int32_t _x, int32_t _y)
 {
 	if (Format().BPP() == 16)
 	{
@@ -1460,7 +1460,7 @@ uint8 CImage::GetR(int32 _x, int32 _y)
 //
 // 24, 32
 //
-uint8 CImage::GetG(int32 _x, int32 _y)
+uint8 CImage::GetG(int32_t _x, int32_t _y)
 {
 	if (Format().BPP() == 16)
 	{
@@ -1480,7 +1480,7 @@ uint8 CImage::GetG(int32 _x, int32 _y)
 //
 // 24, 32
 //
-uint8 CImage::GetB(int32 _x, int32 _y)
+uint8 CImage::GetB(int32_t _x, int32_t _y)
 {
 	if (Format().BPP() == 16)
 	{
@@ -1500,7 +1500,7 @@ uint8 CImage::GetB(int32 _x, int32 _y)
 //
 // 32
 //
-uint8 CImage::GetA(int32 _x, int32 _y)
+uint8 CImage::GetA(int32_t _x, int32_t _y)
 {
 	if (Format().BPP() == 32)
 		return m_pData[4 * (_y * Format().Width() + _x) + 3];
@@ -1511,7 +1511,7 @@ uint8 CImage::GetA(int32 _x, int32 _y)
 //
 // 8, 16, 24, 32
 //
-uint32 CImage::GetColor(int32 _x, int32 _y)
+uint32_t CImage::GetColor(int32_t _x, int32_t _y)
 {
 	if (Format().BPP() == 8)
 	{
@@ -1520,7 +1520,7 @@ uint32 CImage::GetColor(int32 _x, int32 _y)
 	else if (Format().BPP() == 15)
 	{
 		const int Mask = (1<<5)-1;
-		uint32 Color = (m_pData[(_y * Format().Width() + _x)*2]<<8)|m_pData[(_y * Format().Width() + _x)*2+1];
+		uint32_t Color = (m_pData[(_y * Format().Width() + _x)*2]<<8)|m_pData[(_y * Format().Width() + _x)*2+1];
 		return	((Color&Mask)<<3)|
 				(((Color>>5)&Mask)<<(3+8))|
 				(((Color>>10)&Mask)<<(3+8+8));
@@ -1535,7 +1535,7 @@ uint32 CImage::GetColor(int32 _x, int32 _y)
 	}
 	else if(Format().BPP() == 32)
 	{	
-		return ((uint32 *)m_pData)[_y * Format().Width() + _x];
+		return ((uint32_t *)m_pData)[_y * Format().Width() + _x];
 	}
 
 	// Hmm
@@ -1545,7 +1545,7 @@ uint32 CImage::GetColor(int32 _x, int32 _y)
 //
 //
 //
-void CImage::WrapCoord(int32 &_rX,int32 &_rY)
+void CImage::WrapCoord(int32_t &_rX,int32_t &_rY)
 {
 	while (_rX >= Format().Width())
 		_rX -= Format().Width();
@@ -1581,16 +1581,16 @@ void CImage::ApplyKernelFilter(const CImage::CKernelFilter &_rFilter,CImage &_rD
 
 	if (Format().BPP() == 8)
 	{
-		for (int32 y = 0; y < Format().Height(); y++)
-			for (int32 x = 0; x < Format().Width(); x++)
+		for (int32_t y = 0; y < Format().Height(); y++)
+			for (int32_t x = 0; x < Format().Width(); x++)
 			{
 				fp32 Sum = 0;
 
-				for (int32 i = 0; i < 3; i++)
-					for (int32 j = 0; j < 3; j++)
+				for (int32_t i = 0; i < 3; i++)
+					for (int32_t j = 0; j < 3; j++)
 					{
-						int32 nx = x + i - 1;
-						int32 ny = y + j - 1;
+						int32_t nx = x + i - 1;
+						int32_t ny = y + j - 1;
 						WrapCoord(nx,ny);
 
 						Sum += (fp32)GetColor(nx,ny) * _rFilter[j][i];
@@ -1603,18 +1603,18 @@ void CImage::ApplyKernelFilter(const CImage::CKernelFilter &_rFilter,CImage &_rD
 	}
 	else if (Format().BPP() == 24)
 	{
-		for (int32 y = 0; y < Format().Height(); y++)
-			for (int32 x = 0; x < Format().Width(); x++)
+		for (int32_t y = 0; y < Format().Height(); y++)
+			for (int32_t x = 0; x < Format().Width(); x++)
 			{
 				fp32 SumR = 0;
 				fp32 SumG = 0;
 				fp32 SumB = 0;
 
-				for (int32 i = 0; i < 3; i++)
-					for (int32 j = 0; j < 3; j++)
+				for (int32_t i = 0; i < 3; i++)
+					for (int32_t j = 0; j < 3; j++)
 					{
-						int32 nx = x + i - 1;
-						int32 ny = y + j - 1;
+						int32_t nx = x + i - 1;
+						int32_t ny = y + j - 1;
 						WrapCoord(nx,ny);
 
 						SumR += (fp32)GetR(nx,ny) * _rFilter[j][i];
@@ -1633,19 +1633,19 @@ void CImage::ApplyKernelFilter(const CImage::CKernelFilter &_rFilter,CImage &_rD
 	}
 	else if (Format().BPP() == 32)
 	{
-		for (int32 y = 0; y < Format().Height(); y++)
-			for (int32 x = 0; x < Format().Width(); x++)
+		for (int32_t y = 0; y < Format().Height(); y++)
+			for (int32_t x = 0; x < Format().Width(); x++)
 			{
 				fp32 SumR = 0;
 				fp32 SumG = 0;
 				fp32 SumB = 0;
 				fp32 SumA = 0;
 
-				for (int32 i = 0; i < 3; i++)
-					for (int32 j = 0; j < 3; j++)
+				for (int32_t i = 0; i < 3; i++)
+					for (int32_t j = 0; j < 3; j++)
 					{
-						int32 nx = x + i - 1;
-						int32 ny = y + j - 1;
+						int32_t nx = x + i - 1;
+						int32_t ny = y + j - 1;
 						WrapCoord(nx,ny);
 
 						SumR += (fp32)GetR(nx,ny) * _rFilter[j][i];
@@ -1700,16 +1700,16 @@ void CImage::BuildNormalMap(CImage &_rDst,fp32 _Slope)
 	//
 	_rDst.Create(CFormat(EQuick_RGBi8, Format().Width(), Format().Height()));
 
-	for (int32 y = 0; y < Format().Height(); y++)
-		for (int32 x = 0; x < Format().Width(); x++)
+	for (int32_t y = 0; y < Format().Height(); y++)
+		for (int32_t x = 0; x < Format().Width(); x++)
 		{
 			TVector3<fp32> V(0,0,0);
 
-			for (int32 i = 0; i < 3; i++)
-				for (int32 j = 0; j < 3; j++)
+			for (int32_t i = 0; i < 3; i++)
+				for (int32_t j = 0; j < 3; j++)
 				{
-					int32 nx = x + i - 1;
-					int32 ny = y + j - 1;
+					int32_t nx = x + i - 1;
+					int32_t ny = y + j - 1;
 					WrapCoord(nx,ny);
 
 					V.x += (fp32)GetColor(nx,ny) * dx[j][i];

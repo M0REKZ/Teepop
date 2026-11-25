@@ -127,34 +127,34 @@ void COpenGLBuffer::Unlock()
 }
 
 
-int32 COpenGLDevice::CreateTexture(CImage::CFormat Format, int32 Flags, void *pData)
+int32_t COpenGLDevice::CreateTexture(CImage::CFormat Format, int32_t Flags, void *pData)
 {
 	if(!pData || Format.Width() < 0 || Format.Height() < 0)
 		DebugBreak();
 	CImage Image(Format, (uint8 *)pData);
-	int32 i = CreateTexture(Image, Flags);
+	int32_t i = CreateTexture(Image, Flags);
 	Image.RemoveData();
 	return i;
 }
 
-int32 COpenGLDevice::CreateTexture(CImage &rImage, int32 Flags)
+int32_t COpenGLDevice::CreateTexture(CImage &rImage, int32_t Flags)
 {
 	if(!rImage.Data() || rImage.Format().Width() < 0 || rImage.Format().Height() < 0)
 		DebugBreak();
 	//bool Convert = true;
 	CImage TempImage;
 	CImage *pFinalImage = &rImage;
-	int32 InternalFormat = 0;
-	int32 Format = 0;
-	int32 Components = 0;
-	int32 Type = GL_UNSIGNED_BYTE;
-	int32 Width = rImage.Format().Width();
-	int32 Height = rImage.Format().Height();
+	int32_t InternalFormat = 0;
+	int32_t Format = 0;
+	int32_t Components = 0;
+	int32_t Type = GL_UNSIGNED_BYTE;
+	int32_t Width = rImage.Format().Width();
+	int32_t Height = rImage.Format().Height();
 	if(rImage.Format().Type() == CImage::EType_Channels)
 	{
-		int32 ColorSpace = rImage.Format().ColorSpace();
-		uint32 Channels = rImage.Format().Channels();
-		uint32 Depths = rImage.Format().ChannelDepths();
+		int32_t ColorSpace = rImage.Format().ColorSpace();
+		uint32_t Channels = rImage.Format().Channels();
+		uint32_t Depths = rImage.Format().ChannelDepths();
 		
 		if(ColorSpace == CImage::EColorSpace_RGB)
 		{
@@ -252,7 +252,7 @@ int32 COpenGLDevice::CreateTexture(CImage &rImage, int32 Flags)
 	COpenGLTexture *pTexture = new COpenGLTexture();
 
 	// add it to the index
-	int32 iTexture = m_IndexHandler.GetFree(EID_Texture);
+	int32_t iTexture = m_IndexHandler.GetFree(EID_Texture);
 	m_IndexHandler.SetData(iTexture, pTexture);
 
 	//pTexture->m_GLFormat = g_aTexFormatTableFormat[_Format];
@@ -290,13 +290,13 @@ const intr g_aTexFormatTableInt[] =		{GL_RGB8			, GL_RGBA8			, GL_ALPHA, GL_LUMI
 const intr g_aTexFormatTableFormat[] =	{GL_RGB				, GL_RGBA			, GL_ALPHA, GL_LUMINANCE};
 const intr g_aTexFormatTableType[] =	{GL_UNSIGNED_BYTE	, GL_UNSIGNED_BYTE	, GL_FLOAT, GL_UNSIGNED_BYTE};
 
-int32 COpenGLDevice::Internal_CreateTexture(int32 _w, int32 _h, int32 _Format, uint8 *_pData)
+int32_t COpenGLDevice::Internal_CreateTexture(int32_t _w, int32_t _h, int32_t _Format, uint8 *_pData)
 {
 	glGetError();
 	// gen and bind
 
-	int32 Format = _Format&ETexFormatMask;
-	int32 Flags = _Format;
+	int32_t Format = _Format&ETexFormatMask;
+	int32_t Flags = _Format;
 
 	GLuint gltexture;
 	glGenTextures(1, (GLuint *)&gltexture);
@@ -326,7 +326,7 @@ int32 COpenGLDevice::Internal_CreateTexture(int32 _w, int32 _h, int32 _Format, u
 	COpenGLTexture *pTexture = new COpenGLTexture();
 
 	// add it to the index
-	int32 iTexture = m_IndexHandler.GetFree(EID_Texture);
+	int32_t iTexture = m_IndexHandler.GetFree(EID_Texture);
 	m_IndexHandler.SetData(iTexture, pTexture);
 
 	pTexture->m_GLFormat = g_aTexFormatTableFormat[_Format];
@@ -355,13 +355,13 @@ int32 COpenGLDevice::Internal_CreateTexture(int32 _w, int32 _h, int32 _Format, u
 //
 //
 //
-int32 COpenGLDevice::CreateTexture(int32 _w, int32 _h, int32 _Format, void *_pData)
+int32_t COpenGLDevice::CreateTexture(int32_t _w, int32_t _h, int32_t _Format, void *_pData)
 {
 	if(_pData)
 		return Internal_CreateTexture(_w, _h, _Format, (uint8 *)_pData);
 
 	uint8 *pData = new uint8 [_w*_h*4]; // worst case, temporary data
-	int32 iTex = Internal_CreateTexture(_w, _h, _Format, pData);
+	int32_t iTex = Internal_CreateTexture(_w, _h, _Format, pData);
 	SafeArrayDelete(pData);
 	return iTex;
 }
@@ -369,16 +369,16 @@ int32 COpenGLDevice::CreateTexture(int32 _w, int32 _h, int32 _Format, void *_pDa
 //
 //
 //
-int32 COpenGLDevice::CreateTexture(CImage &rImage)
+int32_t COpenGLDevice::CreateTexture(CImage &rImage)
 {
 	CImage Temp;
 	CImage &FinalImage = rImage;
-	int32 Format = 0;
+	int32_t Format = 0;
 	if(rImage.Format().Type() == CImage::EType_Channels && rImage.Format().ChannelType() == CImage::EChannelType_Int)
 	{
-		int32 nc = rImage.Format().NumChannels();
-		int32 c = rImage.Format().Channels();
-		int32 d = rImage.Format().ChannelDepths();
+		int32_t nc = rImage.Format().NumChannels();
+		int32_t c = rImage.Format().Channels();
+		int32_t d = rImage.Format().ChannelDepths();
 
 		if(rImage.Format().ColorSpace() == CImage::EColorSpace_RGB)
 		{
@@ -422,7 +422,7 @@ int32 COpenGLDevice::CreateTexture(CImage &rImage)
 //
 //
 //
-bool COpenGLDevice::DestroyTexture(int32 _iTexture)
+bool COpenGLDevice::DestroyTexture(int32_t _iTexture)
 {
 	COpenGLTexture *pTexture = m_IndexHandler.GetObject<COpenGLTexture*>(_iTexture, EID_Texture);
 	if(!pTexture)
@@ -439,7 +439,7 @@ bool COpenGLDevice::DestroyTexture(int32 _iTexture)
 //
 //
 //
-CTextureInfo COpenGLDevice::GetTextureInfo(int32 _iTexture)
+CTextureInfo COpenGLDevice::GetTextureInfo(int32_t _iTexture)
 {
 	CTextureInfo Info;
 
@@ -452,17 +452,17 @@ CTextureInfo COpenGLDevice::GetTextureInfo(int32 _iTexture)
 
 
 // index buffers
-int32 COpenGLDevice::CreateIndexBuffer(int32 _Count, int32 _Flags)
+int32_t COpenGLDevice::CreateIndexBuffer(int32_t _Count, int32_t _Flags)
 {
 	COpenGLIndexBuffer *pBuffer = new COpenGLIndexBuffer;
-	int32 iIB = m_IndexHandler.GetFree(EID_IndexBuffer);
+	int32_t iIB = m_IndexHandler.GetFree(EID_IndexBuffer);
 	m_IndexHandler.SetData(iIB, pBuffer);
 	pBuffer->m_LockInfo.m_Count = _Count;
 	pBuffer->m_LockInfo.m_pIndex16 = new uint16[_Count];
 	return iIB;
 }
 
-bool COpenGLDevice::DestroyIndexBuffer(int32 _iBuffer)
+bool COpenGLDevice::DestroyIndexBuffer(int32_t _iBuffer)
 {
 	COpenGLIndexBuffer *pBuffer = m_IndexHandler.GetObject<COpenGLIndexBuffer*>(_iBuffer, EID_IndexBuffer);
 	if(!pBuffer)
@@ -474,11 +474,11 @@ bool COpenGLDevice::DestroyIndexBuffer(int32 _iBuffer)
 }
 
 // Get indexbuffer from id, Return control of indexbuffer to device
-CIndexBuffer* COpenGLDevice::LockIndexBuffer(int32 _iBuffer)
+CIndexBuffer* COpenGLDevice::LockIndexBuffer(int32_t _iBuffer)
 {
 	COpenGLIndexBuffer *pBuffer = m_IndexHandler.GetObject<COpenGLIndexBuffer*>(_iBuffer, EID_IndexBuffer);
 	if(!pBuffer)
-		return false;
+		return NULL;
 	
 	if(!pBuffer->Lock())
 		return NULL;
@@ -486,7 +486,7 @@ CIndexBuffer* COpenGLDevice::LockIndexBuffer(int32 _iBuffer)
 	return &pBuffer->m_LockInfo;
 }
 
-void COpenGLDevice::UnlockIndexBuffer(int32 _iBuffer)
+void COpenGLDevice::UnlockIndexBuffer(int32_t _iBuffer)
 {
 	COpenGLIndexBuffer *pBuffer = m_IndexHandler.GetObject<COpenGLIndexBuffer*>(_iBuffer, EID_IndexBuffer);
 	if(!pBuffer)
@@ -498,7 +498,7 @@ void COpenGLDevice::UnlockIndexBuffer(int32 _iBuffer)
 //
 //
 //
-int32 COpenGLDevice::CreateVertexShader(const int8 *_pString)
+int32_t COpenGLDevice::CreateVertexShader(const int8 *_pString)
 {
 	if(!m_Exts.ARB_vertex_program)
 		return -1;
@@ -523,7 +523,7 @@ int32 COpenGLDevice::CreateVertexShader(const int8 *_pString)
 	// add it to the index
 	COpenGLHandle *pHandle = new COpenGLHandle;
 	pHandle->m_iHandle = Program;
-	int32 iShader = m_IndexHandler.GetFree(EID_VertexShader);
+	int32_t iShader = m_IndexHandler.GetFree(EID_VertexShader);
 	m_IndexHandler.SetData(iShader, pHandle);
 
 	/*
@@ -552,7 +552,7 @@ int32 COpenGLDevice::CreateVertexShader(const int8 *_pString)
 //
 //
 //
-bool COpenGLDevice::DestroyVertexShader(int32 _iShader)
+bool COpenGLDevice::DestroyVertexShader(int32_t _iShader)
 {
 	COpenGLHandle *pHandle = m_IndexHandler.GetObject<COpenGLHandle*>(_iShader, EID_VertexShader);
 	if(!pHandle)
@@ -567,7 +567,7 @@ bool COpenGLDevice::DestroyVertexShader(int32 _iShader)
 //
 //
 //
-int32 COpenGLDevice::CreatePixelShader(const int8 *_pString)
+int32_t COpenGLDevice::CreatePixelShader(const int8 *_pString)
 {
 	return -1;
 }
@@ -576,7 +576,7 @@ int32 COpenGLDevice::CreatePixelShader(const int8 *_pString)
 //
 //
 //
-bool COpenGLDevice::DestroyPixelShader(int32 _iShader)
+bool COpenGLDevice::DestroyPixelShader(int32_t _iShader)
 {
 	return false;
 }
@@ -584,10 +584,10 @@ bool COpenGLDevice::DestroyPixelShader(int32 _iShader)
 //
 //
 //
-int32 COpenGLDevice::CreateVertexBuffer(int32 _Count, int32 _What, int32 _Flags)
+int32_t COpenGLDevice::CreateVertexBuffer(int32_t _Count, int32_t _What, int32_t _Flags)
 {
 	COpenGLVertexBuffer *pBuffer = new COpenGLVertexBuffer;
-	int32 iVB = m_IndexHandler.GetFree(EID_VertexBuffer);
+	int32_t iVB = m_IndexHandler.GetFree(EID_VertexBuffer);
 	m_IndexHandler.SetData(iVB, pBuffer);
 	pBuffer->m_LockInfo.m_Count = _Count;
 
@@ -598,8 +598,7 @@ int32 COpenGLDevice::CreateVertexBuffer(int32 _Count, int32 _What, int32 _Flags)
 
 		uint8 *pData = ((uint8 *)NULL)+4; // we must waste 4 bytes.. 0 = NULL
 
-		int32 Offset = 0;
-		for(int32 i = 0; i < EMaxTextureUnits; i++)
+		for(int32_t i = 0; i < EMaxTextureUnits; i++)
 		{
 			if(_What&(EVB_TextureBase<<i))
 			{
@@ -629,14 +628,14 @@ int32 COpenGLDevice::CreateVertexBuffer(int32 _Count, int32 _What, int32 _Flags)
 			pData += sizeof(TVector4<fp32>)*_Count;
 		}
 
-		int8 *pTemp = new int8[(int32)pData];
-		glextBufferDataARB(GL_ARRAY_BUFFER_ARB, (int32)pData, pTemp, GL_DYNAMIC_DRAW_ARB); //GL_STATIC_DRAW_ARB);
+		int8 *pTemp = new int8[(intptr_t)pData];
+		glextBufferDataARB(GL_ARRAY_BUFFER_ARB, (intptr_t)pData, pTemp, GL_DYNAMIC_DRAW_ARB); //GL_STATIC_DRAW_ARB);
 		delete [] pTemp;
 
 	}
 	else
 	{
-		for(int32 i = 0; i < EMaxTextureUnits; i++)
+		for(int32_t i = 0; i < EMaxTextureUnits; i++)
 		{
 			if(_What&(EVB_TextureBase<<i))
 				pBuffer->m_LockInfo.m_pTexturefp32[i] = new TVector2<fp32>[_Count];
@@ -659,7 +658,7 @@ int32 COpenGLDevice::CreateVertexBuffer(int32 _Count, int32 _What, int32 _Flags)
 
 //
 //
-bool COpenGLDevice::DestroyVertexBuffer(int32 _iBuffer)
+bool COpenGLDevice::DestroyVertexBuffer(int32_t _iBuffer)
 {
 	COpenGLVertexBuffer *pVB = m_IndexHandler.GetObject<COpenGLVertexBuffer*>(_iBuffer, EID_VertexBuffer);
 	if(!pVB)
@@ -683,7 +682,7 @@ bool COpenGLDevice::DestroyVertexBuffer(int32 _iBuffer)
 
 //
 //
-CVertexBuffer* COpenGLDevice::LockVertexBuffer(int32 _iBuffer, int32 _What)
+CVertexBuffer* COpenGLDevice::LockVertexBuffer(int32_t _iBuffer, int32_t _What)
 {
 	COpenGLVertexBuffer *pVB = m_IndexHandler.GetObject<COpenGLVertexBuffer*>(_iBuffer, EID_VertexBuffer);
 	if(!pVB)
@@ -701,18 +700,18 @@ CVertexBuffer* COpenGLDevice::LockVertexBuffer(int32 _iBuffer, int32 _What)
 		pVB->ARB_VBO_Bind();
 
 		// map it
-		int32 What = pVB->m_What;
-		int32 Count = pVB->m_LockInfo.m_Count;
+		int32_t What = pVB->m_What;
+		int32_t Count = pVB->m_LockInfo.m_Count;
 		uint8 *pData = (uint8 *)glextMapBufferARB(GL_ARRAY_BUFFER_ARB, GL_WRITE_ONLY_ARB);
 
 		// fill the struct
 		pVB->m_LockInfo2.m_Count = Count;
-		for(int32 i = 0; i < EMaxTextureUnits; i++)
-			pVB->m_LockInfo2.m_pTexturefp32[i] = (TVector2<fp32>*)(pData+(int32)pVB->m_LockInfo.m_pTexturefp32[i]);
+		for(int32_t i = 0; i < EMaxTextureUnits; i++)
+			pVB->m_LockInfo2.m_pTexturefp32[i] = (TVector2<fp32>*)(pData+(intptr_t)pVB->m_LockInfo.m_pTexturefp32[i]);
 
-		pVB->m_LockInfo2.m_pVertexfp32 = (TVector3<fp32>*)(pData+(int32)pVB->m_LockInfo.m_pVertexfp32);
-		pVB->m_LockInfo2.m_pNormalfp32 = (TVector3<fp32>*)(pData+(int32)pVB->m_LockInfo.m_pNormalfp32);
-		pVB->m_LockInfo2.m_pColorfp32 = (TVector4<fp32>*)(pData+(int32)pVB->m_LockInfo.m_pColorfp32);
+		pVB->m_LockInfo2.m_pVertexfp32 = (TVector3<fp32>*)(pData+(intptr_t)pVB->m_LockInfo.m_pVertexfp32);
+		pVB->m_LockInfo2.m_pNormalfp32 = (TVector3<fp32>*)(pData+(intptr_t)pVB->m_LockInfo.m_pNormalfp32);
+		pVB->m_LockInfo2.m_pColorfp32 = (TVector4<fp32>*)(pData+(intptr_t)pVB->m_LockInfo.m_pColorfp32);
 
 		return &pVB->m_LockInfo2;
 	}
@@ -722,7 +721,7 @@ CVertexBuffer* COpenGLDevice::LockVertexBuffer(int32 _iBuffer, int32 _What)
 
 //
 //
-void COpenGLDevice::UnlockVertexBuffer(int32 _iBuffer, int32 _What)
+void COpenGLDevice::UnlockVertexBuffer(int32_t _iBuffer, int32_t _What)
 {
 	COpenGLVertexBuffer *pVB = m_IndexHandler.GetObject<COpenGLVertexBuffer*>(_iBuffer, EID_VertexBuffer);
 	if(!pVB)
@@ -742,7 +741,7 @@ void COpenGLDevice::UnlockVertexBuffer(int32 _iBuffer, int32 _What)
 //
 void COpenGLDevice::Clear(intr _What)
 {
-	int32 Flags = 0;
+	int32_t Flags = 0;
 	if(_What&EBuffer_Color) Flags |= GL_COLOR_BUFFER_BIT;
 	if(_What&EBuffer_Depth) Flags |= GL_DEPTH_BUFFER_BIT;
 	if(_What&EBuffer_Stencil) Flags |= GL_STENCIL_BUFFER_BIT;
@@ -769,19 +768,19 @@ const intr g_aDrawTable[] = {GL_POINTS, GL_LINES, GL_LINE_STRIP, GL_TRIANGLES, G
 const intr g_aPrimTable[] = {1, 2, 1, 3, 1, 1, 4};
 const intr g_aPrimAddTable[] = {0, 0, 1, 0, 2, 2, 0};
 
-int32 PrimToOGL(int32 _Mode, int32 _PrimCount)
+int32_t PrimToOGL(int32_t _Mode, int32_t _PrimCount)
 {
 	return g_aPrimTable[_Mode]*_PrimCount+g_aPrimAddTable[_Mode];
 }
 
-void COpenGLDevice::Draw(int32 _Mode, int32 _Start, int32 _PrimCount)
+void COpenGLDevice::Draw(int32_t _Mode, int32_t _Start, int32_t _PrimCount)
 {
 	try
 	{
-		//int32 i = glIsEnabled(GL_VERTEX_ARRAY);
+		//int32_t i = glIsEnabled(GL_VERTEX_ARRAY);
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		//glPointSize(3);
-		int32 Count = PrimToOGL(_Mode, _PrimCount);
+		int32_t Count = PrimToOGL(_Mode, _PrimCount);
 		glDrawArrays(g_aDrawTable[_Mode], _Start, Count);
 	}
 	catch(...)
@@ -795,7 +794,7 @@ void COpenGLDevice::Draw(int32 _Mode, int32 _Start, int32 _PrimCount)
 	}
 }
 
-void COpenGLDevice::DrawIndexed(int32 _Mode, int32 _Start, int32 _PrimCount)
+void COpenGLDevice::DrawIndexed(int32_t _Mode, int32_t _Start, int32_t _PrimCount)
 {
 	if(!m_pIndexPointer)
 		return;
@@ -828,13 +827,13 @@ void COpenGLDevice::DrawIndexed(int32 _Mode, int32 _Start, int32 _PrimCount)
 //
 // grab
 //
-bool COpenGLDevice::Grab(int32 _iTexture, int32 _What)
+bool COpenGLDevice::Grab(int32_t _iTexture, int32_t _What)
 {
 	/*
 	if(_iTexture == -10 && _What == EBuffer_Color)
 	{
 		CImage Image;
-		Image.Create(TVector2<int32>(640,480), CImage::EFormat_RGBA32);
+		Image.Create(TVector2<int32_t>(640,480), CImage::EFormat_RGBA32);
 		glReadPixels(0, 0, 640, 480, GL_RGBA, GL_UNSIGNED_BYTE, Image.m_pData);
 		NTGA::Write(CFile("dump.tga", CFile::EWriteBinary), Image);
 		return true;
@@ -849,10 +848,10 @@ bool COpenGLDevice::Grab(int32 _iTexture, int32 _What)
 	glBindTexture(GL_TEXTURE_2D, pTexture->m_iGLTexture);
 	glEnable(GL_TEXTURE_2D);
 
-	int32 w = pTexture->m_Info.m_Size[0];
-	int32 h = pTexture->m_Info.m_Size[1];
-	int32 x = 0;
-	int32 y = 0;
+	int32_t w = pTexture->m_Info.m_Size[0];
+	int32_t h = pTexture->m_Info.m_Size[1];
+	int32_t x = 0;
+	int32_t y = 0;
 	//y = 480;
 	//if(y < 0)
 	//	y = 0;
@@ -885,11 +884,11 @@ bool COpenGLDevice::Grab(int32 _iTexture, int32 _What)
 	return false;
 }
 
-bool COpenGLDevice::Grab(NFoo::CImage &rImage, int32 _What)
+bool COpenGLDevice::Grab(NFoo::CImage &rImage, int32_t _What)
 {
 	if(_What == EBuffer_Color)
 	{
-		//rImage.Create(TVector2<int32>(640,480), CImage::EFormat_RGBA32);
+		//rImage.Create(TVector2<int32_t>(640,480), CImage::EFormat_RGBA32);
 		//glReadPixels(0, 0, 640, 480, GL_RGBA, GL_UNSIGNED_BYTE, _rImage.m_pData);
 		//NTGA::Write(CFile("dump.tga", CFile::EWriteBinary), Image);
 		return true;
@@ -900,14 +899,14 @@ bool COpenGLDevice::Grab(NFoo::CImage &rImage, int32 _What)
 //
 // viewport
 //
-void COpenGLDevice::SetViewport(int32 _x, int32 _y, int32 _w, int32 _h)
+void COpenGLDevice::SetViewport(int32_t _x, int32_t _y, int32_t _w, int32_t _h)
 {
 	//GLint aViewport[4];
 	//glGetIntegerv(GL_VIEWPORT, aViewport);
 	glViewport(_x, m_ScreenHeight-_h-_y, _w, _h);
 }
 
-void COpenGLDevice::SetScissors(int32 _x, int32 _y, int32 _w, int32 _h)
+void COpenGLDevice::SetScissors(int32_t _x, int32_t _y, int32_t _w, int32_t _h)
 {
 	//GLint aViewport[4];
 	//glGetIntegerv(GL_VIEWPORT, aViewport);

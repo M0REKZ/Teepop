@@ -10,12 +10,12 @@ namespace NFoo
 		extern class CLock m_Lock;
 		struct CStats
 		{
-			int32 m_Allocations;
-			int32 m_Deallocations;
+			int32_t m_Allocations;
+			int32_t m_Deallocations;
 		};
 
-		void *Allocate(int32 _Size, const int8 *_pFilename=NULL, int32 _Line=0);
-		void Free(void *_pPtr, const int8 *_pFilename=NULL, int32 _Line=0);
+		void *Allocate(int32_t _Size, const int8 *_pFilename=NULL, int32_t _Line=0);
+		void Free(void *_pPtr, const int8 *_pFilename=NULL, int32_t _Line=0);
 
 		void DumpMemInfo();
 		bool CheckMemory(bool _Log=false);
@@ -44,14 +44,14 @@ namespace NFoo
 
 	extern void operator delete[](void *_pPtr);
 	extern void operator delete(void *_pPtr);
-	extern void operator delete[](void *_pPtrconst, const int8 *_pFilename, int32 _Line);
-	extern void operator delete(void *_pPtrconst, const int8 *_pFilename, int32 _Line);
+	extern void operator delete[](void *_pPtrconst, const int8 *_pFilename, int32_t _Line);
+	extern void operator delete(void *_pPtrconst, const int8 *_pFilename, int32_t _Line);
 	
 	//
 	extern void *operator new[](NFoo::NMemoryManager::memsize _Size);
 	extern void *operator new(NFoo::NMemoryManager::memsize _Size);
-	extern void *operator new[](NFoo::NMemoryManager::memsize _Size, const int8 *_pFilename, int32 _Line);
-	extern void *operator new(NFoo::NMemoryManager::memsize _Size, const int8 *_pFilename, int32 _Line);
+	extern void *operator new[](NFoo::NMemoryManager::memsize _Size, const int8 *_pFilename, int32_t _Line);
+	extern void *operator new(NFoo::NMemoryManager::memsize _Size, const int8 *_pFilename, int32_t _Line);
 	#define new new(__FILE__, __LINE__)
 #endif
 

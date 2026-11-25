@@ -2,6 +2,7 @@
 #define __FOO_SYS_H__
 
 #include "base.h"
+#include "datatypes.h"
 
 //# Context: Base/System
 //# Req_Namespace: NFoo
@@ -40,7 +41,7 @@ namespace NFoo
 	//# Remarks: This function usualy forces the OS to make a context switch.
 	//#			 Could be usefull to run before profiling some important function.
 	//# Declaration:
-	void Sleep(int32 _Time);
+	void Sleep(int32_t _Time);
 
 	//# Function: DebugBreak
 	//# Description: Breaks program execution for debugging purpose.

@@ -185,15 +185,15 @@ namespace NFoo
 		//
 		//
 		//
-		TVector2 Round()							const	{ return Convert<int32>().Convert<T>(); }
+		TVector2 Round()							const	{ return Convert<int32_t>().template Convert<T>(); }
 		
 		//
 		// Operators
 		//
-		T& operator [] (int32 _Index)						{ return *(&x + _Index); }
+		T& operator [] (int32_t _Index)						{ return *(&x + _Index); }
 
-		int32 operator == (const TVector2 &t)		const	{ return ((x == t.x) && (y == t.y)); }
-		int32 operator != (const TVector2 &t)		const	{ return ((x != t.x) || (y != t.y)); }
+		int32_t operator == (const TVector2 &t)		const	{ return ((x == t.x) && (y == t.y)); }
+		int32_t operator != (const TVector2 &t)		const	{ return ((x != t.x) || (y != t.y)); }
 	
 		void operator = (const TVector2 &t)					{ Set(t); }
 

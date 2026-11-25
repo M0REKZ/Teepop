@@ -8,7 +8,7 @@ namespace NFoo
 	class CMouse : public CInput::CDevice
 	{
 	protected:
-		int32 m_Mode;
+		int32_t m_Mode;
 		enum { EMaxKeys=3, ENumAxis=2 };
 
 		CMouse();
@@ -16,9 +16,9 @@ namespace NFoo
 	public:
 		enum { EMode_Capture, EMode_Loose };
 
-		virtual void SetMode(int32 iMode) { m_Mode = iMode; }
-		int32 MovementX()	{ return (int32)m_pAxis[0]; }
-		int32 MovementY()	{ return (int32)m_pAxis[1]; }
+		virtual void SetMode(int32_t iMode) { m_Mode = iMode; }
+		int32_t MovementX()	{ return (int32_t)m_pAxis[0]; }
+		int32_t MovementY()	{ return (int32_t)m_pAxis[1]; }
 	};
 }
 

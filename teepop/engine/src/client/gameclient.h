@@ -76,18 +76,18 @@ public:
 	};
 
 	//
-	int32 m_GameState;
+	int32_t m_GameState;
 
 	//
 	fp32 m_LastCoverage;
-	int32 m_BoardState;
-	int32 m_Level;
+	int32_t m_BoardState;
+	int32_t m_Level;
 	//int64 m_LastBoardUpdate;
 
 	// positioning
-	int32 m_Rotation;
-	int32 m_XPos;
-	int32 m_YPos;
+	int32_t m_Rotation;
+	int32_t m_XPos;
+	int32_t m_YPos;
 
 	// local board
 	//bool m_BoardUpdated;
@@ -98,7 +98,7 @@ public:
 	bool m_BoardQueued;
 
 	// opponents
-	TMap<int32, CClientBoard*> m_mOpponentBoards;
+	TMap<int32_t, CClientBoard*> m_mOpponentBoards;
 	//int64 m_LastOpponentBoardUpdate;
 	//fp32 m_OpponentIntertickTime;
 
@@ -112,6 +112,6 @@ public:
 	void CtlMoveRight();
 	void CtlRotateCW();
 	void CtlRotateCCW();
-	void CtlRotate(int32 RotDir);
+	void CtlRotate(int32_t RotDir);
 
 };

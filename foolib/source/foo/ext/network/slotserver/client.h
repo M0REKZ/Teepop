@@ -14,9 +14,9 @@ namespace NFoo { namespace NSlotServer {
 		CChunkSocket m_Socket;
 		
 
-		int32 m_iClient;
+		int32_t m_iClient;
 		bool m_Threaded;
-		virtual int32 ThreadMain();
+		virtual int32_t ThreadMain();
 
 		void PumpSocket();
 
@@ -25,7 +25,7 @@ namespace NFoo { namespace NSlotServer {
 		CSlotClient();
 		~CSlotClient();
 
-		int32 GetID() { return m_iClient; }
+		int32_t GetID() { return m_iClient; }
 		
 		void Connect(NFoo::NNetwork::CAddr _Addr, const int8 *pVersionString, bool Threaded=false);
 		void Disconnect();

@@ -96,7 +96,7 @@ void NCore::CCore::Init()
 bool NCore::CCore::Update()
 {
 	// Update All
-	for(int32 i = m_lSubCore.Len()-1; i >= 0; i--)
+	for(int32_t i = m_lSubCore.Len()-1; i >= 0; i--)
 	{
 		if(!m_lSubCore[i]->Update())
 		{
@@ -136,11 +136,11 @@ bool NCore::UpdateAndPump()
 }
 
 /*
-CString CKeyboard::KeySymToString(int32 sym) 
+CString CKeyboard::KeySymToString(int32_t sym) 
 {
 	struct TransTable
 	{
-		int32 sym; // keysym
+		int32_t sym; // keysym
 		int8 str[14]; // key string
 	} Tabl[] =
 	{
@@ -189,7 +189,7 @@ CString CKeyboard::KeySymToString(int32 sym)
 	{0, ""}
 	};
 	
-	for (int32 i = 0; Tabl[i].sym != 0; ++i) 
+	for (int32_t i = 0; Tabl[i].sym != 0; ++i) 
 	{
 		if (Tabl[i].sym == sym)
 			return Tabl[i].str;
@@ -229,7 +229,7 @@ bool CCore::Update()
 		return false;
 
 	// Update All
-	for(int32 i = m_lSubSystems.Len()-1; i >= 0; i--)
+	for(int32_t i = m_lSubSystems.Len()-1; i >= 0; i--)
 	{
 		if(!m_lSubSystems[i]->Update())
 			return false;

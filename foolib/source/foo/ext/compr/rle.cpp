@@ -6,14 +6,14 @@ using namespace NFoo;
 //
 //
 //
-CRLEEncoder::CRLEEncoder(COutputStream *_pTarget, int32 _UnitSize)
+CRLEEncoder::CRLEEncoder(COutputStream *_pTarget, int32_t _UnitSize)
 : m_pTarget(_pTarget), m_UnitSize(_UnitSize)
 {}
 
 //
 //
 //
-int32 CRLEEncoder::GetSize()
+int32_t CRLEEncoder::GetSize()
 {
 	if(m_pTarget)
 		return m_pTarget->GetSize();
@@ -43,26 +43,26 @@ bool CRLEEncoder::Flush()
 //
 //
 //
-int32 CRLEEncoder::Write(const void *_pBuffer, int32 _Size)
+int32_t CRLEEncoder::Write(const void *_pBuffer, int32_t _Size)
 {
 	if(!IsReady())
 		throw "RLECompressor isn't ready to write!";
 
 	uint8 *pSrc = (uint8 *)_pBuffer;
 	//uint8 *pDst = pRLEData;
-	int32 Count = _Size/m_UnitSize;
-	int32 UnitSize = m_UnitSize;
-	int32 Written = 0;
+	int32_t Count = _Size/m_UnitSize;
+	int32_t UnitSize = m_UnitSize;
+	int32_t Written = 0;
 
 	while(Count)
 	{
-		int32 Max = 128;
+		int32_t Max = 128;
 		if(Count-1 < Max)
 			Max = Count-1;
 		if(Count > 1 && MemoryCompare(pSrc, pSrc+UnitSize, UnitSize) == 0)
 		{
 			// RLE mode
-			int32 Len = 1;
+			int32_t Len = 1;
 			while(MemoryCompare(pSrc, pSrc+UnitSize*Len, UnitSize) == 0 && Len < Max)
 				Len++;
 
@@ -75,7 +75,7 @@ int32 CRLEEncoder::Write(const void *_pBuffer, int32 _Size)
 		else
 		{
 			// Raw
-			int32 Len = 1; 
+			int32_t Len = 1; 
 			while(Len < Max)
 			{
 				if(Count-Len > 2)
@@ -108,14 +108,14 @@ int32 CRLEEncoder::Write(const void *_pBuffer, int32 _Size)
 
 
 
-CRLEDecoder::CRLEDecoder(CInputStream *_pSource, int32 _UnitSize)
+CRLEDecoder::CRLEDecoder(CInputStream *_pSource, int32_t _UnitSize)
 {
 	m_pSource = _pSource;
 	m_UnitSize = _UnitSize;
 	m_ReadBytes = 0;
 }
 
-int32 CRLEDecoder::GetSize()
+int32_t CRLEDecoder::GetSize()
 {
 	return m_pSource->GetSize();
 }
@@ -132,14 +132,14 @@ bool CRLEDecoder::EndOfStream()
 	return m_pSource->EndOfStream();
 }
 
-int32 CRLEDecoder::Read(void *_pBuffer, int32 _Size)
+int32_t CRLEDecoder::Read(void *_pBuffer, int32_t _Size)
 {
 	uint8 *pDst = (uint8 *)_pBuffer;
-	int32 Count = _Size/m_UnitSize;
+	int32_t Count = _Size/m_UnitSize;
 	while(Count)
 	{
-		int32 BlockHeader = m_pSource->ReadNE<uint8>();
-		int32 Len = (BlockHeader&127)+1;
+		int32_t BlockHeader = m_pSource->ReadNE<uint8>();
+		int32_t Len = (BlockHeader&127)+1;
 		Count -= Len;
 		if(Count < 0)
 			throw "RLEDecoder: Error, Out of bounds";

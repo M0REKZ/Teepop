@@ -35,7 +35,7 @@ inline void SetOpenGLState(GLenum state, bool enable)
 //
 // flags
 //
-void COpenGLDevice::Flag_Set(int32 _Flag, bool _On)
+void COpenGLDevice::Flag_Set(int32_t _Flag, bool _On)
 {
 	switch(_Flag)
 	{
@@ -105,7 +105,7 @@ void COpenGLDevice::Mode_WriteMask(bool r, bool g, bool b, bool a)
 //
 // pointers
 //
-void COpenGLDevice::Stream_Vertex(int32 _iVB)
+void COpenGLDevice::Stream_Vertex(int32_t _iVB)
 {
 	COpenGLVertexBuffer *pVB = m_IndexHandler.GetObject<COpenGLVertexBuffer*>(_iVB, EID_VertexBuffer);
 	if(pVB && pVB->m_LockInfo.m_pVertexfp32)
@@ -122,7 +122,7 @@ void COpenGLDevice::Stream_Vertex(int32 _iVB)
 	CState::Stream_Vertex(_iVB);
 }
 
-void COpenGLDevice::Stream_Normal(int32 _iVB)
+void COpenGLDevice::Stream_Normal(int32_t _iVB)
 {
 	COpenGLVertexBuffer *pVB = m_IndexHandler.GetObject<COpenGLVertexBuffer*>(_iVB, EID_VertexBuffer);
 	if(pVB && pVB->m_LockInfo.m_pNormalfp32)
@@ -138,7 +138,7 @@ void COpenGLDevice::Stream_Normal(int32 _iVB)
 	CState::Stream_Normal(_iVB);
 }
 
-void COpenGLDevice::Stream_Color(int32 _iVB)
+void COpenGLDevice::Stream_Color(int32_t _iVB)
 {
 	COpenGLVertexBuffer *pVB = m_IndexHandler.GetObject<COpenGLVertexBuffer*>(_iVB, EID_VertexBuffer);
 	if(pVB && pVB->m_LockInfo.m_pColorfp32)
@@ -154,7 +154,7 @@ void COpenGLDevice::Stream_Color(int32 _iVB)
 	CState::Stream_Color(_iVB);
 }
 
-void COpenGLDevice::Stream_Texture(int32 _iUnit, int32 _iVB, int32 _Index) // FIX ME! MULTITEXTURE
+void COpenGLDevice::Stream_Texture(int32_t _iUnit, int32_t _iVB, int32_t _Index) // FIX ME! MULTITEXTURE
 {
 	if(m_Exts.ARB_multitexture)
 	{
@@ -179,7 +179,7 @@ void COpenGLDevice::Stream_Texture(int32 _iUnit, int32 _iVB, int32 _Index) // FI
 }
 
 
-void COpenGLDevice::Stream_Index(int32 _iIB)
+void COpenGLDevice::Stream_Index(int32_t _iIB)
 {
 	COpenGLIndexBuffer *pIB = m_IndexHandler.GetObject<COpenGLIndexBuffer*>(_iIB, EID_IndexBuffer);
 	if(pIB && pIB->m_LockInfo.m_pIndex16)
@@ -192,7 +192,7 @@ void COpenGLDevice::Stream_Index(int32 _iIB)
 //
 // shaders
 //
-void COpenGLDevice::Shader_Vertex(int32 _iShader)
+void COpenGLDevice::Shader_Vertex(int32_t _iShader)
 {
 	if(_iShader == -1)
 		glDisable(GL_VERTEX_PROGRAM_ARB);
@@ -211,15 +211,15 @@ void COpenGLDevice::Shader_Vertex(int32 _iShader)
 	CState::Shader_Vertex(_iShader);
 }
 
-void COpenGLDevice::Shader_Pixel(int32 _iShader) // FIX ME!
+void COpenGLDevice::Shader_Pixel(int32_t _iShader) // FIX ME!
 {
 	// SHADER FIX
 	CState::Shader_Pixel(_iShader);
 }
 
-void COpenGLDevice::Shader_VertexParamFloat(int32 _iStartReg, const TVector4<fp32>* _pFloats, int32 _Num)
+void COpenGLDevice::Shader_VertexParamFloat(int32_t _iStartReg, const TVector4<fp32>* _pFloats, int32_t _Num)
 {
-	for(int32 i = 0; i < _Num; i++)
+	for(int32_t i = 0; i < _Num; i++)
 		glextProgramEnvParameter4fvARB(GL_VERTEX_PROGRAM_ARB, _iStartReg+i, (fp32*)(_pFloats+i));
 
 	CState::Shader_VertexParamFloat(_iStartReg, _pFloats, _Num);
@@ -228,7 +228,7 @@ void COpenGLDevice::Shader_VertexParamFloat(int32 _iStartReg, const TVector4<fp3
 //
 // textures
 //
-void COpenGLDevice::Texture_Set(intr _iUnit, int32 _iTexture) // FIX ME!
+void COpenGLDevice::Texture_Set(intr _iUnit, int32_t _iTexture) // FIX ME!
 {
 	if(!m_Exts.ARB_multitexture && _iUnit != 0)
 		return;

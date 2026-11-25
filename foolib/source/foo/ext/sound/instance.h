@@ -6,6 +6,8 @@
 
 namespace NFoo { namespace NSound {
 
+	class CPuller;
+
 	class CInstance
 	{
 		friend class CPuller;
@@ -19,7 +21,7 @@ namespace NFoo { namespace NSound {
 
 		void OnEnd();
 
-		virtual bool Set(int32 What, int32 Value)
+		virtual bool Set(int32_t What, int32_t Value)
 		{
 			if(What == CSource::ESet_Volume)
 				m_Volume = Value/1000.0f;
@@ -33,10 +35,10 @@ namespace NFoo { namespace NSound {
 
 		CPuller *m_pPuller;
 
-		int32 m_iSound;
+		int32_t m_iSound;
 
 		int64 m_Start;
-		int32 m_Flags;
+		int32_t m_Flags;
 		fp32 m_Volume;
 		fp32 m_Rate;
 	};

@@ -26,12 +26,12 @@ namespace NFoo
 		// Various Functions
 		bool virtual IsReady() pure;
 		bool virtual Flush() { return true; }
-		int32 virtual GetSize() { return -1; }
+		int32_t virtual GetSize() { return -1; }
 
 		// Write
-		int32 virtual Write(const void *_pBuffer, int32 _Size) pure;
+		int32_t virtual Write(const void *_pBuffer, int32_t _Size) pure;
 
-		// NE = Native endian (No byte swapping), this was added because of collisions with Write(void*,int32)
+		// NE = Native endian (No byte swapping), this was added because of collisions with Write(void*,int32_t)
 		// LE = Little endian (Intel, x86 order)
 		// ME = Big endian (IBM, PPC order)
 		template<typename T> inline void WriteNE(T _Value) { Write(&_Value, sizeof(T)); }
@@ -39,8 +39,8 @@ namespace NFoo
 		template<typename T> inline void WriteBE(T _Value) { WriteNE(ByteSwapCPUtoBE(_Value)); }
 
 		// Write pascal (uint16)
-		int32 Write_p8(CString Str); // 8 bit, max length = 255
-		int32 Write_p16(CString Str); // 16 bit, max length = 64 kib
+		int32_t Write_p8(CString Str); // 8 bit, max length = 255
+		int32_t Write_p16(CString Str); // 16 bit, max length = 64 kib
 	};
 
 	//
@@ -67,22 +67,22 @@ namespace NFoo
 		// Various Functions
 		bool virtual IsReady() pure;
 		bool virtual EndOfStream() pure;
-		int32 virtual GetSize() { return -1; }
-		int32 virtual GetPosition() { return -1; }
+		int32_t virtual GetSize() { return -1; }
+		int32_t virtual GetPosition() { return -1; }
 
 		bool virtual Seekable() { return false; }
-		void virtual Seek(int32 _Offset,intr _Origin) { }
+		void virtual Seek(int32_t _Offset,intr _Origin) { }
 
 		bool virtual Clonable() { return false; }
 		virtual CInputStream *Clone() { return 0; }
 
 		// if count == -1 then it will read until eof
-		int32 Transfer(COutputStream &rOutput, int32 Count=-1, int32 BufferSize=4092);
+		int32_t Transfer(COutputStream &rOutput, int32_t Count=-1, int32_t BufferSize=4092);
 		
 		// Read
-		int32 virtual Read(void *Buffer, int32 Size) pure; // NULL as buffer will result in a skip
+		int32_t virtual Read(void *Buffer, int32_t Size) pure; // NULL as buffer will result in a skip
 
-		// NE = Native endian (No byte swapping), this was added because of collisions with Read(void*,int32)
+		// NE = Native endian (No byte swapping), this was added because of collisions with Read(void*,int32_t)
 		// LE = Little endian (Intel, x86 order)
 		// ME = Big endian (IBM, PPC order)
 		template<typename T> inline T ReadNE() { T v; Read(&v, sizeof(T)); return v; } 
@@ -116,17 +116,17 @@ namespace NFoo
 		// Various Functions
 		bool virtual IsReady() { return m_rSource.IsReady(); }
 		bool virtual EndOfStream() { return m_rSource.EndOfStream(); }
-		int32 virtual GetSize() { return m_rSource.GetSize(); }
-		int32 virtual GetPosition() { return m_rSource.GetPosition(); }
+		int32_t virtual GetSize() { return m_rSource.GetSize(); }
+		int32_t virtual GetPosition() { return m_rSource.GetPosition(); }
 
 		bool virtual Seekable() { return m_rSource.Seekable(); }
-		void virtual Seek(int32 Offset, intr Origin) { m_rSource.Seek(Offset, Origin); }
+		void virtual Seek(int32_t Offset, intr Origin) { m_rSource.Seek(Offset, Origin); }
 
 		bool virtual Clonable() { return false; }
 		virtual CInputStream *Clone() { return 0; }
 
 		// Read
-		int32 virtual Read(void *Buffer, int32 Size) { return m_rSource.Read(Buffer, Size); }
+		int32_t virtual Read(void *Buffer, int32_t Size) { return m_rSource.Read(Buffer, Size); }
 	};
 
 	//
@@ -135,20 +135,20 @@ namespace NFoo
 	class CBlockReader : public CChainedInputStream
 	{
 		uint8 *m_pBuffer;
-		int32 m_BufferSize;
-		int32 m_Pos;
-		int32 m_BufferLeft;
+		int32_t m_BufferSize;
+		int32_t m_Pos;
+		int32_t m_BufferLeft;
 
 		void FillBuffer();
 
 	public:
-		CBlockReader(CInputStream &rSource, int32 BufferSize=32*1024);
+		CBlockReader(CInputStream &rSource, int32_t BufferSize=32*1024);
 		virtual ~CBlockReader();
 
 		bool virtual EndOfStream() { return (m_rSource.EndOfStream() && !m_BufferLeft); }
 
 		// Read
-		virtual int32 Read(void *pOutput, int32 Size);
+		virtual int32_t Read(void *pOutput, int32_t Size);
 	};
 
 } // name space end

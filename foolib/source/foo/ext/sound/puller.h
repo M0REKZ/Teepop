@@ -17,11 +17,11 @@ namespace NFoo { namespace NSound {
 
 		CInstance *m_pInstance;
 		TDynamicArray<CBuffer> m_lBuffers;
-		TDynamicArray<int32> m_lStartPositions;
+		TDynamicArray<int32_t> m_lStartPositions;
 		//CBuffer m_Buffer;
-		int32 m_SamplesLeft;
+		int32_t m_SamplesLeft;
 
-		int32 Fill(void *pData, int64 Position, int32 Samples); // should do convertion
+		int32_t Fill(void *pData, int64 Position, int32_t Samples); // should do convertion
 	};
 
 } }

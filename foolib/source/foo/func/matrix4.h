@@ -57,11 +57,11 @@ namespace NFoo
 		{
 			TMatrix4 Result;
 
-			for(int32 i = 0; i < 4; i++)
-				for(int32 j = 0; j < 4; j++)
+			for(int32_t i = 0; i < 4; i++)
+				for(int32_t j = 0; j < 4; j++)
 				{
 					Result.k[i][j] = 0;
-					for(int32 a = 0; a < 4; a++)
+					for(int32_t a = 0; a < 4; a++)
 						Result.k[i][j] += k[a][j] * _Matrix.k[i][a];
 				}
 			return Result;
@@ -105,8 +105,8 @@ namespace NFoo
 		{
 			TMatrix4 Result;
 
-			for(int32 i = 0; i < 4; i++)
-				for(int32 j = 0; j < 4; j++)
+			for(int32_t i = 0; i < 4; i++)
+				for(int32_t j = 0; j < 4; j++)
 					Result.k[i][j] = k[j][i];
 			return Result;
 		}

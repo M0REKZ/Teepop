@@ -24,7 +24,7 @@ void CNetworkGameServer::SendNewBlocks(CNetworkConnection *pConnection)
 
 //
 //
-void CNetworkGameServer::SendGameStateChange(CNetworkConnection *pConnection, int32 State)
+void CNetworkGameServer::SendGameStateChange(CNetworkConnection *pConnection, int32_t State)
 {
 	CNetMessage NetMsg(NETMSG("clGameStateChange"), true);
 	NetMsg.WriteBE<uint8>(State);
@@ -73,17 +73,17 @@ void CNetworkGameServer::OnDetach(CNetworkConnection *pConnection)
 
 //
 //
-void CNetworkGameServer::CheckWinConditions(int32 roomid, int32 iClientIgnore)
+void CNetworkGameServer::CheckWinConditions(int32_t roomid, int32_t iClientIgnore)
 {
 	CRoom *pRoom = m_pRoom->GetRoom(roomid);
 	if(!pRoom)
 		return;
 
-	int32 NumSpectators = 0;
-	int32 NumPlaying = 0;
-	int32 TotalClients = 0;
+	int32_t NumSpectators = 0;
+	int32_t NumPlaying = 0;
+	int32_t TotalClients = 0;
 
-	for(int32 i = 0; i < pRoom->m_lPlayers.Len(); i++)
+	for(int32_t i = 0; i < pRoom->m_lPlayers.Len(); i++)
 	{
 		if(pRoom->m_lPlayers[i]->ClientID() == iClientIgnore)
 			continue;
@@ -109,7 +109,7 @@ void CNetworkGameServer::CheckWinConditions(int32 roomid, int32 iClientIgnore)
 			// we got a winner
 			m_pRoom->SetRoomState(pRoom->m_ID, CRoom::EState_Stopped);
 
-			for(int32 i = 0; i < pRoom->m_lPlayers.Len(); i++)
+			for(int32_t i = 0; i < pRoom->m_lPlayers.Len(); i++)
 			{
 				if(pRoom->m_lPlayers[i]->ClientID() == iClientIgnore)
 					continue;
@@ -144,8 +144,8 @@ void CNetworkGameServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 
 		// START GAME
 		m_pRoom->SetRoomState(pConnection, CRoom::EState_Playing);
-		int32 NumPlayers = 0;
-		for(int32 i = 0; i < pRoom->m_lPlayers.Len(); i++)
+		int32_t NumPlayers = 0;
+		for(int32_t i = 0; i < pRoom->m_lPlayers.Len(); i++)
 		{
 			CInfo *pPlayerInfo = GetInfo(pRoom->m_lPlayers[i]);
 			if(pPlayerInfo)// && pPlayerInfo->m_State == EWaiting)
@@ -172,7 +172,7 @@ void CNetworkGameServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 
 		m_pRoom->SetRoomState(pConnection, CRoom::EState_Stopped);
 
-		for(int32 i = 0; i < pRoom->m_lPlayers.Len(); i++)
+		for(int32_t i = 0; i < pRoom->m_lPlayers.Len(); i++)
 		{
 			CInfo *pPlayerInfo = GetInfo(pRoom->m_lPlayers[i]);
 			if(pPlayerInfo && pPlayerInfo->m_State >= EPlaying)
@@ -185,16 +185,16 @@ void CNetworkGameServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 			return;
 
 		// unpack message
-		int32 b = rStream.ReadBE<uint8>();
+		int32_t b = rStream.ReadBE<uint8>();
 
 		CBoard &rBoard = pInfo->m_Board;
 		rBoard.Drop(b&0xf, b>>4); // drop blocks
 
 		// send board updates
 		CNetMessage Msg(NETMSG("clBoardUpdate"), false);
-		Msg.WriteBE<int32>(pConnection->ClientID());
+		Msg.WriteBE<int32_t>(pConnection->ClientID());
 		pInfo->m_Board.Pack(Msg);
-		for(int32 i = 0; i < pRoom->m_lPlayers.Len(); i++)
+		for(int32_t i = 0; i < pRoom->m_lPlayers.Len(); i++)
 		{
 			CNetworkConnection *pOpponent = pRoom->m_lPlayers[i];
 			if(pOpponent == pConnection)
@@ -232,7 +232,7 @@ void CNetworkGameServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 		// do level increase
 		if(pInfo->m_State == EPlaying)
 		{
-			int32 Level = (GetTickCount()-pInfo->m_StartTime)/GetTickFrequency();
+			int32_t Level = (GetTickCount()-pInfo->m_StartTime)/GetTickFrequency();
 			Level /= 60; // level increase every 60 seconds
 			if(Level != pInfo->m_Level)
 			{
@@ -248,9 +248,9 @@ void CNetworkGameServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 		if(rBoard.m_EvadedStones > 0)
 		{
 			CNetMessage Msg(NETMSG("clEvadedStones"), true);
-			Msg.WriteBE<int32>(pConnection->ClientID());
+			Msg.WriteBE<int32_t>(pConnection->ClientID());
 			Msg.WriteBE<uint8>(rBoard.m_EvadedStones);
-			for(int32 i = 0; i < pRoom->m_lPlayers.Len(); i++)
+			for(int32_t i = 0; i < pRoom->m_lPlayers.Len(); i++)
 				pRoom->m_lPlayers[i]->SendMessage(Msg);
 		}
 
@@ -258,15 +258,15 @@ void CNetworkGameServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 		if(rBoard.m_SendStones > 0)
 		{
 			CNetMessage Msg(NETMSG("clStonesSent"), true);
-			Msg.WriteBE<int32>(pConnection->ClientID());
+			Msg.WriteBE<int32_t>(pConnection->ClientID());
 			Msg.WriteBE<uint8>(rBoard.m_SendStones);
-			for(int32 i = 0; i < pRoom->m_lPlayers.Len(); i++)
+			for(int32_t i = 0; i < pRoom->m_lPlayers.Len(); i++)
 				pRoom->m_lPlayers[i]->SendMessage(Msg);
 		}
 
 
 		// send board updates
-		for(int32 i = 0; i < pRoom->m_lPlayers.Len(); i++)
+		for(int32_t i = 0; i < pRoom->m_lPlayers.Len(); i++)
 		{
 			CNetworkConnection *pOpponent = pRoom->m_lPlayers[i];
 			if(pOpponent == pConnection)

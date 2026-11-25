@@ -35,7 +35,7 @@ void CNetworkClient::OnCommand(CString &rCmd, CString &rArgs)
 void CNetworkClient::UpdateState()
 {
 	// detect state changes
-	int32 State = m_SlotClient.GetState();
+	int32_t State = m_SlotClient.GetState();
 	if(State != m_LastState)
 	{
 		if(State == CSlotClient::EState_Connected)
@@ -69,11 +69,11 @@ void CNetworkClient::Update()
 		if(pChunk->m_Type == EChunk_Message)
 		{
 			#ifdef HASHED_MESSAGE_ID
-				NetMsgID iMsg = pChunk->m_Reader.ReadBE<int32>();
+				NetMsgID iMsg = pChunk->m_Reader.ReadBE<int32_t>();
 			#else
 				NetMsgID iMsg = pChunk->m_Reader.Read_p16();
 			#endif
-				//			int32 iMsg = pChunk->m_Reader.ReadBE<int32>();
+				//			int32_t iMsg = pChunk->m_Reader.ReadBE<int32_t>();
 			OnNetMessage(iMsg, pChunk->m_Reader);
 			//Assert(m_mMessageMap.Exist(iMsg));
 			//Assert(m_mMessageMap[iMsg]);

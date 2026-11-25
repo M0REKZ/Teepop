@@ -1,3 +1,4 @@
+#ifdef FOO_PLATFORM_WIN32
 //#define WIN32_LEAN_AND_MEAN
 //#define VC_EXTRA_LEAN
 #include <windows.h> // FUCK!!! ASSS!!!
@@ -21,20 +22,20 @@ class CSoundDevice_WaveOut : public CSoundDevice
 	
 	WAVEHDR m_aBufferHeaders[ENumBuffers];
 	void *m_aBuffers[ENumBuffers];
-	int32 m_BufferSamples;
-	int32 m_BufferSize;
-	int32 m_iCurrentBuffer;
+	int32_t m_BufferSamples;
+	int32_t m_BufferSize;
+	int32_t m_iCurrentBuffer;
 
 	CFormat m_Format;
 
-	int32 m_iCurrentHandle;
-	TMap<int32, CInstance*> m_lInstances;
+	int32_t m_iCurrentHandle;
+	TMap<int32_t, CInstance*> m_lInstances;
 
 	class CWorker : public CThread
 	{
 	public:
 		CSoundDevice_WaveOut *m_pDevice;
-		virtual int32 ThreadMain()
+		virtual int32_t ThreadMain()
 		{
 			m_pDevice->m_ThreadLock.Aquire();
 			m_pDevice->m_ThreadID = GetCurrentThreadId();
@@ -44,7 +45,7 @@ class CSoundDevice_WaveOut : public CSoundDevice
 			while(1)
 			{
 				m_pDevice->m_ThreadLock.Aquire();
-				int32 cmd = m_pDevice->m_ThreadCommand;
+				int32_t cmd = m_pDevice->m_ThreadCommand;
 				m_pDevice->m_ThreadLock.Release();
 
 				if(cmd == 1)
@@ -68,20 +69,20 @@ class CSoundDevice_WaveOut : public CSoundDevice
 
 public:
 	CLock m_ThreadLock;
-	uint32 m_ThreadID;
-	int32 m_ThreadCommand;
+	uint32_t m_ThreadID;
+	int32_t m_ThreadCommand;
 	CWorker m_Worker;
 
 	CSoundDevice_WaveOut();
 	~CSoundDevice_WaveOut();
 
-	virtual bool Init(CFormat Format, int32 BufferSize);
+	virtual bool Init(CFormat Format, int32_t BufferSize);
 	virtual bool Shutdown();
 	virtual bool Update();
 	
-	virtual int32 Play(CSource *pSource, int32 Flags);
-	virtual void Destroy(int32 iSound);
-	virtual bool Set(int32 iSound, int32 What, int32 Value);
+	virtual int32_t Play(CSource *pSource, int32_t Flags);
+	virtual void Destroy(int32_t iSound);
+	virtual bool Set(int32_t iSound, int32_t What, int32_t Value);
 
 
 	CPuller m_Puller;
@@ -96,7 +97,7 @@ CSoundDevice_WaveOut::CSoundDevice_WaveOut()
 	m_iCurrentBuffer = 0;
 	m_ThreadCommand = 0;
 
-	for(int32 i = 0; i < ENumBuffers; i++)
+	for(int32_t i = 0; i < ENumBuffers; i++)
 		m_aBuffers[i] = NULL;
 
 	m_iCurrentHandle = 0;
@@ -109,7 +110,7 @@ CSoundDevice_WaveOut::~CSoundDevice_WaveOut()
 	if(m_pMixerInstance)
 		Destroy(m_pMixerInstance->m_iSound);
 	SafeDelete(m_pMixerInstance);
-	for(int32 i = 0; i < ENumBuffers; i++)
+	for(int32_t i = 0; i < ENumBuffers; i++)
 		SafeArrayDelete(m_aBuffers[i]);
 }
 
@@ -118,7 +119,7 @@ const bool g_MultiThread = false;
 //
 //
 //
-bool CSoundDevice_WaveOut::Init(CFormat Format, int32 BufferSize)
+bool CSoundDevice_WaveOut::Init(CFormat Format, int32_t BufferSize)
 {
 	m_Format = Format;
 
@@ -140,7 +141,7 @@ bool CSoundDevice_WaveOut::Init(CFormat Format, int32 BufferSize)
 		while(1)
 		{
 			m_ThreadLock.Aquire();
-			int32 cmd = m_ThreadCommand;
+			int32_t cmd = m_ThreadCommand;
 			m_ThreadLock.Release();
 
 			if(cmd == 2)
@@ -153,12 +154,12 @@ bool CSoundDevice_WaveOut::Init(CFormat Format, int32 BufferSize)
 		return false;
 
 	// create buffers
-	int32 BufferLength = BufferSize;
+	int32_t BufferLength = BufferSize;
 	m_BufferSamples = m_Format.m_SampleRate/(1000/BufferLength)/ENumBuffers;
 	m_BufferSize = m_BufferSamples*m_Format.SampleSize();
 	m_iCurrentBuffer = 0;
 
-	for(int32 i = 0; i < ENumBuffers; i++)
+	for(int32_t i = 0; i < ENumBuffers; i++)
 	{
 		m_aBuffers[i] = new uint8[m_BufferSize];
 		MemoryZero(m_aBuffers[i], m_BufferSize);
@@ -190,7 +191,7 @@ bool CSoundDevice_WaveOut::Init(CFormat Format, int32 BufferSize)
 //
 //
 //
-int32 CSoundDevice_WaveOut::Play(CSource *pSource, int32 Flags)
+int32_t CSoundDevice_WaveOut::Play(CSource *pSource, int32_t Flags)
 {
 	m_ThreadLock.Aquire();
 
@@ -209,7 +210,7 @@ int32 CSoundDevice_WaveOut::Play(CSource *pSource, int32 Flags)
 	return 0;
 }
 
-void CSoundDevice_WaveOut::Destroy(int32 iSound)
+void CSoundDevice_WaveOut::Destroy(int32_t iSound)
 {
 	CInstance *pInstance = m_lInstances.Find(iSound, NULL);
 	if(!pInstance)
@@ -223,7 +224,7 @@ void CSoundDevice_WaveOut::Destroy(int32 iSound)
 	m_ThreadLock.Release();
 }
 
-bool CSoundDevice_WaveOut::Set(int32 iSound, int32 What, int32 Value)
+bool CSoundDevice_WaveOut::Set(int32_t iSound, int32_t What, int32_t Value)
 {
 	CInstance *pInstance = m_lInstances.Find(iSound, NULL);
 	if(!pInstance)
@@ -304,4 +305,4 @@ bool CSoundDevice_WaveOut::Shutdown()
 
 //#pragma comment(lib, "winmm.lib")
 
-
+#endif

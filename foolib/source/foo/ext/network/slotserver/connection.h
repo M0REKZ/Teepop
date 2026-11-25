@@ -17,8 +17,8 @@ namespace NFoo { namespace NSlotServer {
 		CString m_ErrorMsg;
 
 		// state of the connection
-		int32 m_State;
-		int32 m_InternalState; //
+		int32_t m_State;
+		int32_t m_InternalState; //
 		NFoo::NNetwork::CAddr m_RemoteAddress;
 
 		// used for timeout
@@ -26,10 +26,10 @@ namespace NFoo { namespace NSlotServer {
 		int64 m_LastSendTime;
 
 		//
-		int32 m_SequenceNumber;
-		int32 m_VitalSequenceNumber;
+		int32_t m_SequenceNumber;
+		int32_t m_VitalSequenceNumber;
 
-		int32 m_LastVitalNumber;
+		int32_t m_LastVitalNumber;
 		
 		// remote location
 		CChunkSocket *m_pSocket;
@@ -43,7 +43,7 @@ namespace NFoo { namespace NSlotServer {
 		public:
 			CChunk *m_pChunk;
 			int64 m_LastSendTime;
-			int32 m_ResendCount;
+			int32_t m_ResendCount;
 		};
 		
 		NFoo::TDynamicArray<CVitalHolder> m_lVitalChunks; // are going to be resent if they don't get an ack
@@ -53,12 +53,12 @@ namespace NFoo { namespace NSlotServer {
 	protected:
 		CLock m_Lock;
 
-		void SetState(int32 _State) { m_InternalState = _State; }
+		void SetState(int32_t _State) { m_InternalState = _State; }
 		void SetSocket(CChunkSocket *pSocket, bool handle);
 		void Process(CChunk *_pChunk); // resposible for deleting the chunk if needed
 
 		// state handling
-		void Init(CChunkSocket *pSocket, NFoo::NNetwork::CAddr &rRemoteAddress, int32 state);
+		void Init(CChunkSocket *pSocket, NFoo::NNetwork::CAddr &rRemoteAddress, int32_t state);
 		void Update();
 		void Reset();
 		
@@ -77,7 +77,7 @@ namespace NFoo { namespace NSlotServer {
 		const int8 *GetErrorMsg() { return m_ErrorMsg; }
 
 		// state retrival
-		int32 GetState() { return m_State; }
+		int32_t GetState() { return m_State; }
 		bool IsConnected() { return m_State==EState_Connected; }
 		bool IsConnecting() { return m_State==EState_Connecting; }
 		bool IsClosed() { return m_State==EState_Closed; }
@@ -92,8 +92,8 @@ namespace NFoo { namespace NSlotServer {
 		void Flush(); // (LOCKS) sends all pending chunks
 		
 		// time handling
-		int32 GetTimeoutCounter() { return 0; }; // in milliseconds
-		int32 GetLatency() { return 0; }; // in milliseconds
+		int32_t GetTimeoutCounter() { return 0; }; // in milliseconds
+		int32_t GetLatency() { return 0; }; // in milliseconds
 	};
 } }
 

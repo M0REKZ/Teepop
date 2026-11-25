@@ -14,7 +14,7 @@ using namespace NFoo::NSlotServer;
 //# Context: Ext/Network/SlotServer/CChunk
 //
 
-int32 g_NumChunks = 0;
+int32_t g_NumChunks = 0;
 
 
 
@@ -40,7 +40,7 @@ NFoo::CMemoryWriter &CChunk::BeginWrite()
 	return m_Writer;
 }
 
-int32 CChunk::EndWrite()
+int32_t CChunk::EndWrite()
 {
 	m_DataSize = m_Writer.GetSize();
 	if(m_DataSize)
@@ -98,9 +98,9 @@ void CChunk::Write(COutputStream &_rStream)
 	}
 }
 
-int32 CChunk::GetSize()
+int32_t CChunk::GetSize()
 {
-	int32 Size = sizeof(m_Type)+sizeof(m_Flags)+sizeof(m_SequenceNumber);
+	int32_t Size = sizeof(m_Type)+sizeof(m_Flags)+sizeof(m_SequenceNumber);
 	
 	if(m_Flags&EFlag_Vital)
 		Size += sizeof(m_VitalNumber);
@@ -155,9 +155,9 @@ const int8 *CChunk::String()
 {
 	static int8 aStr[512];
 	if(m_Flags&EFlag_Vital)
-		StringCFormat(aStr, "(type=%x, flags=0x%x, datasize=0x%d, vitalnumber=%d)", m_Type, m_Flags, m_DataSize, m_VitalNumber);
+		StringCFormat(aStr, sizeof(aStr), "(type=%x, flags=0x%x, datasize=0x%d, vitalnumber=%d)", m_Type, m_Flags, m_DataSize, m_VitalNumber);
 	else
-		StringCFormat(aStr, "(type=%x, flags=0x%x, datasize=0x%d, vn=)", m_Type, m_Flags, m_DataSize);
+		StringCFormat(aStr, sizeof(aStr), "(type=%x, flags=0x%x, datasize=0x%d, vn=)", m_Type, m_Flags, m_DataSize);
 	return aStr;
 }
 
@@ -177,7 +177,7 @@ const int8 *CChunk::String()
 //#		The applications is reponsible for deleting the chunk. You should call RecvChunks until it
 //#		returns 0.
 //# Declaration:
-int32 CChunkSocket::RecvChunks(NFoo::TDynamicArray<CChunk*> &rlChunks, NFoo::NNetwork::CAddr &rSource)
+int32_t CChunkSocket::RecvChunks(NFoo::TDynamicArray<CChunk*> &rlChunks, NFoo::NNetwork::CAddr &rSource)
 {
 	// clear list
 	rlChunks.Clear();
@@ -186,15 +186,15 @@ int32 CChunkSocket::RecvChunks(NFoo::TDynamicArray<CChunk*> &rlChunks, NFoo::NNe
 	int8 Buffer[EMaxPacketSize];
 	NNetwork::CAddr Addr;
 
-	int32 RecvBytes = RecvFrom(Buffer, EMaxPacketSize, Addr);
+	int32_t RecvBytes = RecvFrom(Buffer, EMaxPacketSize, Addr);
 	if(RecvBytes > 0)
 	{
 		rSource = Addr;
 		
 		CMemoryReader Packet(Buffer, RecvBytes);
-		int32 NumChunks = Packet.ReadBE<uint8>();
+		int32_t NumChunks = Packet.ReadBE<uint8>();
 		
-		for(int32 i = 0; i < NumChunks; i++)
+		for(int32_t i = 0; i < NumChunks; i++)
 		{
 			CChunk *pChunk = new CChunk;
 			rlChunks.Add(pChunk);
@@ -217,21 +217,21 @@ int32 CChunkSocket::RecvChunks(NFoo::TDynamicArray<CChunk*> &rlChunks, NFoo::NNe
 //# Remarks:
 //#		Application is in charge of deletion of the chunks.
 //# Declaration:
-int32 CChunkSocket::SendChunks(NFoo::TDynamicArray<CChunk*> &rlChunks, NFoo::NNetwork::CAddr &rTarget)
+int32_t CChunkSocket::SendChunks(NFoo::TDynamicArray<CChunk*> &rlChunks, NFoo::NNetwork::CAddr &rTarget)
 {
 	//NFoo::TDynamicArray<CChunk*> lChunks;
 	//lChunks = rlChunks;
-	int32 TotalSize = 0;
-	int32 Base = 0;
+	int32_t TotalSize = 0;
+	int32_t Base = 0;
 	
 	while(Base < rlChunks.Len())
 	{
 		// see how many chunks we can fit into this packet
-		int32 Size = 1;
-		int32 NumChunks = 0;
-		for(int32 i = Base; i < rlChunks.Len(); i++)
+		int32_t Size = 1;
+		int32_t NumChunks = 0;
+		for(int32_t i = Base; i < rlChunks.Len(); i++)
 		{
-			int32 ChunkSize = rlChunks[i]->GetSize();
+			int32_t ChunkSize = rlChunks[i]->GetSize();
 			if(ChunkSize < EMaxPacketSize-Size)
 			{
 				Size += ChunkSize;
@@ -248,7 +248,7 @@ int32 CChunkSocket::SendChunks(NFoo::TDynamicArray<CChunk*> &rlChunks, NFoo::NNe
 			int8 aBuffer[EMaxPacketSize];
 			CMemoryWriter Packet(aBuffer);
 			Packet.WriteBE((uint8)NumChunks);
-			for(int32 i = Base; i < NumChunks; i++)
+			for(int32_t i = Base; i < NumChunks; i++)
 				rlChunks[i]->Write(Packet);
 
 			SendTo(aBuffer, Packet.GetSize(), rTarget);

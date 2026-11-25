@@ -19,7 +19,7 @@ CScrollBar::CHandle::CHandle(CView *pParent, CGUI *pGUI)
 //
 //
 //
-void CScrollBar::CHandle::OnMouseDown(CPoint _Pos, int32 _iButton)
+void CScrollBar::CHandle::OnMouseDown(CPoint _Pos, int32_t _iButton)
 {
 	m_Offset = _Pos.y-GetWorldPosition().y;
 	m_pGUI->CaptureMouse(this);
@@ -29,7 +29,7 @@ void CScrollBar::CHandle::OnMouseDown(CPoint _Pos, int32 _iButton)
 //
 //
 //
-void CScrollBar::CHandle::OnMouseUp(CPoint _Pos, int32 _iButton)
+void CScrollBar::CHandle::OnMouseUp(CPoint _Pos, int32_t _iButton)
 {
 	m_pGUI->ReleaseMouse();
 	m_Scrubbing = false;
@@ -43,7 +43,7 @@ void CScrollBar::CHandle::OnMouseMove(CPoint _Pos)
 	if(!m_Scrubbing)
 		return;
 
-	int32 y = _Pos.y-GetParent()->GetWorldPosition().y-m_Offset;
+	int32_t y = _Pos.y-GetParent()->GetWorldPosition().y-m_Offset;
 	if(y < GetMin()) y = GetMin();
 	if(y > GetMax()) y = GetMax();
 
@@ -53,10 +53,10 @@ void CScrollBar::CHandle::OnMouseMove(CPoint _Pos)
 //
 //
 //
-void CScrollBar::CHandle::SetPos(int32 p) { SetPosition(GetPosition().x, p + GetMin()); }
-int32 CScrollBar::CHandle::GetPos() { return GetPosition().y - GetMin(); }
-int32 CScrollBar::CHandle::GetMin() { return 2; }
-int32 CScrollBar::CHandle::GetMax(int32 py)
+void CScrollBar::CHandle::SetPos(int32_t p) { SetPosition(GetPosition().x, p + GetMin()); }
+int32_t CScrollBar::CHandle::GetPos() { return GetPosition().y - GetMin(); }
+int32_t CScrollBar::CHandle::GetMin() { return 2; }
+int32_t CScrollBar::CHandle::GetMax(int32_t py)
 {
 	if(py == -1)
 		py = GetParent()->GetSize().y;
@@ -85,7 +85,7 @@ void CScrollBar::CHandle::OnDraw(CDrawer &_rDrawer)
 //
 //
 //
-int32 CScrollBar::ScrollArea(int32 h)
+int32_t CScrollBar::ScrollArea(int32_t h)
 {
 	return m_Handle.GetMax(h)-m_Handle.GetMin();
 }
@@ -107,8 +107,8 @@ CScrollBar::CScrollBar(CView *pParent, const int8 *pName, CGUI *pGUI)
 //
 void CScrollBar::OnSize(CPoint _OldSize)
 {
-	int32 c = m_Handle.GetPos();
-	int32 m = ScrollArea(_OldSize.y);
+	int32_t c = m_Handle.GetPos();
+	int32_t m = ScrollArea(_OldSize.y);
 	SetAmount(c/(fp32)m);
 }
 
@@ -119,8 +119,8 @@ void CScrollBar::SetAmount(fp32 _a)
 {
 	if(_a < 0) _a = 0;
 	if(_a > 1) _a = 1;
-	int32 m = ScrollArea(GetSize().y);
-	int32 c = (int32)(m*_a);
+	int32_t m = ScrollArea(GetSize().y);
+	int32_t c = (int32_t)(m*_a);
 	m_Handle.SetPos(c);
 }
 
@@ -129,8 +129,8 @@ void CScrollBar::SetAmount(fp32 _a)
 //
 fp32 CScrollBar::GetAmount()
 {
-	int32 c = m_Handle.GetPos();
-	int32 m = ScrollArea(GetSize().y);
+	int32_t c = m_Handle.GetPos();
+	int32_t m = ScrollArea(GetSize().y);
 	return c/(fp32)m;
 }
 

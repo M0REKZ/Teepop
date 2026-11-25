@@ -16,7 +16,7 @@
 		{
 			NCore::CCore_Win32 *pCore = NCore::CCore_Win32::Get();
 
-			for(int32 i = 0; i < pCore->m_lWinMessages.Len(); i++)
+			for(int32_t i = 0; i < pCore->m_lWinMessages.Len(); i++)
 			{
 				MSG WinMsg = pCore->m_lWinMessages[i];
 
@@ -59,7 +59,7 @@
 			m_pAxis[1] += Pos.y-m_PrevPos.y;
 			m_PrevPos = Pos;
 
-			for(int32 i = 0; i < pCore->m_lWinMessages.Len(); i++)
+			for(int32_t i = 0; i < pCore->m_lWinMessages.Len(); i++)
 			{
 				MSG WinMsg = pCore->m_lWinMessages[i];
 

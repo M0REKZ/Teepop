@@ -30,7 +30,7 @@ public:
 };
 MACRO_REGISTER_CLASS(CKeyboard_OpenGLX11, NCore::aKeyboardClassTag)
 
-int32 g_iOpenGLKeyboardClass = 0;
+int32_t g_iOpenGLKeyboardClass = 0;
 
 //
 // Load the extension
@@ -41,7 +41,7 @@ void * GLExtInit_GetProcAddress(const int8 *_pString)
 	return (void *)glXGetProcAddressARB((GLubyte *)_pString);
 }
 
-inline int32 CalcRefreshRate(XF86VidModeModeInfo *_modeinfo) 
+inline int32_t CalcRefreshRate(XF86VidModeModeInfo *_modeinfo) 
 {
 	return _modeinfo->dotclock * 1000 / (_modeinfo->htotal * _modeinfo->vtotal); 
 }
@@ -109,11 +109,11 @@ public:
 	virtual bool Update();
 
 private:
-	int CheckVisual(Display *_pDisplay, XVisualInfo *_pVisual, int32 _Attrib);
+	int CheckVisual(Display *_pDisplay, XVisualInfo *_pVisual, int32_t _Attrib);
 	int CheckVideoModes(int _Width, int _Height, int _RefreshRate, 
-    		XF86VidModeModeInfo **_ppVideoModes, int32 _NumVideoModes);
+    		XF86VidModeModeInfo **_ppVideoModes, int32_t _NumVideoModes);
 	
-	virtual int32 EnumDisplayModes(TDynamicArray<CMode> &_rModes, CMode _Mode);
+	virtual int32_t EnumDisplayModes(TDynamicArray<CMode> &_rModes, CMode _Mode);
 			
 	bool DoEvents();
 	void handleKeyEvent(XKeyEvent &event);
@@ -124,8 +124,8 @@ private:
 	
 	XF86VidModeModeInfo **m_ppAllModes;
 	
-	int32 m_NewMode;
-	int32 m_OldMode;
+	int32_t m_NewMode;
+	int32_t m_OldMode;
 	
 	XVisualInfo m_Visual;		// The visual to use.
 
@@ -134,7 +134,7 @@ private:
 
 MACRO_REGISTER_CLASS(COpenGLDevice_X11, N3D::aDeviceClassTag)
 
-int COpenGLDevice_X11::CheckVisual(Display *_pDisplay, XVisualInfo *_pVisual, int32 _Attrib) 
+int COpenGLDevice_X11::CheckVisual(Display *_pDisplay, XVisualInfo *_pVisual, int32_t _Attrib) 
 {  
 	if(_pDisplay == NULL || _pVisual == NULL)  
 		return -1; 
@@ -145,7 +145,7 @@ int COpenGLDevice_X11::CheckVisual(Display *_pDisplay, XVisualInfo *_pVisual, in
 }
 	
 int COpenGLDevice_X11::CheckVideoModes(int _Width, int _Height, int _RefreshRate, 
-    	XF86VidModeModeInfo **_ppVideoModes, int32 _NumVideoModes) 
+    	XF86VidModeModeInfo **_ppVideoModes, int32_t _NumVideoModes) 
 { 
 	if(_ppVideoModes == NULL || _NumVideoModes <= 0) 
 		return -1; 
@@ -168,7 +168,7 @@ int COpenGLDevice_X11::CheckVideoModes(int _Width, int _Height, int _RefreshRate
 // EnumDisplayModes
 //
 // 
-int32 COpenGLDevice_X11::EnumDisplayModes(TDynamicArray<CMode> &_rModes, CMode _Mode) 
+int32_t COpenGLDevice_X11::EnumDisplayModes(TDynamicArray<CMode> &_rModes, CMode _Mode) 
 { 
 	if(*m_Display == NULL) {
 		NLog::Write("No display connection!");
@@ -610,12 +610,12 @@ void COpenGLDevice_X11::handleKeyEvent(XKeyEvent &event)
 		{0, 0} // marks end of table
 	};
 	// for each keyboard, translate xkey to fookey
-	for(int32 i = 0; i < NCore::GetNumKeyboards(); i++)
+	for(int32_t i = 0; i < NCore::GetNumKeyboards(); i++)
 	{
 		KeySym keysym;
 		char keychar[1];
 		XLookupString(&event, keychar, 1, &keysym, 0);
-		int32 iTable = 0;
+		int32_t iTable = 0;
 		// find xkey in table
 		while(table[iTable].xkey != 0 && table[iTable].fookey != 0)
 		{

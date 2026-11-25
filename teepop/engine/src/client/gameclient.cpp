@@ -19,7 +19,7 @@ void CClientBoard::Refresh()
 	m_Punished = false;
 	if(GetTickCount()-m_LastUpdate > m_TickLength)
 	{
-		int32 s = m_IttrState;
+		int32_t s = m_IttrState;
 		if(Update()) // is stable?
 		{
 			/*
@@ -66,7 +66,7 @@ void CClientBoard::Refresh()
 //
 void CNetworkGameClient::DeleteAllBoards()
 {
-	for(int32 i = 0; i < m_mOpponentBoards.Len(); i++)
+	for(int32_t i = 0; i < m_mOpponentBoards.Len(); i++)
 		delete m_mOpponentBoards.GetValue(i);
 	m_mOpponentBoards.Clear();
 }
@@ -154,7 +154,7 @@ void CNetworkGameClient::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 	}
 	else if(iMsg == NETMSG("clBoardUpdate"))
 	{
-		int32 iClient = rStream.ReadBE<int32>();
+		int32_t iClient = rStream.ReadBE<int32_t>();
 		CClientBoard *pBoard = m_mOpponentBoards.Find(iClient, NULL);
 		if(!pBoard)
 		{
@@ -167,20 +167,20 @@ void CNetworkGameClient::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 	else if(iMsg == NETMSG("clStonesSent"))
 	{
 		CMessage Msg(EEvent_SentStones);
-		Msg.SetInt("clientid", rStream.ReadBE<int32>());
+		Msg.SetInt("clientid", rStream.ReadBE<int32_t>());
 		Msg.SetInt("numstones", rStream.ReadBE<uint8>());
 		Signal(Msg);
 	}
 	else if(iMsg == NETMSG("clEvadedStones"))
 	{
 		CMessage Msg(EEvent_EvadedStones);
-		Msg.SetInt("clientid", rStream.ReadBE<int32>());
+		Msg.SetInt("clientid", rStream.ReadBE<int32_t>());
 		Msg.SetInt("numstones", rStream.ReadBE<uint8>());
 		Signal(Msg);
 	}
 	else if(iMsg == NETMSG("clGameStateChange"))
 	{
-		int32 State = rStream.ReadBE<uint8>();
+		int32_t State = rStream.ReadBE<uint8>();
 
 		if(State == 0) // wait
 		{
@@ -231,7 +231,7 @@ void CNetworkGameClient::Update()
 
 
 	// update opponent boards
-	for(int32 i = 0; i < m_mOpponentBoards.Len(); i++)
+	for(int32_t i = 0; i < m_mOpponentBoards.Len(); i++)
 		m_mOpponentBoards.GetValue(i)->Refresh();
 
 	if(m_BoardState == EState_Waiting)
@@ -330,7 +330,7 @@ void CNetworkGameClient::CtlDropBlocks()
 	m_LocalBoard.m_TickLength = 0;
 	
 	// THIS CAN GO HORRIBLE WRONG!!! DAMN IT
-	//for(int32 i = 0; i < m_YPos; i++)
+	//for(int32_t i = 0; i < m_YPos; i++)
 	//	m_LocalBoard.Update();
 
 	// fix fall flag
@@ -354,9 +354,9 @@ void CNetworkGameClient::CtlMoveRight()
 		Signal(EEvent_BadMove);
 }
 
-void CNetworkGameClient::CtlRotate(int32 RotDir)
+void CNetworkGameClient::CtlRotate(int32_t RotDir)
 {
-	int32 newr = m_Rotation+RotDir;
+	int32_t newr = m_Rotation+RotDir;
 	while(newr >= 4) newr-=4;
 	while(newr < 0) newr+=4;
 

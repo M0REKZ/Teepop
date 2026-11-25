@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
 	NLog::Write("MAIN:Initing\n");
 	
 	//int8 aDir[512];
-//	int32 Size = 512;
+//	int32_t Size = 512;
 	//NPosix::getwd(aDir);
 	//NLog::Write("MAIN: Working directory is %s\n", aDir);
 

@@ -21,8 +21,8 @@ namespace NFoo
 
 		struct SLWO_PointInfo
 		{
-			int32 m_FaceIndex;
-			int32 m_VertexIndex;
+			int32_t m_FaceIndex;
+			int32_t m_VertexIndex;
 		};
 
 		//
@@ -31,14 +31,14 @@ namespace NFoo
 		{
 		public:
 			~CLWO_FaceBuildData();
-			int32 m_VertexIndex[3];
+			int32_t m_VertexIndex[3];
 			TDynamicArray<TVector3<fp32> > m_lVertices;
 			TDynamicArray<TVector2<fp32> > m_lTVertices;
 			TDynamicArray<TVector3<fp32> > m_lNVertices;
 
 			bool m_Valid;
-			int32 m_Color;
-			int32 m_Surf;
+			int32_t m_Color;
+			int32_t m_Surf;
 		};
 
 		//
@@ -49,8 +49,8 @@ namespace NFoo
 			int8 Name[512];
 			int8 FileName[512];
 			int8 UVMapname[512];
-			int32 m_SurfaceIDNumber;
-			int32 m_LWOIDNumber;
+			int32_t m_SurfaceIDNumber;
+			int32_t m_LWOIDNumber;
 		};
 
 
@@ -70,7 +70,7 @@ namespace NFoo
 			uint8* m_pBuffer;
 
 			CLWO_Block *m_pBlock;
-			void Process(int32 _Phase, CLWO_Block* _pBlock);
+			void Process(int32_t _Phase, CLWO_Block* _pBlock);
 		};
 
 		//
@@ -85,13 +85,13 @@ namespace NFoo
 			
 			CLWO_File *m_pFile;
 
-			int32 m_NumPolygons;
-			int32 m_NumPoints;
+			int32_t m_NumPolygons;
+			int32_t m_NumPoints;
 			
 			TDynamicArray<SLWO_PointInfo> *m_pPointInfo;
 
-			int32 Load(uint8* _pBuffer, int32 _Size);
-			void Process(int32 _Phase);
+			int32_t Load(uint8* _pBuffer, int32_t _Size);
+			void Process(int32_t _Phase);
 			void CalculateNormals();
 			void Build();
 		};
@@ -106,11 +106,11 @@ namespace NFoo
 			TDynamicArray<CLWO_Block*> m_lBlocks;
 			TDynamicArray<int8 *> m_lTags;
 
-			void Load(uint8* _pBuffer, int32 _Size);
+			void Load(uint8* _pBuffer, int32_t _Size);
 			void Process();
 			void Build();
 
-			//int32 m_MorphTargets;
+			//int32_t m_MorphTargets;
 		};
 
 		bool Load(CStorage &_Storage, CLWO_File &_rFile);

@@ -44,7 +44,7 @@ LRESULT CALLBACK OGLWndProc(HWND _hWnd, UINT _msg, WPARAM _wParam, LPARAM _lPara
 // Locals
 namespace 
 {
-	int32 g_iOpenGLKeyboardClass = 0;
+	int32_t g_iOpenGLKeyboardClass = 0;
 	COpenGLDevice_Win32 *g_pOpengDevice_Win32 = NULL;
 }
 
@@ -75,7 +75,7 @@ public:
 	//
 	//
 	//
-	virtual int32 EnumDisplayModes(TDynamicArray<CMode> &_rModes, CMode _Mode)
+	virtual int32_t EnumDisplayModes(TDynamicArray<CMode> &_rModes, CMode _Mode)
 	{
 		TDynamicArray<PIXELFORMATDESCRIPTOR> lPixelFormats;
 
@@ -90,7 +90,7 @@ public:
 		// enumare all pixel formats
 		PIXELFORMATDESCRIPTOR Format; 
 		Format.nSize = sizeof(PIXELFORMATDESCRIPTOR);
-		int32 iFormat = 1;
+		int32_t iFormat = 1;
 		while(DescribePixelFormat(hDC, iFormat++, sizeof(PIXELFORMATDESCRIPTOR), &Format))
 		{
 			if(	Format.dwFlags&PFD_SUPPORT_OPENGL &&
@@ -114,7 +114,7 @@ public:
 		DEVMODE Mode;
 		Mode.dmSize = sizeof(DEVMODE);
 
-		int32 iMode = 0;
+		int32_t iMode = 0;
 		while(EnumDisplaySettings(NULL, iMode++, &Mode))
 		{	
 			for(intr i = 0; i < lPixelFormats.Len(); i++)
@@ -209,10 +209,10 @@ public:
 		// create window class
 		RECT WindowRect;
 		WNDCLASS WindowClass;
-		WindowRect.left = (int32)0;
-		WindowRect.right = (int32)Mode.Get(CMode::EWidth);
-		WindowRect.top = (int32)0;
-		WindowRect.bottom = (int32)Mode.Get(CMode::EHeight);
+		WindowRect.left = (int32_t)0;
+		WindowRect.right = (int32_t)Mode.Get(CMode::EWidth);
+		WindowRect.top = (int32_t)0;
+		WindowRect.bottom = (int32_t)Mode.Get(CMode::EHeight);
 
 		WindowClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
 		WindowClass.lpfnWndProc = (WNDPROC)OGLWndProc;
@@ -374,7 +374,7 @@ public:
 	{
 		int64 Time = NFoo::GetTickCount();
 		int8 aBuf[128];
-		StringCFormat(aBuf, "FPS: %d", (int32)(1/((Time-m_LastSwapTime)/(fp32)GetTickFrequency())));
+		StringCFormat(aBuf, "FPS: %d", (int32_t)(1/((Time-m_LastSwapTime)/(fp32)GetTickFrequency())));
 		SetWindowText(m_hWindow, aBuf);
 		m_LastSwapTime = Time;
 		
@@ -393,7 +393,7 @@ public:
 		ClearAllAllocatedIndexes();
 
 		uint16 Ramp[256*3];
-		for(int32 i = 0; i < 256; i++)
+		for(int32_t i = 0; i < 256; i++)
 		{
 			Ramp[i] = (uint16)(0xFFFF*(i/255.0f));
 			Ramp[i+256] = Ramp[i];
@@ -486,7 +486,7 @@ LRESULT CALLBACK OGLWndProc(HWND _hWnd, UINT _Msg, WPARAM _wParam, LPARAM _lPara
 	{
 		// find keyboard if any
 		
-		for(int32 i = 0; i < NCore::GetNumKeyboards(); i++)
+		for(int32_t i = 0; i < NCore::GetNumKeyboards(); i++)
 		{
 			if(NCore::GetKeyboard(i)->m_pClassHandle->m_iClass == g_iOpenGLKeyboardClass)
 			{
@@ -581,7 +581,7 @@ public:
 		}
 	}
 
-	virtual void SetMode(int32 iMode)
+	virtual void SetMode(int32_t iMode)
 	{
 		CMouse::SetMode(iMode);
 		UpdateRect();
@@ -613,7 +613,7 @@ public:
 			m_pAxis[1] = m_CursorPos.y - m_Org.y;
 		}
 
-		for(int32 i = 0; i < pCore->m_lWinMessages.Len(); i++)
+		for(int32_t i = 0; i < pCore->m_lWinMessages.Len(); i++)
 		{
 			MSG WinMsg = pCore->m_lWinMessages[i];
 

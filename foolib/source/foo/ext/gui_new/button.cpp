@@ -16,7 +16,7 @@ CButton::CButton(CView *pParent, const int8 *pName, CGUI *pGUI)
 //
 //
 //
-void CButton::OnMouseDown(CPoint _Pos, int32 _iButton)
+void CButton::OnMouseDown(CPoint _Pos, int32_t _iButton)
 {
 	m_pGUI->CaptureMouse(this);
 	m_Pressed = true;
@@ -25,7 +25,7 @@ void CButton::OnMouseDown(CPoint _Pos, int32 _iButton)
 //
 //
 //
-void CButton::OnMouseUp(CPoint _Pos, int32 _iButton)
+void CButton::OnMouseUp(CPoint _Pos, int32_t _iButton)
 {
 	m_pGUI->ReleaseMouse();
 	m_Pressed = false;
@@ -49,7 +49,7 @@ void CButton::OnDraw(CDrawer &_rDrawer)
 		_rDrawer.DrawRect(_rDrawer.m_aRectTypes[1], 0, 0, GetSize().x, GetSize().y);
 	else
 		_rDrawer.DrawRect(_rDrawer.m_aRectTypes[0], 0, 0, GetSize().x, GetSize().y);
-	_rDrawer.DrawText((int32)(GetSize().x/2-(m_Caption.Len()/2.0f)*8), GetSize().y/2-8, m_Caption.GetData());
+	_rDrawer.DrawText((int32_t)(GetSize().x/2-(m_Caption.Len()/2.0f)*8), GetSize().y/2-8, m_Caption.GetData());
 
 	CView::OnDraw(_rDrawer);
 }

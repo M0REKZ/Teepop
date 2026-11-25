@@ -31,7 +31,7 @@ CSlotServer::CSlotServer()
 	//m_NumSlots = 32;
 
 	//NNetwork::CAddr NullAddr(0);
-	//for(int32 i = 0; i < m_NumSlots; i++)
+	//for(int32_t i = 0; i < m_NumSlots; i++)
 	//	m_aSlot[i].Init(m_Socket, NullAddr, false);
 }
 
@@ -40,26 +40,26 @@ CSlotServer::~CSlotServer()
 	m_lSlot.DeleteAll();
 }
 
-int32 CSlotServer::GetNumClients()
+int32_t CSlotServer::GetNumClients()
 {
 	return m_lSlot.Len();
 }
 
-int32 CSlotServer::GetClientID(int32 Index)
+int32_t CSlotServer::GetClientID(int32_t Index)
 {
 	Assert(Index >= 0 && Index < m_lSlot.Len());
 	return m_lSlot[Index]->m_iClient;
 }
 
-CConnection *CSlotServer::GetClient(int32 Index)
+CConnection *CSlotServer::GetClient(int32_t Index)
 {
 	Assert(Index >= 0 && Index < m_lSlot.Len());
 	return m_lSlot[Index];
 }
 
-CConnection *CSlotServer::FindClient(int32 iClient)
+CConnection *CSlotServer::FindClient(int32_t iClient)
 {
-	for(int32 i = 0; i < m_lSlot.Len(); i++)
+	for(int32_t i = 0; i < m_lSlot.Len(); i++)
 		if(m_lSlot[i]->m_iClient == iClient)
 			return m_lSlot[i];
 	return NULL;
@@ -78,12 +78,16 @@ CSlotServer::CSlot *CSlotServer::NewSlot()
 //
 void StrAdd(int8 *&_Str, const int8 *_pFormat, ...)
 {
-	int8 Buffer[4092];
-	StringCFormatArgList(Buffer, &_pFormat);
+    int8 Buffer[4092];
 
-	int32 len = StringLength(Buffer);
-	MemoryCopy(_Str, Buffer, len);
-	_Str+=len;
+    va_list Args;
+    va_start(Args, _pFormat);
+    StringCFormatArgList(Buffer, sizeof(Buffer), _pFormat, Args);
+    va_end(Args);
+
+    int32_t len = StringLength(Buffer);
+    MemoryCopy(_Str, Buffer, len);
+    _Str += len;
 }
 
 //
@@ -92,7 +96,7 @@ void StrAdd(int8 *&_Str, const int8 *_pFormat, ...)
 void CSlotServer::Update()
 {
 	// remove dead slots
-	for(int32 i = 0; i < m_lSlot.Len(); i++)
+	for(int32_t i = 0; i < m_lSlot.Len(); i++)
 	{
 		if(m_lSlot[i]->IsClosed())
 		{
@@ -110,7 +114,7 @@ void CSlotServer::Update()
 	{
 		// find existing connection
 		bool Processed = false;
-		for(int32 i = 0; i < m_lSlot.Len(); i++)
+		for(int32_t i = 0; i < m_lSlot.Len(); i++)
 		{
 			if(m_lSlot[i]->IsClosed())
 				continue;
@@ -118,7 +122,7 @@ void CSlotServer::Update()
 			if(m_lSlot[i]->GetRemoteAddress() == Addr)
 			{
 				// the slot will be responible fore deleting the chunks
-				for(int32 c = 0; c < lChunks.Len(); c++)
+				for(int32_t c = 0; c < lChunks.Len(); c++)
 					m_lSlot[i]->Process(lChunks[c]);
 				Processed = true;
 				break;
@@ -148,7 +152,7 @@ void CSlotServer::Update()
 							NLog::WriteF("SlotServer: Client connected, %s\n", Addr.Str());
 							
 							CChunk *pChunk = new CChunk(EChunk_Accepted, EFlag_Vital);
-							pChunk->m_Writer.WriteBE<int32>(pSlot->m_iClient);
+							pChunk->m_Writer.WriteBE<int32_t>(pSlot->m_iClient);
 							pSlot->QueueChunk(pChunk);
 
 							pSlot->Flush();
@@ -185,7 +189,7 @@ void CSlotServer::Update()
 	}
 	
 	// Update all slots
-	for(int32 i = 0; i < m_lSlot.Len(); i++)
+	for(int32_t i = 0; i < m_lSlot.Len(); i++)
 		m_lSlot[i]->Update();
 
 	{
@@ -217,7 +221,7 @@ void CSlotServer::Update()
 		int8 aString[1024*32];
 		int8 *pCurrent = aString;
 		StrAdd(pCurrent, "SlotServer Statistics\n\n");
-		for(int32 i = 0; i < m_lSlot.Len(); i++)
+		for(int32_t i = 0; i < m_lSlot.Len(); i++)
 		{
 			StrAdd(pCurrent, "Slot %2d: ", i);
 			

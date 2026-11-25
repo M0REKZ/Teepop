@@ -1,3 +1,4 @@
+#ifdef FOO_PLATFORM_WIN32
 //#define WIN32_LEAN_AND_MEAN
 //#define VC_EXTRA_LEAN
 #include <windows.h> // FUCK!!! ASSS!!!
@@ -24,14 +25,14 @@ class CSoundDevice_DirectSound : public CSoundDevice
 	LPDIRECTSOUND8 m_pDSDevice;
 	LPDIRECTSOUNDBUFFER m_pBuffer; 
 	
-	int32 m_BufferSamples;
-	int32 m_BufferSize;
-	int32 m_MixAhead;
+	int32_t m_BufferSamples;
+	int32_t m_BufferSize;
+	int32_t m_MixAhead;
 
 	CFormat m_Format;
 
-	int32 m_iCurrentHandle;
-	TMap<int32, CInstance*> m_lInstances;
+	int32_t m_iCurrentHandle;
+	TMap<int32_t, CInstance*> m_lInstances;
 
 	CSoftwareMixer m_Mixer;
 	CSoftwareMixerInstance *m_pMixerInstance;
@@ -42,13 +43,13 @@ public:
 	CSoundDevice_DirectSound();
 	virtual ~CSoundDevice_DirectSound();
 
-	virtual bool Init(CFormat Format, int32 BufferSize);
+	virtual bool Init(CFormat Format, int32_t BufferSize);
 	virtual bool Shutdown();
 	virtual bool Update();
 	
-	virtual int32 Play(CSource *pSource, int32 Flags);
-	virtual void Destroy(int32 iSound);
-	virtual bool Set(int32 iSound, int32 What, int32 Value);
+	virtual int32_t Play(CSource *pSource, int32_t Flags);
+	virtual void Destroy(int32_t iSound);
+	virtual bool Set(int32_t iSound, int32_t What, int32_t Value);
 
 
 	CPuller m_Puller;
@@ -71,7 +72,7 @@ CSoundDevice_DirectSound::~CSoundDevice_DirectSound()
 	while(m_lInstances.Len())
 		Destroy(m_lInstances.GetKey(0));
 		/*
-	for(int32 i = 0; i < m_lInstances.Len(); i++)
+	for(int32_t i = 0; i < m_lInstances.Len(); i++)
 		Destroy(m_lInstances[i]->)*/
 
 	//if(m_pMixerInstance)
@@ -85,7 +86,7 @@ extern HWND g_WIN32_MainWindowHandle;
 //
 //
 //
-bool CSoundDevice_DirectSound::Init(CFormat Format, int32 BufferSize)
+bool CSoundDevice_DirectSound::Init(CFormat Format, int32_t BufferSize)
 {
 	m_Format = Format;
 
@@ -141,7 +142,7 @@ bool CSoundDevice_DirectSound::Init(CFormat Format, int32 BufferSize)
 //
 //
 //
-int32 CSoundDevice_DirectSound::Play(CSource *pSource, int32 Flags)
+int32_t CSoundDevice_DirectSound::Play(CSource *pSource, int32_t Flags)
 {
 	CInstance *pInstance = pSource->CreateInstance(this);
 	pInstance->m_iSound = m_iCurrentHandle++;
@@ -157,7 +158,7 @@ int32 CSoundDevice_DirectSound::Play(CSource *pSource, int32 Flags)
 	return 0;
 }
 
-void CSoundDevice_DirectSound::Destroy(int32 iSound)
+void CSoundDevice_DirectSound::Destroy(int32_t iSound)
 {
 	CInstance *pInstance = m_lInstances.Find(iSound, NULL);
 	if(!pInstance)
@@ -168,7 +169,7 @@ void CSoundDevice_DirectSound::Destroy(int32 iSound)
 	delete pInstance;
 }
 
-bool CSoundDevice_DirectSound::Set(int32 iSound, int32 What, int32 Value)
+bool CSoundDevice_DirectSound::Set(int32_t iSound, int32_t What, int32_t Value)
 {
 	CInstance *pInstance = m_lInstances.Find(iSound, NULL);
 	if(!pInstance)
@@ -184,7 +185,7 @@ bool CSoundDevice_DirectSound::Update()
 }
 
 
-int32 m_LastWritePos = 0;
+int32_t m_LastWritePos = 0;
 int64 m_SampleClock = 0; // in bytes
 
 int64 m_SamleClockStart = -1;
@@ -199,11 +200,11 @@ bool CSoundDevice_DirectSound::Refill()
 	static int64 LastRefill = 0;
 	
 	int8 *apData[2] = {0};
-	uint32 aSize[2] = {0};
-	uint32 PlayPos;
-	uint32 WritePos;
+	uint32_t aSize[2] = {0};
+	uint32_t PlayPos;
+	uint32_t WritePos;
 
-	int32 MixAhead = 44100*4;
+	int32_t MixAhead = 44100*4;
 
 	// get positions
 	m_pBuffer->GetCurrentPosition(&PlayPos, &WritePos); // TODO: these can't be trusted!
@@ -222,7 +223,7 @@ bool CSoundDevice_DirectSound::Refill()
 	int64 TickCount = NFoo::GetTickCount();
 	if(LastRefill != 0)
 	{
-		MixAhead = (int32)((TickCount-LastRefill)/(fp32)(GetTickFrequency())*1.5f*44100);
+		MixAhead = (int32_t)((TickCount-LastRefill)/(fp32)(GetTickFrequency())*1.5f*44100);
 		MixAhead = Clamp(MixAhead, 1000, 44100*4); // keep sane values
 	}
 	LastRefill = TickCount;
@@ -245,18 +246,18 @@ bool CSoundDevice_DirectSound::Refill()
 	if(lockres == DSERR_INVALIDCALL) NLog::WriteF("DSERR_INVALIDCALL\n");
 	if(lockres == DSERR_INVALIDPARAM) NLog::WriteF("DSERR_INVALIDPARAM\n");
 	if(lockres == DSERR_PRIOLEVELNEEDED) NLog::WriteF("DSERR_PRIOLEVELNEEDED\n");
-	//NLog::WriteF("SamplePos: %d\n", (int32)(m_SampleClock/44100));
+	//NLog::WriteF("SamplePos: %d\n", (int32_t)(m_SampleClock/44100));
 
 	if(0) // sinus test
 	{
 		int64 Clock = m_SampleClock/4;
-		for(int32 i = 0; i < 2; i++)
+		for(int32_t i = 0; i < 2; i++)
 		{
 			int16 *pDst = (int16 *)apData[i];
 			if(!pDst)
 				continue;
 
-			for(int32 s = 0; s < aSize[i]/4; s++, Clock++)
+			for(int32_t s = 0; s < aSize[i]/4; s++, Clock++)
 			{
 				int16 v = (int16)(sin((fp32)(Clock%100)/100.0f*PI*2)*32000);
 				*pDst++ = v; 
@@ -295,4 +296,4 @@ MACRO_REGISTER_CLASS(CSoundDevice_DirectSound, NSound::aDeviceClassTag)
 
 //#pragma comment(lib, "winmm.lib")
 
-
+#endif

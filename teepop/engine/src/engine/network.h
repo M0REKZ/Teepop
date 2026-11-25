@@ -25,7 +25,7 @@ namespace NEngine
 
 	#ifdef HASHED_MESSAGE_ID	
 		#define NETMSG(x) StringGetHash(x)
-		typedef int32 NetMsgID;
+		typedef int32_t NetMsgID;
 	#else
 		#define NETMSG(x) x
 		typedef CString NetMsgID;
@@ -68,7 +68,7 @@ namespace NEngine
 
 
 			uint8 aTemp[512];
-			for(int32 i = 0; i < GetSize() && i < 10; i++)
+			for(int32_t i = 0; i < GetSize() && i < 10; i++)
 				NLog::WriteF("%x ", m_aData[i]);
 			NLog::WriteF("\n");
 		};
@@ -77,7 +77,7 @@ namespace NEngine
 		{
 			CChunk *pChunk = new CChunk(EChunk_Message, m_Vital);
 			#ifdef HASHED_MESSAGE_ID
-				pChunk->m_Writer.WriteBE<int32>(m_iMsg);
+				pChunk->m_Writer.WriteBE<int32_t>(m_iMsg);
 			#else
 				pChunk->m_Writer.Write_p16(m_iMsg);
 			#endif
@@ -117,7 +117,7 @@ namespace NEngine
 
 		CConnection *m_pConnection;
 	protected:
-		int32 m_iClient;
+		int32_t m_iClient;
 
 		virtual void OnNetMessage(NetMsgID iMsg, CInputStream &rStream);
 		virtual void OnConnect() {};
@@ -125,7 +125,7 @@ namespace NEngine
 
 	public:
 
-		int32 ClientID() { return m_iClient; }
+		int32_t ClientID() { return m_iClient; }
 
 		template<class T>
 		T *GetData(CNetworkMsgRecviver *pRecviver) { return (T*)GetData(pRecviver); }
@@ -142,7 +142,7 @@ namespace NEngine
 
 		bool IsActive();
 
-		void DispatchNetMessage(int32 iMsg, CInputStream &rStream);
+		void DispatchNetMessage(int32_t iMsg, CInputStream &rStream);
 		void SendMessage(CNetMessage &rMsg);
 	};
 }

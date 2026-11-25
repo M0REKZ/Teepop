@@ -15,7 +15,7 @@ namespace NFoo
 	class CMime
 	{
 		CString m_Name;
-		int32 m_Hash;
+		int32_t m_Hash;
 
 		static TDynamicArray< TPair<CString,CString> > ms_lFileExt;
 

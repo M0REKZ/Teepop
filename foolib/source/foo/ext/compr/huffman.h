@@ -23,11 +23,11 @@ namespace NFoo
 		public:
 			CEntry();
 			CEntry(CEntry &rEntry);
-			CEntry(int32 Alpha, int32 Code, int32 CodeSize);
+			CEntry(int32_t Alpha, int32_t Code, int32_t CodeSize);
 
-			int32 m_Alpha;
-			int32 m_Code;
-			int32 m_CodeSize;
+			int32_t m_Alpha;
+			int32_t m_Code;
+			int32_t m_CodeSize;
 
 			bool operator <(const CEntry &rEntry);
 		};
@@ -63,7 +63,7 @@ namespace NFoo
 				};
 				struct
 				{
-					int32 m_Alpha;
+					int32_t m_Alpha;
 				};
 			};
 		};
@@ -71,23 +71,23 @@ namespace NFoo
 		CNode *m_pFirstNode;*/
 
 		// { End, Alpha/Zero, XXX/One }
-		int32 m_aTree[1024*4];
-		int32 m_TreeEnd;
-		int32 *m_pTreeEnd;
+		int32_t m_aTree[1024*4];
+		int32_t m_TreeEnd;
+		int32_t *m_pTreeEnd;
 
 		CHuffmanAlphabet();
 		~CHuffmanAlphabet();
 
-		int32 m_LargestCodeSize;
+		int32_t m_LargestCodeSize;
 
 		void Clear();
-		void Add(int32 Alpha, int32 CodeSize, int32 Code=-1);
+		void Add(int32_t Alpha, int32_t CodeSize, int32_t Code=-1);
 		void CalculateCodes();
 		void ReverseCodes();
 		
 		void ConstructTree();
-//		void AddCode(int32 Alpha, int32 CodeSize, int32 Code);
-		void AddCodeO(int32 Alpha, int32 CodeSize, int32 Code);
+//		void AddCode(int32_t Alpha, int32_t CodeSize, int32_t Code);
+		void AddCodeO(int32_t Alpha, int32_t CodeSize, int32_t Code);
 
 		//
 		#ifdef HUFFMAN_DEBUG
@@ -100,12 +100,12 @@ namespace NFoo
 		// This needs to be templated because we can have diffrent bitstreams
 		//
 		template<class T>
-		int32 Decode(T &rBitStream) { return DecodeO(rBitStream); }
+		int32_t Decode(T &rBitStream) { return DecodeO(rBitStream); }
 
 		template<class T>
-		int32 DecodeO(T &rBitStream)
+		int32_t DecodeO(T &rBitStream)
 		{
-			int32 Pos = 0;
+			int32_t Pos = 0;
 			HUFFMAN_DEBUG_F(int64 Start = GetTickCount();)
 			while(1)
 			{
@@ -115,7 +115,7 @@ namespace NFoo
 					return m_aTree[Pos+1];
 				}
 
-				int32 bit = rBitStream.Read(1);
+				int32_t bit = rBitStream.Read(1);
 				if(bit)
 					Pos = m_aTree[Pos+2];
 				else
@@ -126,8 +126,9 @@ namespace NFoo
 			
 		}
 
-		template<class T>
-		int32 DecodeT(T &rBitStream)
+		//+KZ: seems unused and was giving build errors
+		/*template<class T>
+		int32_t DecodeT(T &rBitStream)
 		{
 			rBitStream.Peek(16);
 			CNode *pNode = m_pFirstNode;
@@ -140,7 +141,7 @@ namespace NFoo
 					return pNode->m_Alpha;
 				}
 
-				int32 bit = rBitStream.Read(1);
+				int32_t bit = rBitStream.Read(1);
 				if(bit)
 					pNode = pNode->m_pOne;
 				else
@@ -148,13 +149,13 @@ namespace NFoo
 			}
 			DebugBreak();
 			return -1;
-		}
+		}*/
 
 		template<class T>
-		int32 DecodeL(T &rBitStream)
+		int32_t DecodeL(T &rBitStream)
 		{
 			HUFFMAN_DEBUG_F(int64 Start = GetTickCount();)
-			for(int32 i = 0; i < m_lEntries.Len(); i++)
+			for(int32_t i = 0; i < m_lEntries.Len(); i++)
 			{
 				CEntry &rEntry = m_lEntries[i];
 				if(rBitStream.Peek(rEntry.m_CodeSize) == rEntry.m_Code)

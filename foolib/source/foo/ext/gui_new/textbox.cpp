@@ -43,7 +43,7 @@ void CTextBox::SetHideType(bool hide)
 
 //
 // 
-void CTextBox::OnMouseDown(CPoint _Pos, int32 _Button)
+void CTextBox::OnMouseDown(CPoint _Pos, int32_t _Button)
 {
 	m_CursorPos = (_Pos-GetWorldPosition()).x/6+m_ViewStart;
 	CursorPosCheck();
@@ -52,7 +52,7 @@ void CTextBox::OnMouseDown(CPoint _Pos, int32 _Button)
 //
 // 
 //
-void CTextBox::OnKeyPress(int32 _Key, int8 _Char, bool Repeat)
+void CTextBox::OnKeyPress(int32_t _Key, int8 _Char, bool Repeat)
 {
 	int8 aBuf[2] = {_Char, 0};
 
@@ -119,7 +119,7 @@ void CTextBox::OnDraw(CDrawer &_rDrawer)
 	if(m_HideType)
 	{
 		CString Text;
-		for(int32 i = 0; i < m_Text.Len(); i++)
+		for(int32_t i = 0; i < m_Text.Len(); i++)
 			Text += "*";
 		_rDrawer.DrawText(0, 0, Text.GetData()+m_ViewStart);
 	}

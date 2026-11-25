@@ -47,7 +47,7 @@ namespace NFoo { namespace N3D { namespace NOpenGL {
 		COpenGLBuffer();
 		bool Lock();
 		void Unlock();
-		int32 m_Flags;
+		int32_t m_Flags;
 	};
 
 	//
@@ -72,8 +72,8 @@ namespace NFoo { namespace N3D { namespace NOpenGL {
 		void ARB_VBO_Bind();
 		CVertexBuffer m_LockInfo;
 		CVertexBuffer m_LockInfo2;
-		int32 m_iBufferID; // when using VBO
-		int32 m_What;
+		int32_t m_iBufferID; // when using VBO
+		int32_t m_What;
 	};
 
 	//
@@ -81,7 +81,7 @@ namespace NFoo { namespace N3D { namespace NOpenGL {
 	//
 	class COpenGLDevice : public CDevice
 	{
-		//int32 Internal_CreateTexture(int32 _w, int32 _h, int32 _Format, uint8 *m_pData);
+		//int32_t Internal_CreateTexture(int32_t _w, int32_t _h, int32_t _Format, uint8 *m_pData);
 
 		struct SExt
 		{
@@ -93,15 +93,15 @@ namespace NFoo { namespace N3D { namespace NOpenGL {
 		} m_Exts;
 
 		void *m_pIndexPointer;
-		int32 m_ScreenWidth;
-		int32 m_ScreenHeight;
+		int32_t m_ScreenWidth;
+		int32_t m_ScreenHeight;
 
 	public:
 		COpenGLDevice();
 		virtual ~COpenGLDevice() { }
 
 		// before init operations
-		virtual int32 EnumDisplayModes(TDynamicArray<CMode> &_rModes, CMode _Mode) pure;
+		virtual int32_t EnumDisplayModes(TDynamicArray<CMode> &_rModes, CMode _Mode) pure;
 
 		// main operation
 		virtual bool Init(CMode _Mode);
@@ -109,52 +109,52 @@ namespace NFoo { namespace N3D { namespace NOpenGL {
 		virtual bool Shutdown() pure;
 
 		// texture handling
-		virtual int32 CreateTexture(CImage::CFormat Format, int32 Flags=0, void *pData=NULL);
-		virtual int32 CreateTexture(CImage &_Image, int32 Flags=0);
-		virtual bool DestroyTexture(int32 _iTexture);
-		virtual CTextureInfo GetTextureInfo(int32 _iTexture);
+		virtual int32_t CreateTexture(CImage::CFormat Format, int32_t Flags=0, void *pData=NULL);
+		virtual int32_t CreateTexture(CImage &_Image, int32_t Flags=0);
+		virtual bool DestroyTexture(int32_t _iTexture);
+		virtual CTextureInfo GetTextureInfo(int32_t _iTexture);
 
 		// index buffers (UNIMPLEMENTED)
-		virtual int32 CreateIndexBuffer(int32 _Count, int32 _Flags);
-		virtual bool DestroyIndexBuffer(int32 _iBuffer); 
+		virtual int32_t CreateIndexBuffer(int32_t _Count, int32_t _Flags);
+		virtual bool DestroyIndexBuffer(int32_t _iBuffer); 
 		// Get indexbuffer from id, Return control of indexbuffer to device
-		virtual CIndexBuffer* LockIndexBuffer(int32 _iBuffer);
-		virtual void UnlockIndexBuffer(int32 _iBuffer);
+		virtual CIndexBuffer* LockIndexBuffer(int32_t _iBuffer);
+		virtual void UnlockIndexBuffer(int32_t _iBuffer);
 
 		// Create/destroy vertex buffer
-		virtual int32 CreateVertexBuffer(int32 _Count, int32 _What, int32 _Flags);
-		virtual bool DestroyVertexBuffer(int32 _iBuffer);
+		virtual int32_t CreateVertexBuffer(int32_t _Count, int32_t _What, int32_t _Flags);
+		virtual bool DestroyVertexBuffer(int32_t _iBuffer);
 		// Get vertexbuffer from id, Return control of vertexbuffer to device
-		virtual CVertexBuffer* LockVertexBuffer(int32 _iBuffer, int32 _What = -1);
-		virtual void UnlockVertexBuffer(int32 _iBuffer, int32 _What = -1);
+		virtual CVertexBuffer* LockVertexBuffer(int32_t _iBuffer, int32_t _What = -1);
+		virtual void UnlockVertexBuffer(int32_t _iBuffer, int32_t _What = -1);
 
 		// shaders
-		virtual int32 CreateVertexShader(const int8 *_pString);
-		virtual int32 CreatePixelShader(const int8 *_pString);
-		virtual bool DestroyVertexShader(int32 _iShader);
-		virtual bool DestroyPixelShader(int32 _iShader);
+		virtual int32_t CreateVertexShader(const int8 *_pString);
+		virtual int32_t CreatePixelShader(const int8 *_pString);
+		virtual bool DestroyVertexShader(int32_t _iShader);
+		virtual bool DestroyPixelShader(int32_t _iShader);
 
 		// clearing
 		virtual void Clear(intr _What);
 
 		// draw operation
-		virtual void Draw(int32 _Mode, int32 _Start, int32 _Count);
-		virtual void DrawIndexed(int32 _Mode, int32 _Start, int32 _Count); // (UNIMPLEMENTED)
+		virtual void Draw(int32_t _Mode, int32_t _Start, int32_t _Count);
+		virtual void DrawIndexed(int32_t _Mode, int32_t _Start, int32_t _Count); // (UNIMPLEMENTED)
 
 		// grab
-		virtual bool Grab(int32 _iTexture, int32 _What);
-		virtual bool Grab(NFoo::CImage &_rImage, int32 _What);
+		virtual bool Grab(int32_t _iTexture, int32_t _What);
+		virtual bool Grab(NFoo::CImage &_rImage, int32_t _What);
 
 		// viewport
-		virtual void SetViewport(int32 _x, int32 _y, int32 _w, int32 _h);
-		virtual void SetScissors(int32 _x, int32 _y, int32 _w, int32 _h);
+		virtual void SetViewport(int32_t _x, int32_t _y, int32_t _w, int32_t _h);
+		virtual void SetScissors(int32_t _x, int32_t _y, int32_t _w, int32_t _h);
 
 		//
 		// STATES
 		//
 
 		// flags
-		virtual void Flag_Set(int32 _Flag, bool _On);
+		virtual void Flag_Set(int32_t _Flag, bool _On);
 		
 		// modes
 		virtual void Mode_BlendFunc(intr _Src, intr _Dst);
@@ -166,22 +166,22 @@ namespace NFoo { namespace N3D { namespace NOpenGL {
 		virtual void Mode_WriteMask(bool r, bool g, bool b, bool a);
 
 		// pointers
-		virtual void Stream_Vertex(int32 _iVB);
-		virtual void Stream_Normal(int32 _iVB);
-		virtual void Stream_Color(int32 _iVB);
-		virtual void Stream_Texture(int32 _iUnit, int32 _iVB, int32 _Index);
-		virtual void Stream_Index(int32 _iIB);
+		virtual void Stream_Vertex(int32_t _iVB);
+		virtual void Stream_Normal(int32_t _iVB);
+		virtual void Stream_Color(int32_t _iVB);
+		virtual void Stream_Texture(int32_t _iUnit, int32_t _iVB, int32_t _Index);
+		virtual void Stream_Index(int32_t _iIB);
 
 		// shaders
-		virtual void Shader_Vertex(int32 _iShader);
-		virtual void Shader_Pixel(int32 _iShader);
+		virtual void Shader_Vertex(int32_t _iShader);
+		virtual void Shader_Pixel(int32_t _iShader);
 		
 		virtual void Shader_GlobalParam() {}; // ?
-		virtual void Shader_VertexParamFloat(int32 _iStartReg, const TVector4<fp32>* _pFloats, int32 _Num); // ?
+		virtual void Shader_VertexParamFloat(int32_t _iStartReg, const TVector4<fp32>* _pFloats, int32_t _Num); // ?
 		virtual void Shader_PixelParam() {}; // ?
 
 		// textures
-		virtual void Texture_Set(intr _iUnit, int32 _iTexture); // -1 disable
+		virtual void Texture_Set(intr _iUnit, int32_t _iTexture); // -1 disable
 		
 		// matrices
 		virtual void Matrix_Model(TMatrix4<fp32> _Matrix);

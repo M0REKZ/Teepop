@@ -2,6 +2,8 @@
 #define __FOO_LOWLEVEL_STRING_H__
 
 #include "base.h"
+#include <cstddef>
+#include <stdarg.h>
 
 //# Context: Base/Strings
 //# Req_Namespace: NFoo
@@ -60,9 +62,9 @@ namespace NFoo
 	intr StringLength(const int8 *_pSrc);
 
 	//# Function: StringCFormatArgList
-	//# Remarks: the args must be right after the format string
+	//# Remarks: MODIFIED
 	//# Declaration:
-	int8 *StringCFormatArgList(int8 *_pDst, const int8 **_pFormat);
+	int8 *StringCFormatArgList(int8 *_pDst, size_t _DstSize, const int8 *_pFormat, va_list _Args);
 
 	//# Function: StringCFormatArg
 	//# Description: Performs printf formating to a string.
@@ -73,7 +75,7 @@ namespace NFoo
 	//# Returns: Returns the Dest pointer passed to the function.
 	//# Remarks: It's recommended that you reed the libc documentation about printf string formating
 	//# Declaration:
-	int8 *StringCFormat(int8 *_pDest, const int8 *_pFormat, ...);
+	int8 *StringCFormat(int8 *_pDst, size_t _DstSize, const int8 *_pFormat, ...);
 
 	//# Function: StringCompare
 	//# Description: Compares two zero-terminated strings.
@@ -85,7 +87,7 @@ namespace NFoo
 	//# Description: Tries to convert a zero-terminated string into an integer.
 	//# Returns: Returns the integer. Zero is returned if there there was a problem.
 	//# Declaration:
-	int32 StringGetInt(const int8 *_pDest);
+	int32_t StringGetInt(const int8 *_pDest);
 
 	//# Function: StringGetFloat
 	//# Description: Tries to convert a zero-terminated string into a float.
@@ -100,7 +102,7 @@ namespace NFoo
 	//# Parameters:
 	//#		Name, A pointer to a zero-terminated string to be used for the calculation.
 	//# Declaration:
-	int32 StringGetHash(const int8 *_pName);
+	int32_t StringGetHash(const int8 *_pName);
 }
 
 #endif // __FOO_LOWLEVEL_STRING_H__

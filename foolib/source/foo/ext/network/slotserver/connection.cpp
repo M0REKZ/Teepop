@@ -109,18 +109,18 @@ void CConnection::Process(CChunk *pChunk)
 	{
 		if(pChunk->m_Type == EChunk_Ack)
 		{
-			//int32 Num = _pChunk->m_VitalNumber; //_pChunk->m_Storage.ReadBE_int32();
-			int32 Num = pChunk->m_Reader.ReadBE<uint16>();
+			//int32_t Num = _pChunk->m_VitalNumber; //_pChunk->m_Storage.ReadBE_int32();
+			int32_t Num = pChunk->m_Reader.ReadBE<uint16>();
 			//NLog::WriteF("Connection: Got ack for packet, vn=%d\n", Num);
 			
 			// find vital chunk and remove it
-			for(int32 i = 0; i < m_lVitalChunks.Len(); i++)
+			for(int32_t i = 0; i < m_lVitalChunks.Len(); i++)
 			{
 				if(m_lVitalChunks[i].m_pChunk->m_VitalNumber == Num)
 				{
 					// remove the chunk if it's pending for sending
 					/*
-					for(int32 j = 0; j < m_lPendingChunks.Len(); j++)
+					for(int32_t j = 0; j < m_lPendingChunks.Len(); j++)
 					{
 						if(m_lPendingChunks[j] == m_lVitalChunks[i].m_pChunk)
 						{
@@ -166,7 +166,7 @@ void CConnection::Process(CChunk *pChunk)
 //#		rRemoteAddress, Remote address of connection.
 //#		State, State of the connection.
 //# Declaration:
-void CConnection::Init(CChunkSocket *pSocket, NNetwork::CAddr &rRemoteAddress, int32 State)
+void CConnection::Init(CChunkSocket *pSocket, NNetwork::CAddr &rRemoteAddress, int32_t State)
 {
 	// reset counters and store connection information
 	Reset();
@@ -321,7 +321,7 @@ void CConnection::Update()
 	}
 
 	// check for vital chunk resends
-	for(int32 i = 0; i < m_lVitalChunks.Len(); i++)
+	for(int32_t i = 0; i < m_lVitalChunks.Len(); i++)
 	{
 		if(m_lVitalChunks[i].m_LastSendTime+GetTickFrequency()/3 < GetTickCount())
 		{

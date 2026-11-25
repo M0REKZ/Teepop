@@ -51,9 +51,9 @@ class CPNGIDATReader : public CInputStream
 {
 	CInputStream &m_rSource;
 	bool m_FirstTime;
-	int32 m_Left;
+	int32_t m_Left;
 public:
-	CPNGIDATReader(CInputStream &rSource, int32 Left)
+	CPNGIDATReader(CInputStream &rSource, int32_t Left)
 	: m_rSource(rSource)
 	{
 		m_FirstTime = true;
@@ -70,14 +70,14 @@ public:
 		m_Left = 0;
 	}
 	
-	int32 virtual Read(void *pBuffer, int32 Size)
+	int32_t virtual Read(void *pBuffer, int32_t Size)
 	{
-		int32 r = 0;
+		int32_t r = 0;
 		uint8 *pDst = (uint8 *)pBuffer;
 		while(Size)
 		{
 			bool NeedMore = Size > m_Left;
-			int32 Readlen = NeedMore?m_Left:Size;
+			int32_t Readlen = NeedMore?m_Left:Size;
 			if(Readlen)
 			{
 				r += m_rSource.Read(pDst, Readlen);
@@ -92,9 +92,9 @@ public:
 				if(!m_FirstTime)
 					m_FirstTime = false;
 				else
-					m_rSource.ReadBE<uint32>(); // CRC
-				m_Left = m_rSource.ReadBE<uint32>();
-				if(m_rSource.ReadBE<uint32>() != 'IDAT')
+					m_rSource.ReadBE<uint32_t>(); // CRC
+				m_Left = m_rSource.ReadBE<uint32_t>();
+				if(m_rSource.ReadBE<uint32_t>() != 'IDAT')
 					throw "Invalid PNG file. IDAT chunks must";
 			}
 		}
@@ -109,12 +109,12 @@ T AbsInt(T v)
 	return (v ^ (v >> (sizeof(T) * 8 - 1))) - (v >> (sizeof(T) * 8 - 1));
 }
 
-uint8 PaethPredict(int32 a, int32 b, int32 c)
+uint8 PaethPredict(int32_t a, int32_t b, int32_t c)
 {
-	int32 p = a+b-c;
-	int32 pa = AbsInt(p - a);
-	int32 pb = AbsInt(p - b);
-	int32 pc = AbsInt(p - c);
+	int32_t p = a+b-c;
+	int32_t pa = AbsInt(p - a);
+	int32_t pb = AbsInt(p - b);
+	int32_t pc = AbsInt(p - c);
 	if(pa <= pb && pa <= pc)
 		return a;
 	else if(pb <= pc)
@@ -127,27 +127,27 @@ bool CPNGFormat::Load(CInputStream &_rStream, CImage &rImage)
 	CBlockReader rStream(_rStream);
 	const uint8 aSignature[] = {137,'P','N','G',13,10,26,10};
 
-	for(int32 i = 0; i < 8; i++)
+	for(int32_t i = 0; i < 8; i++)
 		if(rStream.ReadNE<uint8>() != aSignature[i])
 			return false;
 
-	uint32 Width = 0;
-	uint32 Height = 0;
-	int32 bpp = -1;
-	int32 Pitch = -1;
-	int32 BitDepth = -1;
-	int32 ColorType = -1;
-	int32 CompressionMethod = -1;
-	int32 FilterMethod = -1;
-	int32 InterlaceMethod = -1;
+	uint32_t Width = 0;
+	uint32_t Height = 0;
+	int32_t bpp = -1;
+	int32_t Pitch = -1;
+	int32_t BitDepth = -1;
+	int32_t ColorType = -1;
+	int32_t CompressionMethod = -1;
+	int32_t FilterMethod = -1;
+	int32_t InterlaceMethod = -1;
 			
 	while(1)
 	{
 		if(rStream.EndOfStream())
 			break;
 		
-		uint32 ChunkSize = rStream.ReadBE<uint32>();
-		uint32 ChunkType = rStream.ReadBE<uint32>();
+		uint32_t ChunkSize = rStream.ReadBE<uint32_t>();
+		uint32_t ChunkType = rStream.ReadBE<uint32_t>();
 		bool bAncillary = (ChunkType>>24) >= 'a';
 		bool bPrivate = ((ChunkType>>16)&255) >= 'a';
 		bool bReserved = ((ChunkType>>8)&255) >= 'a';
@@ -158,8 +158,8 @@ bool CPNGFormat::Load(CInputStream &_rStream, CImage &rImage)
 		
 		if(ChunkType == 'IHDR')
 		{
-			Width = rStream.ReadBE<uint32>();
-			Height = rStream.ReadBE<uint32>();
+			Width = rStream.ReadBE<uint32_t>();
+			Height = rStream.ReadBE<uint32_t>();
 			BitDepth = rStream.ReadBE<uint8>();
 			ColorType = rStream.ReadBE<uint8>();
 			CompressionMethod = rStream.ReadBE<uint8>();
@@ -199,52 +199,35 @@ bool CPNGFormat::Load(CInputStream &_rStream, CImage &rImage)
 			if(CompressionMethod != 0) throw "Unable to load. Unknown compression method";
 			if(FilterMethod != 0) throw "Unable to load. Unknown filter method";
 
-			int32 Pitch = Width*bpp;
+			int32_t Pitch = Width*bpp;
 
-			for(int32 i = 0; i < Height; i++)
+			for(int32_t i = 0; i < Height; i++)
 			{
-				// we should add filter methods here
-				int32 FilterType = ZReader.ReadNE<uint8>();
+				int32_t FilterType = ZReader.ReadNE<uint8>();
 				ZReader.Read(pOutputMem, Width*bpp); // read row
-				uint8 *pCurrent = pOutputMem;
-
-				if(FilterType == 0) // no filter
+				uint8 *pPrevious = i > 0 ? pOutputMem-Pitch : NULL;
+				if(FilterType != 0)
 				{
-				}
-				else if(FilterType == 1) // sub
-				{
-					uint8 *pForward = pOutputMem+bpp;
-					for(int32 i = bpp; i < Pitch; i++)
-						*pForward = (*pForward+++*pCurrent++);
-				}
-				else if(FilterType == 2) // up
-				{
-					uint8 *pUp = pOutputMem-Pitch;
-					for(int32 i = 0; i < Pitch; i++)
-						*pCurrent++ += *pUp++;
-				}
-				else if(FilterType == 3) // avg
-				{
-					uint8 *pUp = pOutputMem-Pitch;
-					uint8 *pLeft = pOutputMem; // no need for -bpp
+					if(FilterType < 1 || FilterType > 4)
+						throw "Unable to load. Unknown PNG filter type";
 
-					for(int32 i = 0; i < bpp; i++)
-						*pCurrent++ = *pCurrent + ((*pUp++)>>1);
+					for(int32_t x = 0; x < Pitch; x++)
+					{
+						int32_t Left = x >= bpp ? pOutputMem[x-bpp] : 0;
+						int32_t Up = pPrevious ? pPrevious[x] : 0;
+						int32_t UpLeft = pPrevious && x >= bpp ? pPrevious[x-bpp] : 0;
+						int32_t Predictor = 0;
 
-					for(int32 i = bpp; i < Pitch; i++)
-						*pCurrent++ = *pCurrent + ((*pLeft+++*pUp++)>>1);
-				}
-				else if(FilterType == 4) // paeth
-				{
-					uint8 *pUp = pOutputMem-Pitch;
-					uint8 *pLeft = pOutputMem; // no need for -bpp
-					uint8 *pUpLeft = pOutputMem-Pitch;
+						switch(FilterType)
+						{
+						case 1: Predictor = Left; break;
+						case 2: Predictor = Up; break;
+						case 3: Predictor = (Left+Up)/2; break;
+						case 4: Predictor = PaethPredict(Left, Up, UpLeft); break;
+						}
 
-					for(int32 i = 0; i < bpp; i++)
-						*pCurrent = *pCurrent++ + PaethPredict(0, *pUp++, 0);
-					for(int32 i = bpp; i < Pitch; i++)
-						*pCurrent = *pCurrent++ + PaethPredict(*pLeft++, *pUp++, *pUpLeft++);
-
+						pOutputMem[x] = (uint8)(pOutputMem[x]+Predictor);
+					}
 				}
 
 				pOutputMem += Width*bpp;
@@ -259,7 +242,7 @@ bool CPNGFormat::Load(CInputStream &_rStream, CImage &rImage)
 		else
 			rStream.Read(NULL, ChunkSize); // skip chunk
 		
-		uint32 CRC = rStream.ReadBE<uint32>();
+		uint32_t CRC = rStream.ReadBE<uint32_t>();
 	}
 
 	return false;

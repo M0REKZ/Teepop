@@ -39,48 +39,48 @@ void CNetworkRoomClient::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 {
 	if(iMsg == NETMSG("clRoomUpdate"))
 	{
-		int32 Count = 0;
+		int32_t Count = 0;
 
 		// deletions
 		Count = rStream.ReadBE<uint8>();
-		for(int32 i = 0; i < Count; i++)
-			m_lRooms.Remove(rStream.ReadBE<int32>());
+		for(int32_t i = 0; i < Count; i++)
+			m_lRooms.Remove(rStream.ReadBE<int32_t>());
 
 		// creations
 		Count = rStream.ReadBE<uint8>();
-		for(int32 i = 0; i < Count; i++)
+		for(int32_t i = 0; i < Count; i++)
 		{
-			int32 RoomID = rStream.ReadBE<int32>();
+			int32_t RoomID = rStream.ReadBE<int32_t>();
 			CRoom &rRoom = m_lRooms[RoomID];
 			rRoom.m_ID = RoomID;
 			rRoom.m_Name = rStream.Read_p8();
 			rRoom.m_MaxPlayers = rStream.ReadBE<uint8>();
 			rRoom.m_State = rStream.ReadBE<uint8>();
-			int32 NumPlayers = rStream.ReadBE<uint8>();
+			int32_t NumPlayers = rStream.ReadBE<uint8>();
 			rRoom.m_lPlayers.Clear();
-			for(int32 i = 0; i < NumPlayers; i++)
-				rRoom.m_lPlayers.Add(rStream.ReadBE<int32>());
+			for(int32_t i = 0; i < NumPlayers; i++)
+				rRoom.m_lPlayers.Add(rStream.ReadBE<int32_t>());
 		}
 
 		// updates
 		Count = rStream.ReadBE<uint8>();
-		for(int32 i = 0; i < Count; i++)
+		for(int32_t i = 0; i < Count; i++)
 		{
-			int32 RoomID = rStream.ReadBE<int32>();
-			int32 State = rStream.ReadBE<uint8>();
-			int32 NumPlayers = rStream.ReadBE<uint8>();
+			int32_t RoomID = rStream.ReadBE<int32_t>();
+			int32_t State = rStream.ReadBE<uint8>();
+			int32_t NumPlayers = rStream.ReadBE<uint8>();
 			if(m_lRooms.Exist(RoomID))
 			{
 				CRoom &rRoom = m_lRooms[RoomID];
 				rRoom.m_State = State;
 				rRoom.m_lPlayers.Clear();
-				for(int32 i = 0; i < NumPlayers; i++)
-					rRoom.m_lPlayers.Add(rStream.ReadBE<int32>());
+				for(int32_t i = 0; i < NumPlayers; i++)
+					rRoom.m_lPlayers.Add(rStream.ReadBE<int32_t>());
 			}
 			else
 			{
-				for(int32 i = 0; i < NumPlayers; i++)
-					rStream.ReadBE<int32>();
+				for(int32_t i = 0; i < NumPlayers; i++)
+					rStream.ReadBE<int32_t>();
 			}
 		}
 
@@ -95,7 +95,7 @@ void CNetworkRoomClient::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 	}
 	else if(iMsg == NETMSG("clRoomChanged"))
 	{
-		m_iCurrentRoom = rStream.ReadBE<int32>();
+		m_iCurrentRoom = rStream.ReadBE<int32_t>();
 		CMessage Msg(EEvent_RoomChange);
 		Msg.SetInt("roomid", m_iCurrentRoom);
 		Signal(Msg);
@@ -109,7 +109,7 @@ void CNetworkRoomClient::OnCommand(CString &rCmd, CString &rArgs)
 	if(rCmd == "create")
 	{
 		CString name = rArgs.GetStrSep(" ");
-		int32 max = rArgs.GetStrSep(" ").GetInt();
+		int32_t max = rArgs.GetStrSep(" ").GetInt();
 		CString password = rArgs.GetStrSep(" ");
 		CreateRoom(name, password, max);
 	}
@@ -122,13 +122,13 @@ void CNetworkRoomClient::OnCommand(CString &rCmd, CString &rArgs)
 
 //
 //
-void CNetworkRoomClient::JoinRoom(int32 RoomID)
+void CNetworkRoomClient::JoinRoom(int32_t RoomID)
 {
 	if(!m_pConnection)
 		return;
 
 	CNetMessage Msg(NETMSG("svJoinRoom"), true);
-	Msg.WriteBE<int32>(RoomID);
+	Msg.WriteBE<int32_t>(RoomID);
 	m_pConnection->SendMessage(Msg);
 }
 
@@ -139,7 +139,7 @@ void CNetworkRoomClient::JoinRoom(const int8 *pName)
 	if(!m_pConnection)
 		return;
 
-	for(int32 i = 0; i < m_lRooms.Len(); i++)
+	for(int32_t i = 0; i < m_lRooms.Len(); i++)
 		if(m_lRooms.GetValue(i).m_Name == pName)
 		{
 			JoinRoom(m_lRooms.GetValue(i).m_ID);
@@ -157,7 +157,7 @@ void CNetworkRoomClient::LeaveRoom()
 
 //
 //
-void CNetworkRoomClient::CreateRoom(const int8 *pName, const int8 *pPassword, int32 Max)
+void CNetworkRoomClient::CreateRoom(const int8 *pName, const int8 *pPassword, int32_t Max)
 {
 	CNetMessage Msg(NETMSG("svCreateRoom"), true);
 	Msg.Write_p8(pName); // name

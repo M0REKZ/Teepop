@@ -13,7 +13,7 @@ namespace NFoo { namespace NSound {
 	{
 	public:
 		void *m_pData;
-		int32 m_DataSize;
+		int32_t m_DataSize;
 
 		CSample()
 		{
@@ -41,7 +41,7 @@ namespace NFoo { namespace NSound {
 	{
 	public:
 		CSample *m_pSample;
-		int32 m_Position;
+		int32_t m_Position;
 
 		CSampleInstance(CSource *pSource, CSoundDevice *pDevice)
 		: CInstance(pSource, pDevice)

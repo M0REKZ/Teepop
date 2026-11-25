@@ -91,8 +91,8 @@ using namespace NFoo::NNetwork;
 		CAddr Addr;
 //		Addr.m_Port =  Swap16BEtoCPU(saddr.sin_port);
 		Addr.m_Port = ByteSwapBEtoCPU(saddr.sin_port);
-//		uint32 ip = Swap32BEtoCPU(saddr.sin_addr.s_addr);
-		uint32 ip = ByteSwapBEtoCPU(saddr.sin_addr.s_addr);
+//		uint32_t ip = Swap32BEtoCPU(saddr.sin_addr.s_addr);
+		uint32_t ip = ByteSwapBEtoCPU(saddr.sin_addr.s_addr);
 		Addr.m_aAddress[0] = (uint8)((ip>>24)&0xFF);
 		Addr.m_aAddress[1] = (uint8)((ip>>16)&0xFF);
 		Addr.m_aAddress[2] = (uint8)((ip>>8)&0xFF);
@@ -110,7 +110,7 @@ CSocket::CSocket()
 	m_hSocket = -1;
 }
 
-CSocket::CSocket(int32 _hSocket)
+CSocket::CSocket(int32_t _hSocket)
 {
 	m_hSocket = _hSocket;
 }
@@ -126,7 +126,7 @@ CSocket::~CSocket()
 //
 //
 //
-bool CSocket::Create(int32 _Type)
+bool CSocket::Create(int32_t _Type)
 {
 	intr SockType = -1;
 
@@ -164,7 +164,7 @@ bool CSocket::Valid()
 //
 void CSocket::SetBlocking(bool _Block)
 {
-	uint32 mode = _Block == false;
+	uint32_t mode = _Block == false;
 	#if defined(FOO_PLATFORM_WIN32)
 		ioctlsocket(m_hSocket, FIONBIO, (unsigned long *)&mode);
 	#else
@@ -225,10 +225,10 @@ CSocket *CSocket::Accept()
 	sockaddr Address;
 #if defined(FOO_PLATFORM_POSIX)
 	socklen_t Len = sizeof(sockaddr);
-	int32 hSocket = accept(m_hSocket, (sockaddr *)&Address, &Len);
+	int32_t hSocket = accept(m_hSocket, (sockaddr *)&Address, &Len);
 #else
 	intr Len = sizeof(sockaddr);
-	int32 hSocket = accept(m_hSocket, (sockaddr *)&Address, &Len);
+	int32_t hSocket = accept(m_hSocket, (sockaddr *)&Address, &Len);
 #endif
 
 	if(hSocket < 0)
@@ -257,7 +257,7 @@ bool CSocket::Bind(CAddr _Address)
 //
 //
 //
-bool CSocket::SendTo(const void *_pData, int32 _DataSize, CAddr &_Target)
+bool CSocket::SendTo(const void *_pData, int32_t _DataSize, CAddr &_Target)
 {
 	if(!_pData)
 		return true;
@@ -275,7 +275,7 @@ bool CSocket::SendTo(const void *_pData, int32 _DataSize, CAddr &_Target)
 //
 //
 //
-int32 CSocket::Recv(void *_pData, int32 _DataSize)
+int32_t CSocket::Recv(void *_pData, int32_t _DataSize)
 {
 	return recv(m_hSocket, (int8 *)_pData, _DataSize, 0);
 }
@@ -283,18 +283,18 @@ int32 CSocket::Recv(void *_pData, int32 _DataSize)
 //
 //
 //
-bool CSocket::Send(const void *_pData, int32 _DataSize)
+bool CSocket::Send(const void *_pData, int32_t _DataSize)
 {
-	int32 Ret = send(m_hSocket, (int8 *)_pData, _DataSize, 0);
+	int32_t Ret = send(m_hSocket, (int8 *)_pData, _DataSize, 0);
 	return Ret!=0;
 }
 
 //
 //
 //
-int32 CSocket::RecvFrom(void *_pData, int32 _DataSize, CAddr &_Source)
+int32_t CSocket::RecvFrom(void *_pData, int32_t _DataSize, CAddr &_Source)
 {
-	int32 Bytes;
+	int32_t Bytes;
 	sockaddr Address;
 	//if((Bytes = recvfrom(m_SocketHandle, (int8 *)_pData, _DataSize, 0, (sockaddr *)&Address, &AddrLen)) != 0)
 	//	return Bytes;

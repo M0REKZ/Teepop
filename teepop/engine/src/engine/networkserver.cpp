@@ -10,7 +10,7 @@ MACRO_REGISTER_CLASS(CNetworkServer, "EngineModule")
 //# Parameters:
 //#		Port, Network port to listen to
 //# Declaration:
-void CNetworkServer::Start(int32 Port)
+void CNetworkServer::Start(int32_t Port)
 {
 	m_SlotServer.Start(Port, m_VersionString); 
 }
@@ -22,11 +22,11 @@ void CNetworkServer::Start(int32 Port)
 //#		rMsg, Message to send
 //# Declaration:
 /*
-int32 CNetworkServer::SendMessage(int32 iClient, CNetMessage &rMsg)
+int32_t CNetworkServer::SendMessage(int32_t iClient, CNetMessage &rMsg)
 {
 	if(iClient == -1) // Send to all clients?
 	{
-		for(int32 i = 0; i < m_SlotServer.GetNumClients(); i++)
+		for(int32_t i = 0; i < m_SlotServer.GetNumClients(); i++)
 			m_SlotServer.GetClient(i)->QueueChunk(rMsg.CreateChunk());
 		return m_SlotServer.GetNumClients();
 	}
@@ -50,9 +50,9 @@ void CNetworkServer::Update()
 	m_SlotServer.Update();
 
 	// handle connections
-	for(int32 i = 0; i < m_SlotServer.GetNumClients(); i++)
+	for(int32_t i = 0; i < m_SlotServer.GetNumClients(); i++)
 	{
-		int32 id = m_SlotServer.GetClientID(i);
+		int32_t id = m_SlotServer.GetClientID(i);
 		if(!m_mConnections.Exist(id))
 		{
 			CNetworkConnection *pConnection = m_pfnClientCreator(m_pCreatorData);
@@ -64,15 +64,15 @@ void CNetworkServer::Update()
 	}
 
 	// handle disconnections
-	for(int32 i = 0; i < m_mConnections.Len(); i++)
+	for(int32_t i = 0; i < m_mConnections.Len(); i++)
 	{
-		int32 id = m_mConnections.GetKey(i);
+		int32_t id = m_mConnections.GetKey(i);
 		if(!m_SlotServer.FindClient(id))
 			m_mConnections[id]->m_pConnection = NULL;
 	}
-	for(int32 i = 0; i < m_mConnections.Len(); i++)
+	for(int32_t i = 0; i < m_mConnections.Len(); i++)
 	{
-		int32 id = m_mConnections.GetKey(i);
+		int32_t id = m_mConnections.GetKey(i);
 		if(!m_SlotServer.FindClient(id))
 		{
 			m_mConnections[id]->OnDisconnect();
@@ -83,10 +83,10 @@ void CNetworkServer::Update()
 	}
 	
 	//
-	for(int32 i = 0; i < m_SlotServer.GetNumClients(); i++)
+	for(int32_t i = 0; i < m_SlotServer.GetNumClients(); i++)
 	{
 		CConnection *pConnection = m_SlotServer.GetClient(i);
-		int32 iClient = m_SlotServer.GetClientID(i);
+		int32_t iClient = m_SlotServer.GetClientID(i);
 
 		CChunk *pChunk = NULL;
 		while(pChunk = pConnection->GetChunk())
@@ -94,7 +94,7 @@ void CNetworkServer::Update()
 			if(pChunk->m_Type == EChunk_Message)
 			{
 				#ifdef HASHED_MESSAGE_ID
-					NetMsgID iMsg = pChunk->m_Reader.ReadBE<int32>();
+					NetMsgID iMsg = pChunk->m_Reader.ReadBE<int32_t>();
 				#else
 					NetMsgID iMsg = pChunk->m_Reader.Read_p16();
 				#endif
@@ -115,10 +115,10 @@ void CNetworkServer::Update()
 bool CNetworkServer::HotswapWrite(COutputStream &rStream)
 {
 	m_SlotServer.HotswapWrite(rStream);
-	rStream.WriteNE<int32>(m_mConnections.Len());
-	for(int32 i = 0; i < m_mConnections.Len(); i++)
+	rStream.WriteNE<int32_t>(m_mConnections.Len());
+	for(int32_t i = 0; i < m_mConnections.Len(); i++)
 	{
-		rStream.WriteNE<int32>(m_mConnections.GetKey(i));
+		rStream.WriteNE<int32_t>(m_mConnections.GetKey(i));
 		//m_mConnections.GetValue(i)->
 	}
 

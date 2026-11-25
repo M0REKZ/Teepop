@@ -16,7 +16,7 @@ CFileWriter::CFileWriter(void *pHandle)
 //
 //
 //
-CFileWriter::CFileWriter(const int8 *_pFilename, int32 _Mode)
+CFileWriter::CFileWriter(const int8 *_pFilename, int32_t _Mode)
 {
 	m_pFileHandle = NULL;
 	if(_pFilename)
@@ -26,7 +26,7 @@ CFileWriter::CFileWriter(const int8 *_pFilename, int32 _Mode)
 //
 //
 //
-bool CFileWriter::Open(const int8 *_pFilename, int32 _Mode)
+bool CFileWriter::Open(const int8 *_pFilename, int32_t _Mode)
 {
 	switch(_Mode)
 	{
@@ -82,7 +82,7 @@ bool CFileWriter::IsReady()
 //
 //
 //
-int32 CFileWriter::GetSize()
+int32_t CFileWriter::GetSize()
 {
 	return ftell((FILE*)m_pFileHandle);
 }
@@ -99,7 +99,7 @@ bool CFileWriter::Flush()
 //
 //
 //
-int32 CFileWriter::Write(const void *_pBuffer, int32 _Size)
+int32_t CFileWriter::Write(const void *_pBuffer, int32_t _Size)
 {
 	return fwrite(_pBuffer, 1, _Size, (FILE*)m_pFileHandle);
 }
@@ -177,12 +177,12 @@ bool CFileReader::IsReady()
 	return false;
 }
 
-int32 CFileReader::GetSize()
+int32_t CFileReader::GetSize()
 {
 	return m_FileSize;
 }
 
-int32 CFileReader::GetPosition()
+int32_t CFileReader::GetPosition()
 {
 	return ftell((FILE*)m_pFileHandle);
 }
@@ -194,7 +194,7 @@ bool CFileReader::EndOfStream()
 	return false;
 }
 
-void CFileReader::Seek(int32 _Offset,intr _Origin)
+void CFileReader::Seek(int32_t _Offset,intr _Origin)
 {
 	Assert(m_pFileHandle);
 	switch (_Origin)
@@ -217,7 +217,7 @@ void CFileReader::Seek(int32 _Offset,intr _Origin)
 }
 
 // Read
-int32 CFileReader::Read(void *_pBuffer, int32 _Size)
+int32_t CFileReader::Read(void *_pBuffer, int32_t _Size)
 {
 	if(_Size <= 0)
 		return 0;

@@ -17,7 +17,7 @@ CCheckBox::CCheckBox(CView *pParent, const int8 *pName, CGUI *pGUI)
 //
 //
 //
-void CCheckBox::OnMouseDown(CPoint _Pos, int32 _iButton)
+void CCheckBox::OnMouseDown(CPoint _Pos, int32_t _iButton)
 {
 	m_Checked = !m_Checked;
 }

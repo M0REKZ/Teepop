@@ -7,12 +7,12 @@ namespace NGUI {
 	class CListItem
 	{
 	protected:
-		int32 m_Width;
-		int32 m_Height;
+		int32_t m_Width;
+		int32_t m_Height;
 	public:
 		virtual ~CListItem() {}
-		void SetWidth(int32 _w);
-		int32 GetHeight();
+		void SetWidth(int32_t _w);
+		int32_t GetHeight();
 		
 		virtual void OnDraw(CDrawer &_rDrawer, bool Selected) {}
 		virtual void OnWidthChange() {}
@@ -37,16 +37,16 @@ namespace NGUI {
 	{
 		CScrollBar m_ScrollBar;
 		TDynamicArray<class CListItem*> m_lItems;
-		int32 m_ItemsHeight;
-		int32 m_SelectedItem;
+		int32_t m_ItemsHeight;
+		int32_t m_SelectedItem;
 	protected:
-		int32 GetStartY();
-		int32 GetItemsHeight();
+		int32_t GetStartY();
+		int32_t GetItemsHeight();
 		//CScrollBar *GetScrollBar();
 		virtual void OnSize();
 		virtual void OnDraw(CDrawer &_rDrawer);
-		virtual void OnMouseDown(CPoint _Pos, int32 _Button);
-		virtual void OnDoubleClick(CPoint _Pos, int32 _Button);
+		virtual void OnMouseDown(CPoint _Pos, int32_t _Button);
+		virtual void OnDoubleClick(CPoint _Pos, int32_t _Button);
 		virtual void OnLostFocus();
 	public:
 		CListBox(CView *pParent=NULL, const int8 *pName=NULL, CGUI *pGUI=NULL);

@@ -23,7 +23,7 @@ namespace NEngine
 				m_UserLevel = -1;
 			}
 
-			CUser(CString name, CString password, int32 level, bool Guest)
+			CUser(CString name, CString password, int32_t level, bool Guest)
 			{
 				m_Name = name;
 				m_Password = password;
@@ -34,8 +34,8 @@ namespace NEngine
 
 			CString m_Name;
 			CString m_Password;
-			int32 m_UserLevel;
-			int32 m_LoggedOns;
+			int32_t m_UserLevel;
+			int32_t m_LoggedOns;
 			bool m_GuestAccount;
 		};
 
@@ -47,7 +47,7 @@ namespace NEngine
 		//TMap<CNetworkConnection*, CUser*> m_lAuths;
 
 		CUser *GetUser(const int8 *pName);
-		int32 GetAuthLevel(CNetworkConnection *pConnection);
+		int32_t GetAuthLevel(CNetworkConnection *pConnection);
 
 	public:
 		enum
@@ -57,7 +57,7 @@ namespace NEngine
 		};
 
 
-		bool NewUser(CString Name, CString Password, int32 Level, bool Guest);
+		bool NewUser(CString Name, CString Password, int32_t Level, bool Guest);
 		bool IsAuthed(CNetworkConnection *pConn) { return pConn->GetData(this) != NULL; }
 
 		bool HotswapWrite(COutputStream &rStream);

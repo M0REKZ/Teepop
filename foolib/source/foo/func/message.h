@@ -16,26 +16,26 @@ namespace NFoo {
 	//
 	class CMessage
 	{
-		TMap<int32, int32> m_lIntValues;
-		TMap<int32, fp32> m_lFloatValues;
-		TMap<int32, CString> m_lStringValues;
+		TMap<int32_t, int32_t> m_lIntValues;
+		TMap<int32_t, fp32> m_lFloatValues;
+		TMap<int32_t, CString> m_lStringValues;
 		class CMessageQueue *m_pTarget;
 
 	public:
-		int32 m_What; // translated
-		int32 m_OrgMsg; // not translated
+		int32_t m_What; // translated
+		int32_t m_OrgMsg; // not translated
 
-		CMessage(int32 what=0, CMessageQueue *pTarget = NULL);
+		CMessage(int32_t what=0, CMessageQueue *pTarget = NULL);
 		CMessage(const CMessage &rMessage);
 		CMessage &Duplicate() { return *(new CMessage(*this)); }
 
 		void SetTarget(CMessageQueue *pTarget);
 
-		void SetInt(const int8 *_pName, int32 _Value);
+		void SetInt(const int8 *_pName, int32_t _Value);
 		void SetFloat(const int8 *_pName, fp32 _Value);
 		void SetString(const int8 *_pName, const int8 *_pValue);
 
-		int32 GetInt(const int8 *_pName, int32 _Default=0);
+		int32_t GetInt(const int8 *_pName, int32_t _Default=0);
 		fp32 GetFloat(const int8 *_pName, fp32 _Default=0);
 		CString GetString(const int8 *_pName, const int8 *_pDefault=NULL);
 	};
@@ -87,15 +87,15 @@ namespace NFoo {
 	//
 	class CMessageSender
 	{
-		TMap<int32, CMessageTarget> m_MessageMap;
+		TMap<int32_t, CMessageTarget> m_MessageMap;
 	protected:
-		void Signal(int32 iMsg);
+		void Signal(int32_t iMsg);
 		void Signal(CMessage &rMsg);
 	public:
 		// Events
-		bool Bind(int32 iMsg, CMessageTarget Target);
-		bool Bind(int32 iMsg, CMessageReceiver *pReceiver, int32 iTargetMsg);
-		bool Bind(int32 iMsg, CMessageReceiver *pReceiver, CMessage &rMsg);
+		bool Bind(int32_t iMsg, CMessageTarget Target);
+		bool Bind(int32_t iMsg, CMessageReceiver *pReceiver, int32_t iTargetMsg);
+		bool Bind(int32_t iMsg, CMessageReceiver *pReceiver, CMessage &rMsg);
 	};
 
 }

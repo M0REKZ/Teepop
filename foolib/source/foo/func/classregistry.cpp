@@ -7,7 +7,7 @@ using namespace NFoo::NClassRegistry;
 
 //TDynamicArray<CHandle> NClassRegistry::g_lClasses;
 CHandle *NClassRegistry::m_pFirstClass = NULL;
-int32 g_CurrentID = 1;
+int32_t g_CurrentID = 1;
 
 using namespace NClassRegistry;
 
@@ -47,7 +47,7 @@ void NClassRegistry::Register(const int8 *_pName, const int8 *_pTag, CLASSCREATE
 //
 //
 //
-int32 NClassRegistry::GetClassID(const int8 *_pName)
+int32_t NClassRegistry::GetClassID(const int8 *_pName)
 {
 	CHandle *pHandle = FindHandle(_pName);
 	if(!pHandle)
@@ -83,7 +83,7 @@ CHandle *NClassRegistry::FindHandleByTag(const int8 *_pTag)
 	return NULL;
 }
 
-int32 NClassRegistry::FindHandleByTag(const int8 *_pTag, TDynamicArray<CHandle*> &rlHandles)
+int32_t NClassRegistry::FindHandleByTag(const int8 *_pTag, TDynamicArray<CHandle*> &rlHandles)
 {
 	for(CHandle *pHandle = m_pFirstClass; pHandle; pHandle = pHandle->m_pNext)
 	{

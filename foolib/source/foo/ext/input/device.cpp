@@ -6,7 +6,7 @@
 
 using namespace NFoo;
 
-CInput::CDevice::CDevice(int32 _NumButtons, int32 _NumAxis)
+CInput::CDevice::CDevice(int32_t _NumButtons, int32_t _NumAxis)
 {
 	m_pAxis = NULL;
 	m_pButtonStates = NULL;
@@ -33,14 +33,14 @@ CInput::CDevice::~CDevice()
 	SafeArrayDelete(m_pAxis);
 }
 
-void CInput::CDevice::PressButton(int32 _iButton, int8 _Char)
+void CInput::CDevice::PressButton(int32_t _iButton, int8 _Char)
 {
 	m_pButtonStates[_iButton] |= EMask_Pressed;
 	if(m_UseEvents)
 		m_lEvents.Add(CEvent(_iButton, true, _Char));
 }
 
-void CInput::CDevice::ReleaseButton(int32 _iButton, int8 _Char)
+void CInput::CDevice::ReleaseButton(int32_t _iButton, int8 _Char)
 {
 	m_pButtonStates[_iButton] &= ~EMask_Pressed;
 	if(m_UseEvents)

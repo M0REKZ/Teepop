@@ -9,13 +9,13 @@ namespace NGUI {
 	class CTextBox : public CView
 	{
 		CString m_Text;
-		int32 m_ViewStart;
-		int32 m_CursorPos;
+		int32_t m_ViewStart;
+		int32_t m_CursorPos;
 		bool m_HideType;
 	protected:
 		virtual void OnDraw(CDrawer &_rDrawer);
-		virtual void OnKeyPress(int32 _Key, int8 _Char, bool Repeat);
-		virtual void OnMouseDown(CPoint _Pos, int32 _Button);
+		virtual void OnKeyPress(int32_t _Key, int8 _Char, bool Repeat);
+		virtual void OnMouseDown(CPoint _Pos, int32_t _Button);
 
 		void CursorPosCheck();
 	public:

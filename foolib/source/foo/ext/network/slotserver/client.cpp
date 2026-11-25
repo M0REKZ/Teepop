@@ -33,7 +33,7 @@ CSlotClient::~CSlotClient()
 	Reset();
 }
 
-int32 CSlotClient::ThreadMain()
+int32_t CSlotClient::ThreadMain()
 {
 	while(!AwaitingTermination())
 	{
@@ -131,7 +131,7 @@ void CSlotClient::PumpSocket()
 				// server accepted the connection
 				NLog::Write("SlotClient: Server accepted connection\n");
 				SetState(EState_Connected);
-				m_iClient = lChunks[0]->m_Reader.ReadBE<int32>();
+				m_iClient = lChunks[0]->m_Reader.ReadBE<int32_t>();
 				//Init(&m_Socket, Addr, EState_Connected);
 			}
 			else if(lChunks[0]->m_Type == EChunk_Rejected)
@@ -155,7 +155,7 @@ void CSlotClient::PumpSocket()
 		NFoo::TDynamicArray<CChunk*> lChunks;
 		while(m_Socket.RecvChunks(lChunks, Addr))
 		{
-			for(int32 i = 0; i < lChunks.Len(); i++)
+			for(int32_t i = 0; i < lChunks.Len(); i++)
 				Process(lChunks[i]);
 		}
 		

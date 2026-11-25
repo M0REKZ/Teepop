@@ -5,7 +5,7 @@ MACRO_REGISTER_CLASS(CNetworkRoomServer, "EngineModule")
 
 void CRoom::PackAll(COutputStream &rStream)
 {
-	rStream.WriteBE<int32>(m_ID); // id
+	rStream.WriteBE<int32_t>(m_ID); // id
 	rStream.Write_p8(m_Name); // name
 	//rStream.WriteBE<uint8>(0); // password protected (should be baked into state)
 	rStream.WriteBE<uint8>(m_MaxPlayers); // max players
@@ -15,11 +15,11 @@ void CRoom::PackAll(COutputStream &rStream)
 void CRoom::PackPartial(COutputStream &rStream, bool DoId)
 {
 	if(DoId)
-		rStream.WriteBE<int32>(m_ID); // id
+		rStream.WriteBE<int32_t>(m_ID); // id
 	rStream.WriteBE<uint8>(m_State|(m_lPlayers.Len()?EState_PasswordProtected:0)); // state
 	rStream.WriteBE<uint8>(m_lPlayers.Len()); // num players
-	for(int32 i = 0; i < m_lPlayers.Len(); i++) // player ids
-		rStream.WriteBE<int32>(m_lPlayers[i]->ClientID());
+	for(int32_t i = 0; i < m_lPlayers.Len(); i++) // player ids
+		rStream.WriteBE<int32_t>(m_lPlayers[i]->ClientID());
 }
 
 //
@@ -39,7 +39,7 @@ void CNetworkRoomServer::SendCompleateUpdate(CNetworkConnection *pConnection)
 
 	Msg.WriteBE<uint8>(0); // deletions
 	Msg.WriteBE<uint8>(m_lRooms.Len()); // creations
-	for(int32 i = 0; i < m_lRooms.Len(); i++)
+	for(int32_t i = 0; i < m_lRooms.Len(); i++)
 		m_lRooms.GetValue(i)->PackAll(Msg);
 	Msg.WriteBE<uint8>(0); // updates
 	pConnection->SendMessage(Msg);
@@ -57,16 +57,16 @@ void CNetworkRoomServer::SendGlobalRoomUpdate()
 
 	// add deletions
 	Msg.WriteBE<uint8>(m_lRoomDeletions.Len());
-	for(int32 i = 0; i < m_lRoomDeletions.Len(); i++)
+	for(int32_t i = 0; i < m_lRoomDeletions.Len(); i++)
 	{
-		Msg.WriteBE<int32>(m_lRoomDeletions[i]);
+		Msg.WriteBE<int32_t>(m_lRoomDeletions[i]);
 		m_lRoomCreations.RemoveFast(m_lRoomDeletions[i]);
 		m_lRoomUpdates.RemoveFast(m_lRoomDeletions[i]);
 	}
 
 	// add creations
 	Msg.WriteBE<uint8>(m_lRoomCreations.Len());
-	for(int32 i = 0; i < m_lRoomCreations.Len(); i++)
+	for(int32_t i = 0; i < m_lRoomCreations.Len(); i++)
 	{
 		CRoom *pRoom = m_lRooms.Find(m_lRoomCreations[i], NULL);
 		if(pRoom)
@@ -76,7 +76,7 @@ void CNetworkRoomServer::SendGlobalRoomUpdate()
 
 	// add updates
 	Msg.WriteBE<uint8>(m_lRoomUpdates.Len());
-	for(int32 i = 0; i < m_lRoomUpdates.Len(); i++)
+	for(int32_t i = 0; i < m_lRoomUpdates.Len(); i++)
 	{
 		CRoom *pRoom = m_lRooms.Find(m_lRoomUpdates[i], NULL);
 		if(pRoom)
@@ -89,7 +89,7 @@ void CNetworkRoomServer::SendGlobalRoomUpdate()
 	m_lRoomUpdates.Clear();
 
 	// Send it to all players
-	for(int32 i = 0; i < m_lPlayers.Len(); i++)
+	for(int32_t i = 0; i < m_lPlayers.Len(); i++)
 		m_lPlayers[i]->SendMessage(Msg);
 }
 
@@ -127,7 +127,7 @@ void CNetworkRoomServer::JoinRoom(CNetworkConnection *pConnection, CRoom *pRoom)
 	// Send network notification
 	{
 		CNetMessage Msg(NETMSG("clRoomChanged"), true);
-		Msg.WriteBE<int32>(pRoom->m_ID);
+		Msg.WriteBE<int32_t>(pRoom->m_ID);
 		pConnection->SendMessage(Msg);
 	}
 
@@ -143,7 +143,7 @@ void CNetworkRoomServer::JoinRoom(CNetworkConnection *pConnection, CRoom *pRoom)
 
 //
 //
-const int8 *CNetworkRoomServer::CreateRoom(CNetworkConnection *pConnection, const int8 *pName, const int8 *pPassword, int32 MaxPlayers)
+const int8 *CNetworkRoomServer::CreateRoom(CNetworkConnection *pConnection, const int8 *pName, const int8 *pPassword, int32_t MaxPlayers)
 {
 	if(!pConnection)
 		return "You don't exist!";
@@ -152,7 +152,7 @@ const int8 *CNetworkRoomServer::CreateRoom(CNetworkConnection *pConnection, cons
 		return "Name to short";
 
 	// duplication check
-	for(int32 i = 0; i < m_lRooms.Len(); i++)
+	for(int32_t i = 0; i < m_lRooms.Len(); i++)
 		if(m_lRooms.GetValue(i)->m_Name == pName)
 			return "Room with the same name already exists";
 
@@ -192,7 +192,7 @@ void CNetworkRoomServer::LeaveRoom(CNetworkConnection *pConnection, bool SendNet
 	if(SendNetMessage)
 	{
 		CNetMessage Msg(NETMSG("clRoomChanged"), true);
-		Msg.WriteBE<int32>(-1);
+		Msg.WriteBE<int32_t>(-1);
 		pConnection->SendMessage(Msg);
 	}
 
@@ -245,7 +245,7 @@ void CNetworkRoomServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 	{
 		CString name = rStream.Read_p8();
 		CString password = rStream.Read_p8();
-		int32 max = Clamp(rStream.ReadBE<uint8>(), 1, 4);
+		int32_t max = Clamp(rStream.ReadBE<uint8>(), 1, 4);
 		const int8 *pError = CreateRoom(pConnection, name, password, max);
 		if(pError)
 		{
@@ -256,7 +256,7 @@ void CNetworkRoomServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 	}
 	else if(iMsg == NETMSG("svJoinRoom"))
 	{
-		int32 id = rStream.ReadBE<int32>();
+		int32_t id = rStream.ReadBE<int32_t>();
 		JoinRoom(pConnection, m_lRooms.Find(id, NULL));
 	}
 	else if(iMsg == NETMSG("svLeaveRoom"))
@@ -273,7 +273,7 @@ void CNetworkRoomServer::OnCommand(CString &rCmd, CString &rArgs)
 
 //
 //
-void CNetworkRoomServer::SetRoomState(int32 iRoom, int32 State)
+void CNetworkRoomServer::SetRoomState(int32_t iRoom, int32_t State)
 {
 	CRoom *pRoom = GetRoom(iRoom);
 	if(pRoom)
@@ -286,7 +286,7 @@ void CNetworkRoomServer::SetRoomState(int32 iRoom, int32 State)
 
 //
 //
-void CNetworkRoomServer::SetRoomState(CNetworkConnection *pConnection, int32 State)
+void CNetworkRoomServer::SetRoomState(CNetworkConnection *pConnection, int32_t State)
 {
 	CRoom *pRoom = GetRoom(pConnection);
 	if(pRoom)

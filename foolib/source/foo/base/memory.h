@@ -16,7 +16,7 @@ namespace NFoo
 	//#		Size, Number of bytes to allocate.
 	//# Returns: Returns a pointer to the allocated block. Returns NULL if there was an error like out of memory.
 	//# Declaration:
-	void *MemoryAllocate(uint32 _Size);
+	void *MemoryAllocate(uint32_t _Size);
 
 	//# Function: MemoryFree
 	//# Description: Frees allocated memory.

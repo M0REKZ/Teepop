@@ -235,7 +235,7 @@ public:
 	virtual void Write(const int8 *_pBuffer) { OutputDebugStringA(_pBuffer); }
 };
 
-int32 Main()
+int32_t Main()
 {
 	// Basic logger
 	static CDebugStringLogger Debugger(true);
@@ -251,7 +251,7 @@ int32 Main()
 	NLog::WriteF("cmdline: %s\n", CmdLine.GetData());
 
 	
-	int32 r;
+	int32_t r;
 	
 	if(CmdLine.Find("catch_errors"))
 	{
