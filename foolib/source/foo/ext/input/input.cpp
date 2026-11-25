@@ -8,7 +8,7 @@ class CKeyboard* CInput::m_pKeyboard = 0;
 namespace { CInput g_Input; } // Singelton
 
 /*
-int32_t CInput::GetDevices(TDynamicArray<CDevice*> &_rlDevices, const int8 *_pType)
+int32_t CInput::GetDevices(TDynamicArray<CDevice*> &_rlDevices, const char *_pType)
 {
 	return 0;
 }

@@ -21,7 +21,7 @@ namespace NFoo { namespace NSound {
 		//CBuffer m_Buffer;
 		int32_t m_SamplesLeft;
 
-		int32_t Fill(void *pData, int64 Position, int32_t Samples); // should do convertion
+		int32_t Fill(void *pData, int64_t Position, int32_t Samples); // should do convertion
 	};
 
 } }

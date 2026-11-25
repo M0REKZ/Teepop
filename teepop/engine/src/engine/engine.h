@@ -32,10 +32,10 @@ namespace NEngine
 		CModule() : m_pCore(NULL) {}
 		virtual ~CModule() {}
 		
-		//virtual void RegisterCommand(const int8 *pCmd);
+		//virtual void RegisterCommand(const int8_t *pCmd);
 		//virtual void OnCommand(CString &rCmd, CString &rArgs) {}
 
-		virtual const int8 *GetStatusString() { return "Unknown"; }
+		virtual const char *GetStatusString() { return "Unknown"; }
 		virtual void Update() {}
 	};
 
@@ -56,16 +56,16 @@ namespace NEngine
 		//#		rpModule, Pointer that will be set to the load module.
 		//#		pName, Name of the module to load.
 		//# Declaration:
-		template<class T> bool LoadModule(T *&rpModule, const int8 *pName)
+		template<class T> bool LoadModule(T *&rpModule, const char *pName)
 		{
 			return (rpModule = (T*)LoadModule(pName)) != 0;
 		}
 
-		CModule *LoadModule(const int8 *pName);
-		CModule *GetModule(const int8 *pName);
+		CModule *LoadModule(const char *pName);
+		CModule *GetModule(const char *pName);
 
-		void RegisterCommand(const int8 *pCmd, CConsoleClient *pModule);
-		bool DispatchCommand(const int8 *pCmdLine);
+		void RegisterCommand(const char *pCmd, CConsoleClient *pModule);
+		bool DispatchCommand(const char *pCmdLine);
 
 		bool Update();
 	};

@@ -39,16 +39,16 @@ namespace NEngine
 		void DestroyUser(CUser *pUser);
 		bool LeaveChannel(CUser *pUser);
 		bool SetChannel(CUser *pUser, CChannel *pChannel);
-		bool SetChannel(CUser *pUser, const int8 *pName);
-		CChannel *FindChannel(const int8 *pName);
-		void Chat(CUser *pUser, const int8 *pMessage);
-		void Broadcast(const int8 *pMessage);
+		bool SetChannel(CUser *pUser, const char *pName);
+		CChannel *FindChannel(const char *pName);
+		void Chat(CUser *pUser, const char *pMessage);
+		void Broadcast(const char *pMessage);
 
 		void SendMessageToChannel(CChannel *pChannel, CNetMessage &rMsg);
 
 	public:
-		bool SetUserName(CNetworkConnection *pConnection, const int8 *pName);
-		bool SetChannel(CNetworkConnection *pConnection, const int8 *pName);
+		bool SetUserName(CNetworkConnection *pConnection, const char *pName);
+		bool SetChannel(CNetworkConnection *pConnection, const char *pName);
 
 		enum
 		{

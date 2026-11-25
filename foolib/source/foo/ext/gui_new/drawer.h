@@ -20,7 +20,7 @@ namespace NGUI {
 		virtual void SetImage(int32_t _iImage) pure;
 		virtual void SetUV(int32_t _u, int32_t _v, int32_t _w, int32_t _h) pure;
 		virtual void DrawRect(int32_t _x, int32_t _y, int32_t _w=-1, int32_t _h=-1) pure;
-		virtual void DrawText(int32_t _x, int32_t _y, const int8 *_pText, fp32 _r=1, fp32 _g=1, fp32 _b=1) pure;
+		virtual void DrawText(int32_t _x, int32_t _y, const char *_pText, fp32 _r=1, fp32 _g=1, fp32 _b=1) pure;
 	};
 
 	//
@@ -109,8 +109,8 @@ namespace NGUI {
 		void SetUV(int32_t _u, int32_t _v, int32_t _w, int32_t _h);
 		void Draw(int32_t _x, int32_t _y, int32_t _w, int32_t _h);
 
-		void DrawText(int32_t _x, int32_t _y, const int8 *_pText, fp32 _r=1, fp32 _g=1, fp32 _b=1);
-		//void DrawTextWhite(int32_t _x, int32_t _y, const int8 *_pText);
+		void DrawText(int32_t _x, int32_t _y, const char *_pText, fp32 _r=1, fp32 _g=1, fp32 _b=1);
+		//void DrawTextWhite(int32_t _x, int32_t _y, const int8_t *_pText);
 
 		//void Begin(int32_t _Blend = NFoo::N3D::C2DUtils::EBlend_Alpha, fp32 r=1.0f, fp32 g=1.0f, fp32 b=1.0f, fp32 a=1.0f);
 		//void End();
@@ -141,7 +141,7 @@ namespace NGUI {
 		virtual void SetClipping(bool _Use, int32_t _x=-1, int32_t _y=-1, int32_t _w=-1, int32_t _h=-1);
 		virtual void SetUV(int32_t _u, int32_t _v, int32_t _w, int32_t _h);
 		virtual void DrawRect(int32_t _x, int32_t _y, int32_t _w, int32_t _h);
-		virtual void DrawText(int32_t _x, int32_t _y, const int8 *_pText, fp32 _r=1, fp32 _g=1, fp32 _b=1);
+		virtual void DrawText(int32_t _x, int32_t _y, const char *_pText, fp32 _r=1, fp32 _g=1, fp32 _b=1);
 	};
 
 }

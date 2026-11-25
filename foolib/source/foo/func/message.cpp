@@ -20,13 +20,13 @@ CMessage::CMessage(const CMessage &rMessage)
 	m_OrgMsg = rMessage.m_OrgMsg;
 }
 
-void CMessage::SetInt(const int8 *_pName, int32_t _Value) { m_lIntValues[StringGetHash(_pName)] = _Value; }
-void CMessage::SetFloat(const int8 *_pName, fp32 _Value) { m_lFloatValues[StringGetHash(_pName)] = _Value; }
-void CMessage::SetString(const int8 *_pName, const int8 *_pValue) { m_lStringValues[StringGetHash(_pName)] = _pValue; }
+void CMessage::SetInt(const char *_pName, int32_t _Value) { m_lIntValues[StringGetHash(_pName)] = _Value; }
+void CMessage::SetFloat(const char *_pName, fp32 _Value) { m_lFloatValues[StringGetHash(_pName)] = _Value; }
+void CMessage::SetString(const char *_pName, const char *_pValue) { m_lStringValues[StringGetHash(_pName)] = _pValue; }
 
-int32_t CMessage::GetInt(const int8 *_pName, int32_t _Default) { return m_lIntValues[StringGetHash(_pName)]; }
-fp32 CMessage::GetFloat(const int8 *_pName, fp32 _Default) { return m_lFloatValues[StringGetHash(_pName)]; }
-CString CMessage::GetString(const int8 *_pName, const int8 *_pDefault) { return m_lStringValues[StringGetHash(_pName)]; }
+int32_t CMessage::GetInt(const char *_pName, int32_t _Default) { return m_lIntValues[StringGetHash(_pName)]; }
+fp32 CMessage::GetFloat(const char *_pName, fp32 _Default) { return m_lFloatValues[StringGetHash(_pName)]; }
+CString CMessage::GetString(const char *_pName, const char *_pDefault) { return m_lStringValues[StringGetHash(_pName)]; }
 
 
 

@@ -13,7 +13,7 @@ CLock NLog::m_Lock;
 //
 //
 //
-void NLog::Write(const int8 *_pBuf)
+void NLog::Write(const char *_pBuf)
 {
 	m_Lock.Aquire();
 	for(CLogger *pCurrent = m_pFirst; pCurrent; pCurrent = pCurrent->m_pNext)
@@ -24,9 +24,9 @@ void NLog::Write(const int8 *_pBuf)
 //
 //
 //
-void NLog::WriteF(const int8 *_pFormat, ...)
+void NLog::WriteF(const char *_pFormat, ...)
 {
-	int8 Buffer[4092];
+	char Buffer[4092];
 
     va_list Args;
     va_start(Args, _pFormat);
@@ -74,11 +74,11 @@ void NLog::Detach(CLogger *_pLogger)
 	m_Lock.Release();
 }
 
-void Assert_(const int8 *pFile, int32_t Line, bool _bVal)
+void Assert_(const char *pFile, int32_t Line, bool _bVal)
 {
 	if (!_bVal)
 	{
-		static int8 aBuffer[1024];
+		static char aBuffer[1024];
 		NFoo::NLog::WriteF("ASSERT: %s:%d\n", pFile, Line);
 		NFoo::DebugBreak();
 	}

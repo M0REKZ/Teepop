@@ -52,21 +52,21 @@ public:
 	void Read(CInputStream &_rStream);
 	void Write(COutputStream &_rStream);
 
-	uint8 m_IDLen;
-	uint8 m_ColorMapType;
-	uint8 m_ImageType;
+	uint8_t m_IDLen;
+	uint8_t m_ColorMapType;
+	uint8_t m_ImageType;
 
-	uint16 m_ColorMap_FirstEntryIndex;
-	uint16 m_ColorMap_Length;
-	uint8 m_ColorMap_EntrySize;
+	uint16_t m_ColorMap_FirstEntryIndex;
+	uint16_t m_ColorMap_Length;
+	uint8_t m_ColorMap_EntrySize;
 
-	uint16 m_PositionX;
-	uint16 m_PositionY;
-	uint16 m_Width;
-	uint16 m_Height;
-	uint8 m_PixelDepth;
+	uint16_t m_PositionX;
+	uint16_t m_PositionY;
+	uint16_t m_Width;
+	uint16_t m_Height;
+	uint8_t m_PixelDepth;
 
-	uint8 m_ImageDescriptor;
+	uint8_t m_ImageDescriptor;
 };
 
 //
@@ -130,7 +130,7 @@ bool CTGAFormat::Load(CInputStream &rStream, CImage &rImage)
 
 	// Read Header
 	CHeader Header;
-	uint8 ImageID[256];
+	uint8_t ImageID[256];
 
 	Header.Read(rStream);
 	
@@ -166,7 +166,7 @@ bool CTGAFormat::Load(CInputStream &rStream, CImage &rImage)
 	rImage.Create(Format);
 
 	/*
-	_rImage.m_pData = new uint8 [DataSize+4]; // we must waste 4 bytes inorder to load fat
+	_rImage.m_pData = new uint8_t [DataSize+4]; // we must waste 4 bytes inorder to load fat
 	_rImage.m_Desc.m_Size.x = Header.m_Width;
 	_rImage.m_Desc.m_Size.y = Header.m_Height;
 	_rImage.m_Desc.m_Format = Header.m_PixelDepth;//m_Size.y = Header.m_Height;
@@ -177,7 +177,7 @@ bool CTGAFormat::Load(CInputStream &rStream, CImage &rImage)
 	//	_rImage.m_Desc.m_Format = 15;
 	//_rImage.Create(TVector2<int32_t>(Header.m_Width, Header.m_Height), Header.m_PixelDepth);
 
-	uint8 *pPtr = rImage.Data();
+	uint8_t *pPtr = rImage.Data();
 	
 	do 
 	{
@@ -248,9 +248,9 @@ bool CTGAFormat::Write(COutputStream &rStream, CImage &rImage)
 	Header.m_PositionY = 0;
 	Header.m_PositionX = 0;
 
-	Header.m_Height = (uint16)rImage.Format().Height();
-	Header.m_Width = (uint16)rImage.Format().Width();
-	Header.m_PixelDepth = (uint8)rImage.Format().BPP();
+	Header.m_Height = (uint16_t)rImage.Format().Height();
+	Header.m_Width = (uint16_t)rImage.Format().Width();
+	Header.m_PixelDepth = (uint8_t)rImage.Format().BPP();
 	
 	if (Header.m_PixelDepth == 8)
 	{

@@ -51,7 +51,7 @@ int32_t CSlotClient::ThreadMain()
 //# Parameters:
 //#		Addr, Address to server
 //# Declaration:
-void CSlotClient::Connect(NNetwork::CAddr Addr, const int8 *pVersionString, bool Threaded)
+void CSlotClient::Connect(NNetwork::CAddr Addr, const char *pVersionString, bool Threaded)
 {
 	if(!IsClosed())
 		Close();

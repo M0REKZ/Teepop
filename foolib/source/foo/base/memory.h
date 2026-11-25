@@ -47,7 +47,7 @@ namespace NFoo
 	//# Parameters:
 	//#		Size, Number of bytes to allocate.
 	//# Declaration:
-	void MemorySet(void *_pDest, uint8 _Value, intr _Size);
+	void MemorySet(void *_pDest, uint8_t _Value, intr _Size);
 
 	inline void MemoryZero(void *_pDest, intr _Size) { MemorySet(_pDest, 0, _Size); }
 	template<class T> inline void MemoryZero(T *_pDest) { MemoryZero(_pDest, sizeof(T)); }

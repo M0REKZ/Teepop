@@ -7,7 +7,7 @@ using namespace NFoo::NGUI;
 //
 //
 //
-CButton::CButton(CView *pParent, const int8 *pName, CGUI *pGUI)
+CButton::CButton(CView *pParent, const char *pName, CGUI *pGUI)
 : CView(pParent, pName, pGUI)
 {
 	m_Pressed = false;
@@ -35,7 +35,7 @@ void CButton::OnMouseUp(CPoint _Pos, int32_t _iButton)
 //
 //
 //
-void CButton::SetCaption(const int8 *_pCap)
+void CButton::SetCaption(const char *_pCap)
 {
 	m_Caption = _pCap;
 }

@@ -141,7 +141,7 @@ CString CKeyboard::KeySymToString(int32_t sym)
 	struct TransTable
 	{
 		int32_t sym; // keysym
-		int8 str[14]; // key string
+		char str[14]; // key string
 	} Tabl[] =
 	{
 	{EBtn_Key_Delete, "Delete"},

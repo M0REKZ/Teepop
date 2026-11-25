@@ -20,18 +20,18 @@ CStringItem::CStringItem()
 	m_Multiline = false;
 }
 
-CStringItem::CStringItem(const int8 *_pString, bool _Multiline)
+CStringItem::CStringItem(const char *_pString, bool _Multiline)
 {
 	m_Text = _pString;
 	m_Multiline = _Multiline;
 }
 
 
-int32_t GetLines(int32_t width, int32_t w, const int8 *pText, TDynamicArray<CString> *pLines=NULL)
+int32_t GetLines(int32_t width, int32_t w, const char *pText, TDynamicArray<CString> *pLines=NULL)
 {
 	//enum { ESeek, EFlush }
-	const int8 *pLineStart = pText;
-	const int8 *pLineEnd = pText;
+	const char *pLineStart = pText;
+	const char *pLineEnd = pText;
 	int32_t CurrentWidth = width;
 	int32_t NumLines = 0;
 	//int32_t State = ESeek;
@@ -115,7 +115,7 @@ void CStringItem::OnDraw(CDrawer &rDrawer, bool Selected)
 //
 //
 //
-CListBox::CListBox(CView *pParent, const int8 *pName, CGUI *pGUI)
+CListBox::CListBox(CView *pParent, const char *pName, CGUI *pGUI)
 : CView(pParent, pName, pGUI), m_ScrollBar(NULL, NULL, pGUI)
 {
 	SetSize(100, 100);

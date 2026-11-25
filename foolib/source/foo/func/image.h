@@ -65,29 +65,29 @@ namespace NFoo
 				// Indexed
 				struct
 				{
-					uint16 m_Bits;
+					uint16_t m_Bits;
 					void *m_pPallete;
 				} m_IndexInfo;
 
 				// Channels
 				struct
 				{
-					uint8 m_NumChannels;
-					uint8 m_ColorSpace; // GrayScale, YUV, RGB
-					uint8 m_ChannelType; // Int, Float
-					uint8 m_ChannelEndian; // BE, LE
-					uint8 m_aChannelDepth[4]; // in bits
-					uint8 m_aChannels[4]; // R, G, B, A, Y, U, V, X
+					uint8_t m_NumChannels;
+					uint8_t m_ColorSpace; // GrayScale, YUV, RGB
+					uint8_t m_ChannelType; // Int, Float
+					uint8_t m_ChannelEndian; // BE, LE
+					uint8_t m_aChannelDepth[4]; // in bits
+					uint8_t m_aChannels[4]; // R, G, B, A, Y, U, V, X
 				} m_ChannelInfo;
 			};
 
-			uint16 m_Width; // in pixels
-			uint16 m_Height; // in pixels
+			uint16_t m_Width; // in pixels
+			uint16_t m_Height; // in pixels
 
 			// redundant variables, speed optimizations
 			uint32_t m_DataSize;
 			uint32_t m_Pitch;
-			uint16 m_BPP;
+			uint16_t m_BPP;
 
 			// updates the redunant variables
 			void Refresh();
@@ -203,21 +203,21 @@ namespace NFoo
 
 	private:
 		CFormat m_Format;
-		uint8 *m_pData;
+		uint8_t *m_pData;
 	public:
 	
 		//
 		CImage();
-		CImage(CFormat Format, uint8 *pData);
+		CImage(CFormat Format, uint8_t *pData);
 		CImage(const CImage &);
 		virtual ~CImage();
 
 		void operator = (const CImage &);
-		uint8 &operator [] (const intr i) { return m_pData[i]; }
+		uint8_t &operator [] (const intr i) { return m_pData[i]; }
 	
 		const CFormat &Format() const { return m_Format; }
-		uint8 *Data() { return m_pData; }
-		const uint8 *Data() const { return m_pData; }
+		uint8_t *Data() { return m_pData; }
+		const uint8_t *Data() const { return m_pData; }
 
 		// Basic Operation
 		void RemoveData(); // doesn't deallocate data
@@ -238,16 +238,16 @@ namespace NFoo
 		void Clear(uint32_t = 0);
 
 		// Not complete! Proposal..
-		void SetR(int32_t _x, int32_t _y, uint8 _r);
-		void SetG(int32_t _x, int32_t _y, uint8 _g);
-		void SetB(int32_t _x, int32_t _y, uint8 _b);
-		void SetA(int32_t _x, int32_t _y, uint8 _a);
+		void SetR(int32_t _x, int32_t _y, uint8_t _r);
+		void SetG(int32_t _x, int32_t _y, uint8_t _g);
+		void SetB(int32_t _x, int32_t _y, uint8_t _b);
+		void SetA(int32_t _x, int32_t _y, uint8_t _a);
 		void SetColor(int32_t _x, int32_t _y, uint32_t _Color);
 
-		uint8 GetR(int32_t _x, int32_t _y);
-		uint8 GetG(int32_t _x, int32_t _y);
-		uint8 GetB(int32_t _x, int32_t _y);
-		uint8 GetA(int32_t _x, int32_t _y);
+		uint8_t GetR(int32_t _x, int32_t _y);
+		uint8_t GetG(int32_t _x, int32_t _y);
+		uint8_t GetB(int32_t _x, int32_t _y);
+		uint8_t GetA(int32_t _x, int32_t _y);
 		uint32_t GetColor(int32_t _x, int32_t _y);
 
 		//

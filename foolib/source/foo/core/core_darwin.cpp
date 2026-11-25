@@ -150,7 +150,7 @@ class CStdOutLogger : public NLog::CLogger
 public:
 	CStdOutLogger() { NLog::Attach(this); NLog::Write("CStdOutLogger attached\n"); }
 	virtual ~CStdOutLogger() { NLog::Write("CStdOutLogger deattching\n"); NLog::Detach(this); fflush(stdout); }
-	virtual void Write(const int8 *_pBuffer) { fprintf(stdout, "%s", _pBuffer); }
+	virtual void Write(const char *_pBuffer) { fprintf(stdout, "%s", _pBuffer); }
 };
 
 //
@@ -169,7 +169,7 @@ int main(int argc, char* argv[])
 	NLog::Write("MAIN:Initing MacOSX\n");
 	
 	// FIXME
-	int8 aDir[512];
+	char aDir[512];
 	getwd(aDir);
 	NLog::WriteF("MAIN: Working directory is %s\n", aDir);
 	

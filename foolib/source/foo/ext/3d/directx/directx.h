@@ -153,7 +153,7 @@ namespace NFoo { namespace N3D { namespace NDirectX {
 		static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 		static LRESULT MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-		bool CopyTextureData(int32_t _Width, int32_t _Height, const D3DLOCKED_RECT& _LockedRect, D3DFORMAT _TexFormat, uint8* _pData, int32_t _Format);
+		bool CopyTextureData(int32_t _Width, int32_t _Height, const D3DLOCKED_RECT& _LockedRect, D3DFORMAT _TexFormat, uint8_t* _pData, int32_t _Format);
 
 
 		void ZeroCaps(D3DCAPS9& _Caps);
@@ -182,7 +182,7 @@ namespace NFoo { namespace N3D { namespace NDirectX {
 		virtual CTextureInfo GetTextureInfo(int32_t _iTexture);
 
 		// _Format, format of indata
-		virtual int32_t Internal_CreateTexture(int32_t _Width, int32_t _Height, int32_t _Format, uint8 *_pData);
+		virtual int32_t Internal_CreateTexture(int32_t _Width, int32_t _Height, int32_t _Format, uint8_t *_pData);
 
 		// vertex buffers
 		virtual int32_t CreateVertexBuffer(int32_t _Count, int32_t _What, int32_t _Flags);
@@ -199,8 +199,8 @@ namespace NFoo { namespace N3D { namespace NDirectX {
 		virtual void UnlockIndexBuffer(int32_t _iBuffer);
 
 		// Shaders
-		virtual int32_t CreateVertexShader(const int8 *_pString);
-		virtual int32_t CreatePixelShader(const int8 *_pString);
+		virtual int32_t CreateVertexShader(const char *_pString);
+		virtual int32_t CreatePixelShader(const char *_pString);
 		virtual bool DestroyVertexShader(int32_t _iShader);
 		virtual bool DestroyPixelShader(int32_t _iShader);
 

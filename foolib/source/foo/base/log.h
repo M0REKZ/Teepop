@@ -22,7 +22,7 @@ namespace NFoo { namespace NLog {
 	//#		Msg, String to pass.
 	//# SeeAlso: WriteF
 	//# Declaration:
-	void Write(const int8 *_pMsg);
+	void Write(const char *_pMsg);
 
 	//# Function: WriteF
 	//# Description: Passes a zero-terminated string to the loggers. Performs printf styled formatting.
@@ -32,7 +32,7 @@ namespace NFoo { namespace NLog {
 	//# Remarks: Look at your documentation for the printf function for more information.
 	//# SeeAlso: WriteF
 	//# Declaration:
-	void WriteF(const int8 *_pFormat, ...);
+	void WriteF(const char *_pFormat, ...);
 
 	//# Function: Attach
 	//# Description: Adds a logger.
@@ -56,9 +56,9 @@ namespace NFoo { namespace NLog {
 		CLogger *m_pNext;
 		friend void NFoo::NLog::Attach(CLogger *_pLogger);
 		friend void NFoo::NLog::Detach(CLogger *_pLogger);
-		friend void Write(const int8 *_pBuf);
+		friend void Write(const char *_pBuf);
 	public:
-		virtual void Write(const int8 *pBuffer) pure;
+		virtual void Write(const char *pBuffer) pure;
 	};
 
 	extern CLogger *m_pFirst;

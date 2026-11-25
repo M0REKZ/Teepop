@@ -14,7 +14,7 @@
 
 namespace NFoo { namespace N3D {
 
-	const int8 aDeviceClassTag[] = "3D Device";
+	const char aDeviceClassTag[] = "3D Device";
 
 	enum
 	{
@@ -196,22 +196,22 @@ namespace NFoo { namespace N3D {
 	{
 	protected:
 		// flags
-		uint8 m_aFlags[ENumFlags];
+		uint8_t m_aFlags[ENumFlags];
 
 		// modes
-		uint8 m_BlendSrc:4;
-		uint8 m_BlendDst:4;
-		uint8 m_DepthTest:4;
-		uint8 m_Cull:2;
+		uint8_t m_BlendSrc:4;
+		uint8_t m_BlendDst:4;
+		uint8_t m_DepthTest:4;
+		uint8_t m_Cull:2;
 		bool m_WriteMask[4];
 		
 		// stencil
-		uint8 m_StencilOpFail:4;
-		uint8 m_StencilOpZFail:4;
-		uint8 m_StencilOpZPass:4;
-		uint8 m_StencilTest:4;
-		uint8 m_StencilRef;
-		uint8 m_StencilMask;
+		uint8_t m_StencilOpFail:4;
+		uint8_t m_StencilOpZFail:4;
+		uint8_t m_StencilOpZPass:4;
+		uint8_t m_StencilTest:4;
+		uint8_t m_StencilRef;
+		uint8_t m_StencilMask;
 
 		TVector4<fp32> m_PrimaryColor;
 
@@ -316,7 +316,7 @@ namespace NFoo { namespace N3D {
 
 		union
 		{
-			TVector3<int16> *m_pVertexint16;
+			TVector3<int16_t> *m_pVertexint16;
 			TVector3<int32_t> *m_pVertexint32;
 			TVector3<fp32> *m_pVertexfp32;
 			TVector3<fp64> *m_pVertexfp64;
@@ -324,8 +324,8 @@ namespace NFoo { namespace N3D {
 
 		union
 		{
-			TVector3<int8> *m_pNormalint8;
-			TVector3<int16> *m_pNormalint16;
+			TVector3<char> *m_pNormalint8;
+			TVector3<int16_t> *m_pNormalint16;
 			TVector3<int32_t> *m_pNormalint32;
 			TVector3<fp32> *m_pNormalfp32;
 			TVector3<fp64> *m_pNormalfp64;
@@ -333,8 +333,8 @@ namespace NFoo { namespace N3D {
 
 		union
 		{
-			TVector4<int8> *m_pColorint8;
-			TVector4<int16> *m_pColorint16;
+			TVector4<char> *m_pColorint8;
+			TVector4<int16_t> *m_pColorint16;
 			TVector4<int32_t> *m_pColorint32;
 			TVector4<fp32> *m_pColorfp32;
 			TVector4<fp64> *m_pColorfp64;
@@ -342,8 +342,8 @@ namespace NFoo { namespace N3D {
 
 		union
 		{
-			TVector2<int8> *m_pTextureint8[EMaxTextureUnits];
-			TVector2<int16> *m_pTextureint16[EMaxTextureUnits];
+			TVector2<char> *m_pTextureint8[EMaxTextureUnits];
+			TVector2<int16_t> *m_pTextureint16[EMaxTextureUnits];
 			TVector2<int32_t> *m_pTextureint32[EMaxTextureUnits];
 			TVector2<fp32> *m_pTexturefp32[EMaxTextureUnits];
 			TVector2<fp64> *m_pTexturefp64[EMaxTextureUnits];
@@ -367,7 +367,7 @@ namespace NFoo { namespace N3D {
 
 		union
 		{
-			uint16 *m_pIndex16;
+			uint16_t *m_pIndex16;
 			uint32_t *m_pIndex32;
 		};
 	};
@@ -419,7 +419,7 @@ namespace NFoo { namespace N3D {
 		// clear attributes
 		fp32 m_ClearDepth;
 		TVector4<fp32> m_ClearColor;
-		uint8 m_ClearStencil;
+		uint8_t m_ClearStencil;
 		
 		// ID Handling
 		enum
@@ -479,14 +479,14 @@ namespace NFoo { namespace N3D {
 		virtual void UnlockIndexBuffer(int32_t _iBuffer) pure;
 
 		// shaders
-		virtual int32_t CreateVertexShader(const int8 *_pString) pure;
-		virtual int32_t CreatePixelShader(const int8 *_pString) pure;
+		virtual int32_t CreateVertexShader(const char *_pString) pure;
+		virtual int32_t CreatePixelShader(const char *_pString) pure;
 		virtual bool DestroyVertexShader(int32_t _iShader) pure;
 		virtual bool DestroyPixelShader(int32_t _iShader) pure;
 
 		// clearing
 		void Clear_Color(fp32 _r=0, fp32 _g=0, fp32 _b=0, fp32 _a=0) { m_ClearColor = TVector4<fp32>(_r,_g,_b,_a); }
-		void Clear_Stencil(uint8 _Value) { m_ClearStencil = _Value; }
+		void Clear_Stencil(uint8_t _Value) { m_ClearStencil = _Value; }
 		void Clear_Depth(fp32 _Depth=1) { m_ClearDepth = _Depth; }
 		virtual void Clear(intr _What) pure;
 		
@@ -500,7 +500,7 @@ namespace NFoo { namespace N3D {
 		virtual bool Grab(NFoo::CImage &_rImage, int32_t _What=EBuffer_Color) pure;
 		
 		// gamma
-		virtual bool SetGammaRamp(uint16 *_pRamp) { return false; }
+		virtual bool SetGammaRamp(uint16_t *_pRamp) { return false; }
 
 		//
 		virtual void SetViewport(int32_t _x, int32_t _y, int32_t _w, int32_t _h) pure;

@@ -57,7 +57,7 @@ void CNetworkAuthServer::OnDetach(CNetworkConnection *pConnection)
 //
 //
 //
-CNetworkAuthServer::CUser *CNetworkAuthServer::GetUser(const int8 *pName)
+CNetworkAuthServer::CUser *CNetworkAuthServer::GetUser(const char *pName)
 {
 	for(int32_t i = 0; i < m_lUsers.Len(); i++)
 		if(m_lUsers[i]->m_Name == pName)
@@ -107,7 +107,7 @@ void CNetworkAuthServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 {
 	if(iMsg == NETMSG("svAuthLogon"))
 	{
-		uint8 Version = rStream.ReadBE<uint8>();
+		uint8_t Version = rStream.ReadBE<uint8_t>();
 		if(Version == 0)
 		{
 			CString Username = rStream.Read_p8();
@@ -124,7 +124,7 @@ void CNetworkAuthServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 			if(IsDuplicateLogon && !m_AllowMultipleLogons)
 			{
 				NLog::WriteF("AuthServer: Failed, Multiple logons, %s\n", Username.GetData());
-				Msg.WriteBE<uint8>(0);
+				Msg.WriteBE<uint8_t>(0);
 				Msg.Write_p8("You are already logged on\n");
 
 				CMessage Msg(EEvent_AuthFailed);
@@ -145,7 +145,7 @@ void CNetworkAuthServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 					{
 						// account creation failed
 						NLog::WriteF("AuthServer: Failed, Couldn't create guest account, %s\n", Username.GetData());
-						Msg.WriteBE<uint8>(0);
+						Msg.WriteBE<uint8_t>(0);
 						Msg.Write_p8("Couldn't create guest account\n");
 
 						CMessage Msg(EEvent_AuthFailed);
@@ -163,7 +163,7 @@ void CNetworkAuthServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 			else
 			{
 				NLog::WriteF("AuthServer: Auth Failed, %s, Invalid username and/or passwords\n", Username.GetData());
-				Msg.WriteBE<uint8>(0);
+				Msg.WriteBE<uint8_t>(0);
 				Msg.Write_p8("Invalid username and/or password");
 
 				CMessage Msg(EEvent_AuthFailed);
@@ -176,7 +176,7 @@ void CNetworkAuthServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 				if(pUser->m_UserLevel > 0)
 				{
 					NLog::WriteF("AuthServer: Auth successful, %s\n", Username.GetData());
-					Msg.WriteBE<uint8>(1);
+					Msg.WriteBE<uint8_t>(1);
 					Msg.Write_p8("Success");
 					pConnection->SetData(this, pUser);
 					//m_lAuths[pConnection] = pUser;
@@ -192,7 +192,7 @@ void CNetworkAuthServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 				else
 				{
 					NLog::WriteF("AuthServer: Failed, access level to low, %s\n", Username.GetData());
-					Msg.WriteBE<uint8>(0);
+					Msg.WriteBE<uint8_t>(0);
 					Msg.Write_p8("You are not allowed to logon");
 
 					CMessage Msg(EEvent_AuthFailed);

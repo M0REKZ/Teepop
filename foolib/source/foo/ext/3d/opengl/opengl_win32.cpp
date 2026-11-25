@@ -357,9 +357,9 @@ public:
 	//
 	//
 	//
-	virtual bool SetGammaRamp(uint16 *_pRamp)
+	virtual bool SetGammaRamp(uint16_t *_pRamp)
 	{
-		uint16 Ramp[256*3];
+		uint16_t Ramp[256*3];
 		MemoryCopy(Ramp, _pRamp, 256*2);
 		MemoryCopy(Ramp+256, _pRamp, 256*2);
 		MemoryCopy(Ramp+512, _pRamp, 256*2);
@@ -369,11 +369,11 @@ public:
 	//
 	//
 	//
-	int64 m_LastSwapTime;
+	int64_t m_LastSwapTime;
 	virtual bool SwapBuffers()
 	{
-		int64 Time = NFoo::GetTickCount();
-		int8 aBuf[128];
+		int64_t Time = NFoo::GetTickCount();
+		char aBuf[128];
 		StringCFormat(aBuf, "FPS: %d", (int32_t)(1/((Time-m_LastSwapTime)/(fp32)GetTickFrequency())));
 		SetWindowText(m_hWindow, aBuf);
 		m_LastSwapTime = Time;
@@ -392,10 +392,10 @@ public:
 
 		ClearAllAllocatedIndexes();
 
-		uint16 Ramp[256*3];
+		uint16_t Ramp[256*3];
 		for(int32_t i = 0; i < 256; i++)
 		{
-			Ramp[i] = (uint16)(0xFFFF*(i/255.0f));
+			Ramp[i] = (uint16_t)(0xFFFF*(i/255.0f));
 			Ramp[i+256] = Ramp[i];
 			Ramp[i+512] = Ramp[i];
 		}

@@ -21,7 +21,7 @@ namespace NFoo
 		bool m_FinalBlock;
 
 		int32_t m_BufferSize;	// window buffer
-		uint8 *m_pBuffer;
+		uint8_t *m_pBuffer;
 		int32_t m_Index;	// write index in the window
 
 		enum
@@ -53,7 +53,7 @@ namespace NFoo
 		int32_t m_Size; // final size
 
 		#ifdef DEFLATE_DEBUG
-			int64 m_aTimes[EDone];
+			int64_t m_aTimes[EDone];
 			int32_t m_OutputSize; // debug
 		#endif
 

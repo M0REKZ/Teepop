@@ -41,7 +41,7 @@ namespace NFoo { namespace NCore {
 		//virtual bool OnMessage();
 
 		// passes message to the logger. adds some formatting
-		void Log(int8 *_pFormat, ...); 
+		void Log(char *_pFormat, ...); 
 	};
 
 	//

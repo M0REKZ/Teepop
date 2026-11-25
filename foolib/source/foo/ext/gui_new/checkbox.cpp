@@ -7,7 +7,7 @@ using namespace NFoo::NGUI;
 //
 //
 //
-CCheckBox::CCheckBox(CView *pParent, const int8 *pName, CGUI *pGUI)
+CCheckBox::CCheckBox(CView *pParent, const char *pName, CGUI *pGUI)
 : CView(pParent, pName, pGUI)
 {
 	m_Checked = false;

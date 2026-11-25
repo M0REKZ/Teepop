@@ -161,11 +161,11 @@ bool CSoundDevice_WaveOut::Init(CFormat Format, int32_t BufferSize)
 
 	for(int32_t i = 0; i < ENumBuffers; i++)
 	{
-		m_aBuffers[i] = new uint8[m_BufferSize];
+		m_aBuffers[i] = new uint8_t[m_BufferSize];
 		MemoryZero(m_aBuffers[i], m_BufferSize);
 
 		MemoryZero(&m_aBufferHeaders[i]);
-		m_aBufferHeaders[i].lpData = (int8*)m_aBuffers[i];
+		m_aBufferHeaders[i].lpData = (char*)m_aBuffers[i];
 		m_aBufferHeaders[i].dwBufferLength = m_BufferSize;
 		m_aBufferHeaders[i].dwBytesRecorded = m_BufferSize;
 	}

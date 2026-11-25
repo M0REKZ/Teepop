@@ -151,7 +151,7 @@ CDirectXDevice::~CDirectXDevice()
 
 // Texture handling
 int32_t CDirectXDevice::Internal_CreateTexture(int32_t _Width, int32_t _Height, int32_t _Format, 
-											 uint8 *_pData)
+											 uint8_t *_pData)
 {
 	if (!m_p3DDevice)
 		return -1;
@@ -222,7 +222,7 @@ int32_t CDirectXDevice::Internal_CreateTexture(int32_t _Width, int32_t _Height, 
 	return iTexture;
 }
 
-void SetTextureData(D3DFORMAT _DestFormat, uint8* _pDest, const uint8 _RGBA[4])
+void SetTextureData(D3DFORMAT _DestFormat, uint8_t* _pDest, const uint8_t _RGBA[4])
 {
 	switch(_DestFormat)
 	{
@@ -255,14 +255,14 @@ void SetTextureData(D3DFORMAT _DestFormat, uint8* _pDest, const uint8 _RGBA[4])
 	case D3DFMT_R5G6B5:
 		{
 			//16-bit RGB pixel format with 5 bits for red, 6 bits for green, and 5 bits for blue. 
-			uint16* pDest = (uint16*)_pDest;
+			uint16_t* pDest = (uint16_t*)_pDest;
 			*pDest = (_RGBA[3]<<11) | (_RGBA[2] << 5) | (_RGBA[1]);
 			break;
 		}
 	case D3DFMT_X1R5G5B5:
 		{
 			//16-bit pixel format where 5 bits are reserved for each color. 
-			uint16* pDest = (uint16*)_pDest;
+			uint16_t* pDest = (uint16_t*)_pDest;
 			*pDest = 0;
 			*pDest = (_RGBA[3]<<10) | (_RGBA[2] << 5) | (_RGBA[1]);
 			break;
@@ -270,7 +270,7 @@ void SetTextureData(D3DFORMAT _DestFormat, uint8* _pDest, const uint8 _RGBA[4])
 	case D3DFMT_A1R5G5B5:
 		{
 			//16-bit pixel format where 5 bits are reserved for each color and 1 bit is reserved for alpha. 
-			uint16* pDest = (uint16*)_pDest;
+			uint16_t* pDest = (uint16_t*)_pDest;
 			pDest[0] = (_RGBA[0]<<15) | (_RGBA[3] << 10) | (_RGBA[2] << 5) | (_RGBA[1]);
 			break;
 		}
@@ -329,14 +329,14 @@ void SetTextureData(D3DFORMAT _DestFormat, uint8* _pDest, const uint8 _RGBA[4])
 	}
 }
 
-void GetTextureData(int32_t _ImageFormat, uint8* _pData, uint8 _RGBA[4])
+void GetTextureData(int32_t _ImageFormat, uint8_t* _pData, uint8_t _RGBA[4])
 {
 	switch (_ImageFormat)
 	{
 	case CImage::EFormat_RGB16:
 		{
 			//16-bit RGB pixel format with 5 bits for red, 6 bits for green, and 5 bits for blue. 
-			uint16 Value = *(uint16*)_pData;
+			uint16_t Value = *(uint16_t*)_pData;
 			_RGBA[3] = (Value&0xF800) >> 11;
 			_RGBA[2] = (Value&0x07E0) >> 5;
 			_RGBA[1] = (Value&0x001F);
@@ -376,7 +376,7 @@ void GetTextureData(int32_t _ImageFormat, uint8* _pData, uint8 _RGBA[4])
 }
 
 bool CDirectXDevice::CopyTextureData(int32_t _Width, int32_t _Height, const D3DLOCKED_RECT& _LockedRect, 
-									 D3DFORMAT _TexFormat, uint8* _pData, int32_t _Format)
+									 D3DFORMAT _TexFormat, uint8_t* _pData, int32_t _Format)
 {
 	int32_t TexelSize = GetTexelSize(_TexFormat);
 	// Don't support 64 bit textures at this time
@@ -385,10 +385,10 @@ bool CDirectXDevice::CopyTextureData(int32_t _Width, int32_t _Height, const D3DL
 
 	for (int32_t iY = 0; iY < _Height; iY++)
 	{
-		uint8* pCurrentPos = (uint8*)(_LockedRect.pBits) + iY * _LockedRect.Pitch;
+		uint8_t* pCurrentPos = (uint8_t*)(_LockedRect.pBits) + iY * _LockedRect.Pitch;
 		for (int32_t iX = 0; iX < _Width; iX++)
 		{
-			uint8 RGBA[4];
+			uint8_t RGBA[4];
 			GetTextureData(_Format, _pData, RGBA);
 			SetTextureData(_TexFormat, pCurrentPos, RGBA);
 			pCurrentPos += TexelSize;
@@ -399,7 +399,7 @@ bool CDirectXDevice::CopyTextureData(int32_t _Width, int32_t _Height, const D3DL
 
 int32_t CDirectXDevice::CreateTexture(int32_t _Width, int32_t _Height, int32_t _Format)
 {
-	uint8 *pData = new uint8 [_Width*_Height*4]; // Worst case, temporary data
+	uint8_t *pData = new uint8_t [_Width*_Height*4]; // Worst case, temporary data
 	int32_t iTex = Internal_CreateTexture(_Width, _Height, _Format, pData);
 	SafeArrayDelete(pData);
 	return iTex;
@@ -638,7 +638,7 @@ int32_t CDirectXDevice::CreateIndexBuffer(int32_t _Count, int32_t _Flags)
 
 	// Create the index buffer, in managed memory for now
 	D3DPOOL MemPlacement = D3DPOOL_MANAGED;// GetMemPlacement(_Flags);
-	// Assume uint16 for now
+	// Assume uint16_t for now
 	D3DFORMAT IndexFormat = D3DFMT_INDEX16;
 	// Assume fp32 for now
 	int32_t BufferSize = GetBufferElementSize(EFormat_int16) * _Count * ED3D_ELEMENTSPERINDEX;
@@ -702,7 +702,7 @@ void CDirectXDevice::UnlockIndexBuffer(int32_t _iBuffer)
 }
 
 // Shaders
-int32_t CDirectXDevice::CreateVertexShader(const int8 *_pString)
+int32_t CDirectXDevice::CreateVertexShader(const char *_pString)
 {
 	if((m_DeviceCaps.VertexShaderVersion < D3DVS_VERSION(1,1)) || !_pString)
 		return -1;
@@ -734,7 +734,7 @@ int32_t CDirectXDevice::CreateVertexShader(const int8 *_pString)
 	return -1;
 }
 
-int32_t CDirectXDevice::CreatePixelShader(const int8 *_pString)
+int32_t CDirectXDevice::CreatePixelShader(const char *_pString)
 {
 	if((m_DeviceCaps.PixelShaderVersion < D3DPS_VERSION(1,1)) || !_pString)
 		return -1;

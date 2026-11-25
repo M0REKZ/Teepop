@@ -10,21 +10,21 @@
 
 using namespace NFoo;
 
-int64 NFoo::GetTickFrequency()
+int64_t NFoo::GetTickFrequency()
 {
-	int64 Freq;
+	int64_t Freq;
 	QueryPerformanceFrequency((LARGE_INTEGER*)&Freq);
 	return Freq;
 }
 
-int64 NFoo::GetTickCount()
+int64_t NFoo::GetTickCount()
 {
-	int64 Count;
+	int64_t Count;
 	QueryPerformanceCounter((LARGE_INTEGER*)&Count);
 	return Count;
 }
 
-void NFoo::MessageBox(const int8 *_pMsg,const int8 *_pCaption)
+void NFoo::MessageBox(const char *_pMsg,const char *_pCaption)
 {
 	::MessageBoxA(0,_pMsg,_pCaption,MB_ICONINFORMATION);
 }

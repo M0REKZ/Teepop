@@ -25,13 +25,13 @@ class CSoundDevice_OpenAL : public CSoundDevice
 	CFormat m_Format;
 	int32_t m_BufferSamples;
 	int32_t m_iCurrentHandle;
-	int64 m_SampleClock;
+	int64_t m_SampleClock;
 	TMap<int32_t, CInstance*> m_lInstances;
 	CSoftwareMixer m_Mixer;
 	CSoftwareMixerInstance *m_pMixerInstance;
 	CPuller m_Puller;
 
-	bool CheckALError(const int8 *_pOperation)
+	bool CheckALError(const char *_pOperation)
 	{
 		ALenum Error = alGetError();
 		if(Error == AL_NO_ERROR)
@@ -44,7 +44,7 @@ class CSoundDevice_OpenAL : public CSoundDevice
 	int32_t QueueBuffer(ALuint _Buffer)
 	{
 		int32_t BufferSize = m_BufferSamples * m_Format.SampleSize();
-		int8 *pData = new int8[BufferSize];
+		char *pData = new char[BufferSize];
 		int32_t Samples = m_Puller.Fill(pData, m_SampleClock, m_BufferSamples);
 		if(Samples <= 0)
 		{

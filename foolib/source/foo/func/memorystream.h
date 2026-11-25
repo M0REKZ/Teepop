@@ -7,7 +7,7 @@ namespace NFoo
 {
 	class CMemoryWriter : public COutputStream
 	{
-		uint8 *m_pAddress;
+		uint8_t *m_pAddress;
 		int32_t m_Written;
 	public:
 
@@ -26,7 +26,7 @@ namespace NFoo
 
 	class CMemoryReader : public CInputStream
 	{
-		uint8 *m_pAddress;
+		uint8_t *m_pAddress;
 		int32_t m_Pos;
 		int32_t m_Size;
 	public:

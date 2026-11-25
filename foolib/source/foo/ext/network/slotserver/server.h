@@ -49,7 +49,7 @@ namespace NFoo { namespace NSlotServer {
 		~CSlotServer();
 
 		bool Running();
-		bool Start(uint16 _Port, const int8 *pVersionString);
+		bool Start(uint16_t _Port, const char *pVersionString);
 		void Stop();
 
 		void Update();

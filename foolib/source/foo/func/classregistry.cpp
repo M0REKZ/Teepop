@@ -11,7 +11,7 @@ int32_t g_CurrentID = 1;
 
 using namespace NClassRegistry;
 
-CHandle::CHandle(const int8 *_pName, const int8 *_pTag, CLASSCREATEFUNC _pfnCreateFunc)
+CHandle::CHandle(const char *_pName, const char *_pTag, CLASSCREATEFUNC _pfnCreateFunc)
 {
 	StringCopy(m_aName, _pName);
 	StringCopy(m_aTag, _pTag);
@@ -37,7 +37,7 @@ void NClassRegistry::Clear()
 //
 //
 //
-void NClassRegistry::Register(const int8 *_pName, const int8 *_pTag, CLASSCREATEFUNC _pfnFunc)
+void NClassRegistry::Register(const char *_pName, const char *_pTag, CLASSCREATEFUNC _pfnFunc)
 {
 	CHandle *pHandle = new CHandle(_pName, _pTag, _pfnFunc);
 	pHandle->m_pNext = m_pFirstClass;
@@ -47,7 +47,7 @@ void NClassRegistry::Register(const int8 *_pName, const int8 *_pTag, CLASSCREATE
 //
 //
 //
-int32_t NClassRegistry::GetClassID(const int8 *_pName)
+int32_t NClassRegistry::GetClassID(const char *_pName)
 {
 	CHandle *pHandle = FindHandle(_pName);
 	if(!pHandle)
@@ -58,7 +58,7 @@ int32_t NClassRegistry::GetClassID(const int8 *_pName)
 //
 //
 //
-CHandle *NClassRegistry::FindHandle(const int8 *_pName)
+CHandle *NClassRegistry::FindHandle(const char *_pName)
 {
 	for(CHandle *pHandle = m_pFirstClass; pHandle; pHandle = pHandle->m_pNext)
 	{
@@ -72,7 +72,7 @@ CHandle *NClassRegistry::FindHandle(const int8 *_pName)
 //
 //
 //
-CHandle *NClassRegistry::FindHandleByTag(const int8 *_pTag)
+CHandle *NClassRegistry::FindHandleByTag(const char *_pTag)
 {
 	for(CHandle *pHandle = m_pFirstClass; pHandle; pHandle = pHandle->m_pNext)
 	{
@@ -83,7 +83,7 @@ CHandle *NClassRegistry::FindHandleByTag(const int8 *_pTag)
 	return NULL;
 }
 
-int32_t NClassRegistry::FindHandleByTag(const int8 *_pTag, TDynamicArray<CHandle*> &rlHandles)
+int32_t NClassRegistry::FindHandleByTag(const char *_pTag, TDynamicArray<CHandle*> &rlHandles)
 {
 	for(CHandle *pHandle = m_pFirstClass; pHandle; pHandle = pHandle->m_pNext)
 	{
@@ -94,8 +94,8 @@ int32_t NClassRegistry::FindHandleByTag(const int8 *_pTag, TDynamicArray<CHandle
 }
 
 // Creates a registered class
-CClass *NClassRegistry::CreateByTag(const int8 *_pTag) { return CreateByHandle(FindHandleByTag(_pTag)); }
-CClass *NClassRegistry::CreateByName(const int8 *_pName) { return CreateByHandle(FindHandle(_pName)); }
+CClass *NClassRegistry::CreateByTag(const char *_pTag) { return CreateByHandle(FindHandleByTag(_pTag)); }
+CClass *NClassRegistry::CreateByName(const char *_pName) { return CreateByHandle(FindHandle(_pName)); }
 
 // Creates a registered class
 CClass *NClassRegistry::CreateByHandle(CHandle *_pHandle)

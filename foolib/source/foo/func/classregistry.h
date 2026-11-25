@@ -14,7 +14,7 @@ namespace NFoo { namespace NClassRegistry {
 	{
 	public:
 		class CHandle *m_pClassHandle;
-//		uint16 m_iClass;
+//		uint16_t m_iClass;
 		virtual ~CClass() {}
 	};
 	typedef CClass *(*CLASSCREATEFUNC)();
@@ -26,10 +26,10 @@ namespace NFoo { namespace NClassRegistry {
 	{
 	public:
 		CHandle(){};
-		CHandle(const int8 *_pName, const int8 *_pTag, CLASSCREATEFUNC _pfnCreateFunc);
+		CHandle(const char *_pName, const char *_pTag, CLASSCREATEFUNC _pfnCreateFunc);
 		int32_t m_iClass;  // 0 = invalid
-		int8 m_aName[64]; // should be replaced by the string class
-		int8 m_aTag[64]; // should be replaced by the string class
+		char m_aName[64]; // should be replaced by the string class
+		char m_aTag[64]; // should be replaced by the string class
 		CLASSCREATEFUNC m_pfnCreate;
 		CHandle *m_pNext;
 	};
@@ -37,15 +37,15 @@ namespace NFoo { namespace NClassRegistry {
 	// list with all the registed classes
 	extern CHandle *m_pFirstClass;
 
-	void Register(const int8 *_pName, const int8 *_pTag, CLASSCREATEFUNC _pfnFunc);
+	void Register(const char *_pName, const char *_pTag, CLASSCREATEFUNC _pfnFunc);
 	void Clear();
 	
-	int32_t FindHandleByTag(const int8 *_pTag, TDynamicArray<CHandle*> &rlHandles);
-	CHandle *FindHandleByTag(const int8 *_pTag);
-	CHandle *FindHandle(const int8 *_pName);
-	int32_t GetClassID(const int8 *_pName);
-	CClass *CreateByTag(const int8 *_pTag);
-	CClass *CreateByName(const int8 *_pName);
+	int32_t FindHandleByTag(const char *_pTag, TDynamicArray<CHandle*> &rlHandles);
+	CHandle *FindHandleByTag(const char *_pTag);
+	CHandle *FindHandle(const char *_pName);
+	int32_t GetClassID(const char *_pName);
+	CClass *CreateByTag(const char *_pTag);
+	CClass *CreateByName(const char *_pName);
 	CClass *CreateByHandle(CHandle *_pHandle);
 	
 	void DumpClasses();

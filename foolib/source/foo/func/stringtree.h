@@ -18,7 +18,7 @@ namespace NFoo {
 class CStringTreeBase
 {
 protected:
-	typedef uint16 NodeIndex;
+	typedef uint16_t NodeIndex;
 
 	enum // special node indexs
 	{
@@ -36,12 +36,12 @@ protected:
 	bool Save(COutputStream &rStream);
 	bool Load(CInputStream &rStream);
 
-	NodeIndex AddNode(const int8 *pString);
-	NodeIndex GetNode(const int8 *pString);
+	NodeIndex AddNode(const char *pString);
+	NodeIndex GetNode(const char *pString);
 	int32_t NodeCount() { return m_lNodes.Len(); }
 
 	//
-	virtual NodeIndex NewNode(const int8 *pString);
+	virtual NodeIndex NewNode(const char *pString);
 	virtual void NodeDataTransfer(NodeIndex iDst, NodeIndex iSrc) {}
 private:
 	void Clear();
@@ -64,16 +64,16 @@ private:
 	// points into addresses in the m_pStringData. It's
 	// done this way so the memory wont get fragmentated.
 	TDynamicArray<CNode> m_lNodes;
-	TDynamicArray<int8*> m_lNodeNames;
-	int8 *m_pStringData;
+	TDynamicArray<char*> m_lNodeNames;
+	char *m_pStringData;
 
 	// small helper functions for digging out node info
 	CNode &Node(NodeIndex iNode) { return m_lNodes[iNode]; }
 	NodeIndex &NodeSibling(NodeIndex iNode) { return m_lNodes[iNode].m_iSibling; }
 	NodeIndex &NodeChild(NodeIndex iNode) { return m_lNodes[iNode].m_iChild; }
-	int8 *NodeName(NodeIndex iNode) { return m_lNodeNames[iNode]; }
+	char *NodeName(NodeIndex iNode) { return m_lNodeNames[iNode]; }
 
-	void NodeSetName(NodeIndex iNode, const int8 *pName, int32_t Len=-1);
+	void NodeSetName(NodeIndex iNode, const char *pName, int32_t Len=-1);
 	void NodeAddChild(NodeIndex iParent, NodeIndex iChild);
 	void NodeDump(NodeIndex iNode, COutputStream &rStream, int32_t Indent=0);
 };
@@ -86,7 +86,7 @@ class TStringTree : private CStringTreeBase
 {
 	TDynamicArray<T> m_lNodeData;
 
-	virtual NodeIndex NewNode(const int8 *pString)
+	virtual NodeIndex NewNode(const char *pString)
 	{
 		m_lNodeData.Add(T());
 		return CStringTreeBase::NewNode(pString);
@@ -133,7 +133,7 @@ public:
 	//
 	// Get a value from a string
 	//
-	T Get(const int8 *pString, T Default=0)
+	T Get(const char *pString, T Default=0)
 	{
 		NodeIndex iNode = GetNode(pString);
 		if(!NodeValid(iNode))
@@ -144,7 +144,7 @@ public:
 	//
 	// Adds an item to the tree
 	//
-	bool Add(const int8 *pString, T Item)
+	bool Add(const char *pString, T Item)
 	{
 		NodeIndex iNode = AddNode(pString);
 		m_lNodeData[iNode] = Item;

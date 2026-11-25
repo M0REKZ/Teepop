@@ -23,7 +23,7 @@ protected:
 		int32_t m_iRoom;
 		int32_t m_State;
 		CBoard m_Board;
-		int64 m_StartTime;
+		int64_t m_StartTime;
 		int32_t m_Level;
 	};
 

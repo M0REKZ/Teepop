@@ -48,8 +48,8 @@ int32_t CRLEEncoder::Write(const void *_pBuffer, int32_t _Size)
 	if(!IsReady())
 		throw "RLECompressor isn't ready to write!";
 
-	uint8 *pSrc = (uint8 *)_pBuffer;
-	//uint8 *pDst = pRLEData;
+	uint8_t *pSrc = (uint8_t *)_pBuffer;
+	//uint8_t *pDst = pRLEData;
 	int32_t Count = _Size/m_UnitSize;
 	int32_t UnitSize = m_UnitSize;
 	int32_t Written = 0;
@@ -67,7 +67,7 @@ int32_t CRLEEncoder::Write(const void *_pBuffer, int32_t _Size)
 				Len++;
 
 			Count -= Len;
-			m_pTarget->WriteNE<uint8>((1<<7)|(Len-1));
+			m_pTarget->WriteNE<uint8_t>((1<<7)|(Len-1));
 			m_pTarget->Write(pSrc, UnitSize);
 			pSrc += UnitSize*Len;
 			Written += UnitSize+1;
@@ -92,7 +92,7 @@ int32_t CRLEEncoder::Write(const void *_pBuffer, int32_t _Size)
 					Len++;
 			}
 
-			m_pTarget->WriteNE<uint8>(Len-1);
+			m_pTarget->WriteNE<uint8_t>(Len-1);
 			Count -= Len;
 			while(Len--)
 			{
@@ -134,11 +134,11 @@ bool CRLEDecoder::EndOfStream()
 
 int32_t CRLEDecoder::Read(void *_pBuffer, int32_t _Size)
 {
-	uint8 *pDst = (uint8 *)_pBuffer;
+	uint8_t *pDst = (uint8_t *)_pBuffer;
 	int32_t Count = _Size/m_UnitSize;
 	while(Count)
 	{
-		int32_t BlockHeader = m_pSource->ReadNE<uint8>();
+		int32_t BlockHeader = m_pSource->ReadNE<uint8_t>();
 		int32_t Len = (BlockHeader&127)+1;
 		Count -= Len;
 		if(Count < 0)
@@ -147,7 +147,7 @@ int32_t CRLEDecoder::Read(void *_pBuffer, int32_t _Size)
 		if(BlockHeader>>7)
 		{
 			// RLE
-			uint8 *pSrc = pDst;
+			uint8_t *pSrc = pDst;
 			m_pSource->Read(pDst, m_UnitSize);
 			pDst += m_UnitSize;
 			Len--;

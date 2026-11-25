@@ -13,7 +13,7 @@ CMime::CMime()
 }
 
 //
-CMime::CMime(const int8 *pString)
+CMime::CMime(const char *pString)
 {
 	m_Name = pString;
 	m_Hash = StringGetHash(pString);
@@ -49,7 +49,7 @@ bool CMime::operator ==(const CMime &rMime) const
 }
 
 //
-bool CMime::AddFileExt(const int8 *pFileExt, const int8 *pMimeTag)
+bool CMime::AddFileExt(const char *pFileExt, const char *pMimeTag)
 {
 	ms_lFileExt.Add(TPair<CString,CString>(pFileExt, pMimeTag));
 
@@ -57,9 +57,9 @@ bool CMime::AddFileExt(const int8 *pFileExt, const int8 *pMimeTag)
 }
 
 //
-CMime CMime::MimeFromFileExt(const int8 *pFilename)
+CMime CMime::MimeFromFileExt(const char *pFilename)
 {
-	const int8 *pFileExt = NULL;
+	const char *pFileExt = NULL;
 	while(*pFilename != 0)
 	{
 		if(*pFilename == '.')

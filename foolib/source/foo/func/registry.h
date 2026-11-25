@@ -19,8 +19,8 @@ namespace NFoo
 
 		TDynamicArray<CRegistry*> m_lValues;
 
-		CRegistry *GetChild(const int8 *pName);
-		CRegistry *GetChild(const int8 *pName, const int8 *pValue);
+		CRegistry *GetChild(const char *pName);
+		CRegistry *GetChild(const char *pName, const char *pValue);
 
 		void Dump(int32_t Indent=0);
 		bool Read(class CInputStream &rStream);

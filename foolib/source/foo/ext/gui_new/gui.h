@@ -21,7 +21,7 @@ namespace NGUI {
 		CPoint m_MouseLastPosition;
 		CPoint m_MousePosition;
 		CPoint m_MouseLastClickPosition;
-		int64 m_MouseLastClickTime;
+		int64_t m_MouseLastClickTime;
 
 		CView *m_pFocusedView;
 		CView *m_pMouseCaptureView;
@@ -33,8 +33,8 @@ namespace NGUI {
 
 		bool m_KeyPressed;
 		int32_t m_KeyStroke;
-		int8 m_KeyAsciiCode;
-		int64 m_KeyRepeatTime;
+		char m_KeyAsciiCode;
+		int64_t m_KeyRepeatTime;
 
 		void MouseBoundCheck();
 
@@ -57,9 +57,9 @@ namespace NGUI {
 		CView *CreateFromRegistry(class CRegistry *pReg);
 
 		//
-		void AddMapping(const int8 *pName, CMessageReceiver *pReceiver, CMessage &rMsg);
-		void AddMapping(const int8 *pName, CMessageReceiver *pReceiver, int32_t iMsg);
-		CMessageTarget GetMapping(const int8 *pName);
+		void AddMapping(const char *pName, CMessageReceiver *pReceiver, CMessage &rMsg);
+		void AddMapping(const char *pName, CMessageReceiver *pReceiver, int32_t iMsg);
+		CMessageTarget GetMapping(const char *pName);
 		
 		//
 		void RenderCursor();
@@ -84,8 +84,8 @@ namespace NGUI {
 		void MouseUp(int32_t _Button);
 
 		// Keyboard
-		void KeyDown(int32_t _Stroke, uint8 _AsciiCode, bool Repeat=false);
-		void KeyUp(int32_t _Stroke, uint8 _AsciiCode);
+		void KeyDown(int32_t _Stroke, uint8_t _AsciiCode, bool Repeat=false);
+		void KeyUp(int32_t _Stroke, uint8_t _AsciiCode);
 	};
 }
 }

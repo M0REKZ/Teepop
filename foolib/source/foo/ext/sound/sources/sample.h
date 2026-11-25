@@ -24,7 +24,7 @@ namespace NFoo { namespace NSound {
 		void Load(CInputStream &rStream)
 		{
 			m_DataSize = rStream.GetSize();
-			m_pData = new int8[m_DataSize];
+			m_pData = new char[m_DataSize];
 			rStream.Read(m_pData, m_DataSize);
 		}
 
@@ -50,7 +50,7 @@ namespace NFoo { namespace NSound {
 			m_Position = 0;
 		}
 
-		virtual void PullData(CBuffer &rBuffer, int64 Position)
+		virtual void PullData(CBuffer &rBuffer, int64_t Position)
 		{
 			if(m_Position == -1)
 				return; 

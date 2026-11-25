@@ -81,7 +81,7 @@ namespace NFoo { namespace N3D { namespace NOpenGL {
 	//
 	class COpenGLDevice : public CDevice
 	{
-		//int32_t Internal_CreateTexture(int32_t _w, int32_t _h, int32_t _Format, uint8 *m_pData);
+		//int32_t Internal_CreateTexture(int32_t _w, int32_t _h, int32_t _Format, uint8_t *m_pData);
 
 		struct SExt
 		{
@@ -129,8 +129,8 @@ namespace NFoo { namespace N3D { namespace NOpenGL {
 		virtual void UnlockVertexBuffer(int32_t _iBuffer, int32_t _What = -1);
 
 		// shaders
-		virtual int32_t CreateVertexShader(const int8 *_pString);
-		virtual int32_t CreatePixelShader(const int8 *_pString);
+		virtual int32_t CreateVertexShader(const char *_pString);
+		virtual int32_t CreatePixelShader(const char *_pString);
 		virtual bool DestroyVertexShader(int32_t _iShader);
 		virtual bool DestroyPixelShader(int32_t _iShader);
 

@@ -7,26 +7,26 @@
 
 // typedef?
 typedef unsigned int uintr;
-typedef unsigned char uint8;
-typedef unsigned short uint16;
+//typedef unsigned char uint8_t;
+//typedef unsigned short uint16_t;
 //typedef unsigned long uint32_t;
 typedef int intr;
-typedef char int8;
-typedef short int16;
+//typedef char int8_t;
+//typedef short int16_t;
 //typedef long int32_t;
 
-#if defined(FOO_COMPILER_INT64_INT64)
-	typedef __int64 int64;
-	typedef unsigned __int64 uint64;
+/*#if defined(FOO_COMPILER_INT64_INT64)
+	typedef __int64 int64_t;
+	typedef unsigned __int64 uint64_t;
 #elif defined(FOO_COMPILER_INT64_LONGLONG)
-	typedef long long int64;
-	typedef unsigned long long uint64;
+	typedef long long int64_t;
+	typedef unsigned long long uint64_t;
 #elif defined(FOO_COMPILER_INT64_LONGLONG_EXT)
-	__extension__ typedef long long int64;
-	__extension__ typedef unsigned long long uint64;
+	__extension__ typedef long long int64_t;
+	__extension__ typedef unsigned long long uint64_t;
 #else
 	#error "FOO ERROR: No FOO_COMPILER_INT64_* define found"
-#endif
+#endif*/
 
 // fp32, fp64
 typedef float fp32;

@@ -28,12 +28,12 @@ public:
 	int32_t virtual Read(void *pBuffer, int32_t Size)
 	{
 		int32_t r = Size;
-		uint8 *pDst = (uint8 *)pBuffer;
+		uint8_t *pDst = (uint8_t *)pBuffer;
 		while(Size--)
 		{
-			*pDst = m_rSource.ReadNE<uint8>();
+			*pDst = m_rSource.ReadNE<uint8_t>();
 			if(*pDst == 0xFF)
-				m_rSource.ReadNE<uint8>();
+				m_rSource.ReadNE<uint8_t>();
 			pDst++;
 		}
 		return r;
@@ -70,7 +70,7 @@ class CJPEGFormat : public CImageFormat
 	int32_t m_MCUSizeX;
 	int32_t m_MCUSizeY;
 
-	uint8 m_aVector[64];
+	uint8_t m_aVector[64];
 	int32_t m_aComponentDC[3];
 
 	//
@@ -176,13 +176,13 @@ bool CJPEGFormat::Load(CInputStream &_rStream, CImage &_rImage)
 {
 	const bool Log = false;
 
-	if(_rStream.ReadNE<uint8>() != 0xFF)
+	if(_rStream.ReadNE<uint8_t>() != 0xFF)
 	{
 		NLog::WriteF("Err: not a jpeg\n");
 		return false;
 	}
 	
-	if(_rStream.ReadNE<uint8>() != SOI)
+	if(_rStream.ReadNE<uint8_t>() != SOI)
 	{
 		NLog::WriteF("Err: not a jpeg\n");
 		return false;
@@ -190,14 +190,14 @@ bool CJPEGFormat::Load(CInputStream &_rStream, CImage &_rImage)
 	
 	while(1)
 	{
-		if(_rStream.ReadNE<uint8>() != 0xFF)
+		if(_rStream.ReadNE<uint8_t>() != 0xFF)
 		{
 			NLog::WriteF("Err: not a segment, %d\n", _rStream.GetPosition());
 			return false;
 		}
 
-		uint8 segtype = _rStream.ReadNE<uint8>();
-		uint16 segsize = _rStream.ReadBE<uint16>();
+		uint8_t segtype = _rStream.ReadNE<uint8_t>();
+		uint16_t segsize = _rStream.ReadBE<uint16_t>();
 		
 		if(Log)
 			NLog::WriteF("%x: %d\n", segtype, segsize);
@@ -210,10 +210,10 @@ bool CJPEGFormat::Load(CInputStream &_rStream, CImage &_rImage)
 			//
 			// Start Of Image
 			//
-			int32_t Prec = _rStream.ReadNE<uint8>();
-			m_Height = _rStream.ReadBE<uint16>();
-			m_Width = _rStream.ReadBE<uint16>();
-			m_NumComponents = _rStream.ReadNE<uint8>();
+			int32_t Prec = _rStream.ReadNE<uint8_t>();
+			m_Height = _rStream.ReadBE<uint16_t>();
+			m_Width = _rStream.ReadBE<uint16_t>();
+			m_NumComponents = _rStream.ReadNE<uint8_t>();
 			if(Log)
 				NLog::WriteF("\tsize:%dx%dx%x\n", m_Width, m_Height, m_NumComponents);
 
@@ -221,9 +221,9 @@ bool CJPEGFormat::Load(CInputStream &_rStream, CImage &_rImage)
 			int32_t minx = 10, miny = 10;
 			for(int32_t i = 0; i < m_NumComponents; i++)
 			{
-				m_aComponents[i].m_ID = _rStream.ReadNE<uint8>();
-				m_aComponents[i].m_Factors = _rStream.ReadNE<uint8>();
-				m_aComponents[i].m_Quat = _rStream.ReadNE<uint8>();
+				m_aComponents[i].m_ID = _rStream.ReadNE<uint8_t>();
+				m_aComponents[i].m_Factors = _rStream.ReadNE<uint8_t>();
+				m_aComponents[i].m_Quat = _rStream.ReadNE<uint8_t>();
 
 				if(Log)
 				{
@@ -281,10 +281,10 @@ bool CJPEGFormat::Load(CInputStream &_rStream, CImage &_rImage)
 			int32_t i = 0;
 			while(bytes)
 			{
-				uint8 Info = _rStream.ReadNE<uint8>();
+				uint8_t Info = _rStream.ReadNE<uint8_t>();
 				int32_t QTnum = Info&0xF;
 				int32_t Prec = Info>>4;
-				uint8 aTemp[64];
+				uint8_t aTemp[64];
 				_rStream.Read(aTemp, 64*(Prec+1));
 
 				int32_t j = 0;
@@ -313,11 +313,11 @@ bool CJPEGFormat::Load(CInputStream &_rStream, CImage &_rImage)
 			int32_t n = 0;
 			while(bytes)
 			{
-				uint8 Info;
-				uint8 Counts[16];
+				uint8_t Info;
+				uint8_t Counts[16];
 				int32_t NumEntires = 0;
 				
-				Info = _rStream.ReadNE<uint8>();
+				Info = _rStream.ReadNE<uint8_t>();
 				int32_t HT = Info&0xF;
 				if(HT > 3)
 					throw "HT Error!";
@@ -329,14 +329,14 @@ bool CJPEGFormat::Load(CInputStream &_rStream, CImage &_rImage)
 					NumEntires += Counts[i];
 
 				//NLog::WriteF("FILLING %d\n", iTable);
-				int8 aBin[64];
+				char aBin[64];
 				int32_t Current = 0;
 				uint32_t Code = 0;
 				for(int32_t i = 1; i < 17; i++)
 				{
 					for(int32_t j = 0; j < Counts[i-1]; j++)
 					{
-						m_aHuffmanAlphabet[iTable].Add(_rStream.ReadNE<uint8>(), i, Code);
+						m_aHuffmanAlphabet[iTable].Add(_rStream.ReadNE<uint8_t>(), i, Code);
 						Code++;
 						Current++;
 					}
@@ -361,10 +361,10 @@ bool CJPEGFormat::Load(CInputStream &_rStream, CImage &_rImage)
 			//
 			// Start of Scans
 			//
-			uint8 aScanTables[4] = {0};
+			uint8_t aScanTables[4] = {0};
 			int32_t aScanIDs[4] = {0};
 
-			uint8 NumScans = _rStream.ReadNE<uint8>();
+			uint8_t NumScans = _rStream.ReadNE<uint8_t>();
 
 			// create image
 			if(NumScans == 1)
@@ -382,8 +382,8 @@ bool CJPEGFormat::Load(CInputStream &_rStream, CImage &_rImage)
 			// read scan info
 			for(int32_t i = 0; i < NumScans; i++)
 			{
-				aScanIDs[i] = _rStream.ReadNE<uint8>();
-				aScanTables[i] = _rStream.ReadNE<uint8>();
+				aScanIDs[i] = _rStream.ReadNE<uint8_t>();
+				aScanTables[i] = _rStream.ReadNE<uint8_t>();
 				for(int32_t c = 0; c < m_NumComponents; c++)
 				{
 					if(m_aComponents[c].m_ID == aScanIDs[i])
@@ -550,7 +550,7 @@ void CJPEGFormat::ReadBlock(CBitInputStreamHigh &rBitStream, int32_t iDCTable, i
 			else if(f < 0)
 				m_aVector[x+(y<<3)] = 0;
 			else
-				m_aVector[x+(y<<3)] = (uint8)f;
+				m_aVector[x+(y<<3)] = (uint8_t)f;
 		}
 	}
 }

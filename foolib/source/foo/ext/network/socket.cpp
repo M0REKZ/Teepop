@@ -93,10 +93,10 @@ using namespace NFoo::NNetwork;
 		Addr.m_Port = ByteSwapBEtoCPU(saddr.sin_port);
 //		uint32_t ip = Swap32BEtoCPU(saddr.sin_addr.s_addr);
 		uint32_t ip = ByteSwapBEtoCPU(saddr.sin_addr.s_addr);
-		Addr.m_aAddress[0] = (uint8)((ip>>24)&0xFF);
-		Addr.m_aAddress[1] = (uint8)((ip>>16)&0xFF);
-		Addr.m_aAddress[2] = (uint8)((ip>>8)&0xFF);
-		Addr.m_aAddress[3] = (uint8)(ip&0xFF);
+		Addr.m_aAddress[0] = (uint8_t)((ip>>24)&0xFF);
+		Addr.m_aAddress[1] = (uint8_t)((ip>>16)&0xFF);
+		Addr.m_aAddress[2] = (uint8_t)((ip>>8)&0xFF);
+		Addr.m_aAddress[3] = (uint8_t)(ip&0xFF);
 
 		return Addr;
 	}
@@ -144,9 +144,9 @@ bool CSocket::Create(int32_t _Type)
 		return false;
 
 	//int size = 256*1024;
-	//setsockopt(m_hSocket, SOL_SOCKET, SO_SNDBUF, (int8*)&size, 4);
+	//setsockopt(m_hSocket, SOL_SOCKET, SO_SNDBUF, (int8_t*)&size, 4);
 	//size = 128*1024;
-	//setsockopt(m_hSocket, SOL_SOCKET, SO_RCVBUF, (int8*)&size, 4);
+	//setsockopt(m_hSocket, SOL_SOCKET, SO_RCVBUF, (int8_t*)&size, 4);
 
 	return true;
 }
@@ -266,7 +266,7 @@ bool CSocket::SendTo(const void *_pData, int32_t _DataSize, CAddr &_Target)
 		return true;
 
 	sockaddr Address = AddrToSockAddr(_Target);
-	if(sendto(m_hSocket, (int8 *)_pData, _DataSize, 0, (sockaddr *)&Address, sizeof(sockaddr)) < 0)
+	if(sendto(m_hSocket, (char *)_pData, _DataSize, 0, (sockaddr *)&Address, sizeof(sockaddr)) < 0)
 		return false;
 
 	return true;
@@ -277,7 +277,7 @@ bool CSocket::SendTo(const void *_pData, int32_t _DataSize, CAddr &_Target)
 //
 int32_t CSocket::Recv(void *_pData, int32_t _DataSize)
 {
-	return recv(m_hSocket, (int8 *)_pData, _DataSize, 0);
+	return recv(m_hSocket, (char *)_pData, _DataSize, 0);
 }
 
 //
@@ -285,7 +285,7 @@ int32_t CSocket::Recv(void *_pData, int32_t _DataSize)
 //
 bool CSocket::Send(const void *_pData, int32_t _DataSize)
 {
-	int32_t Ret = send(m_hSocket, (int8 *)_pData, _DataSize, 0);
+	int32_t Ret = send(m_hSocket, (char *)_pData, _DataSize, 0);
 	return Ret!=0;
 }
 
@@ -296,15 +296,15 @@ int32_t CSocket::RecvFrom(void *_pData, int32_t _DataSize, CAddr &_Source)
 {
 	int32_t Bytes;
 	sockaddr Address;
-	//if((Bytes = recvfrom(m_SocketHandle, (int8 *)_pData, _DataSize, 0, (sockaddr *)&Address, &AddrLen)) != 0)
+	//if((Bytes = recvfrom(m_SocketHandle, (int8_t *)_pData, _DataSize, 0, (sockaddr *)&Address, &AddrLen)) != 0)
 	//	return Bytes;
 
 #if defined(FOO_PLATFORM_POSIX)
 	socklen_t AddrLen = sizeof(sockaddr);
-	Bytes = recvfrom(m_hSocket, (int8 *)_pData, _DataSize, 0, (sockaddr *)&Address, &AddrLen);
+	Bytes = recvfrom(m_hSocket, (int8_t *)_pData, _DataSize, 0, (sockaddr *)&Address, &AddrLen);
 #else
 	intr AddrLen = sizeof(sockaddr);
-	Bytes = recvfrom(m_hSocket, (int8 *)_pData, _DataSize, 0, (sockaddr *)&Address, &AddrLen);
+	Bytes = recvfrom(m_hSocket, (char *)_pData, _DataSize, 0, (sockaddr *)&Address, &AddrLen);
 #endif
 
 	CAddr Addr = SockAddrToAddr(Address);

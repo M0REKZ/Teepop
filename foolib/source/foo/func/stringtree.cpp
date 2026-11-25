@@ -25,12 +25,12 @@ CStringTreeBase::~CStringTreeBase()
 //
 //
 //
-void CStringTreeBase::NodeSetName(NodeIndex iNode, const int8 *pName, int32_t Len)
+void CStringTreeBase::NodeSetName(NodeIndex iNode, const char *pName, int32_t Len)
 {
 	SafeArrayDelete(m_lNodeNames[iNode]);
 	if(Len < 0)
 		Len = StringLength(pName);
-	m_lNodeNames[iNode] = new int8 [Len+1];
+	m_lNodeNames[iNode] = new char [Len+1];
 	MemoryCopy(m_lNodeNames[iNode], pName, Len+1);
 	m_lNodeNames[iNode][Len] = 0;
 }
@@ -38,7 +38,7 @@ void CStringTreeBase::NodeSetName(NodeIndex iNode, const int8 *pName, int32_t Le
 //
 //
 //
-CStringTreeBase::NodeIndex CStringTreeBase::NewNode(const int8 *pName)
+CStringTreeBase::NodeIndex CStringTreeBase::NewNode(const char *pName)
 {
 	if(m_pStringData)
 	{
@@ -68,8 +68,8 @@ void CStringTreeBase::NodeAddChild(NodeIndex iParent, NodeIndex iChild)
 //
 void CStringTreeBase::NodeDump(NodeIndex iNode, COutputStream &rStream, int32_t Indent)
 {
-	static int8 aIndent[] = "  ";
-	static int8 aEnd[] = "\n";
+	static char aIndent[] = "  ";
+	static char aEnd[] = "\n";
 	for(int32_t i = 0; i < Indent; i++)
 		rStream.Write(aIndent, StringLength(aIndent));
 	if(NodeName(iNode))
@@ -131,7 +131,7 @@ bool CStringTreeBase::Save(COutputStream &rStream)
 		if(m_lNodeNames[i])
 			rStream.Write(m_lNodeNames[i], StringLength(m_lNodeNames[i])+1);
 		else
-			rStream.WriteNE<uint8>(0);
+			rStream.WriteNE<uint8_t>(0);
 	}
 	return true;
 }
@@ -148,10 +148,10 @@ bool CStringTreeBase::Load(CInputStream &rStream)
 	rStream.Read(&m_lNodes[0], sizeof(CNode)*m_lNodes.Len());
 
 	Len = rStream.ReadBE<int32_t>();
-	m_pStringData = new int8 [Len];
+	m_pStringData = new char [Len];
 	rStream.Read(m_pStringData, Len);
 
-	int8 *pCurrent = m_pStringData;
+	char *pCurrent = m_pStringData;
 	for(int32_t i = 0; i < m_lNodeNames.Len(); i++)
 	{
 		m_lNodeNames[i] = pCurrent;
@@ -164,10 +164,10 @@ bool CStringTreeBase::Load(CInputStream &rStream)
 //
 //
 //
-CStringTreeBase::NodeIndex CStringTreeBase::GetNode(const int8 *pString)
+CStringTreeBase::NodeIndex CStringTreeBase::GetNode(const char *pString)
 {
 	NodeIndex iCurrent = ERootNode;
-	const int8 *pName = pString;
+	const char *pName = pString;
 	int32_t NameLen = StringLength(pName);
 
 	NodeIndex iBestMatch = ENullNode;
@@ -177,7 +177,7 @@ CStringTreeBase::NodeIndex CStringTreeBase::GetNode(const int8 *pString)
 	{
 		CNode &rNode = Node(iCurrent);
 		int32_t NodeLen = 0;
-		const int8 *pNodeName = NodeName(iCurrent);
+		const char *pNodeName = NodeName(iCurrent);
 		if(pNodeName)
 			NodeLen = StringLength(pNodeName);
 
@@ -205,10 +205,10 @@ CStringTreeBase::NodeIndex CStringTreeBase::GetNode(const int8 *pString)
 //
 //
 //
-CStringTreeBase::NodeIndex CStringTreeBase::AddNode(const int8 *pString)
+CStringTreeBase::NodeIndex CStringTreeBase::AddNode(const char *pString)
 {
 	NodeIndex iCurrent = ERootNode;
-	const int8 *pName = pString;
+	const char *pName = pString;
 	int32_t NameLen = StringLength(pName);
 
 	NodeIndex iBestMatch = ENullNode;
@@ -216,7 +216,7 @@ CStringTreeBase::NodeIndex CStringTreeBase::AddNode(const int8 *pString)
 
 	while(1)
 	{
-		const int8 *pNodeName = NodeName(iCurrent);
+		const char *pNodeName = NodeName(iCurrent);
 		int32_t NodeLen = 0;
 		if(pNodeName)
 			NodeLen = StringLength(pNodeName);

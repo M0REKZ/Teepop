@@ -22,8 +22,8 @@ namespace NFoo { namespace NSlotServer {
 		NFoo::NNetwork::CAddr m_RemoteAddress;
 
 		// used for timeout
-		int64 m_LastReceiveTime;
-		int64 m_LastSendTime;
+		int64_t m_LastReceiveTime;
+		int64_t m_LastSendTime;
 
 		//
 		int32_t m_SequenceNumber;
@@ -42,13 +42,13 @@ namespace NFoo { namespace NSlotServer {
 		{
 		public:
 			CChunk *m_pChunk;
-			int64 m_LastSendTime;
+			int64_t m_LastSendTime;
 			int32_t m_ResendCount;
 		};
 		
 		NFoo::TDynamicArray<CVitalHolder> m_lVitalChunks; // are going to be resent if they don't get an ack
 		
-		virtual void Close(const int8 *pReason="");
+		virtual void Close(const char *pReason="");
 
 	protected:
 		CLock m_Lock;
@@ -74,7 +74,7 @@ namespace NFoo { namespace NSlotServer {
 		CConnection();
 		virtual ~CConnection();
 
-		const int8 *GetErrorMsg() { return m_ErrorMsg; }
+		const char *GetErrorMsg() { return m_ErrorMsg; }
 
 		// state retrival
 		int32_t GetState() { return m_State; }
@@ -86,7 +86,7 @@ namespace NFoo { namespace NSlotServer {
 
 		//	
 		void QueueChunk(CChunk *_pChunk); // (LOCKS)
-		void QueueChunk(uint8 _Type, uint8 _Flags=0, int8 *_pData=NULL, uint16 _Size=0);
+		void QueueChunk(uint8_t _Type, uint8_t _Flags=0, char *_pData=NULL, uint16_t _Size=0);
 
 		CChunk *GetChunk();  // (LOCKS)
 		void Flush(); // (LOCKS) sends all pending chunks

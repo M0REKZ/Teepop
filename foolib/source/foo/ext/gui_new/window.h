@@ -7,7 +7,7 @@ namespace NGUI {
 	{
 		friend class CMenu;
 	protected:
-		CMenuItem(CView *pParent=NULL, const int8 *pName=NULL, CGUI *pGUI=NULL) : CView(pParent, pName, pGUI) {};
+		CMenuItem(CView *pParent=NULL, const char *pName=NULL, CGUI *pGUI=NULL) : CView(pParent, pName, pGUI) {};
 		virtual void OnDraw(CDrawer &_rDrawer);
 	public:
 	};
@@ -18,7 +18,7 @@ namespace NGUI {
 		TDynamicArray<CMenuItem*> m_lItems;
 		CPoint FindDimentions();
 	public:
-		CMenu(CView *pParent=NULL, const int8 *pName=NULL, CGUI *pGUI=NULL);
+		CMenu(CView *pParent=NULL, const char *pName=NULL, CGUI *pGUI=NULL);
 		
 		void Activate(CPoint _Pos);
 		void Deactivate();
@@ -46,7 +46,7 @@ namespace NGUI {
 	protected:
 		virtual void OnDraw(CDrawer &_rDrawer);
 	public:
-		CFrame(CView *pParent=NULL, const int8 *pName=NULL, CGUI *pGUI=NULL);
+		CFrame(CView *pParent=NULL, const char *pName=NULL, CGUI *pGUI=NULL);
 	};
 
 	//
@@ -70,8 +70,8 @@ namespace NGUI {
 		virtual void OnMouseMove(CPoint _Pos);
 		virtual void OnDraw(CDrawer &_rDrawer);
 	public:
-		CWindow(CView *pParent=NULL, const int8 *pName=NULL, CGUI *pGUI=NULL);
-		void SetCaption(const int8 *_pCap);
+		CWindow(CView *pParent=NULL, const char *pName=NULL, CGUI *pGUI=NULL);
+		void SetCaption(const char *_pCap);
 	};
 }
 }

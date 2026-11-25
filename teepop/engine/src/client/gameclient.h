@@ -8,8 +8,8 @@ class CClientBoard : public CBoard
 public:
 	CClientBoard() { ResetTimers(); }
 	
-	int64 m_LastUpdate;
-	int64 m_TickLength;
+	int64_t m_LastUpdate;
+	int64_t m_TickLength;
 	fp32 m_IntertickTime;
 
 	bool m_Stable;
@@ -82,7 +82,7 @@ public:
 	fp32 m_LastCoverage;
 	int32_t m_BoardState;
 	int32_t m_Level;
-	//int64 m_LastBoardUpdate;
+	//int64_t m_LastBoardUpdate;
 
 	// positioning
 	int32_t m_Rotation;
@@ -99,7 +99,7 @@ public:
 
 	// opponents
 	TMap<int32_t, CClientBoard*> m_mOpponentBoards;
-	//int64 m_LastOpponentBoardUpdate;
+	//int64_t m_LastOpponentBoardUpdate;
 	//fp32 m_OpponentIntertickTime;
 
 	// 

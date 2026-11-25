@@ -26,7 +26,7 @@ template<class T> inline void ByteSwap16ref(T &x)
 
 template<class T> inline T ByteSwap16(const T y)
 {
-	uint16 x = *((uint16*)&y);
+	uint16_t x = *((uint16_t*)&y);
 	ByteSwap16ref(x);
 	return *((T*)&x);
 }

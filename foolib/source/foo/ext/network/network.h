@@ -18,22 +18,22 @@ namespace NFoo { namespace NNetwork {
 		friend class CSocket;
 
 		//
-		uint8 m_aAddress[4];
-		uint16 m_Port;
+		uint8_t m_aAddress[4];
+		uint16_t m_Port;
 
 		// 
 		CAddr();
-		CAddr(uint16 _Port);
-		CAddr(uint8 _1, uint8 _2, uint8 _3, uint8 _4, uint16 _Port);
-		CAddr(const int8 *_pAddr, uint16 _Port);
+		CAddr(uint16_t _Port);
+		CAddr(uint8_t _1, uint8_t _2, uint8_t _3, uint8_t _4, uint16_t _Port);
+		CAddr(const char *_pAddr, uint16_t _Port);
 
 		//
-		const int8 *Str();
+		const char *Str();
 
 
 		//
-		void Set(const int8 *_pAddr, uint16 _Port);
-		void SetAny(uint16 _Port);
+		void Set(const char *_pAddr, uint16_t _Port);
+		void SetAny(uint16_t _Port);
 
 		//
 		int32_t operator=(CAddr &_pAddr);
@@ -41,7 +41,7 @@ namespace NFoo { namespace NNetwork {
 
 	};
 	
-	CAddr AddrFromHostname(const char* _Name, uint16 _Port);
+	CAddr AddrFromHostname(const char* _Name, uint16_t _Port);
 
 	class CSocket
 	{

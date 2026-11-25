@@ -76,9 +76,9 @@ CSlotServer::CSlot *CSlotServer::NewSlot()
 //
 //
 //
-void StrAdd(int8 *&_Str, const int8 *_pFormat, ...)
+void StrAdd(char *&_Str, const char *_pFormat, ...)
 {
-    int8 Buffer[4092];
+    char Buffer[4092];
 
     va_list Args;
     va_start(Args, _pFormat);
@@ -218,8 +218,8 @@ void CSlotServer::Update()
 	
 	while(pSocket = m_StatsSocket.Accept())
 	{
-		int8 aString[1024*32];
-		int8 *pCurrent = aString;
+		char aString[1024*32];
+		char *pCurrent = aString;
 		StrAdd(pCurrent, "SlotServer Statistics\n\n");
 		for(int32_t i = 0; i < m_lSlot.Len(); i++)
 		{
@@ -251,7 +251,7 @@ void CSlotServer::Stop()
 
 
 
-bool CSlotServer::Start(uint16 _Port, const int8 *pVersionString)
+bool CSlotServer::Start(uint16_t _Port, const char *pVersionString)
 {
 	m_StatsSocket.Create(NNetwork::CSocket::EType_TCP);
 	m_StatsSocket.SetBlocking(false);

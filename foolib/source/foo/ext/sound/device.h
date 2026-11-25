@@ -6,7 +6,7 @@
 
 namespace NFoo { namespace NSound {
 
-	const int8 aDeviceClassTag[] = "Sound Device";
+	const char aDeviceClassTag[] = "Sound Device";
 
 	enum
 	{

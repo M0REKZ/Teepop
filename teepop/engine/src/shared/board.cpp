@@ -473,11 +473,11 @@ int32_t CBoard::GetConnectionIndex(int32_t x, int32_t y)
 //
 void CBoard::Pack(COutputStream &rStream) // 6*12/2=36 byte
 {
-	rStream.WriteBE<uint8>(m_StoneIndex); // should be packed into 1 byte?
-	rStream.WriteBE<uint8>(m_NumStones);
+	rStream.WriteBE<uint8_t>(m_StoneIndex); // should be packed into 1 byte?
+	rStream.WriteBE<uint8_t>(m_NumStones);
 	for(int32_t y = 0; y < EHeight; y++)
 		for(int32_t x = 0; x < EWidth; x+=2)
-			rStream.WriteNE<uint8>((m_aField[x][y]<<4)|m_aField[x+1][y]);
+			rStream.WriteNE<uint8_t>((m_aField[x][y]<<4)|m_aField[x+1][y]);
 }
 
 //
@@ -485,12 +485,12 @@ void CBoard::Pack(COutputStream &rStream) // 6*12/2=36 byte
 //
 void CBoard::Unpack(CInputStream &rStream)
 {
-	m_StoneIndex = rStream.ReadBE<uint8>();
-	m_NumStones = rStream.ReadBE<uint8>();
+	m_StoneIndex = rStream.ReadBE<uint8_t>();
+	m_NumStones = rStream.ReadBE<uint8_t>();
 	for(int32_t y = 0; y < EHeight; y++)
 		for(int32_t x = 0; x < EWidth; x+=2)
 		{
-			uint8 b = rStream.ReadNE<uint8>();
+			uint8_t b = rStream.ReadNE<uint8_t>();
 			m_aField[x][y] = b>>4;
 			m_aField[x+1][y] = b&0xF;
 		}

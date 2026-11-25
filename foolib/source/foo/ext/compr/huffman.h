@@ -92,8 +92,8 @@ namespace NFoo
 		//
 		#ifdef HUFFMAN_DEBUG
 			void LogTimes();
-			int64 m_Time_CalculateCodes;
-			int64 m_Time_Decode;
+			int64_t m_Time_CalculateCodes;
+			int64_t m_Time_Decode;
 		#endif
 
 		//
@@ -106,7 +106,7 @@ namespace NFoo
 		int32_t DecodeO(T &rBitStream)
 		{
 			int32_t Pos = 0;
-			HUFFMAN_DEBUG_F(int64 Start = GetTickCount();)
+			HUFFMAN_DEBUG_F(int64_t Start = GetTickCount();)
 			while(1)
 			{
 				if(m_aTree[Pos])
@@ -132,7 +132,7 @@ namespace NFoo
 		{
 			rBitStream.Peek(16);
 			CNode *pNode = m_pFirstNode;
-			HUFFMAN_DEBUG_F(int64 Start = GetTickCount();)
+			HUFFMAN_DEBUG_F(int64_t Start = GetTickCount();)
 			while(pNode)
 			{
 				if(pNode->m_End)
@@ -154,7 +154,7 @@ namespace NFoo
 		template<class T>
 		int32_t DecodeL(T &rBitStream)
 		{
-			HUFFMAN_DEBUG_F(int64 Start = GetTickCount();)
+			HUFFMAN_DEBUG_F(int64_t Start = GetTickCount();)
 			for(int32_t i = 0; i < m_lEntries.Len(); i++)
 			{
 				CEntry &rEntry = m_lEntries[i];

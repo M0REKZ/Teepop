@@ -373,7 +373,7 @@ public:
 		m_HardBreak = false;
 	}
 
-	virtual void PullData(CBuffer &rBuffer, int64 Position)
+	virtual void PullData(CBuffer &rBuffer, int64_t Position)
 	{
 		rBuffer.Clear();
 		if(m_Position == -1 || (m_Current != m_Wanted && m_Wanted != -1 && m_HardBreak))
@@ -384,7 +384,7 @@ public:
 			CSample *pSample = m_pPatternStream->m_lSamples[m_Current];
 			int32_t Left = (pSample->m_DataSize/4-m_Position);
 			int32_t ChunkSize = Left < 4092 ? Left : 4092;
-			rBuffer.m_pData = (uint8*)pSample->m_pData + m_Position*4;
+			rBuffer.m_pData = (uint8_t*)pSample->m_pData + m_Position*4;
 			rBuffer.m_Samples = ChunkSize; //m_pPatternStream->m_lSamples[m_Wanted]->m_DataSize/4;
 			m_Position += ChunkSize;
 
@@ -424,7 +424,7 @@ protected:
 	}
 
 public:
-	CTextureView(N3D::CDevice *pDevice, CView *pParent=NULL, const int8 *pName=NULL, CGUI *pGUI=NULL)
+	CTextureView(N3D::CDevice *pDevice, CView *pParent=NULL, const char *pName=NULL, CGUI *pGUI=NULL)
 	: CView(pParent, pName, pGUI)
 	{
 		Utils.Init(pDevice);
@@ -444,7 +444,7 @@ class CRoomItem : public CStringItem
 public:
 	int32_t m_iRoom;
 
-	CRoomItem(int32_t iRoom, const int8 *pString)
+	CRoomItem(int32_t iRoom, const char *pString)
 	: m_iRoom(iRoom), CStringItem(pString, true)
 	{}
 };
@@ -457,8 +457,8 @@ class CSpecialText
 public:
 	fp32 x, y;
 	int32_t m_Type;
-	int64 m_StartTick;
-	int64 m_Duration;
+	int64_t m_StartTick;
+	int64_t m_Duration;
 	fp32 m_Scale;
 	fp32 m_ScaleSpeed;
 	fp32 m_Rot;
@@ -626,7 +626,7 @@ public:
 	//
 	//
 	//
-	int32_t LoadTexture(const int8 *pFilename)
+	int32_t LoadTexture(const char *pFilename)
 	{
 		CFileReader File(pFilename);
 		CImage Img;
@@ -637,7 +637,7 @@ public:
 		return iTex;
 	}
 
-	int32_t FindRect(const int8 *pName)
+	int32_t FindRect(const char *pName)
 	{
 		for(int32_t i = 0; i < m_lRects.Len(); i++)
 			if(m_lRects[i].m_Name == pName)
@@ -650,7 +650,7 @@ public:
 	//
 	//
 	//
-	void ReadOGG(CSample &rSample, const int8 *pFilename)
+	void ReadOGG(CSample &rSample, const char *pFilename)
 	{
 		//NLog::WriteF("File: %s\n", pFilename);
 		FILE *pFile = fopen(pFilename, "rb");
@@ -664,8 +664,8 @@ public:
 			//throw "Input does not appear to be an Ogg bitstream.";
 
 		rSample.m_DataSize = ov_pcm_total(&vf, -1)*4;
-		rSample.m_pData = new int8 [rSample.m_DataSize];
-		int8 *pDst = (int8 *)rSample.m_pData;
+		rSample.m_pData = new char [rSample.m_DataSize];
+		char *pDst = (char *)rSample.m_pData;
 		int32_t Left = rSample.m_DataSize;
 
 		while(1)
@@ -691,7 +691,7 @@ public:
 	//
 	//
 	//
-	void LoadSample(CSample &rSample, const int8 *pFilename)
+	void LoadSample(CSample &rSample, const char *pFilename)
 	{
 		ReadOGG(rSample, pFilename);
 	}
@@ -721,7 +721,7 @@ public:
 	//
 	//
 	//
-	int32_t GetConfigInt(const int8 *pName, int32_t Default)
+	int32_t GetConfigInt(const char *pName, int32_t Default)
 	{
 		CRegistry *pReg = m_Config.GetChild(pName);
 		if(!pReg)
@@ -732,7 +732,7 @@ public:
 	//
 	//
 	//
-	CString GetConfigString(const int8 *pName, CString Default)
+	CString GetConfigString(const char *pName, CString Default)
 	{
 		CRegistry *pReg = m_Config.GetChild(pName);
 		if(!pReg)
@@ -1087,7 +1087,7 @@ public:
 		//ShowView(NULL);
 	}
 
-	CView *CreateViewFromReg(CRegistry *pMasterReg, const int8 *pName)
+	CView *CreateViewFromReg(CRegistry *pMasterReg, const char *pName)
 	{
 		CRegistry *pReg = pMasterReg->GetChild(pName);
 		if(pReg && pReg->m_lValues.Len())
@@ -1109,7 +1109,7 @@ public:
 		m_GUI.GetRoot()->RemoveChild(&*m_pCommandLine);
 	}
 
-	void ShowView(CView *pView, const int8 *pFocus="")
+	void ShowView(CView *pView, const char *pFocus="")
 	{
 		m_GUI.GetRoot()->RemoveChild(m_pLoginView);
 		m_GUI.GetRoot()->RemoveChild(m_pStatusView);
@@ -1132,7 +1132,7 @@ public:
 	void ShowRoom() { ShowView(m_pRoomView, "chatinput"); }
 	void ShowCreateRoom() { ShowView(m_pCreateRoomView, "roomname"); }
 
-	void SetMessage(const int8 *pMessage, CView *pBack)
+	void SetMessage(const char *pMessage, CView *pBack)
 	{
 		m_pStatusLabel->SetText(pMessage);
 		
@@ -1604,7 +1604,7 @@ public:
 			}
 	};
 
-	void AddText(const int8 *pType, fp32 x, fp32 y, fp32 Rot, fp32 RotSpeed, fp32 Scale, fp32 ScaleSpeed)
+	void AddText(const char *pType, fp32 x, fp32 y, fp32 Rot, fp32 RotSpeed, fp32 Scale, fp32 ScaleSpeed)
 	{
 		CSpecialText Text;
 		Text.x = x;//m_pGame->m_LocalBoard.m_aZaps[0].m_x*32+16;
@@ -1622,12 +1622,12 @@ public:
 
 	}
 
-	void AddText(const int8 *pType, fp32 x, fp32 y)
+	void AddText(const char *pType, fp32 x, fp32 y)
 	{
 		AddText(pType, x, y, (Random()-0.5f)*2, 0.1f+Random(), 0.4f, 0.6f);
 	}
 
-	void AddTextCenter(const int8 *pType)
+	void AddTextCenter(const char *pType)
 	{
 		AddText(pType, 32*6/2, 32*4+16, -0.05f, 0.1f, 0.25f, 1);
 	}
@@ -1887,7 +1887,7 @@ public:
 			m_pUtils->Quad_Begin();
 
 			// render/update texts
-			int64 Tick = GetTickCount();
+			int64_t Tick = GetTickCount();
 			fp32 BaseX = apBoards[0]->GetPosition().x;
 			fp32 BaseY = apBoards[0]->GetPosition().y;
 			for(int32_t t = 0; t < m_lTexts.Len(); t++)
@@ -1997,7 +1997,7 @@ void ThreadTest(void *)
 
 
 //
-int32_t FooMain(int8 *cmdline)
+int32_t FooMain(char *cmdline)
 {
 	/*
 	g_TestLock.Aquire();
@@ -2010,7 +2010,7 @@ int32_t FooMain(int8 *cmdline)
 	CPuyoGame Game;
 	Game.Init();
 
-	int64 StartTime = GetTickCount();
+	int64_t StartTime = GetTickCount();
 	bool Run = true;
 	while(Run)
 	{

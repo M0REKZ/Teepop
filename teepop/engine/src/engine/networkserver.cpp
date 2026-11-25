@@ -134,7 +134,7 @@ bool CNetworkServer::HotswapRead(CInputStream &rStream)
 }*/
 
 
-const int8 *CNetworkServer::GetStatusString()
+const char *CNetworkServer::GetStatusString()
 {
 	static CString Status;
 	

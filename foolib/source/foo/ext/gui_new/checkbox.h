@@ -13,7 +13,7 @@ namespace NGUI {
 		virtual void OnMouseDown(CPoint _Pos, int32_t _iButton);
 		virtual void OnDraw(CDrawer &_rDrawer);
 	public:
-		CCheckBox(CView *pParent=NULL, const int8 *pName=NULL, CGUI *pGUI=NULL);
+		CCheckBox(CView *pParent=NULL, const char *pName=NULL, CGUI *pGUI=NULL);
 	};
 }
 }

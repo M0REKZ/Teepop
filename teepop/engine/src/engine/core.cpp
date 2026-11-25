@@ -38,7 +38,7 @@ bool CCore::AddModule(CModule *pModule)
 //#		pName, Name of the module to add.
 //# Returns: Returns a pointer to the module.
 //# Declaration:
-CModule *CCore::LoadModule(const int8 *pName)
+CModule *CCore::LoadModule(const char *pName)
 {
 	if(!pName)
 	{
@@ -76,7 +76,7 @@ CModule *CCore::LoadModule(const int8 *pName)
 //#		pName, Name of the module to retrive.
 //# Returns: Returns a pointer to the module.
 //# Declaration:
-CModule *CCore::GetModule(const int8 *pName)
+CModule *CCore::GetModule(const char *pName)
 {
 	for(int32_t i = 0; i < m_lModules.Len(); i++)
 	{
@@ -86,13 +86,13 @@ CModule *CCore::GetModule(const int8 *pName)
 	return NULL;
 }
 
-void CCore::RegisterCommand(const int8 *pCmd, CConsoleClient *pConsoleClient)
+void CCore::RegisterCommand(const char *pCmd, CConsoleClient *pConsoleClient)
 {
 	m_mCommandMap[pCmd] = pConsoleClient;
 	
 }
 
-bool CCore::DispatchCommand(const int8 *pCmdLine)
+bool CCore::DispatchCommand(const char *pCmdLine)
 {
 	CString Args = pCmdLine;
 	CString Cmd = Args.GetStrSep(" ");

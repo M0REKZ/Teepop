@@ -29,7 +29,7 @@ namespace NEngine
 			EEvent_Failed
 		};
 
-		void Logon(const int8 *pUsername, const int8 *pPassword);
+		void Logon(const char *pUsername, const char *pPassword);
 		CString GetErrorMessage() { return m_ErrorMessage; }
 	};
  }

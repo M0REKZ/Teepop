@@ -36,7 +36,7 @@ public:
 class CNetworkRoomServer : public CNetworkMsgRecviver, public CConsoleClient, public CMessageSender, public CModule
 {
 protected:
-	int64 m_LastUpdate;
+	int64_t m_LastUpdate;
 	
 	int32_t m_CurrentRoomID;
 	TMap<int32_t, CRoom*> m_lRooms;
@@ -56,7 +56,7 @@ protected:
 
 	//
 	void JoinRoom(CNetworkConnection *pConnection, CRoom *pRoom);
-	const int8 *CreateRoom(CNetworkConnection *pConnection, const int8 *pName, const int8 *pPassword=NULL, int32_t MaxPlayers=4);
+	const char *CreateRoom(CNetworkConnection *pConnection, const char *pName, const char *pPassword=NULL, int32_t MaxPlayers=4);
 	void LeaveRoom(CNetworkConnection *pConnection, bool SendNetMessage = true);
 
 	//

@@ -110,7 +110,7 @@ void CConnection::Process(CChunk *pChunk)
 		if(pChunk->m_Type == EChunk_Ack)
 		{
 			//int32_t Num = _pChunk->m_VitalNumber; //_pChunk->m_Storage.ReadBE_int32();
-			int32_t Num = pChunk->m_Reader.ReadBE<uint16>();
+			int32_t Num = pChunk->m_Reader.ReadBE<uint16_t>();
 			//NLog::WriteF("Connection: Got ack for packet, vn=%d\n", Num);
 			
 			// find vital chunk and remove it
@@ -185,7 +185,7 @@ void CConnection::Init(CChunkSocket *pSocket, NNetwork::CAddr &rRemoteAddress, i
 //# Remarks:
 //#		It sends close commands to the remote end to ensure a graceful termination.
 //# Declaration:
-void CConnection::Close(const int8 *pReason)
+void CConnection::Close(const char *pReason)
 {
 	if(!IsClosed())
 	{
@@ -217,14 +217,14 @@ void CConnection::QueueChunk(CChunk *pChunk)
 	if(pChunk->m_Writer.GetSize())
 	{
 		pChunk->m_Flags |= EFlag_Data;
-		pChunk->m_DataSize = (uint16)pChunk->m_Writer.GetSize();
+		pChunk->m_DataSize = (uint16_t)pChunk->m_Writer.GetSize();
 	}
 	
-	pChunk->m_SequenceNumber = (uint16)m_SequenceNumber++;
+	pChunk->m_SequenceNumber = (uint16_t)m_SequenceNumber++;
 	
 	if(pChunk->m_Flags&EFlag_Vital)
 	{
-		pChunk->m_VitalNumber = (uint16)m_VitalSequenceNumber++;
+		pChunk->m_VitalNumber = (uint16_t)m_VitalSequenceNumber++;
 
 		// add this chunk to the list of vital stuff
 		CVitalHolder Holder;
@@ -246,7 +246,7 @@ void CConnection::QueueChunk(CChunk *pChunk)
 //#		pData, Data, can be NULL.
 //#		Size, Size of the data. Can be set to zero.
 //# Declaration:
-void CConnection::QueueChunk(uint8 Type, uint8 Flags, int8 *pData, uint16 Size)
+void CConnection::QueueChunk(uint8_t Type, uint8_t Flags, char *pData, uint16_t Size)
 {
 	CChunk *pChunk = new CChunk;
 	pChunk->Clear();

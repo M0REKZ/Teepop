@@ -4,30 +4,30 @@
 #include <unistd.h>
 #include "sys.h"
 // No need to include carbon.h (slow)
-//extern "C" void Microseconds(uint64 *microTickCount);
+//extern "C" void Microseconds(uint64_t *microTickCount);
 //#endif
 
-int64 NFoo::GetTickFrequency()
+int64_t NFoo::GetTickFrequency()
 {
 	return 1000000;
 }
 
-int64 NFoo::GetTickCount()
+int64_t NFoo::GetTickCount()
 {
 	timeval val;
 	gettimeofday(&val, NULL);
-	int64 Value = (int64)val.tv_sec*(int64)1000000+(int64)val.tv_usec;
+	int64_t Value = (int64_t)val.tv_sec*(int64_t)1000000+(int64_t)val.tv_usec;
 	return Value;
 }
 /*
-int64 NFoo::GetTickFrequency()
+int64_t NFoo::GetTickFrequency()
 {
 	return 1000000;
 }
 
-int64 NFoo::GetTickCount()
+int64_t NFoo::GetTickCount()
 {
-	uint64 Value;
+	uint64_t Value;
 	Microseconds(&Value);
 	return Value;
 }

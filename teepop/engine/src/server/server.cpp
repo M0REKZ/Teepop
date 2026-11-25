@@ -222,9 +222,9 @@ public:
 	{
 	public:
 		int32_t m_Size;
-		int8 m_aData[1500];
+		char m_aData[1500];
 		
-		int64 m_SendTime;
+		int64_t m_SendTime;
 		NNetwork::CAddr m_Target;
 	};
 	
@@ -262,7 +262,7 @@ public:
 		// Get new packets
 		NNetwork::CAddr SrcAddr;
 		NNetwork::CAddr DstAddr;
-		int8 aData[1500];
+		char aData[1500];
 		int32_t ReadBytes;
 		
 		if((ReadBytes = m_aSocket.RecvFrom(aData, 1500, SrcAddr)) > 0)
@@ -286,7 +286,7 @@ public:
 			pPacket->m_Target = DstAddr;
 			pPacket->m_Size = ReadBytes;
 			int32_t Ping = 250+(int32_t)(Random()*100); // 150 - 400
-			pPacket->m_SendTime = GetTickCount()+(int64)(GetTickFrequency()*(Ping/1000.0f)); // 250ms
+			pPacket->m_SendTime = GetTickCount()+(int64_t)(GetTickFrequency()*(Ping/1000.0f)); // 250ms
 		}
 	}
 }; 
@@ -298,7 +298,7 @@ class CStdOutLogger : public NLog::CLogger
 public:
 	CStdOutLogger() { NLog::Attach(this); NLog::Write("CStdOutLogger attached\n"); }
 	virtual ~CStdOutLogger() { NLog::Write("CStdOutLogger deattching\n"); NLog::Detach(this); }
-	virtual void Write(const int8 *pBuffer)
+	virtual void Write(const char *pBuffer)
 	{
 		g_Stdout.Write(pBuffer, StringLength(pBuffer));
 	}
@@ -306,7 +306,7 @@ public:
 
 //
 //
-int32_t FooMain(int8 *cmdline)
+int32_t FooMain(char *cmdline)
 {
 	CStdOutLogger stdlogger;
 	//CBadConnectionSimulator Simulator;

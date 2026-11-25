@@ -7,7 +7,7 @@ using namespace NFoo::NGUI;
 //
 // a textbox
 //
-CTextBox::CTextBox(CView *pParent, const int8 *pName, CGUI *pGUI)
+CTextBox::CTextBox(CView *pParent, const char *pName, CGUI *pGUI)
 : CView(pParent, pName, pGUI)
 {
 	m_ViewStart = 0;
@@ -52,9 +52,9 @@ void CTextBox::OnMouseDown(CPoint _Pos, int32_t _Button)
 //
 // 
 //
-void CTextBox::OnKeyPress(int32_t _Key, int8 _Char, bool Repeat)
+void CTextBox::OnKeyPress(int32_t _Key, char _Char, bool Repeat)
 {
-	int8 aBuf[2] = {_Char, 0};
+	char aBuf[2] = {_Char, 0};
 
 	if(_Key == NCore::EBtn_Key_Left)
 		m_CursorPos--;
@@ -150,7 +150,7 @@ void CTextBox::Set(CString &rSetting, CString &rValue)
 //
 //
 //
-CLabel::CLabel(CView *pParent, const int8 *pName, CGUI *pGUI)
+CLabel::CLabel(CView *pParent, const char *pName, CGUI *pGUI)
 : CView(pParent, pName, pGUI)
 {
 

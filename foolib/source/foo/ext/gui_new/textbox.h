@@ -14,7 +14,7 @@ namespace NGUI {
 		bool m_HideType;
 	protected:
 		virtual void OnDraw(CDrawer &_rDrawer);
-		virtual void OnKeyPress(int32_t _Key, int8 _Char, bool Repeat);
+		virtual void OnKeyPress(int32_t _Key, char _Char, bool Repeat);
 		virtual void OnMouseDown(CPoint _Pos, int32_t _Button);
 
 		void CursorPosCheck();
@@ -24,7 +24,7 @@ namespace NGUI {
 			EEvent_Enter
 		};
 
-		CTextBox(CView *pParent=NULL, const int8 *pName=NULL, CGUI *pGUI=NULL);
+		CTextBox(CView *pParent=NULL, const char *pName=NULL, CGUI *pGUI=NULL);
 
 		void SetHideType(bool hide);
 		CString GetText();
@@ -41,7 +41,7 @@ namespace NGUI {
 	protected:
 		virtual void OnDraw(CDrawer &_rDrawer);
 	public:
-		CLabel(CView *pParent=NULL, const int8 *pName=NULL, CGUI *pGUI=NULL);
+		CLabel(CView *pParent=NULL, const char *pName=NULL, CGUI *pGUI=NULL);
 		CString GetText();
 		void SetText(CString _s);
 		virtual void Set(CString &rSetting, CString &rValue);

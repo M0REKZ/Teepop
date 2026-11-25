@@ -15,11 +15,11 @@ namespace NEngine
 		//
 		void Start(int32_t Port);
 		void GetClients(TDynamicArray<int32_t> &lClients);
-		void SetVersion(const int8 *pVersion) { m_VersionString = pVersion; }
+		void SetVersion(const char *pVersion) { m_VersionString = pVersion; }
 		//int32_t SendMessage(int32_t iClient, CNetMessage &rMsg);
 
 		CNetworkConnection *GetClient(int32_t iClient) { return m_mConnections.Find(iClient, NULL); }
-		virtual const int8 *GetStatusString();
+		virtual const char *GetStatusString();
 		virtual void Update();
 
 		typedef CNetworkConnection *(*PFNClientCreator)(void*);

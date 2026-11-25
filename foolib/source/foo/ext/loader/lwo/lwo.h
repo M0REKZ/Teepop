@@ -46,9 +46,9 @@ namespace NFoo
 		class CLWO_SurfaceData
 		{
 		public:
-			int8 Name[512];
-			int8 FileName[512];
-			int8 UVMapname[512];
+			char Name[512];
+			char FileName[512];
+			char UVMapname[512];
 			int32_t m_SurfaceIDNumber;
 			int32_t m_LWOIDNumber;
 		};
@@ -67,7 +67,7 @@ namespace NFoo
 			int m_Size;
 			int m_Type;
 			int m_SubType;
-			uint8* m_pBuffer;
+			uint8_t* m_pBuffer;
 
 			CLWO_Block *m_pBlock;
 			void Process(int32_t _Phase, CLWO_Block* _pBlock);
@@ -90,7 +90,7 @@ namespace NFoo
 			
 			TDynamicArray<SLWO_PointInfo> *m_pPointInfo;
 
-			int32_t Load(uint8* _pBuffer, int32_t _Size);
+			int32_t Load(uint8_t* _pBuffer, int32_t _Size);
 			void Process(int32_t _Phase);
 			void CalculateNormals();
 			void Build();
@@ -104,9 +104,9 @@ namespace NFoo
 			~CLWO_File();
 			TDynamicArray<CLWO_SurfaceData*> m_lSurfaces;
 			TDynamicArray<CLWO_Block*> m_lBlocks;
-			TDynamicArray<int8 *> m_lTags;
+			TDynamicArray<char *> m_lTags;
 
-			void Load(uint8* _pBuffer, int32_t _Size);
+			void Load(uint8_t* _pBuffer, int32_t _Size);
 			void Process();
 			void Build();
 

@@ -77,7 +77,7 @@ bool COpenGLDevice::Init(CMode _Mode)
 	if(!m_Exts.ARB_multitexture)
 		NLog::WriteF("opengl: ERROR! ARB_multitexture extentions isn't present. The device will not work without it.\n");
 
-	CString Exts = (const int8*)glGetString(GL_EXTENSIONS);
+	CString Exts = (const char*)glGetString(GL_EXTENSIONS);
 	if(Exts.Find("GL_EXT_bgra"))
 		m_Exts.EXT_bgra = true;
 
@@ -131,7 +131,7 @@ int32_t COpenGLDevice::CreateTexture(CImage::CFormat Format, int32_t Flags, void
 {
 	if(!pData || Format.Width() < 0 || Format.Height() < 0)
 		DebugBreak();
-	CImage Image(Format, (uint8 *)pData);
+	CImage Image(Format, (uint8_t *)pData);
 	int32_t i = CreateTexture(Image, Flags);
 	Image.RemoveData();
 	return i;
@@ -290,7 +290,7 @@ const intr g_aTexFormatTableInt[] =		{GL_RGB8			, GL_RGBA8			, GL_ALPHA, GL_LUMI
 const intr g_aTexFormatTableFormat[] =	{GL_RGB				, GL_RGBA			, GL_ALPHA, GL_LUMINANCE};
 const intr g_aTexFormatTableType[] =	{GL_UNSIGNED_BYTE	, GL_UNSIGNED_BYTE	, GL_FLOAT, GL_UNSIGNED_BYTE};
 
-int32_t COpenGLDevice::Internal_CreateTexture(int32_t _w, int32_t _h, int32_t _Format, uint8 *_pData)
+int32_t COpenGLDevice::Internal_CreateTexture(int32_t _w, int32_t _h, int32_t _Format, uint8_t *_pData)
 {
 	glGetError();
 	// gen and bind
@@ -358,9 +358,9 @@ int32_t COpenGLDevice::Internal_CreateTexture(int32_t _w, int32_t _h, int32_t _F
 int32_t COpenGLDevice::CreateTexture(int32_t _w, int32_t _h, int32_t _Format, void *_pData)
 {
 	if(_pData)
-		return Internal_CreateTexture(_w, _h, _Format, (uint8 *)_pData);
+		return Internal_CreateTexture(_w, _h, _Format, (uint8_t *)_pData);
 
-	uint8 *pData = new uint8 [_w*_h*4]; // worst case, temporary data
+	uint8_t *pData = new uint8_t [_w*_h*4]; // worst case, temporary data
 	int32_t iTex = Internal_CreateTexture(_w, _h, _Format, pData);
 	SafeArrayDelete(pData);
 	return iTex;
@@ -458,7 +458,7 @@ int32_t COpenGLDevice::CreateIndexBuffer(int32_t _Count, int32_t _Flags)
 	int32_t iIB = m_IndexHandler.GetFree(EID_IndexBuffer);
 	m_IndexHandler.SetData(iIB, pBuffer);
 	pBuffer->m_LockInfo.m_Count = _Count;
-	pBuffer->m_LockInfo.m_pIndex16 = new uint16[_Count];
+	pBuffer->m_LockInfo.m_pIndex16 = new uint16_t[_Count];
 	return iIB;
 }
 
@@ -498,7 +498,7 @@ void COpenGLDevice::UnlockIndexBuffer(int32_t _iBuffer)
 //
 //
 //
-int32_t COpenGLDevice::CreateVertexShader(const int8 *_pString)
+int32_t COpenGLDevice::CreateVertexShader(const char *_pString)
 {
 	if(!m_Exts.ARB_vertex_program)
 		return -1;
@@ -531,7 +531,7 @@ int32_t COpenGLDevice::CreateVertexShader(const int8 *_pString)
 	NLog::WriteF("bind GLerr=%d\n", glGetError());
 	NLog::WriteF("prg %d GLerr=%d\n", StringLength(_pString)-1, glGetError());
 
-	int8 aProgram[1024*4];
+	int8_t aProgram[1024*4];
 	aProgram[0] = 0;
 	GLExt_glGetProgramStringARB(GL_VERTEX_PROGRAM_ARB, GL_PROGRAM_FORMAT_ASCII_ARB, aProgram);
 	NLog::WriteF("prg %s\n", aProgram);
@@ -567,7 +567,7 @@ bool COpenGLDevice::DestroyVertexShader(int32_t _iShader)
 //
 //
 //
-int32_t COpenGLDevice::CreatePixelShader(const int8 *_pString)
+int32_t COpenGLDevice::CreatePixelShader(const char *_pString)
 {
 	return -1;
 }
@@ -596,7 +596,7 @@ int32_t COpenGLDevice::CreateVertexBuffer(int32_t _Count, int32_t _What, int32_t
 		glextGenBuffersARB(1, (GLuint*)&pBuffer->m_iBufferID);
 		glextBindBufferARB(GL_ARRAY_BUFFER_ARB, pBuffer->m_iBufferID);
 
-		uint8 *pData = ((uint8 *)NULL)+4; // we must waste 4 bytes.. 0 = NULL
+		uint8_t *pData = ((uint8_t *)NULL)+4; // we must waste 4 bytes.. 0 = NULL
 
 		for(int32_t i = 0; i < EMaxTextureUnits; i++)
 		{
@@ -628,7 +628,7 @@ int32_t COpenGLDevice::CreateVertexBuffer(int32_t _Count, int32_t _What, int32_t
 			pData += sizeof(TVector4<fp32>)*_Count;
 		}
 
-		int8 *pTemp = new int8[(intptr_t)pData];
+		char *pTemp = new char[(intptr_t)pData];
 		glextBufferDataARB(GL_ARRAY_BUFFER_ARB, (intptr_t)pData, pTemp, GL_DYNAMIC_DRAW_ARB); //GL_STATIC_DRAW_ARB);
 		delete [] pTemp;
 
@@ -702,7 +702,7 @@ CVertexBuffer* COpenGLDevice::LockVertexBuffer(int32_t _iBuffer, int32_t _What)
 		// map it
 		int32_t What = pVB->m_What;
 		int32_t Count = pVB->m_LockInfo.m_Count;
-		uint8 *pData = (uint8 *)glextMapBufferARB(GL_ARRAY_BUFFER_ARB, GL_WRITE_ONLY_ARB);
+		uint8_t *pData = (uint8_t *)glextMapBufferARB(GL_ARRAY_BUFFER_ARB, GL_WRITE_ONLY_ARB);
 
 		// fill the struct
 		pVB->m_LockInfo2.m_Count = Count;
@@ -756,7 +756,7 @@ void COpenGLDevice::Clear(intr _What)
 //
 // draw operation
 //
-void CheckPointer(GLenum _GetFlag, GLenum _EnableFlag, const int8 *_pName)
+void CheckPointer(GLenum _GetFlag, GLenum _EnableFlag, const char *_pName)
 {
 	GLvoid *p;
     glGetPointerv(_GetFlag, &p);
@@ -811,7 +811,7 @@ void COpenGLDevice::DrawIndexed(int32_t _Mode, int32_t _Start, int32_t _PrimCoun
 		glEnable(GL_FOG);
 		glFogf(GL_FOG_DENSITY, 0.5f);
 		*/
-		glDrawElements(g_aDrawTable[_Mode], PrimToOGL(_Mode, _PrimCount), GL_UNSIGNED_SHORT, (uint16*)m_pIndexPointer+_Start);
+		glDrawElements(g_aDrawTable[_Mode], PrimToOGL(_Mode, _PrimCount), GL_UNSIGNED_SHORT, (uint16_t*)m_pIndexPointer+_Start);
 	}
 	catch(...)
 	{

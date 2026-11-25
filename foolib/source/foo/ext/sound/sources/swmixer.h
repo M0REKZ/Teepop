@@ -38,7 +38,7 @@ namespace NFoo { namespace NSound {
 
 		TDynamicArray<CPuller*> m_lSources;
 
-		virtual void PullData(CBuffer &rBuffer, int64 Position)
+		virtual void PullData(CBuffer &rBuffer, int64_t Position)
 		{
 			MemoryZero(m_MixBuffer.m_pData, m_Format.SampleSize()*m_Samples); // seams wrong
 
@@ -54,8 +54,8 @@ namespace NFoo { namespace NSound {
 					continue;
 				}
 
-				int16 *pDst16 = (int16 *)m_MixBuffer.m_pData;
-				int16 *pSrc16 = (int16 *)m_SrcBuffer.m_pData;
+				int16_t *pDst16 = (int16_t *)m_MixBuffer.m_pData;
+				int16_t *pSrc16 = (int16_t *)m_SrcBuffer.m_pData;
 
 				if(pInstance->m_Start < 0) // set start position if we don't have one
 					pInstance->m_Start = Position;
@@ -75,10 +75,10 @@ namespace NFoo { namespace NSound {
 					for(int32_t i = 0; i < Samples*m_Format.m_Channels; i++) // can anyone say MMX?
 					{
 						int32_t Value = *pDst16+((*pSrc16*Volume)>>12);
-						if(Value > (int16)0x7FFF)
-							*pDst16++ = (int16)0x7FFF;
-						else if(Value < (int16)0x8000)
-							*pDst16++ = (int16)0x8000;
+						if(Value > (int16_t)0x7FFF)
+							*pDst16++ = (int16_t)0x7FFF;
+						else if(Value < (int16_t)0x8000)
+							*pDst16++ = (int16_t)0x8000;
 						else
 							*pDst16++ = Value;
 						pSrc16++;

@@ -16,7 +16,7 @@ CFileWriter::CFileWriter(void *pHandle)
 //
 //
 //
-CFileWriter::CFileWriter(const int8 *_pFilename, int32_t _Mode)
+CFileWriter::CFileWriter(const char *_pFilename, int32_t _Mode)
 {
 	m_pFileHandle = NULL;
 	if(_pFilename)
@@ -26,7 +26,7 @@ CFileWriter::CFileWriter(const int8 *_pFilename, int32_t _Mode)
 //
 //
 //
-bool CFileWriter::Open(const int8 *_pFilename, int32_t _Mode)
+bool CFileWriter::Open(const char *_pFilename, int32_t _Mode)
 {
 	switch(_Mode)
 	{
@@ -114,7 +114,7 @@ CFileReader::CFileReader(void *pHandle)
 }
 
 
-CFileReader::CFileReader(const int8 *_pFilename)
+CFileReader::CFileReader(const char *_pFilename)
 {
 	m_pFileHandle = 0;
 	if(_pFilename)
@@ -129,7 +129,7 @@ CFileReader::~CFileReader()
 //
 //
 //
-bool CFileReader::Open(const int8 *_pFilename)
+bool CFileReader::Open(const char *_pFilename)
 {
 	m_pFileHandle = fopen((char*)_pFilename, "rb");
 

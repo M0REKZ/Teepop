@@ -21,7 +21,7 @@ namespace NFoo { namespace NSound {
 		void CreateData(int32_t Samples)
 		{
 			m_Samples = Samples;
-			m_pData = new int8[Samples*4];
+			m_pData = new char[Samples*4];
 		}
 
 		void DestroyData()

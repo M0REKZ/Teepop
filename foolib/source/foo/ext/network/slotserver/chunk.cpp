@@ -21,7 +21,7 @@ int32_t g_NumChunks = 0;
 //
 // constructor
 //
-CChunk::CChunk(uint8 _Type, uint8 _Flags)
+CChunk::CChunk(uint8_t _Type, uint8_t _Flags)
 {
 	Clear();
 	m_Type = _Type;
@@ -136,7 +136,7 @@ void CChunk::Clear()
 	m_DataSize = 0;
 }
 
-void CChunk::SetData(const int8 *_pData, uint16 _Size)
+void CChunk::SetData(const char *_pData, uint16_t _Size)
 {
 	if(_pData && _Size > 0)
 	{
@@ -151,9 +151,9 @@ void CChunk::SetData(const int8 *_pData, uint16 _Size)
 	}
 }
 
-const int8 *CChunk::String()
+const char *CChunk::String()
 {
-	static int8 aStr[512];
+	static char aStr[512];
 	if(m_Flags&EFlag_Vital)
 		StringCFormat(aStr, sizeof(aStr), "(type=%x, flags=0x%x, datasize=0x%d, vitalnumber=%d)", m_Type, m_Flags, m_DataSize, m_VitalNumber);
 	else
@@ -183,7 +183,7 @@ int32_t CChunkSocket::RecvChunks(NFoo::TDynamicArray<CChunk*> &rlChunks, NFoo::N
 	rlChunks.Clear();
 
 	// Fetch Packet
-	int8 Buffer[EMaxPacketSize];
+	char Buffer[EMaxPacketSize];
 	NNetwork::CAddr Addr;
 
 	int32_t RecvBytes = RecvFrom(Buffer, EMaxPacketSize, Addr);
@@ -192,7 +192,7 @@ int32_t CChunkSocket::RecvChunks(NFoo::TDynamicArray<CChunk*> &rlChunks, NFoo::N
 		rSource = Addr;
 		
 		CMemoryReader Packet(Buffer, RecvBytes);
-		int32_t NumChunks = Packet.ReadBE<uint8>();
+		int32_t NumChunks = Packet.ReadBE<uint8_t>();
 		
 		for(int32_t i = 0; i < NumChunks; i++)
 		{
@@ -245,9 +245,9 @@ int32_t CChunkSocket::SendChunks(NFoo::TDynamicArray<CChunk*> &rlChunks, NFoo::N
 
 		// construct and send packet
 		{
-			int8 aBuffer[EMaxPacketSize];
+			char aBuffer[EMaxPacketSize];
 			CMemoryWriter Packet(aBuffer);
-			Packet.WriteBE((uint8)NumChunks);
+			Packet.WriteBE((uint8_t)NumChunks);
 			for(int32_t i = Base; i < NumChunks; i++)
 				rlChunks[i]->Write(Packet);
 

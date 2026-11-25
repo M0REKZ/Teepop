@@ -42,33 +42,33 @@ void CNetworkRoomClient::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 		int32_t Count = 0;
 
 		// deletions
-		Count = rStream.ReadBE<uint8>();
+		Count = rStream.ReadBE<uint8_t>();
 		for(int32_t i = 0; i < Count; i++)
 			m_lRooms.Remove(rStream.ReadBE<int32_t>());
 
 		// creations
-		Count = rStream.ReadBE<uint8>();
+		Count = rStream.ReadBE<uint8_t>();
 		for(int32_t i = 0; i < Count; i++)
 		{
 			int32_t RoomID = rStream.ReadBE<int32_t>();
 			CRoom &rRoom = m_lRooms[RoomID];
 			rRoom.m_ID = RoomID;
 			rRoom.m_Name = rStream.Read_p8();
-			rRoom.m_MaxPlayers = rStream.ReadBE<uint8>();
-			rRoom.m_State = rStream.ReadBE<uint8>();
-			int32_t NumPlayers = rStream.ReadBE<uint8>();
+			rRoom.m_MaxPlayers = rStream.ReadBE<uint8_t>();
+			rRoom.m_State = rStream.ReadBE<uint8_t>();
+			int32_t NumPlayers = rStream.ReadBE<uint8_t>();
 			rRoom.m_lPlayers.Clear();
 			for(int32_t i = 0; i < NumPlayers; i++)
 				rRoom.m_lPlayers.Add(rStream.ReadBE<int32_t>());
 		}
 
 		// updates
-		Count = rStream.ReadBE<uint8>();
+		Count = rStream.ReadBE<uint8_t>();
 		for(int32_t i = 0; i < Count; i++)
 		{
 			int32_t RoomID = rStream.ReadBE<int32_t>();
-			int32_t State = rStream.ReadBE<uint8>();
-			int32_t NumPlayers = rStream.ReadBE<uint8>();
+			int32_t State = rStream.ReadBE<uint8_t>();
+			int32_t NumPlayers = rStream.ReadBE<uint8_t>();
 			if(m_lRooms.Exist(RoomID))
 			{
 				CRoom &rRoom = m_lRooms[RoomID];
@@ -134,7 +134,7 @@ void CNetworkRoomClient::JoinRoom(int32_t RoomID)
 
 //
 //
-void CNetworkRoomClient::JoinRoom(const int8 *pName)
+void CNetworkRoomClient::JoinRoom(const char *pName)
 {
 	if(!m_pConnection)
 		return;
@@ -157,11 +157,11 @@ void CNetworkRoomClient::LeaveRoom()
 
 //
 //
-void CNetworkRoomClient::CreateRoom(const int8 *pName, const int8 *pPassword, int32_t Max)
+void CNetworkRoomClient::CreateRoom(const char *pName, const char *pPassword, int32_t Max)
 {
 	CNetMessage Msg(NETMSG("svCreateRoom"), true);
 	Msg.Write_p8(pName); // name
 	Msg.Write_p8(pPassword); // password
-	Msg.WriteBE<uint8>(Max);
+	Msg.WriteBE<uint8_t>(Max);
 	m_pConnection->SendMessage(Msg);
 }

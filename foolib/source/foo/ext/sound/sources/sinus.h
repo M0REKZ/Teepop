@@ -17,7 +17,7 @@ namespace NFoo { namespace NSound {
 			m_Counter = 0;
 		}
 
-		virtual void PullData(CBuffer &rBuffer, int64 Position);
+		virtual void PullData(CBuffer &rBuffer, int64_t Position);
 	};
 
 	class CSinusSource : public CSource
@@ -32,17 +32,17 @@ namespace NFoo { namespace NSound {
 
 			if(m_Format.m_Bits == 8)
 			{
-				uint8 *pData = (uint8 *)m_Buffer.m_pData;
+				uint8_t *pData = (uint8_t *)m_Buffer.m_pData;
 				if(m_Format.m_Channels == 1)
 				{
 					for(int32_t s = 0; s < Samples; s++)
-						*pData++ = (uint8)((sin(s/(fp32)m_Format.m_SampleRate*m_Hertz*PI*2)+1)*127);
+						*pData++ = (uint8_t)((sin(s/(fp32)m_Format.m_SampleRate*m_Hertz*PI*2)+1)*127);
 				}
 				else if(m_Format.m_Channels == 2)
 				{
 					for(int32_t s = 0; s < Samples; s++)
 					{
-						uint8 c = (uint8)((sin(s/(fp32)m_Format.m_SampleRate*m_Hertz*PI*2)+1)*127);
+						uint8_t c = (uint8_t)((sin(s/(fp32)m_Format.m_SampleRate*m_Hertz*PI*2)+1)*127);
 						*pData++ = c;
 						*pData++ = c;
 					}
@@ -50,17 +50,17 @@ namespace NFoo { namespace NSound {
 			}
 			else if(m_Format.m_Bits == 16)
 			{
-				int16 *pData = (int16 *)m_Buffer.m_pData;
+				int16_t *pData = (int16_t *)m_Buffer.m_pData;
 				if(m_Format.m_Channels == 1)
 				{
 					for(int32_t s = 0; s < Samples; s++)
-						*pData++ = (int16)((sin(s/(fp32)m_Format.m_SampleRate*m_Hertz*PI*2))*(0xffff/4));
+						*pData++ = (int16_t)((sin(s/(fp32)m_Format.m_SampleRate*m_Hertz*PI*2))*(0xffff/4));
 				}
 				else if(m_Format.m_Channels == 2)
 				{
 					for(int32_t s = 0; s < Samples; s++)
 					{
-						int16 c = (int16)((sin(s/(fp32)m_Format.m_SampleRate*m_Hertz*PI*2))*(0xffff/4));
+						int16_t c = (int16_t)((sin(s/(fp32)m_Format.m_SampleRate*m_Hertz*PI*2))*(0xffff/4));
 						*pData++ = c;
 						*pData++ = c;
 					}
@@ -80,7 +80,7 @@ namespace NFoo { namespace NSound {
 		CBuffer m_Buffer;
 	};
 
-	void CSinusInstance::PullData(CBuffer &rBuffer, int64 Position)
+	void CSinusInstance::PullData(CBuffer &rBuffer, int64_t Position)
 	{
 		rBuffer = ((CSinusSource *)m_pSource)->m_Buffer;
 		//return rBuffer.m_Samples;

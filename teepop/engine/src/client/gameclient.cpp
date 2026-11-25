@@ -135,8 +135,8 @@ void CNetworkGameClient::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 			NLog::WriteF("!!!!! Got new blocks under placement face\n");
 
 		m_QueuedBoard.Unpack(rStream);
-		uint8 NewBlock = rStream.ReadBE<uint8>();
-		uint8 NewNextBlock = rStream.ReadBE<uint8>();
+		uint8_t NewBlock = rStream.ReadBE<uint8_t>();
+		uint8_t NewNextBlock = rStream.ReadBE<uint8_t>();
 		m_QueuedBoard.m_aCurrentBlocks[0] = NewBlock&0xf;
 		m_QueuedBoard.m_aCurrentBlocks[1] = NewBlock>>4;
 		m_QueuedBoard.m_aNextBlocks[0] = NewNextBlock&0xf;
@@ -146,7 +146,7 @@ void CNetworkGameClient::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 	}
 	else if(iMsg == NETMSG("clLevelIncrease"))
 	{
-		m_Level = rStream.ReadBE<uint8>();
+		m_Level = rStream.ReadBE<uint8_t>();
 	
 		CMessage Msg(EEvent_LevelIncrease);
 		Msg.SetInt("level", m_Level);
@@ -168,19 +168,19 @@ void CNetworkGameClient::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 	{
 		CMessage Msg(EEvent_SentStones);
 		Msg.SetInt("clientid", rStream.ReadBE<int32_t>());
-		Msg.SetInt("numstones", rStream.ReadBE<uint8>());
+		Msg.SetInt("numstones", rStream.ReadBE<uint8_t>());
 		Signal(Msg);
 	}
 	else if(iMsg == NETMSG("clEvadedStones"))
 	{
 		CMessage Msg(EEvent_EvadedStones);
 		Msg.SetInt("clientid", rStream.ReadBE<int32_t>());
-		Msg.SetInt("numstones", rStream.ReadBE<uint8>());
+		Msg.SetInt("numstones", rStream.ReadBE<uint8_t>());
 		Signal(Msg);
 	}
 	else if(iMsg == NETMSG("clGameStateChange"))
 	{
-		int32_t State = rStream.ReadBE<uint8>();
+		int32_t State = rStream.ReadBE<uint8_t>();
 
 		if(State == 0) // wait
 		{
@@ -302,7 +302,7 @@ void CNetworkGameClient::SendDropBlocks()
 		return;
 	CNetMessage Msg(NETMSG("svDropBlocks"), true);
 
-	Msg.WriteBE<uint8>(m_XPos|(m_Rotation<<4));
+	Msg.WriteBE<uint8_t>(m_XPos|(m_Rotation<<4));
 	m_pConnection->SendMessage(Msg);
 }
 

@@ -4,7 +4,7 @@
 using namespace NFoo;
 using namespace NFoo::NGUI;
 
-CMenu::CMenu(CView *pParent, const int8 *pName, CGUI *pGUI)
+CMenu::CMenu(CView *pParent, const char *pName, CGUI *pGUI)
 : CView(pParent, pName, pGUI)
 {
 
@@ -43,7 +43,7 @@ void CMenu::AddItem(CMenuItem *_pItem)
 //
 // frame
 //
-CFrame::CFrame(CView *pParent, const int8 *pName, CGUI *pGUI)
+CFrame::CFrame(CView *pParent, const char *pName, CGUI *pGUI)
 : CView(pParent, pName, pGUI)
 {
 }
@@ -56,7 +56,7 @@ void CFrame::OnDraw(CDrawer &rDrawer)
 //
 //
 //
-CWindow::CWindow(CView *pParent, const int8 *pName, CGUI *pGUI)
+CWindow::CWindow(CView *pParent, const char *pName, CGUI *pGUI)
 : CView(pParent, pName, pGUI)
 {
 	m_Draging = false;
@@ -67,7 +67,7 @@ CWindow::CWindow(CView *pParent, const int8 *pName, CGUI *pGUI)
 //
 //
 //
-void CWindow::SetCaption(const int8 *_pCap)
+void CWindow::SetCaption(const char *_pCap)
 {
 	m_Caption = _pCap;
 }

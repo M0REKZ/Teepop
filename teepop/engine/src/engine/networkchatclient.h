@@ -22,8 +22,8 @@ namespace NEngine
 			EEvent_ChatMessage
 		};
 
-		const int8 *GetUserName(int32_t id);
-		void SetChannel(const int8 *pChannel);
-		void Chat(const int8 *pMsg);
+		const char *GetUserName(int32_t id);
+		void SetChannel(const char *pChannel);
+		void Chat(const char *pMsg);
 	};
 }

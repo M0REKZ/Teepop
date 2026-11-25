@@ -9,19 +9,19 @@
 namespace std {}
 using namespace std;
 
-void NFoo::StringCopy(int8 *_pDest, const int8 *_pSrc) { strcpy(_pDest, _pSrc); }
-void NFoo::StringCopy(int8 *_pDest, const int8 *_pSrc, intr _Max) { strncpy(_pDest, _pSrc, _Max); }
+void NFoo::StringCopy(char *_pDest, const char *_pSrc) { strcpy(_pDest, _pSrc); }
+void NFoo::StringCopy(char *_pDest, const char *_pSrc, intr _Max) { strncpy(_pDest, _pSrc, _Max); }
 
-intr NFoo::StringCompare(const int8 *_pDest, const int8 *_pSrc) { return strcmp(_pDest, _pSrc); }
-intr NFoo::StringCompare(const int8 *_pDest, const int8 *_pSrc, intr _Max) { return strncmp(_pDest, _pSrc, _Max); }
+intr NFoo::StringCompare(const char *_pDest, const char *_pSrc) { return strcmp(_pDest, _pSrc); }
+intr NFoo::StringCompare(const char *_pDest, const char *_pSrc, intr _Max) { return strncmp(_pDest, _pSrc, _Max); }
 
-int8 *NFoo::StringCFormatArgList(int8 *_pDst, size_t _DstSize, const int8 *_pFormat, va_list _Args)
+char *NFoo::StringCFormatArgList(char *_pDst, size_t _DstSize, const char *_pFormat, va_list _Args)
 {
     vsnprintf(_pDst, _DstSize, _pFormat, _Args);
     return _pDst;
 }
 
-int8 *NFoo::StringCFormat( int8 *_pDst, size_t _DstSize, const int8 *_pFormat, ...)
+char *NFoo::StringCFormat( char *_pDst, size_t _DstSize, const char *_pFormat, ...)
 {
     va_list Args;
     va_start(Args, _pFormat);
@@ -33,10 +33,10 @@ int8 *NFoo::StringCFormat( int8 *_pDst, size_t _DstSize, const int8 *_pFormat, .
     return _pDst;
 }
 
-intr NFoo::StringLength(const int8 *_pSrc) { return strlen(_pSrc); }
+intr NFoo::StringLength(const char *_pSrc) { return strlen(_pSrc); }
 
-int32_t NFoo::StringGetInt(const int8 *_pDest) { return atoi(_pDest); }
-fp64 NFoo::StringGetFloat(const int8 *_pDest) { return atof(_pDest); }
+int32_t NFoo::StringGetInt(const char *_pDest) { return atoi(_pDest); }
+fp64 NFoo::StringGetFloat(const char *_pDest) { return atof(_pDest); }
 
 
 #endif

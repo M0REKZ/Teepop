@@ -138,7 +138,7 @@ void CHuffmanAlphabet::Add(int32_t Alpha, int32_t CodeSize, int32_t Code)
 void CHuffmanAlphabet::CalculateCodes()
 {
 #ifdef HUFFMAN_DEBUG
-	int64 Start = GetTickCount();
+	int64_t Start = GetTickCount();
 #endif
 	SortArray_Bubble(m_lEntries);
 

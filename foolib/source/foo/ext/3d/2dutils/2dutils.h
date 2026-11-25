@@ -44,7 +44,7 @@ namespace NFoo { namespace N3D {
 		class CFont
 		{
 		public:
-			uint8 m_aTranslationTable[256];
+			uint8_t m_aTranslationTable[256];
 			int32_t m_iTexture;
 			int32_t m_XCells;
 			int32_t m_YCells;
@@ -53,7 +53,7 @@ namespace NFoo { namespace N3D {
 			fp32 m_Width;
 
 			void BuildNormalAscii();
-			void BuildTranslationTable(const uint8 *_pString);
+			void BuildTranslationTable(const uint8_t *_pString);
 		};
 
 		class CClipRect
@@ -186,7 +186,7 @@ namespace NFoo { namespace N3D {
 		// Text
 		//
 		void Text_Begin(CFont *_pFont);
-		void Text_Draw(fp32 _x, fp32 _y, int32_t _Flags, const int8 *_pFormat, ...);
+		void Text_Draw(fp32 _x, fp32 _y, int32_t _Flags, const char *_pFormat, ...);
 		void Text_End();
 	};
 } }

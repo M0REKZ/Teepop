@@ -93,7 +93,7 @@ int32_t CScrollBar::ScrollArea(int32_t h)
 //
 //
 //
-CScrollBar::CScrollBar(CView *pParent, const int8 *pName, CGUI *pGUI)
+CScrollBar::CScrollBar(CView *pParent, const char *pName, CGUI *pGUI)
 : CView(pParent, pName, pGUI), m_Handle(NULL, pGUI ? pGUI : (pParent != NULL ? pParent->GetGUI(): NULL))
 {
 	AddChild(&m_Handle);

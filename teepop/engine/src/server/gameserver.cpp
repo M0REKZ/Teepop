@@ -17,8 +17,8 @@ void CNetworkGameServer::SendNewBlocks(CNetworkConnection *pConnection)
 
 	CNetMessage Msg(NETMSG("clNewBlocks"), true); // 36+1 bytes
 	pInfo->m_Board.Pack(Msg);
-	Msg.WriteBE<uint8>(pInfo->m_Board.m_aCurrentBlocks[0]|(pInfo->m_Board.m_aCurrentBlocks[1]<<4));
-	Msg.WriteBE<uint8>(pInfo->m_Board.m_aNextBlocks[0]|(pInfo->m_Board.m_aNextBlocks[1]<<4));
+	Msg.WriteBE<uint8_t>(pInfo->m_Board.m_aCurrentBlocks[0]|(pInfo->m_Board.m_aCurrentBlocks[1]<<4));
+	Msg.WriteBE<uint8_t>(pInfo->m_Board.m_aNextBlocks[0]|(pInfo->m_Board.m_aNextBlocks[1]<<4));
 	pConnection->SendMessage(Msg);
 }
 
@@ -27,7 +27,7 @@ void CNetworkGameServer::SendNewBlocks(CNetworkConnection *pConnection)
 void CNetworkGameServer::SendGameStateChange(CNetworkConnection *pConnection, int32_t State)
 {
 	CNetMessage NetMsg(NETMSG("clGameStateChange"), true);
-	NetMsg.WriteBE<uint8>(State);
+	NetMsg.WriteBE<uint8_t>(State);
 	pConnection->SendMessage(NetMsg);
 }
 
@@ -185,7 +185,7 @@ void CNetworkGameServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 			return;
 
 		// unpack message
-		int32_t b = rStream.ReadBE<uint8>();
+		int32_t b = rStream.ReadBE<uint8_t>();
 
 		CBoard &rBoard = pInfo->m_Board;
 		rBoard.Drop(b&0xf, b>>4); // drop blocks
@@ -238,7 +238,7 @@ void CNetworkGameServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 			{
 				pInfo->m_Level = Level;
 				CNetMessage Msg(NETMSG("clLevelIncrease"), true);
-				Msg.WriteBE<int8>(pInfo->m_Level);
+				Msg.WriteBE<char>(pInfo->m_Level);
 				pConnection->SendMessage(Msg);
 			}
 		}
@@ -249,7 +249,7 @@ void CNetworkGameServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 		{
 			CNetMessage Msg(NETMSG("clEvadedStones"), true);
 			Msg.WriteBE<int32_t>(pConnection->ClientID());
-			Msg.WriteBE<uint8>(rBoard.m_EvadedStones);
+			Msg.WriteBE<uint8_t>(rBoard.m_EvadedStones);
 			for(int32_t i = 0; i < pRoom->m_lPlayers.Len(); i++)
 				pRoom->m_lPlayers[i]->SendMessage(Msg);
 		}
@@ -259,7 +259,7 @@ void CNetworkGameServer::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 		{
 			CNetMessage Msg(NETMSG("clStonesSent"), true);
 			Msg.WriteBE<int32_t>(pConnection->ClientID());
-			Msg.WriteBE<uint8>(rBoard.m_SendStones);
+			Msg.WriteBE<uint8_t>(rBoard.m_SendStones);
 			for(int32_t i = 0; i < pRoom->m_lPlayers.Len(); i++)
 				pRoom->m_lPlayers[i]->SendMessage(Msg);
 		}

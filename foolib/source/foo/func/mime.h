@@ -21,15 +21,15 @@ namespace NFoo
 
 	public:
 		CMime();
-		CMime(const int8 *pString);
+		CMime(const char *pString);
 		CMime(const CMime &rMime);
 
 		CMime &operator =(const CMime &rMime);
 		bool operator ==(const CMime &rMime) const;
 		bool operator !=(const CMime &rMime) const;
 
-		static bool AddFileExt(const int8 *pFileExt, const int8 *pMimeTag);
-		static CMime MimeFromFileExt(const int8 *pFilename);
+		static bool AddFileExt(const char *pFileExt, const char *pMimeTag);
+		static CMime MimeFromFileExt(const char *pFilename);
 	};
 
 	extern CMime m_NullMime;

@@ -72,7 +72,7 @@ void CNetworkChatClient::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 		m_lUsers.Clear();
 
 		m_Channel = rStream.Read_p8();
-		int32_t nUsers = rStream.ReadBE<uint16>();
+		int32_t nUsers = rStream.ReadBE<uint16_t>();
 
 		for(int32_t i = 0; i < nUsers; i++)
 		{
@@ -98,7 +98,7 @@ void CNetworkChatClient::OnCommand(CString &rCmd, CString &rArgs)
 //
 //
 //
-void CNetworkChatClient::SetChannel(const int8 *pChannel)
+void CNetworkChatClient::SetChannel(const char *pChannel)
 {
 	if(!m_pConnection)
 		return;
@@ -111,7 +111,7 @@ void CNetworkChatClient::SetChannel(const int8 *pChannel)
 //
 //
 //
-void CNetworkChatClient::Chat(const int8 *pMsg)
+void CNetworkChatClient::Chat(const char *pMsg)
 {
 	if(!m_pConnection)
 		return;
@@ -124,7 +124,7 @@ void CNetworkChatClient::Chat(const int8 *pMsg)
 //
 //
 //
-const int8 *CNetworkChatClient::GetUserName(int32_t id)
+const char *CNetworkChatClient::GetUserName(int32_t id)
 {
 	int32_t pos = m_lUsers.Find(id);
 	if(pos >= 0)

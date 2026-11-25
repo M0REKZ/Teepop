@@ -14,7 +14,7 @@ namespace NFoo { namespace NSound {
 		friend class CInstance;
 		
 
-		virtual void PullData(class CBuffer &rBuffer, int64 Position) pure;
+		virtual void PullData(class CBuffer &rBuffer, int64_t Position) pure;
 	public:
 		CInstance(CSource *pSource, CSoundDevice *pDevice);
 		virtual ~CInstance();
@@ -37,7 +37,7 @@ namespace NFoo { namespace NSound {
 
 		int32_t m_iSound;
 
-		int64 m_Start;
+		int64_t m_Start;
 		int32_t m_Flags;
 		fp32 m_Volume;
 		fp32 m_Rate;

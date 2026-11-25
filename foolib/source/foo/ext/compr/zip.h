@@ -15,7 +15,7 @@ namespace NFoo
 		CInputStream &m_rSource;
 		CDeflateReader m_DeflateReader;
 		bool m_Ready;
-		const int8 *m_pError;
+		const char *m_pError;
 	public:
 		CZReader(CInputStream &rSource);
 

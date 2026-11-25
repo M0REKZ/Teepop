@@ -186,9 +186,9 @@ bool CSoundDevice_DirectSound::Update()
 
 
 int32_t m_LastWritePos = 0;
-int64 m_SampleClock = 0; // in bytes
+int64_t m_SampleClock = 0; // in bytes
 
-int64 m_SamleClockStart = -1;
+int64_t m_SamleClockStart = -1;
 bool g_WritePosWorkAround = false;
 
 
@@ -197,9 +197,9 @@ bool g_WritePosWorkAround = false;
 //
 bool CSoundDevice_DirectSound::Refill()
 {
-	static int64 LastRefill = 0;
+	static int64_t LastRefill = 0;
 	
-	int8 *apData[2] = {0};
+	char *apData[2] = {0};
 	uint32_t aSize[2] = {0};
 	uint32_t PlayPos;
 	uint32_t WritePos;
@@ -210,7 +210,7 @@ bool CSoundDevice_DirectSound::Refill()
 	m_pBuffer->GetCurrentPosition(&PlayPos, &WritePos); // TODO: these can't be trusted!
 
 	// update sample clock
-	int64 start = m_SampleClock;
+	int64_t start = m_SampleClock;
 	if(WritePos == m_LastWritePos)
 		return true;
 	else if(WritePos > m_LastWritePos)
@@ -220,7 +220,7 @@ bool CSoundDevice_DirectSound::Refill()
 
 
 	// adjust mixahead
-	int64 TickCount = NFoo::GetTickCount();
+	int64_t TickCount = NFoo::GetTickCount();
 	if(LastRefill != 0)
 	{
 		MixAhead = (int32_t)((TickCount-LastRefill)/(fp32)(GetTickFrequency())*1.5f*44100);
@@ -250,16 +250,16 @@ bool CSoundDevice_DirectSound::Refill()
 
 	if(0) // sinus test
 	{
-		int64 Clock = m_SampleClock/4;
+		int64_t Clock = m_SampleClock/4;
 		for(int32_t i = 0; i < 2; i++)
 		{
-			int16 *pDst = (int16 *)apData[i];
+			int16_t *pDst = (int16_t *)apData[i];
 			if(!pDst)
 				continue;
 
 			for(int32_t s = 0; s < aSize[i]/4; s++, Clock++)
 			{
-				int16 v = (int16)(sin((fp32)(Clock%100)/100.0f*PI*2)*32000);
+				int16_t v = (int16_t)(sin((fp32)(Clock%100)/100.0f*PI*2)*32000);
 				*pDst++ = v; 
 				*pDst++ = v; 
 			}

@@ -149,7 +149,7 @@ void CDrawer::End()
 //
 //
 //
-void CDrawer::DrawText(int32_t _x, int32_t _y, const int8 *_pText, fp32 _r, fp32 _g, fp32 _b)
+void CDrawer::DrawText(int32_t _x, int32_t _y, const char *_pText, fp32 _r, fp32 _g, fp32 _b)
 {
 	m_pPainter->DrawText(_x, _y, _pText, _r, _g, _b);
 	/*
@@ -167,7 +167,7 @@ void CDrawer::DrawText(int32_t _x, int32_t _y, const int8 *_pText, fp32 _r, fp32
 //
 //
 /*
-void CDrawer::DrawTextWhite(int32_t _x, int32_t _y, const int8 *_pText)
+void CDrawer::DrawTextWhite(int32_t _x, int32_t _y, const int8_t *_pText)
 {
 	m_pPainter->DrawText(_x, _y, _pText);
 	/*
@@ -263,7 +263,7 @@ void CPainter_2DUtils::DrawRect(int32_t _x, int32_t _y, int32_t _w, int32_t _h)
 	//m_UtilsRect.Quad_End();
 }
 
-void CPainter_2DUtils::DrawText(int32_t _x, int32_t _y, const int8 *_pText, fp32 _r, fp32 _g, fp32 _b)
+void CPainter_2DUtils::DrawText(int32_t _x, int32_t _y, const int8_t *_pText, fp32 _r, fp32 _g, fp32 _b)
 {
 	//m_pUtils->SetDefaults();
 	//m_pUtils->SetColor(121/255.0f, 108/255.0f, 92/255.0f, 1);
@@ -336,7 +336,7 @@ void CPainter_2DUtils::DrawRect(int32_t _x, int32_t _y, int32_t _w, int32_t _h)
 	m_pUtils->Quad_End();
 }
 
-void CPainter_2DUtils::DrawText(int32_t _x, int32_t _y, const int8 *_pText, fp32 _r, fp32 _g, fp32 _b)
+void CPainter_2DUtils::DrawText(int32_t _x, int32_t _y, const char *_pText, fp32 _r, fp32 _g, fp32 _b)
 {
 	m_pUtils->SetDefaults();
 	m_pUtils->SetBlend(N3D::C2DUtils::EBlend_Alpha);

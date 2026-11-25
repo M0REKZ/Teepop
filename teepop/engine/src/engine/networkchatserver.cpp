@@ -101,7 +101,7 @@ bool CNetworkChatServer::LeaveChannel(CUser *pUser)
 //
 //
 //
-bool CNetworkChatServer::SetChannel(CUser *pUser, const int8 *pName)
+bool CNetworkChatServer::SetChannel(CUser *pUser, const char *pName)
 {
 	CChannel *pChannel = FindChannel(pName);
 	if(!pChannel)
@@ -131,7 +131,7 @@ bool CNetworkChatServer::SetChannel(CUser *pUser, CChannel *pChannel)
 	{
 		CNetMessage Msg(NETMSG("clChannelSwitched"), true);
 		Msg.Write_p8(pChannel->m_Name);
-		Msg.WriteBE<uint16>(pChannel->m_lMembers.Len());
+		Msg.WriteBE<uint16_t>(pChannel->m_lMembers.Len());
 		for(int32_t i = 0; i < pChannel->m_lMembers.Len(); i++)
 		{
 			Msg.WriteBE<int32_t>(pChannel->m_lMembers[i]->m_pConnection->ClientID());
@@ -154,7 +154,7 @@ bool CNetworkChatServer::SetChannel(CUser *pUser, CChannel *pChannel)
 //
 //
 //
-CNetworkChatServer::CChannel *CNetworkChatServer::FindChannel(const int8 *pName)
+CNetworkChatServer::CChannel *CNetworkChatServer::FindChannel(const char *pName)
 {
 	for(int32_t i = 0; i < m_lChannels.Len(); i++)
 	{
@@ -164,7 +164,7 @@ CNetworkChatServer::CChannel *CNetworkChatServer::FindChannel(const int8 *pName)
 	return NULL;
 }
 
-void CNetworkChatServer::Chat(CUser *pUser, const int8 *pMessage)
+void CNetworkChatServer::Chat(CUser *pUser, const char *pMessage)
 {
 	if(!pUser || !pMessage)
 		return;
@@ -182,7 +182,7 @@ void CNetworkChatServer::Chat(CUser *pUser, const int8 *pMessage)
 }
 
 
-void CNetworkChatServer::Broadcast(const int8 *pMessage)
+void CNetworkChatServer::Broadcast(const char *pMessage)
 {
 	if(!StringLength(pMessage))
 		return;
@@ -221,7 +221,7 @@ void CNetworkChatServer::OnCommand(CString &rCmd, CString &rArgs)
 }
 
 
-bool CNetworkChatServer::SetUserName(CNetworkConnection *pConnection, const int8 *pName)
+bool CNetworkChatServer::SetUserName(CNetworkConnection *pConnection, const char *pName)
 {
 	if(!pConnection || !pConnection->GetData(this))
 		return false;
@@ -230,7 +230,7 @@ bool CNetworkChatServer::SetUserName(CNetworkConnection *pConnection, const int8
 	return true;
 }
 
-bool CNetworkChatServer::SetChannel(CNetworkConnection *pConnection, const int8 *pName)
+bool CNetworkChatServer::SetChannel(CNetworkConnection *pConnection, const char *pName)
 {
 	CUser *pUser = pConnection->GetData<CUser>(this);
 	if(!pUser)

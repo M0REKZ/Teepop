@@ -35,7 +35,7 @@ int32_t g_iOpenGLKeyboardClass = 0;
 //
 // Load the extension
 //
-void * GLExtInit_GetProcAddress(const int8 *_pString)
+void * GLExtInit_GetProcAddress(const char *_pString)
 {
 	//NLog::WriteF("Checking extension %s\n", _pString);	
 	return (void *)glXGetProcAddressARB((GLubyte *)_pString);

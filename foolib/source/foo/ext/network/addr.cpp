@@ -30,34 +30,34 @@ CAddr::CAddr()
 	SetAny(0);
 }
 
-CAddr::CAddr(uint16 _Port)
+CAddr::CAddr(uint16_t _Port)
 {
 	SetAny(_Port);
 }
 
-CAddr::CAddr(uint8 _1, uint8 _2, uint8 _3, uint8 _4, uint16 _Port)
+CAddr::CAddr(uint8_t _1, uint8_t _2, uint8_t _3, uint8_t _4, uint16_t _Port)
 {
-	uint8 Addr[4];
+	uint8_t Addr[4];
 	Addr[0] = _1;
 	Addr[1] = _2;
 	Addr[2] = _3;
 	Addr[3] = _4;
-	Set((int8*)Addr, _Port);
+	Set((char*)Addr, _Port);
 }
 
-CAddr::CAddr(const int8 *_pAddr, uint16 _Port)
+CAddr::CAddr(const char *_pAddr, uint16_t _Port)
 {
 	Set(_pAddr, _Port);
 }
 
-const int8 *CAddr::Str()
+const char *CAddr::Str()
 {
-	static int8 aString[32];
+	static char aString[32];
 	sprintf(aString, "%d.%d.%d.%d:%d", m_aAddress[0], m_aAddress[1], m_aAddress[2], m_aAddress[3], m_Port);
 	return aString;
 }
 
-CAddr NNetwork::AddrFromHostname(const char* _Name, uint16 _Port)
+CAddr NNetwork::AddrFromHostname(const char* _Name, uint16_t _Port)
 {
 	CAddr Addr;
 	struct hostent* pAddr = gethostbyname(_Name);
@@ -65,19 +65,19 @@ CAddr NNetwork::AddrFromHostname(const char* _Name, uint16 _Port)
 	// Returns address in network byte order
 	if (pAddr && (pAddr->h_length > 0))
 	{
-		memcpy(Addr.m_aAddress, pAddr->h_addr, sizeof(int8)*4);
+		memcpy(Addr.m_aAddress, pAddr->h_addr, sizeof(char)*4);
 		Addr.m_Port = _Port;
 	}
 	return Addr;
 }
 
-void CAddr::Set(const int8 *_pAddr, uint16 _Port)
+void CAddr::Set(const char *_pAddr, uint16_t _Port)
 {
-	memcpy(m_aAddress, _pAddr, sizeof(int8)*4);
+	memcpy(m_aAddress, _pAddr, sizeof(char)*4);
 	m_Port = _Port;
 }
 
-void CAddr::SetAny(uint16 _Port)
+void CAddr::SetAny(uint16_t _Port)
 {
 	m_Port = _Port;
 	m_aAddress[0] = m_aAddress[1] = m_aAddress[2] = m_aAddress[3] = 0;
@@ -86,7 +86,7 @@ void CAddr::SetAny(uint16 _Port)
 int32_t CAddr::operator=(CAddr &_pAddr)
 {
 	m_Port = _pAddr.m_Port;
-	memcpy(m_aAddress, _pAddr.m_aAddress, sizeof(int8)*4);
+	memcpy(m_aAddress, _pAddr.m_aAddress, sizeof(char)*4);
 	return 0;
 }
 

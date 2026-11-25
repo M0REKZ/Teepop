@@ -51,7 +51,7 @@ class CPrintFLogger : public NLog::CLogger
 public:
 	CPrintFLogger() { NLog::Attach(this); NLog::Write("CPrintFLogger attached\n"); }
 	virtual ~CPrintFLogger() { NLog::Write("CPrintFLogger deattching\n"); NLog::Detach(this); }
-	virtual void Write(const int8 *_pBuffer) { printf("%s", _pBuffer); }
+	virtual void Write(const char *_pBuffer) { printf("%s", _pBuffer); }
 };
 
 
@@ -81,7 +81,7 @@ public:
 		m_File.Close();
 	}
 
-	virtual void Write(const int8 *_pBuffer)
+	virtual void Write(const char *_pBuffer)
 	{
 		m_File.Write(_pBuffer, StringLength(_pBuffer));
 		m_File.Flush();
@@ -105,7 +105,7 @@ int main(int argc, char* argv[])
 
 	NLog::Write("MAIN:Initing\n");
 	
-	//int8 aDir[512];
+	//char aDir[512];
 //	int32_t Size = 512;
 	//NPosix::getwd(aDir);
 	//NLog::Write("MAIN: Working directory is %s\n", aDir);

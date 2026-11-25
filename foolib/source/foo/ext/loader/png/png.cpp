@@ -73,7 +73,7 @@ public:
 	int32_t virtual Read(void *pBuffer, int32_t Size)
 	{
 		int32_t r = 0;
-		uint8 *pDst = (uint8 *)pBuffer;
+		uint8_t *pDst = (uint8_t *)pBuffer;
 		while(Size)
 		{
 			bool NeedMore = Size > m_Left;
@@ -109,7 +109,7 @@ T AbsInt(T v)
 	return (v ^ (v >> (sizeof(T) * 8 - 1))) - (v >> (sizeof(T) * 8 - 1));
 }
 
-uint8 PaethPredict(int32_t a, int32_t b, int32_t c)
+uint8_t PaethPredict(int32_t a, int32_t b, int32_t c)
 {
 	int32_t p = a+b-c;
 	int32_t pa = AbsInt(p - a);
@@ -125,10 +125,10 @@ uint8 PaethPredict(int32_t a, int32_t b, int32_t c)
 bool CPNGFormat::Load(CInputStream &_rStream, CImage &rImage)
 {
 	CBlockReader rStream(_rStream);
-	const uint8 aSignature[] = {137,'P','N','G',13,10,26,10};
+	const uint8_t aSignature[] = {137,'P','N','G',13,10,26,10};
 
 	for(int32_t i = 0; i < 8; i++)
-		if(rStream.ReadNE<uint8>() != aSignature[i])
+		if(rStream.ReadNE<uint8_t>() != aSignature[i])
 			return false;
 
 	uint32_t Width = 0;
@@ -160,11 +160,11 @@ bool CPNGFormat::Load(CInputStream &_rStream, CImage &rImage)
 		{
 			Width = rStream.ReadBE<uint32_t>();
 			Height = rStream.ReadBE<uint32_t>();
-			BitDepth = rStream.ReadBE<uint8>();
-			ColorType = rStream.ReadBE<uint8>();
-			CompressionMethod = rStream.ReadBE<uint8>();
-			FilterMethod = rStream.ReadBE<uint8>();
-			InterlaceMethod = rStream.ReadBE<uint8>();
+			BitDepth = rStream.ReadBE<uint8_t>();
+			ColorType = rStream.ReadBE<uint8_t>();
+			CompressionMethod = rStream.ReadBE<uint8_t>();
+			FilterMethod = rStream.ReadBE<uint8_t>();
+			InterlaceMethod = rStream.ReadBE<uint8_t>();
 			
 			if(ColorType == 0 && BitDepth == 8) // Grayscale, Y8
 			{
@@ -191,7 +191,7 @@ bool CPNGFormat::Load(CInputStream &_rStream, CImage &rImage)
 		}
 		else if(ChunkType == 'IDAT')
 		{
-			uint8 *pOutputMem = rImage.Data();
+			uint8_t *pOutputMem = rImage.Data();
 			CPNGIDATReader IDATReader(rStream, ChunkSize);
 			CZReader ZReader(IDATReader);
 		
@@ -203,9 +203,9 @@ bool CPNGFormat::Load(CInputStream &_rStream, CImage &rImage)
 
 			for(int32_t i = 0; i < Height; i++)
 			{
-				int32_t FilterType = ZReader.ReadNE<uint8>();
+				int32_t FilterType = ZReader.ReadNE<uint8_t>();
 				ZReader.Read(pOutputMem, Width*bpp); // read row
-				uint8 *pPrevious = i > 0 ? pOutputMem-Pitch : NULL;
+				uint8_t *pPrevious = i > 0 ? pOutputMem-Pitch : NULL;
 				if(FilterType != 0)
 				{
 					if(FilterType < 1 || FilterType > 4)
@@ -226,7 +226,7 @@ bool CPNGFormat::Load(CInputStream &_rStream, CImage &rImage)
 						case 4: Predictor = PaethPredict(Left, Up, UpLeft); break;
 						}
 
-						pOutputMem[x] = (uint8)(pOutputMem[x]+Predictor);
+						pOutputMem[x] = (uint8_t)(pOutputMem[x]+Predictor);
 					}
 				}
 

@@ -24,7 +24,7 @@ namespace NGUI {
 		bool m_Multiline;
 	public:
 		CStringItem();
-		CStringItem(const int8 *_pString, bool _Multiline = false);
+		CStringItem(const char *_pString, bool _Multiline = false);
 
 		virtual void OnWidthChange();
 		virtual void OnDraw(CDrawer &_rDrawer, bool Selected);
@@ -49,7 +49,7 @@ namespace NGUI {
 		virtual void OnDoubleClick(CPoint _Pos, int32_t _Button);
 		virtual void OnLostFocus();
 	public:
-		CListBox(CView *pParent=NULL, const int8 *pName=NULL, CGUI *pGUI=NULL);
+		CListBox(CView *pParent=NULL, const char *pName=NULL, CGUI *pGUI=NULL);
 		~CListBox();
 
 		void SetScrollAmount(fp32 ScrollAmount) { m_ScrollBar.SetAmount(ScrollAmount); }

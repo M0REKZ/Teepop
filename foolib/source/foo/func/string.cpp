@@ -21,12 +21,12 @@ CString::CString()
 //
 // Constructor - Format String Creation
 //
-CString::CString(const int8 *_pFormat, ...)
+CString::CString(const char *_pFormat, ...)
 {
     m_pData = NULL;
     m_Size = 0;
 
-    int8 Buffer[4092 * 10];
+    char Buffer[4092 * 10];
 
     va_list Args;
     va_start(Args, _pFormat);
@@ -61,7 +61,7 @@ CString::~CString()
 int32_t CString::operator = (const CString &_Other)
 {
 	if(_Other.m_pData)
-		CopyData((int8 *)_Other.m_pData);
+		CopyData((char *)_Other.m_pData);
 	else
 		Set("");
 
@@ -77,7 +77,7 @@ void CString::operator += (const CString& _Other)
 //
 //
 //
-int32_t CString::operator == (const int8 *_pOther) const
+int32_t CString::operator == (const char *_pOther) const
 {
 	if(!m_pData)
 		return false;
@@ -85,7 +85,7 @@ int32_t CString::operator == (const int8 *_pOther) const
 	return (StringCompare(_pOther, m_pData) == 0);
 }
 
-int32_t CString::operator != (const int8 *_pOther) const
+int32_t CString::operator != (const char *_pOther) const
 {
 	if(!m_pData)
 		return false;
@@ -96,7 +96,7 @@ int32_t CString::operator != (const int8 *_pOther) const
 //
 //
 //
-void CString::CopyData(const int8 *_pStr)
+void CString::CopyData(const char *_pStr)
 {	
 	if(!_pStr)
 	{
@@ -106,11 +106,11 @@ void CString::CopyData(const int8 *_pStr)
 	CopyData(_pStr, StringLength(_pStr));
 }
 
-void CString::CopyData(const int8 *_pStr, int32_t _Len)
+void CString::CopyData(const char *_pStr, int32_t _Len)
 {
 	SafeDelete(m_pData);
 	m_Size = _Len+1;
-	m_pData = new int8 [m_Size];
+	m_pData = new char [m_Size];
 	MemoryCopy(m_pData, _pStr, m_Size);
 	m_pData[m_Size-1] = 0;
 }
@@ -119,9 +119,9 @@ void CString::CopyData(const int8 *_pStr, int32_t _Len)
 //
 //
 //
-void CString::AppendData(const int8 *_pStr, int32_t _Len)
+void CString::AppendData(const char *_pStr, int32_t _Len)
 {
-	int8 *pNewData = new int8 [m_Size+_Len];
+	char *pNewData = new char [m_Size+_Len];
 	MemoryCopy(pNewData, m_pData, m_Size);
 	MemoryCopy(pNewData+m_Size-1, _pStr, _Len);
 	m_Size = m_Size+_Len;
@@ -134,9 +134,9 @@ void CString::AppendData(const int8 *_pStr, int32_t _Len)
 //
 //
 //
-void CString::Set(const int8 *_pFormat, ...)
+void CString::Set(const char *_pFormat, ...)
 {
-    int8 Buffer[4092 * 10];
+    char Buffer[4092 * 10];
 
     va_list Args;
     va_start(Args, _pFormat);
@@ -152,7 +152,7 @@ void CString::SetSize(int32_t _Size)
 {
 	SafeDelete(m_pData);
 	m_Size = _Size;
-	m_pData = new int8[m_Size];
+	m_pData = new char[m_Size];
 	m_pData[0] = 0;
 }
 
@@ -193,9 +193,9 @@ fp64 CString::GetFloat()
 //
 //
 //
-bool CString::Find(const int8 *_pFormat, ...) const
+bool CString::Find(const char *_pFormat, ...) const
 {
-    int8 Buffer[4092 * 10];
+    char Buffer[4092 * 10];
 
     va_list Args;
     va_start(Args, _pFormat);
@@ -215,7 +215,7 @@ void CString::Reverse()
 	int32_t L = Len();
 	for (int32_t i = 0; i < L/2; i++)
 	{
-		int8 t = m_pData[i];
+		char t = m_pData[i];
 		m_pData[i] = m_pData[L-i-1];
 		m_pData[L-i-1] = t;
 	}
@@ -227,7 +227,7 @@ void CString::Reverse()
 void CString::TrimWhitespaces()
 {
 	int32_t L = Len();
-	const int8* pData = GetData();
+	const char* pData = GetData();
 	if (L <= 0 || !pData)
 		return;
 
@@ -256,9 +256,9 @@ void CString::TrimWhitespaces()
 		*this = Delete(Len()-Count,Count);
 }
 
-int32_t CString::FindPos(const int8 *_pFormat, ...) const
+int32_t CString::FindPos(const char *_pFormat, ...) const
 {
-    int8 Buffer[4092 * 10];
+    char Buffer[4092 * 10];
 
     va_list Args;
     va_start(Args, _pFormat);
@@ -295,7 +295,7 @@ int32_t CString::FindPos(const int8 *_pFormat, ...) const
 
 // Returns string upto given separator, if no separator is found, returns new "complete" string 
 // and empties this one
-CString CString::GetStrSep(const int8* _pStr)
+CString CString::GetStrSep(const char* _pStr)
 {
 	int32_t iPos = FindPos(_pStr);
 	if (iPos >= 0)

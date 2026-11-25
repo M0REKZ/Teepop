@@ -138,7 +138,7 @@ void C2DUtils::CFont::BuildNormalAscii()
 		m_aTranslationTable[i] = i;
 }
 
-void C2DUtils::CFont::BuildTranslationTable(const uint8 *_pString)
+void C2DUtils::CFont::BuildTranslationTable(const uint8_t *_pString)
 {
 	MemorySet(m_aTranslationTable, 0, 256);
 
@@ -646,9 +646,9 @@ void C2DUtils::Text_Begin(CFont *_pFont)
 //
 //
 //
-void C2DUtils::Text_Draw(fp32 _x, fp32 _y, int32_t _Flags, const int8 *_pFormat, ...)
+void C2DUtils::Text_Draw(fp32 _x, fp32 _y, int32_t _Flags, const char *_pFormat, ...)
 {
-	int8 aBuffer[1024*4];
+	char aBuffer[1024*4];
 	va_list Args;
     va_start(Args, _pFormat);
 
@@ -659,10 +659,10 @@ void C2DUtils::Text_Draw(fp32 _x, fp32 _y, int32_t _Flags, const int8 *_pFormat,
 	fp32 w = 1.0f/m_pFont->m_XCells;
 	fp32 h = 1.0f/m_pFont->m_YCells;
 
-	uint8 *pCurrent = (uint8 *)aBuffer;
+	uint8_t *pCurrent = (uint8_t *)aBuffer;
 	while(*pCurrent)
 	{
-		uint8 c = m_pFont->m_aTranslationTable[*pCurrent];
+		uint8_t c = m_pFont->m_aTranslationTable[*pCurrent];
 		
 		if(c == '\a')
 		{

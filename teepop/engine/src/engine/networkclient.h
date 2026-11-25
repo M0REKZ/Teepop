@@ -22,7 +22,7 @@ namespace NEngine
 			EEvent_Connected
 		};
 
-		void SetVersion(const int8 *pVersion) { m_VersionString = pVersion; }
+		void SetVersion(const char *pVersion) { m_VersionString = pVersion; }
 
 		bool IsConnecting() { return m_SlotClient.IsConnecting(); }
 		bool IsConnected() { return m_SlotClient.IsConnected(); }
@@ -31,7 +31,7 @@ namespace NEngine
 		void Connect(NNetwork::CAddr Addr) { m_SlotClient.Connect(Addr, m_VersionString); UpdateState(); }
 		void Disconnect() { m_SlotClient.Disconnect(); UpdateState(); }
 
-		virtual const int8 *GetStatusString();
+		virtual const char *GetStatusString();
 		virtual void Update();
 	};
 };

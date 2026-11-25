@@ -64,7 +64,7 @@ public:
 		EHeight = 12,
 		EMaxZaps = (EWidth*EHeight)/4+1,
 		EElements = EWidth*EHeight,
-		ESize = EElements*sizeof(int8),
+		ESize = EElements*sizeof(char),
 
 		EIttrState1,
 		EIttrState2,
@@ -105,12 +105,12 @@ public:
 	int32_t m_BlobCount;
 
 	//
-	int8 m_aField[EWidth][EHeight];
+	char m_aField[EWidth][EHeight];
 	int32_t m_aExtra[EWidth][EHeight];
 
 	// Current Blocks
-	uint8 m_aCurrentBlocks[2];
-	uint8 m_aNextBlocks[2];
+	uint8_t m_aCurrentBlocks[2];
+	uint8_t m_aNextBlocks[2];
 
 	bool m_Lost;
 

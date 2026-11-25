@@ -34,15 +34,15 @@ namespace NFoo { namespace NSlotServer {
 	//
 	class CChunk
 	{
-		int8 m_aData[EMaxPacketSize];
+		char m_aData[EMaxPacketSize];
 	public:
-		uint8 m_Type;
-		uint8 m_Flags;
-		uint16 m_SequenceNumber;
-		uint16 m_VitalNumber;
-		uint16 m_DataSize;
+		uint8_t m_Type;
+		uint8_t m_Flags;
+		uint16_t m_SequenceNumber;
+		uint16_t m_VitalNumber;
+		uint16_t m_DataSize;
 		
-		const int8 *String();
+		const char *String();
 
 		int32_t GetSize();
 
@@ -55,12 +55,12 @@ namespace NFoo { namespace NSlotServer {
 
 		//NFoo::NNetwork::CAddr m_Address; // Target / Source address
 
-		CChunk(uint8 Type=0, uint8 Flags=0);
+		CChunk(uint8_t Type=0, uint8_t Flags=0);
 		~CChunk();
 
 		CChunk *Duplicate();
 		void Clear();
-		void SetData(const int8 *pData, uint16 Size);
+		void SetData(const char *pData, uint16_t Size);
 		void Write(NFoo::COutputStream &rStream);
 		void Read(NFoo::CInputStream &rStream);
 	};

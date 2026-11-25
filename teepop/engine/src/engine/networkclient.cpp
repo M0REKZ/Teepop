@@ -87,7 +87,7 @@ void CNetworkClient::Update()
 	//PumpConnection(&m_SlotClient);
 }
 
-const int8 *CNetworkClient::GetStatusString()
+const char *CNetworkClient::GetStatusString()
 {
 	static CString Status;
 	

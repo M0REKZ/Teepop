@@ -24,7 +24,7 @@ public:
 
 	CString GetString()
 	{
-		int8 *aStates[2] = {"Waiting", "Started"};
+		char *aStates[2] = {"Waiting", "Started"};
 		return CString("%-20s %d/%d  %s", m_Name.GetData(), m_lPlayers.Len(), m_MaxPlayers, aStates[m_State&EState_Mask]);
 	}
 };
@@ -60,7 +60,7 @@ public:
 
 	// room commands
 	void JoinRoom(int32_t RoomID);
-	void JoinRoom(const int8 *pName);
+	void JoinRoom(const char *pName);
 	void LeaveRoom();
-	void CreateRoom(const int8 *pName, const int8 *pPassword, int32_t Max);
+	void CreateRoom(const char *pName, const char *pPassword, int32_t Max);
 };

@@ -8,31 +8,31 @@ using namespace NFoo::NLWO;
 //
 // TEMPORARY FUNCTIONS
 //
-uint16 _GET_SWAP_UINT16(uint8* _pBuf) 
+uint16_t _GET_SWAP_UINT16(uint8_t* _pBuf) 
 { 
-	return ByteSwap(*((uint16 *)_pBuf));
+	return ByteSwap(*((uint16_t *)_pBuf));
 }
 
-uint16 _GET_SWAP_UINT16_MOVE(uint8** _pBuf) 
+uint16_t _GET_SWAP_UINT16_MOVE(uint8_t** _pBuf) 
 { 
-	uint16 r = ByteSwap(*((uint16 *)_pBuf));
+	uint16_t r = ByteSwap(*((uint16_t *)_pBuf));
 	*_pBuf += 2;
 	return r;
 }
 
-uint32_t _GET_SWAP_UINT32(uint8* _pBuf) 
+uint32_t _GET_SWAP_UINT32(uint8_t* _pBuf) 
 { 
 	return ByteSwap(*((uint32_t *)_pBuf));
 }
 
-fp32 _GET_FLOAT(uint8* _pBuf) 
+fp32 _GET_FLOAT(uint8_t* _pBuf) 
 { 
 	uint32_t i = ByteSwap(*((uint32_t *)_pBuf));
 	return *((fp32*)&i);
 }
 
 
-uint32_t _GET_VX(uint8* _pBuf) 
+uint32_t _GET_VX(uint8_t* _pBuf) 
 { 
 	if (*_pBuf == 0xFF)
 		return ByteSwap((*((uint32_t *)_pBuf)) & 0xFFFFFF);
@@ -40,7 +40,7 @@ uint32_t _GET_VX(uint8* _pBuf)
 		return _GET_SWAP_UINT16(_pBuf);
 }
 
-uint32_t _GET_VX_MOVE(uint8** _pBuf) 
+uint32_t _GET_VX_MOVE(uint8_t** _pBuf) 
 { 
 	uint32_t r;
 	if (**_pBuf == 0xFF)
@@ -57,10 +57,10 @@ uint32_t _GET_VX_MOVE(uint8** _pBuf)
 	}
 }
 
-uint8 *_GET_S0_MOVE(uint8** _pBuf) 
+uint8_t *_GET_S0_MOVE(uint8_t** _pBuf) 
 { 
-	uint8 *t = *_pBuf;
-	int32_t i = StringLength((int8 *)*_pBuf) + 1;
+	uint8_t *t = *_pBuf;
+	int32_t i = StringLength((char *)*_pBuf) + 1;
 
 	if (i%2)
 		i++;
@@ -154,7 +154,7 @@ void CLWO_Chunk::Process(int32_t _Phase, CLWO_Block* _pBlock)
 				// 4 * 3 = 12
 				//
 				_pBlock->m_NumPoints = m_Size / 12;
-				uint8* pTempPtr = m_pBuffer;
+				uint8_t* pTempPtr = m_pBuffer;
 				fp32 x, y, z;
 
 				//
@@ -203,10 +203,10 @@ void CLWO_Chunk::Process(int32_t _Phase, CLWO_Block* _pBlock)
 					//
 					// Declarations and assignment
 					//
-					uint16 NumVertsAndFlags;
-					uint16 Flags;
-					uint16 NumVerts;
-					uint8* pTempPtr = m_pBuffer + 4;
+					uint16_t NumVertsAndFlags;
+					uint16_t Flags;
+					uint16_t NumVerts;
+					uint8_t* pTempPtr = m_pBuffer + 4;
 
 					// Move thru all the faces
 					_pBlock->m_NumPolygons = 0;
@@ -214,7 +214,7 @@ void CLWO_Chunk::Process(int32_t _Phase, CLWO_Block* _pBlock)
 					while (pTempPtr < m_pBuffer + m_Size)
 					{
 						// Read Flags and Num Verts for Polygon
-						NumVertsAndFlags = ByteSwap(*((uint16 *)pTempPtr));
+						NumVertsAndFlags = ByteSwap(*((uint16_t *)pTempPtr));
 						Flags = NumVertsAndFlags & 0xFC00;
 						NumVerts = NumVertsAndFlags - Flags;
 						
@@ -246,7 +246,7 @@ void CLWO_Chunk::Process(int32_t _Phase, CLWO_Block* _pBlock)
 								pTempPtr += 2;
 								if(*pTempPtr == 0xFF)
 									pTempPtr = pTempPtr+2;
-								//pTempPtr = (uint8 *)CMovE(*pTempPtr, 0xFF, (long)pTempPtr, (long)(pTempPtr+2));
+								//pTempPtr = (uint8_t *)CMovE(*pTempPtr, 0xFF, (long)pTempPtr, (long)(pTempPtr+2));
 							}
 
 						}
@@ -256,7 +256,7 @@ void CLWO_Chunk::Process(int32_t _Phase, CLWO_Block* _pBlock)
 							pTempPtr += 2;
 							if(*pTempPtr == 0xFF)
 								pTempPtr = pTempPtr+2;
-							//pTempPtr = (uint8 *)CMovE(*pTempPtr, 0xFF, (long)pTempPtr, (long)(pTempPtr+2));
+							//pTempPtr = (uint8_t *)CMovE(*pTempPtr, 0xFF, (long)pTempPtr, (long)(pTempPtr+2));
 						}
 
 						// Only Polygons with 3 points are valid
@@ -277,10 +277,10 @@ void CLWO_Chunk::Process(int32_t _Phase, CLWO_Block* _pBlock)
 		//
 		case 'VMAP':
 			{
-				uint16 Dim;
-				uint8 *Name;
-				uint8 *pEndPos = m_pBuffer + m_Size;
-				uint8 *pTempPtr = m_pBuffer + 4;
+				uint16_t Dim;
+				uint8_t *Name;
+				uint8_t *pEndPos = m_pBuffer + m_Size;
+				uint8_t *pTempPtr = m_pBuffer + 4;
 				
 				Dim = _GET_SWAP_UINT16(pTempPtr);
 				pTempPtr += 2;
@@ -361,10 +361,10 @@ void CLWO_Chunk::Process(int32_t _Phase, CLWO_Block* _pBlock)
 				if (m_SubType != 'TXUV')
 					break;
 
-				uint16 Dim;
-				uint8 *Name;
-				uint8 *pEndPos = m_pBuffer + m_Size;
-				uint8 *pTempPtr = m_pBuffer + 4;
+				uint16_t Dim;
+				uint8_t *Name;
+				uint8_t *pEndPos = m_pBuffer + m_Size;
+				uint8_t *pTempPtr = m_pBuffer + 4;
 
 				Dim = _GET_SWAP_UINT16(pTempPtr);
 				pTempPtr += 2;
@@ -406,8 +406,8 @@ void CLWO_Chunk::Process(int32_t _Phase, CLWO_Block* _pBlock)
 				if (m_SubType != 'SURF')
 					break;
 
-				uint8 *pEndPos = m_pBuffer + m_Size;
-				uint8 *pTempPtr = m_pBuffer + 4;
+				uint8_t *pEndPos = m_pBuffer + m_Size;
+				uint8_t *pTempPtr = m_pBuffer + 4;
 
 				while(pTempPtr < pEndPos - 1)
 				{
@@ -536,11 +536,11 @@ void CLWO_Block::Process(int32_t _Phase)
 //
 //
 //
-void CLWO_File::Load(uint8* _pBuffer, int32_t _Size)
+void CLWO_File::Load(uint8_t* _pBuffer, int32_t _Size)
 {
 	// Local Variabels
 	uint32_t*	pDWORDBuffer = (uint32_t*)_pBuffer;
-	uint8*	pBuffer = (uint8*)_pBuffer;
+	uint8_t*	pBuffer = (uint8_t*)_pBuffer;
 
 	// Inital format check
 	{
@@ -614,12 +614,12 @@ void CLWO_File::Load(uint8* _pBuffer, int32_t _Size)
 			if (SubChunkID == 'TAGS')
 			{
 				m_lTags.Clear();
-				uint8 *pTemp = _pBuffer + CurrentPosition + 8;
-				uint8 *pEnd = _pBuffer + CurrentPosition + SubChunkSize + 8;
+				uint8_t *pTemp = _pBuffer + CurrentPosition + 8;
+				uint8_t *pEnd = _pBuffer + CurrentPosition + SubChunkSize + 8;
 
 				// Process the chunk and add the strings
 				while(pTemp < pEnd)
-					m_lTags.Add((int8 *)_GET_S0_MOVE(&pTemp));
+					m_lTags.Add((char *)_GET_S0_MOVE(&pTemp));
 			}
 
 			//
@@ -630,15 +630,15 @@ void CLWO_File::Load(uint8* _pBuffer, int32_t _Size)
 			if (SubChunkID == 'SURF')
 			{
 				/*
-				uint8 *pTemp = _pBuffer + CurrentPosition + 8;
-				int8 Name[512];
+				uint8_t *pTemp = _pBuffer + CurrentPosition + 8;
+				int8_t Name[512];
 				strcpy(Name, (char *)_GET_S0_MOVE(&pTemp));
 
 				if (strlen(Name) > 0)
 				{
 					CLWO_SurfaceData *Surf = new CLWO_SurfaceData;
 					m_lSurfaces.Add(Surf);
-					strcpy(Surf->FileName, (int8 *)_GET_S0_MOVE(&pTemp));
+					strcpy(Surf->FileName, (int8_t *)_GET_S0_MOVE(&pTemp));
 					strcpy(Surf->Name, Name);
 					strcpy(Surf->UVMapname, "");
 					
@@ -654,7 +654,7 @@ void CLWO_File::Load(uint8* _pBuffer, int32_t _Size)
 					while(CurPosition < Size-4)
 					{
 						int32_t SubSubChunkID = ByteSwap32(*((uint32_t *)&pTemp[CurPosition]));
-						int32_t SubSubChunkSize = ByteSwap16(*((uint16 *)&pTemp[CurPosition+4]));
+						int32_t SubSubChunkSize = ByteSwap16(*((uint16_t *)&pTemp[CurPosition+4]));
 
 						if(SubSubChunkID == 'BLOK')
 						{
@@ -665,7 +665,7 @@ void CLWO_File::Load(uint8* _pBuffer, int32_t _Size)
 						else if(SubSubChunkID == 'VMAP')
 						{
 							pTemp = pTemp+CurPosition+6;
-							strcpy(Surf->UVMapname, (int8 *)_GET_S0_MOVE(&pTemp));
+							strcpy(Surf->UVMapname, (int8_t *)_GET_S0_MOVE(&pTemp));
 							Size = 0;
 						}
 						else
@@ -756,11 +756,11 @@ bool NLWO::Load(CStorage &_Storage, CLWO_File &_rFile)
 	int32_t Size = _Storage.GetSize();
 
 	// Load File and close
-	int8 *pBuffer = new int8[Size];
+	int8_t *pBuffer = new int8_t[Size];
 	_Storage.Read(pBuffer, Size);
 
 	// Process the file
-	_rFile.Load((uint8 *)pBuffer, Size);
+	_rFile.Load((uint8_t *)pBuffer, Size);
 	_rFile.Process();
 
 	return true;

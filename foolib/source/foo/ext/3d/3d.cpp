@@ -416,7 +416,7 @@ int32_t CDevice::CreateIndexBuffer(CIndexBuffer *_pIB, int32_t _Count)
 
 	int32_t iIndexBuffer = CreateIndexBuffer(_pIB->m_Count, 0);
 	CIndexBuffer *pIB = LockIndexBuffer(iIndexBuffer);
-	MemoryCopy(pIB->m_pIndex16, _pIB->m_pIndex16, _pIB->m_Count*sizeof(uint16));
+	MemoryCopy(pIB->m_pIndex16, _pIB->m_pIndex16, _pIB->m_Count*sizeof(uint16_t));
 	UnlockIndexBuffer(iIndexBuffer);
 	return iIndexBuffer;
 }
@@ -466,10 +466,10 @@ void CDevice::ClearAllAllocatedIndexes()
 //
 //
 /*
-int8 *LoadStorageAsString(CStorage &_rStorage)
+char *LoadStorageAsString(CStorage &_rStorage)
 {
 	int32_t Size = _rStorage.GetSize();
-	int8 *pString = new int8[Size+1];
+	char *pString = new char[Size+1];
 	_rStorage.Read(pString, Size);
 	pString[Size] = 0;
 	return pString;
@@ -662,7 +662,7 @@ N3D::CIndexBuffer *N3D::CreateIndexBufferSW(int32_t _Count, int32_t _Flags)
 {
 	CIndexBuffer *pIB = new CIndexBufferSW;
 	pIB->m_Count = _Count;
-	pIB->m_pIndex16 = new uint16[_Count];
+	pIB->m_pIndex16 = new uint16_t[_Count];
 	return pIB;
 }
 
@@ -821,7 +821,7 @@ int32_t CShaderManager::CreateVertexShader(const NFoo::CString& _Name)
 		if(!ShaderFile.IsReady())
 			return false;
 
-		int8* pFileAsString = new int8[ShaderFile.GetSize()+1];
+		char* pFileAsString = new char[ShaderFile.GetSize()+1];
 		ShaderFile.Read(pFileAsString, ShaderFile.GetSize());
 		pFileAsString[ShaderFile.GetSize()] = 0;
 		ShaderFile.Close();
@@ -849,7 +849,7 @@ int32_t CShaderManager::CreatePixelShader(const NFoo::CString& _Name)
 		if(!ShaderFile.IsReady())
 			return false;
 
-		int8* pFileAsString = new int8[ShaderFile.GetSize()+1];
+		char* pFileAsString = new char[ShaderFile.GetSize()+1];
 		ShaderFile.Read(pFileAsString, ShaderFile.GetSize());
 		pFileAsString[ShaderFile.GetSize()] = 0;
 		ShaderFile.Close();

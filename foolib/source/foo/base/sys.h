@@ -17,14 +17,14 @@ namespace NFoo
 	//# Remarks: Under Win32 this value is often equal to the processorspeed.
 	//# SeeAlso: GetTickCount
 	//# Declaration:
-	int64 GetTickFrequency();
+	int64_t GetTickFrequency();
 
 	//# Function: GetTickCount
 	//# Description: Gets the high precision counter.
 	//# Returns: Tick since system boot.
 	//# SeeAlso: GetTickFrequency
 	//# Declaration:
-	int64 GetTickCount();
+	int64_t GetTickCount();
 
 	//# Function: MessageBox
 	//# Description: Displays a message box on platforms that support it.
@@ -32,7 +32,7 @@ namespace NFoo
 	//#		Message, Message to display
 	//#		Caption, Message box caption
 	//# Declaration:
-	void MessageBox(const int8 *_pMsg,const int8 *_pCaption);
+	void MessageBox(const char *_pMsg,const char *_pCaption);
 
 	//# Function: Sleep
 	//# Description: Pauses the program execution.

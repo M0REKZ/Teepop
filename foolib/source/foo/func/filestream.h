@@ -18,10 +18,10 @@ namespace NFoo
 		};
 
 		CFileWriter(void *pHandle);
-		CFileWriter(const int8 *_pFilename=NULL, int32_t _Mode=EBinary);
+		CFileWriter(const char *_pFilename=NULL, int32_t _Mode=EBinary);
 		virtual ~CFileWriter();
 
-		bool Open(const int8 *_pFilename, int32_t _Mode=EBinary);
+		bool Open(const char *_pFilename, int32_t _Mode=EBinary);
 		bool Close();
 
 		// Various Functions
@@ -43,10 +43,10 @@ namespace NFoo
 		CString m_Filename;
 	public:
 		CFileReader(void *pHandle);
-		CFileReader(const int8 *_pFilename=NULL);
+		CFileReader(const char *_pFilename=NULL);
 		virtual ~CFileReader();
 
-		bool Open(const int8 *_pFilename);
+		bool Open(const char *_pFilename);
 		bool Close();
 
 		// Various Functions

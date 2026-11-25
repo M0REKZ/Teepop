@@ -43,7 +43,7 @@ void CNetworkAuthClient::OnNetMessage(CNetworkConnection *pConnection, NetMsgID 
 {
 	if(iMsg == NETMSG("clAuthResult"))
 	{
-		int32_t Result = rStream.ReadBE<uint8>();
+		int32_t Result = rStream.ReadBE<uint8_t>();
 		m_ErrorMessage = rStream.Read_p8();
 		m_LoggedOn = Result;
 		if(Result)
@@ -92,7 +92,7 @@ void CNetworkAuthClient::OnCommand(CString &rCmd, CString &rArgs)
 //
 //
 //
-void CNetworkAuthClient::Logon(const int8 *pUsername, const int8 *pPassword)
+void CNetworkAuthClient::Logon(const char *pUsername, const char *pPassword)
 {
 	if(!m_pConnection)
 		return;
@@ -101,7 +101,7 @@ void CNetworkAuthClient::Logon(const int8 *pUsername, const int8 *pPassword)
 	m_Password = pPassword;
 
 	CNetMessage Msg(NETMSG("svAuthLogon"), true);
-	Msg.WriteBE<uint8>(0);
+	Msg.WriteBE<uint8_t>(0);
 	Msg.Write_p8(m_Username);
 	Msg.Write_p8(m_Password);
 	m_pConnection->SendMessage(Msg);

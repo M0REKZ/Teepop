@@ -20,9 +20,9 @@ namespace NFoo
 		{
 		public:
 			CEvent() {}
-			CEvent(int32_t _Key, bool _Pressed, int8 _Char = 0) { m_Key = _Key; m_Pressed = _Pressed; m_Char = _Char; }
+			CEvent(int32_t _Key, bool _Pressed, char _Char = 0) { m_Key = _Key; m_Pressed = _Pressed; m_Char = _Char; }
 			int32_t m_Key;
-			int8 m_Char;
+			char m_Char;
 			bool m_Pressed;
 			//class CInput::CDevice *m_pDevice;
 		};
@@ -33,7 +33,7 @@ namespace NFoo
 			friend class CInput;
 
 		public:
-			//static const int8 ms_aTag[] = "InputDevice";
+			//static const int8_t ms_aTag[] = "InputDevice";
 			// events
 			int32_t	NumEvents()						{ return m_lEvents.Len(); };
 			CEvent	GetEvent();
@@ -45,8 +45,8 @@ namespace NFoo
 			void	ResetAxis()						{ for(int32_t i = 0; i < GetNumAxis(); i++) m_pAxis[i] = 0; }
 
 			bool	IsButtonPressed(int32_t _iButton) { return m_pButtonStates[_iButton]&EMask_Pressed; };
-			void	PressButton(int32_t _iButton, int8 _Char = 0);
-			void	ReleaseButton(int32_t _iButton, int8 _Char = 0);
+			void	PressButton(int32_t _iButton, char _Char = 0);
+			void	ReleaseButton(int32_t _iButton, char _Char = 0);
 
 		protected:
 			// buttons
@@ -62,7 +62,7 @@ namespace NFoo
 			TDynamicArray<CEvent> m_lEvents;
 			bool m_UseEvents;
 
-			uint8 *m_pButtonStates;
+			uint8_t *m_pButtonStates;
 			int32_t m_NumButtons;
 
 			fp32 *m_pAxis;

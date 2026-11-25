@@ -46,7 +46,7 @@ namespace NEngine
 		TDynamicArray<CUser*> m_lUsers;
 		//TMap<CNetworkConnection*, CUser*> m_lAuths;
 
-		CUser *GetUser(const int8 *pName);
+		CUser *GetUser(const char *pName);
 		int32_t GetAuthLevel(CNetworkConnection *pConnection);
 
 	public:

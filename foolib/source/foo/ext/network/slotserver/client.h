@@ -27,7 +27,7 @@ namespace NFoo { namespace NSlotServer {
 
 		int32_t GetID() { return m_iClient; }
 		
-		void Connect(NFoo::NNetwork::CAddr _Addr, const int8 *pVersionString, bool Threaded=false);
+		void Connect(NFoo::NNetwork::CAddr _Addr, const char *pVersionString, bool Threaded=false);
 		void Disconnect();
 		
 		void Update();

@@ -2,7 +2,7 @@
 /*
 using namespace NEngine;
 
-void CModule::RegisterCommand(const int8 *pCmd)
+void CModule::RegisterCommand(const char *pCmd)
 {
 	m_pCore->RegisterCommand(pCmd, this);
 }*/

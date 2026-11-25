@@ -6,7 +6,7 @@
 using namespace NFoo;
 using namespace NFoo::NGUI;
 
-CView::CView(CView *pParent, const int8 *pName, CGUI *pGUI)
+CView::CView(CView *pParent, const char *pName, CGUI *pGUI)
 {
 	m_Name = pName;
 	m_pGUI = pGUI;
@@ -172,7 +172,7 @@ CView *CView::GetChildByPoint(CPoint _Point, bool HiddensAsWell)
 	return this;
 }
 
-CView *CView::GetChild(const int8 *_pName)
+CView *CView::GetChild(const char *_pName)
 {
 	for(int32_t i = 0; i < GetNumChildren(); i++)
 	{
@@ -354,7 +354,7 @@ void CView::RenderTree(CDrawer &_rRender, CPoint _Pos)
 }
 
 
-void CView::OnKeyPress(int32_t Key, int8 Char, bool Repeat)
+void CView::OnKeyPress(int32_t Key, char Char, bool Repeat)
 {
 	if(Key == NCore::EBtn_Key_Tab)
 	{
@@ -385,7 +385,7 @@ void CView::OnKeyPress(int32_t Key, int8 Char, bool Repeat)
 //
 //
 /*
-void CView::Signal(const int8 *_pName)
+void CView::Signal(const int8_t *_pName)
 {
 	int32_t Hash = StringGetHash(_pName);
 	if(m_lTargets.Find(Hash) < 0)
@@ -398,7 +398,7 @@ void CView::Signal(const int8 *_pName)
 //
 //
 //
-bool CView::Connect(const int8 *_pName, CSlot *_pSlot)
+bool CView::Connect(const int8_t *_pName, CSlot *_pSlot)
 {
 	m_lTargets[StringGetHash(_pName)].Add(_pSlot);
 	return true;

@@ -22,7 +22,7 @@ namespace NFoo
 		{
 			while(m_NumBits < nBitsNeeded)
 			{
-				uint8 b = m_rInput.ReadNE<uint8>();
+				uint8_t b = m_rInput.ReadNE<uint8_t>();
 				m_Bits |= b<<(m_NumBits);
 				m_NumBits += 8;
 			}
@@ -77,7 +77,7 @@ namespace NFoo
 		{
 			while(m_NumBits >= 8)
 			{
-				m_rOutput.WriteNE<uint8>(m_Bits&0xFF);
+				m_rOutput.WriteNE<uint8_t>(m_Bits&0xFF);
 				m_Bits >>= 8;
 				m_NumBits -= 8;
 				written++;
@@ -122,7 +122,7 @@ namespace NFoo
 		{
 			while(m_NumBits < nBitsNeeded)
 			{
-				uint8 b = m_rInput.ReadNE<uint8>();
+				uint8_t b = m_rInput.ReadNE<uint8_t>();
 				m_Bits |= b<<(24-m_NumBits);
 				m_NumBits += 8;
 			}

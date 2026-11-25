@@ -139,16 +139,16 @@ bool CCore_Win32::Update()
 		// keyboard
 		if(WinMsg.message == WM_KEYDOWN && !(WinMsg.lParam&(1<<30)))
 		{
-			uint8 aState[256];
-			uint16 Char = 0;
+			uint8_t aState[256];
+			uint16_t Char = 0;
 			GetKeyboardState(aState);
 			ToAscii(WinMsg.wParam, (WinMsg.lParam>>16)&0xFF, aState, &Char, 0);
 			//m_pWin32Keyboard->PressButton(WinMsg.wParam, Char);
 		}
 		else if(WinMsg.message == WM_KEYUP)
 		{
-			uint8 aState[256];
-			uint16 Char = 0;
+			uint8_t aState[256];
+			uint16_t Char = 0;
 			GetKeyboardState(aState);
 			ToAscii(WinMsg.wParam, (WinMsg.lParam>>16)&0xFF, aState, &Char, 0);
 			//m_pWin32Keyboard->ReleaseButton(WinMsg.wParam, Char);
@@ -204,7 +204,7 @@ public:
 		m_File.Close();
 	}
 
-	virtual void Write(const int8 *_pBuffer)
+	virtual void Write(const char *_pBuffer)
 	{
 		m_File.Write(_pBuffer, StringLength(_pBuffer));
 		m_File.Flush();
@@ -232,7 +232,7 @@ public:
 			NLog::Detach(this);
 		}
 	}
-	virtual void Write(const int8 *_pBuffer) { OutputDebugStringA(_pBuffer); }
+	virtual void Write(const char *_pBuffer) { OutputDebugStringA(_pBuffer); }
 };
 
 int32_t Main()

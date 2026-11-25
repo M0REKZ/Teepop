@@ -186,7 +186,7 @@ CImage::CImage(const CImage &rImage)
 //
 // 
 //
-CImage::CImage(CFormat Format, uint8 *pData)
+CImage::CImage(CFormat Format, uint8_t *pData)
 {
 	m_Format = Format;
 	m_pData = pData;
@@ -238,7 +238,7 @@ bool CImage::Create(CFormat Format)
 
 	ClearData();
 	m_Format = Format;
-	m_pData = new uint8 [m_Format.DataSize()];
+	m_pData = new uint8_t [m_Format.DataSize()];
 	return true;
 }
 
@@ -317,8 +317,8 @@ bool CImage::Write(COutputStream &rStream)
 void CImage::FlipY()
 {
 	int32_t Pitch = m_Format.Pitch();
-	uint8 *pBuffer = new uint8[Pitch];
-	uint8 *pEnd = (uint8 *)m_pData + m_Format.Height()*Pitch - Pitch;
+	uint8_t *pBuffer = new uint8_t[Pitch];
+	uint8_t *pEnd = (uint8_t *)m_pData + m_Format.Height()*Pitch - Pitch;
 
 	for(int32_t y = 0; y < m_Format.Height()/2; y++)
 	{
@@ -337,7 +337,7 @@ CPixel CImage::GetPixelRGBA(int32_t x, int32_t y)
 	Pixel.c[3] = 1;
 	if(m_Format.Type() == EType_Channels)
 	{
-		uint8 *p = Data()+y*m_Format.Pitch()+x*m_Format.BPP();
+		uint8_t *p = Data()+y*m_Format.Pitch()+x*m_Format.BPP();
 		if(m_Format.ColorSpace() == EColorSpace_GrayScale)
 		{
 			for(int32_t i = 0; i < m_Format.NumChannels(); i++)
@@ -380,7 +380,7 @@ void CImage::SetPixelRGBA(int32_t x, int32_t y, CPixel Pixel)
 #define A_COPY 3
 
 template<int32_t RC, int32_t GC, int32_t BC, int32_t ALPHAMODE>
-void YUV8toRGB8(uint8 *pSrc, uint8 *pDst, int32_t w, int32_t h)
+void YUV8toRGB8(uint8_t *pSrc, uint8_t *pDst, int32_t w, int32_t h)
 {
 	for(int32_t y = 0; y < h; y++)
 		for(int32_t x = 0; x < w; x++)
@@ -413,7 +413,7 @@ void YUV8toRGB8(uint8 *pSrc, uint8 *pDst, int32_t w, int32_t h)
 //
 //
 template<int32_t RC, int32_t GC, int32_t BC, int32_t ALPHAMODE>
-void RGB8toYUV8(uint8 *pSrc, uint8 *pDst, int32_t w, int32_t h)
+void RGB8toYUV8(uint8_t *pSrc, uint8_t *pDst, int32_t w, int32_t h)
 {
 	for(int32_t y = 0; y < h; y++)
 		for(int32_t x = 0; x < w; x++)
@@ -422,9 +422,9 @@ void RGB8toYUV8(uint8 *pSrc, uint8 *pDst, int32_t w, int32_t h)
 			int32_t G = FIXEDP(pSrc[GC]);
 			int32_t B = FIXEDP(pSrc[BC]);
 			pSrc+=3;
-			*pDst++ = (uint8)(((R * FIXEDP(0.299f)>>FPSIZE) + (G * FIXEDP(0.587f)>>FPSIZE) + (B *  FIXEDP(0.114f)>>FPSIZE))>>FPSIZE);
-			*pDst++ = (uint8)(((R * FIXEDP(-0.169f)>>FPSIZE) + (G * FIXEDP(-0.332f)>>FPSIZE) + (B * FIXEDP(0.500f)>>FPSIZE) + FIXEDP(128.0f))>>FPSIZE);
-			*pDst++ = (uint8)(((R * FIXEDP(0.500f)>>FPSIZE) + (G * FIXEDP(-0.419f)>>FPSIZE) + (B * FIXEDP(-0.0813f)>>FPSIZE) + FIXEDP(128.0f))>>FPSIZE);
+			*pDst++ = (uint8_t)(((R * FIXEDP(0.299f)>>FPSIZE) + (G * FIXEDP(0.587f)>>FPSIZE) + (B *  FIXEDP(0.114f)>>FPSIZE))>>FPSIZE);
+			*pDst++ = (uint8_t)(((R * FIXEDP(-0.169f)>>FPSIZE) + (G * FIXEDP(-0.332f)>>FPSIZE) + (B * FIXEDP(0.500f)>>FPSIZE) + FIXEDP(128.0f))>>FPSIZE);
+			*pDst++ = (uint8_t)(((R * FIXEDP(0.500f)>>FPSIZE) + (G * FIXEDP(-0.419f)>>FPSIZE) + (B * FIXEDP(-0.0813f)>>FPSIZE) + FIXEDP(128.0f))>>FPSIZE);
 			pDst += 3;
 			if(ALPHAMODE == A_ONE)
 				*pDst++ = 0xff;
@@ -439,7 +439,7 @@ void RGB8toYUV8(uint8 *pSrc, uint8 *pDst, int32_t w, int32_t h)
 //
 //
 template<int32_t ALPHAMODE>
-void RGB8toY8(uint8 *pSrc, uint8 *pDst, int32_t w, int32_t h)
+void RGB8toY8(uint8_t *pSrc, uint8_t *pDst, int32_t w, int32_t h)
 {
 	for(int32_t y = 0; y < h; y++)
 		for(int32_t x = 0; x < w; x++)
@@ -463,7 +463,7 @@ void RGB8toY8(uint8 *pSrc, uint8 *pDst, int32_t w, int32_t h)
 //
 //
 template<int32_t C0, int32_t C1, int32_t C2, int32_t ALPHAMODE>
-void SwizzleX8(uint8 *pSrc, uint8 *pDst, int32_t w, int32_t h)
+void SwizzleX8(uint8_t *pSrc, uint8_t *pDst, int32_t w, int32_t h)
 {
 	for(int32_t x = 0; x < w*h; x++)
 	{
@@ -481,7 +481,7 @@ void SwizzleX8(uint8 *pSrc, uint8 *pDst, int32_t w, int32_t h)
 	}
 }
 
-typedef void (*PFNImageConverter)(uint8 *pSrc, uint8 *pDst, int32_t w, int32_t h);
+typedef void (*PFNImageConverter)(uint8_t *pSrc, uint8_t *pDst, int32_t w, int32_t h);
 
 CImage::CFormat iFormat(int32_t ColorSpace, uint32_t Depth, uint32_t Channels)
 {
@@ -631,9 +631,9 @@ CImage::CPixel CImage::GetPixelRGBA(int32_t x, int32_t y)
 		Pixel.c[1] = Pixel.c[2] = Pixel.c[0];
 	else if(m_Format.ColorSpace() == EColorSpace_YUV)
 	{
-		uint8 Y = (uint8)Pixel.c[0];	// YUV -> RGB
-		uint8 U = (uint8)Pixel.c[1];
-		uint8 V = (uint8)Pixel.c[2];
+		uint8_t Y = (uint8_t)Pixel.c[0];	// YUV -> RGB
+		uint8_t U = (uint8_t)Pixel.c[1];
+		uint8_t V = (uint8_t)Pixel.c[2];
 		int32_t R = (int32_t)(Y + (1.4075f * (V - 128)));
 		int32_t G = (int32_t)(Y - 0.3455f * (U - 128) - (0.7169 * (V - 128)));
 		int32_t B = (int32_t)(Y + (1.7790f * (U - 128)));
@@ -657,9 +657,9 @@ void CImage::SetPixelRGBA(int32_t x, int32_t y, CPixel Pixel)
 		fp32 R = Pixel.c[0]; // RGB -> YUV
 		fp32 G = Pixel.c[1];
 		fp32 B = Pixel.c[2];
-		Pixel.c[0] = (uint8)(R *  0.299f + G *  0.587f + B *  0.114f);
-		Pixel.c[1] = (uint8)(R * -0.169f + G * -0.332f + B *  0.500f + 128.0f);
-		Pixel.c[2] = (uint8)(R *  0.500f + G * -0.419f + B * -0.0813f + 128.0f);
+		Pixel.c[0] = (uint8_t)(R *  0.299f + G *  0.587f + B *  0.114f);
+		Pixel.c[1] = (uint8_t)(R * -0.169f + G * -0.332f + B *  0.500f + 128.0f);
+		Pixel.c[2] = (uint8_t)(R *  0.500f + G * -0.419f + B * -0.0813f + 128.0f);
 	}
 
 	// write pixel
@@ -736,7 +736,7 @@ void CImage::Convert(CFormat Format, CImage &rImage, int32_t Flags)
 		if(UseGeneric && (ColorSpace || ChannelSwizzle || PrecisionChange))
 		{
 			// VERY VERY GENERIC, slow as hell but gets the job done
-			int64 StartTime = GetTickCount();
+			int64_t StartTime = GetTickCount();
 			//CImage &DstImage = rImage;
 			CFormat DstFormat = Format;
 			/*
@@ -774,9 +774,9 @@ void CImage::Convert(CFormat Format, CImage &rImage, int32_t Flags)
 					}
 					else if(m_Format.ColorSpace() == EColorSpace_YUV)
 					{
-						uint8 Y = (uint8)Pixel.c[0];	// YUV -> RGB
-						uint8 U = (uint8)Pixel.c[1];
-						uint8 V = (uint8)Pixel.c[2];
+						uint8_t Y = (uint8_t)Pixel.c[0];	// YUV -> RGB
+						uint8_t U = (uint8_t)Pixel.c[1];
+						uint8_t V = (uint8_t)Pixel.c[2];
 						int32_t R = (int32_t)(Y + (1.4075f * (V - 128)));
 						int32_t G = (int32_t)(Y - 0.3455f * (U - 128) - (0.7169 * (V - 128)));
 						int32_t B = (int32_t)(Y + (1.7790f * (U - 128)));
@@ -793,9 +793,9 @@ void CImage::Convert(CFormat Format, CImage &rImage, int32_t Flags)
 						fp32 R = Pixel.c[0]; // RGB -> YUV
 						fp32 G = Pixel.c[1];
 						fp32 B = Pixel.c[2];
-						Pixel.c[0] = (uint8)(R *  0.299f + G *  0.587f + B *  0.114f);
-						Pixel.c[1] = (uint8)(R * -0.169f + G * -0.332f + B *  0.500f + 128.0f);
-						Pixel.c[2] = (uint8)(R *  0.500f + G * -0.419f + B * -0.0813f + 128.0f);
+						Pixel.c[0] = (uint8_t)(R *  0.299f + G *  0.587f + B *  0.114f);
+						Pixel.c[1] = (uint8_t)(R * -0.169f + G * -0.332f + B *  0.500f + 128.0f);
+						Pixel.c[2] = (uint8_t)(R *  0.500f + G * -0.419f + B * -0.0813f + 128.0f);
 					}
 
 					// write pixel
@@ -895,8 +895,8 @@ void CImage::Blit(CImage *_pSrc, int32_t _x, int32_t _y)
 	if(Width+SrcPosX > _pSrc->m_Desc.m_Size.x)
 		Width = _pSrc->m_Desc.m_Size.x - SrcPosX;
 
-	uint8 *pDstData = m_pData + DstPosY*m_Desc.m_Pitch + DstPosX*(m_Desc.m_Format>>3);
-	uint8 *pSrcData = _pSrc->m_pData + SrcPosY*_pSrc->m_Desc.m_Pitch + SrcPosX*(_pSrc->m_Desc.m_Format>>3);
+	uint8_t *pDstData = m_pData + DstPosY*m_Desc.m_Pitch + DstPosX*(m_Desc.m_Format>>3);
+	uint8_t *pSrcData = _pSrc->m_pData + SrcPosY*_pSrc->m_Desc.m_Pitch + SrcPosX*(_pSrc->m_Desc.m_Format>>3);
 	int32_t SrcPitch = (_pSrc->m_Desc.m_Size.x - Width)*(_pSrc->m_Desc.m_Format>>3);
 	int32_t DstPitch = (m_Desc.m_Size.x - Width)*(m_Desc.m_Format>>3);
 	int32_t NumBytes = Width*(m_Desc.m_Format>>3);
@@ -921,19 +921,19 @@ void CImage::Blit(CImage *_pSrc, int32_t _x, int32_t _y)
 /*
 void CImage::ConvertRGBtoYUV()
 {
-	register uint8 *pPtr = m_pData;
+	register uint8_t *pPtr = m_pData;
 	register int32_t Count = m_Desc.m_Size.x*m_Desc.m_Size.y;
 	register uint32_t bpp = m_Desc.m_Format/8;
 
 	while(Count--)
 	{
-		uint8 R = pPtr[EChannel_R];
-		uint8 G = pPtr[EChannel_G];
-		uint8 B = pPtr[EChannel_B];
+		uint8_t R = pPtr[EChannel_R];
+		uint8_t G = pPtr[EChannel_G];
+		uint8_t B = pPtr[EChannel_B];
 
-		pPtr[EChannel_Y] = (uint8)(R *  0.299f + G *  0.587f + B *  0.114f);
-		pPtr[EChannel_U] = (uint8)(R * -0.169f + G * -0.332f + B *  0.500f + 128.0f);
-		pPtr[EChannel_V] = (uint8)(R *  0.500f + G * -0.419f + B * -0.0813f + 128.0f);
+		pPtr[EChannel_Y] = (uint8_t)(R *  0.299f + G *  0.587f + B *  0.114f);
+		pPtr[EChannel_U] = (uint8_t)(R * -0.169f + G * -0.332f + B *  0.500f + 128.0f);
+		pPtr[EChannel_V] = (uint8_t)(R *  0.500f + G * -0.419f + B * -0.0813f + 128.0f);
 		pPtr+=bpp;
 	}
 }
@@ -946,15 +946,15 @@ void CImage::ConvertRGBtoYUV()
 /*
 void CImage::ConvertYUVtoRGB()
 {
-	register uint8 *pPtr = m_pData;
+	register uint8_t *pPtr = m_pData;
 	register int32_t Count = m_Desc.m_Size.x*m_Desc.m_Size.y;
 	register uint32_t bpp = m_Desc.m_Format/8;
 
 	while(Count--)
 	{
-		uint8 Y = pPtr[EChannel_Y];
-		uint8 U = pPtr[EChannel_U];
-		uint8 V = pPtr[EChannel_V];
+		uint8_t Y = pPtr[EChannel_Y];
+		uint8_t U = pPtr[EChannel_U];
+		uint8_t V = pPtr[EChannel_V];
 		int32_t R = (int32_t)(Y + (1.4075f * (V - 128)));
 		int32_t G = (int32_t)(Y - 0.3455f * (U - 128) - (0.7169 * (V - 128)));
 		int32_t B = (int32_t)(Y + (1.7790f * (U - 128)));
@@ -976,8 +976,8 @@ void CImage::Sizeup(int32_t _Steps, CImage &_rDst)
 	int32_t Factor = (1<<_Steps);
 	_rDst.Create(m_Desc.m_Size*Factor, m_Desc.m_Format);
 
-	register uint8 *pSrcPtr = m_pData;
-	register uint8 *pDstPtr = _rDst.m_pData;
+	register uint8_t *pSrcPtr = m_pData;
+	register uint8_t *pDstPtr = _rDst.m_pData;
 	register uint32_t bpp = m_Desc.m_Format/8;
 	register uint32_t spitch = m_Desc.m_Pitch;
 	register uint32_t dpitch = _rDst.m_Desc.m_Pitch;
@@ -987,16 +987,16 @@ void CImage::Sizeup(int32_t _Steps, CImage &_rDst)
 		// fix this.
 		for(int32_t y = 0; y < m_Desc.m_Size.y; y++)
 		{
-			uint8 *pNextRow = pSrcPtr+spitch;
+			uint8_t *pNextRow = pSrcPtr+spitch;
 			if(y+1 == m_Desc.m_Size.y)
 				pNextRow = pSrcPtr;
 
 			for(int32_t x = 0; x < m_Desc.m_Size.x; x++)
 			{
-				uint8 r00 = *pSrcPtr;
-				uint8 r10 = r00;
-				uint8 r01 = *(pNextRow);
-				uint8 r11 = r01;
+				uint8_t r00 = *pSrcPtr;
+				uint8_t r10 = r00;
+				uint8_t r01 = *(pNextRow);
+				uint8_t r11 = r01;
 
 				if(x+1 != m_Desc.m_Size.x)
 				{
@@ -1007,8 +1007,8 @@ void CImage::Sizeup(int32_t _Steps, CImage &_rDst)
 				for(int32_t iy = 0; iy < Factor; iy++)
 				{
 					fp32 yf = iy/(fp32)Factor;
-					uint8 y0r = Lerp(r00, r01, yf);
-					uint8 y1r = Lerp(r10, r11, yf);
+					uint8_t y0r = Lerp(r00, r01, yf);
+					uint8_t y1r = Lerp(r10, r11, yf);
 					for(int32_t ix = 0; ix < Factor; ix++)
 					{
 						fp32 xf = ix/(fp32)Factor;
@@ -1034,8 +1034,8 @@ void CImage::Sizedown(int32_t _Steps, CImage &_rDst)
 	int32_t Factor = (1<<_Steps);
 	_rDst.Create(m_Desc.m_Size/Factor, m_Desc.m_Format);
 	
-	register uint8 *pSrcPtr = m_pData;
-	register uint8 *pDstPtr = _rDst.m_pData;
+	register uint8_t *pSrcPtr = m_pData;
+	register uint8_t *pDstPtr = _rDst.m_pData;
 	register uint32_t bpp = m_Desc.m_Format/8;
 	register uint32_t pitch = m_Desc.m_Pitch;
 
@@ -1072,8 +1072,8 @@ void CImage::ExtractChannel(int32_t _iChannel, CImage &_rChannel)
 	_rChannel.Create(m_Desc.m_Size, EFormat_BW);
 
 	register int32_t Count = m_Desc.m_Size.x*m_Desc.m_Size.y; // pixel count
-	register uint8 *pSrcPtr = m_pData+_iChannel;
-	register uint8 *pDstPtr = _rChannel.m_pData;
+	register uint8_t *pSrcPtr = m_pData+_iChannel;
+	register uint8_t *pDstPtr = _rChannel.m_pData;
 	register uint32_t bpp = m_Desc.m_Format/8;
 	while(Count--)
 	{
@@ -1085,8 +1085,8 @@ void CImage::ExtractChannel(int32_t _iChannel, CImage &_rChannel)
 void CImage::AddChannel(int32_t _iChannel, CImage &_rChannel)
 {
 	register int32_t Count = m_Desc.m_Size.x*m_Desc.m_Size.y; // pixel count
-	register uint8 *pSrcPtr = _rChannel.m_pData;
-	register uint8 *pDstPtr = m_pData+_iChannel;
+	register uint8_t *pSrcPtr = _rChannel.m_pData;
+	register uint8_t *pDstPtr = m_pData+_iChannel;
 	register uint32_t bpp = m_Desc.m_Format/8;
 	while(Count--)
 	{
@@ -1103,13 +1103,13 @@ void CImage::FlipRB()
 //	ASSUME(m_pData);
 	int32_t Count = m_Desc.m_Size.x*m_Desc.m_Size.y;
 	int32_t Jump = m_Desc.m_Format/8;
-	uint8 *pPtr = m_pData;
+	uint8_t *pPtr = m_pData;
 
 	if(Jump == 3 || Jump == 4)
 	{
 		while(Count > 0)
 		{
-			uint8 Temp = *pPtr;
+			uint8_t Temp = *pPtr;
 			*pPtr = pPtr[2];
 			pPtr[2] = Temp;
 
@@ -1179,12 +1179,12 @@ void CImage::SetFormat(int32_t _NewFormat)
 
 	if(m_Desc.m_Format == EFormat_RGB24 && _NewFormat == EFormat_RGBA32)
 	{
-		uint8 *pBitmap = new uint8 [m_Desc.m_Pitch*m_Desc.m_Size.y];
+		uint8_t *pBitmap = new uint8_t [m_Desc.m_Pitch*m_Desc.m_Size.y];
 		MemoryCopy(pBitmap, m_pData, m_Desc.m_Pitch*m_Desc.m_Size.y);
 
 		Create(m_Desc.m_Size, _NewFormat);
-		uint8 *pPtr = m_pData;
-		uint8 *pSrc = pBitmap;
+		uint8_t *pPtr = m_pData;
+		uint8_t *pSrc = pBitmap;
 		
 		for(int32_t i = 0; i < m_Desc.m_Size.y*m_Desc.m_Size.x; i++)
 		{
@@ -1198,12 +1198,12 @@ void CImage::SetFormat(int32_t _NewFormat)
 	}
 	if(m_Desc.m_Format == EFormat_RGBA32 && _NewFormat == EFormat_RGB24)
 	{
-		uint8 *pBitmap = new uint8 [m_Desc.m_Pitch*m_Desc.m_Size.y];
+		uint8_t *pBitmap = new uint8_t [m_Desc.m_Pitch*m_Desc.m_Size.y];
 		MemoryCopy(pBitmap, m_pData, m_Desc.m_Pitch*m_Desc.m_Size.y);
 
 		Create(m_Desc.m_Size, _NewFormat);
-		uint8 *pPtr = m_pData;
-		uint8 *pSrc = pBitmap;
+		uint8_t *pPtr = m_pData;
+		uint8_t *pSrc = pBitmap;
 		
 		for(int32_t i = 0; i < m_Desc.m_Size.y*m_Desc.m_Size.x; i++)
 		{
@@ -1227,7 +1227,7 @@ void CImage::Darken(const TVector2<int32_t> &_Position, const TVector2<int32_t> 
 {
 	if(m_Desc.m_Format == EFormat_RGBA32)
 	{
-		uint8 *pDataPtr = m_pData;
+		uint8_t *pDataPtr = m_pData;
 		int32_t Skip = m_Desc.m_Pitch - ((m_Desc.m_Size.x - _Size.x)*(m_Desc.m_Format/8));
 		
 		pDataPtr += m_Desc.m_Pitch*_Position.y;
@@ -1324,8 +1324,8 @@ void CImage::Blit(CImage *_pSrc, int32_t _x, int32_t _y)
 	if(Width+SrcPosX > _pSrc->Format().Width())
 		Width = _pSrc->Format().Width() - SrcPosX;
 
-	uint8 *pDstData = m_pData + DstPosY*Format().Pitch() + DstPosX*(Format().BPP()>>3);
-	uint8 *pSrcData = _pSrc->m_pData + SrcPosY*_pSrc->Format().Pitch() + SrcPosX*(_pSrc->Format().BPP()>>3);
+	uint8_t *pDstData = m_pData + DstPosY*Format().Pitch() + DstPosX*(Format().BPP()>>3);
+	uint8_t *pSrcData = _pSrc->m_pData + SrcPosY*_pSrc->Format().Pitch() + SrcPosX*(_pSrc->Format().BPP()>>3);
 	int32_t SrcPitch = (_pSrc->Format().Width() - Width)*(_pSrc->Format().BPP()>>3);
 	int32_t DstPitch = (Format().Width() - Width)*(Format().BPP()>>3);
 	int32_t NumBytes = Width*(Format().BPP()>>3);
@@ -1347,7 +1347,7 @@ void CImage::Blit(CImage *_pSrc, int32_t _x, int32_t _y)
 //
 // 24, 32
 //
-void CImage::SetR(int32_t _x, int32_t _y, uint8 _R)
+void CImage::SetR(int32_t _x, int32_t _y, uint8_t _R)
 {
 	if (Format().BPP() == 16)
 	{
@@ -1365,7 +1365,7 @@ void CImage::SetR(int32_t _x, int32_t _y, uint8 _R)
 //
 // 24, 32
 //
-void CImage::SetG(int32_t _x, int32_t _y, uint8 _G)
+void CImage::SetG(int32_t _x, int32_t _y, uint8_t _G)
 {
 	if (Format().BPP() == 16)
 	{
@@ -1383,7 +1383,7 @@ void CImage::SetG(int32_t _x, int32_t _y, uint8 _G)
 //
 // 24, 32
 //
-void CImage::SetB(int32_t _x, int32_t _y, uint8 _B)
+void CImage::SetB(int32_t _x, int32_t _y, uint8_t _B)
 {
 	if (Format().BPP() == 16)
 	{
@@ -1401,7 +1401,7 @@ void CImage::SetB(int32_t _x, int32_t _y, uint8 _B)
 //
 // 32
 //
-void CImage::SetA(int32_t _x, int32_t _y, uint8 _A)
+void CImage::SetA(int32_t _x, int32_t _y, uint8_t _A)
 {
 	if (Format().BPP() == 32)
 	{
@@ -1440,7 +1440,7 @@ void CImage::SetColor(int32_t _x, int32_t _y, uint32_t _Color)
 //
 // 24, 32
 //
-uint8 CImage::GetR(int32_t _x, int32_t _y)
+uint8_t CImage::GetR(int32_t _x, int32_t _y)
 {
 	if (Format().BPP() == 16)
 	{
@@ -1460,7 +1460,7 @@ uint8 CImage::GetR(int32_t _x, int32_t _y)
 //
 // 24, 32
 //
-uint8 CImage::GetG(int32_t _x, int32_t _y)
+uint8_t CImage::GetG(int32_t _x, int32_t _y)
 {
 	if (Format().BPP() == 16)
 	{
@@ -1480,7 +1480,7 @@ uint8 CImage::GetG(int32_t _x, int32_t _y)
 //
 // 24, 32
 //
-uint8 CImage::GetB(int32_t _x, int32_t _y)
+uint8_t CImage::GetB(int32_t _x, int32_t _y)
 {
 	if (Format().BPP() == 16)
 	{
@@ -1500,7 +1500,7 @@ uint8 CImage::GetB(int32_t _x, int32_t _y)
 //
 // 32
 //
-uint8 CImage::GetA(int32_t _x, int32_t _y)
+uint8_t CImage::GetA(int32_t _x, int32_t _y)
 {
 	if (Format().BPP() == 32)
 		return m_pData[4 * (_y * Format().Width() + _x) + 3];
@@ -1527,7 +1527,7 @@ uint32_t CImage::GetColor(int32_t _x, int32_t _y)
 	}
 	else if (Format().BPP() == 16)
 	{
-		return ((uint16 *)m_pData)[_y * Format().Width() + _x];
+		return ((uint16_t *)m_pData)[_y * Format().Width() + _x];
 	}
 	else if (Format().BPP() == 24)
 	{
@@ -1598,7 +1598,7 @@ void CImage::ApplyKernelFilter(const CImage::CKernelFilter &_rFilter,CImage &_rD
 
 				Sum = Clamp(Sum / _rFilter.Scale() + _rFilter.Offset(), 0.0f, 255.0f);
 
-				_rDst.SetColor(x,y,(uint8)Sum);
+				_rDst.SetColor(x,y,(uint8_t)Sum);
 			}
 	}
 	else if (Format().BPP() == 24)
@@ -1626,9 +1626,9 @@ void CImage::ApplyKernelFilter(const CImage::CKernelFilter &_rFilter,CImage &_rD
 				SumG = Clamp(SumG / _rFilter.Scale() + _rFilter.Offset(), 0.0f, 255.0f);
 				SumB = Clamp(SumB / _rFilter.Scale() + _rFilter.Offset(), 0.0f, 255.0f);
 
-				_rDst.SetR(x,y,(uint8)SumR);
-				_rDst.SetG(x,y,(uint8)SumG);
-				_rDst.SetB(x,y,(uint8)SumB);
+				_rDst.SetR(x,y,(uint8_t)SumR);
+				_rDst.SetG(x,y,(uint8_t)SumG);
+				_rDst.SetB(x,y,(uint8_t)SumB);
 			}
 	}
 	else if (Format().BPP() == 32)
@@ -1659,10 +1659,10 @@ void CImage::ApplyKernelFilter(const CImage::CKernelFilter &_rFilter,CImage &_rD
 				SumB = Clamp(SumB / _rFilter.Scale() + _rFilter.Offset(), 0.0f, 255.0f);
 				SumA = Clamp(SumA / _rFilter.Scale() + _rFilter.Offset(), 0.0f, 255.0f);
 
-				_rDst.SetR(x,y,(uint8)SumR);
-				_rDst.SetG(x,y,(uint8)SumG);
-				_rDst.SetB(x,y,(uint8)SumB);
-				_rDst.SetA(x,y,(uint8)SumA);
+				_rDst.SetR(x,y,(uint8_t)SumR);
+				_rDst.SetG(x,y,(uint8_t)SumG);
+				_rDst.SetB(x,y,(uint8_t)SumB);
+				_rDst.SetA(x,y,(uint8_t)SumA);
 			}
 	}
 }
@@ -1722,8 +1722,8 @@ void CImage::BuildNormalMap(CImage &_rDst,fp32 _Slope)
 			V += 1.0f;
 			V *= 0.5f;
 
-			_rDst.SetR(x,y,(uint8)(V.x * 255.0f));
-			_rDst.SetG(x,y,(uint8)(V.y * 255.0f));
-			_rDst.SetB(x,y,(uint8)(V.z * 255.0f));
+			_rDst.SetR(x,y,(uint8_t)(V.x * 255.0f));
+			_rDst.SetG(x,y,(uint8_t)(V.y * 255.0f));
+			_rDst.SetB(x,y,(uint8_t)(V.z * 255.0f));
 		}
 }

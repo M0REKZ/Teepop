@@ -38,7 +38,7 @@ namespace NFoo
 		template<typename T> inline void WriteLE(T _Value) { WriteNE(ByteSwapCPUtoLE(_Value)); }
 		template<typename T> inline void WriteBE(T _Value) { WriteNE(ByteSwapCPUtoBE(_Value)); }
 
-		// Write pascal (uint16)
+		// Write pascal (uint16_t)
 		int32_t Write_p8(CString Str); // 8 bit, max length = 255
 		int32_t Write_p16(CString Str); // 16 bit, max length = 64 kib
 	};
@@ -93,10 +93,10 @@ namespace NFoo
 		template<typename T> inline T &ReadLE(T &v) { ReadNE(v); v = ByteSwapLEtoCPU(v); return v; }
 		template<typename T> inline T &ReadBE(T &v) { ReadNE(v); v = ByteSwapBEtoCPU(v); return v; }
 
-		void Read_sz(int8 *_pDst);
-		int8 *ReadLine(int8 *_pDst=NULL); // pass null to use a internal buffer of 4092
+		void Read_sz(char *_pDst);
+		char *ReadLine(char *_pDst=NULL); // pass null to use a internal buffer of 4092
 
-		// Read pascal string (uint16)
+		// Read pascal string (uint16_t)
 		CString Read_p8(); // 8 bit, max length = 255
 		CString Read_p16(); // 16 bit, max length = 64 kib
 	};
@@ -134,7 +134,7 @@ namespace NFoo
 	//
 	class CBlockReader : public CChainedInputStream
 	{
-		uint8 *m_pBuffer;
+		uint8_t *m_pBuffer;
 		int32_t m_BufferSize;
 		int32_t m_Pos;
 		int32_t m_BufferLeft;

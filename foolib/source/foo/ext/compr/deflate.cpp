@@ -41,7 +41,7 @@ void CDeflateReader::WrapUp(int32_t &Index)
 CDeflateReader::CDeflateReader(CInputStream &rSource, int32_t WindowSize)
 : m_rSource(rSource), m_rBitSource(rSource), m_BufferSize(WindowSize*2)
 {
-	m_pBuffer = new uint8[m_BufferSize];
+	m_pBuffer = new uint8_t[m_BufferSize];
 	m_State = EHeader;
 	m_FinalBlock = false;
 	m_Size = -1;
@@ -85,13 +85,13 @@ int32_t CDeflateReader::Read(void *pBuffer, int32_t Size)
 	if(Size <= 0)
 		return 0;
 	int32_t StartSize = Size;
-	uint8 *pDst = (uint8 *)pBuffer;
+	uint8_t *pDst = (uint8_t *)pBuffer;
 	int32_t OutputSize = 0;
 
 	while(1)
 	{
 #ifdef DEFLATE_DEBUG
-		int64 StartTime = GetTickCount();
+		int64_t StartTime = GetTickCount();
 #endif
 		int32_t StartState = m_State;
 		//
@@ -106,8 +106,8 @@ int32_t CDeflateReader::Read(void *pBuffer, int32_t Size)
 				{
 					m_State = ERaw;
 					m_rBitSource.Flush();
-					m_CopyLength = m_rSource.ReadLE<uint16>();
-					OutputSize = m_rSource.ReadLE<uint16>();
+					m_CopyLength = m_rSource.ReadLE<uint16_t>();
+					OutputSize = m_rSource.ReadLE<uint16_t>();
 					//throw "ROARRRRRRR! Can't handle this blocktype";
 				}
 				else if(BlockType == 1) // fixed huffman codes
@@ -258,7 +258,7 @@ int32_t CDeflateReader::Read(void *pBuffer, int32_t Size)
 			{
 				while(m_CopyLength && Size)
 				{
-					uint8 b = m_rSource.ReadNE<uint8>();
+					uint8_t b = m_rSource.ReadNE<uint8_t>();
 					if(pDst)
 						*(pDst++) = b;
 					m_pBuffer[m_Index++] = b;

@@ -23,16 +23,16 @@
 				// keyboard
 				if(WinMsg.message == WM_KEYDOWN && !(WinMsg.lParam&(1<<30)))
 				{
-					uint8 aState[256];
-					uint16 Char = 0;
+					uint8_t aState[256];
+					uint16_t Char = 0;
 					GetKeyboardState(aState);
 					ToAscii(WinMsg.wParam, (WinMsg.lParam>>16)&0xFF, aState, &Char, 0);
 					PressButton(WinMsg.wParam, Char);
 				}
 				else if(WinMsg.message == WM_KEYUP)
 				{
-					uint8 aState[256];
-					uint16 Char = 0;
+					uint8_t aState[256];
+					uint16_t Char = 0;
 					GetKeyboardState(aState);
 					ToAscii(WinMsg.wParam, (WinMsg.lParam>>16)&0xFF, aState, &Char, 0);
 					ReleaseButton(WinMsg.wParam, Char);

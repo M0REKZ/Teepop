@@ -47,7 +47,7 @@ namespace NEngine
 	protected:
 		NetMsgID m_iMsg;
 			
-		uint8 m_aData[512];
+		uint8_t m_aData[512];
 		bool m_Vital;
 	public:
 		CNetMessage(NetMsgID iMsg, bool Vital)
@@ -67,7 +67,7 @@ namespace NEngine
 			NLog::WriteF("size=%d vital=%d ", GetSize(), m_Vital);
 
 
-			uint8 aTemp[512];
+			uint8_t aTemp[512];
 			for(int32_t i = 0; i < GetSize() && i < 10; i++)
 				NLog::WriteF("%x ", m_aData[i]);
 			NLog::WriteF("\n");

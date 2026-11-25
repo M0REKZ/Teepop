@@ -20,8 +20,8 @@ namespace NGUI {
 			EEvent_Clicked
 		};
 
-		CButton(CView *pParent=NULL, const int8 *pName=NULL, CGUI *pGUI=NULL);
-		void SetCaption(const int8 *_pCap);
+		CButton(CView *pParent=NULL, const char *pName=NULL, CGUI *pGUI=NULL);
+		void SetCaption(const char *_pCap);
 		virtual void Set(CString &rSetting, CString &rValue);
 	};
 }

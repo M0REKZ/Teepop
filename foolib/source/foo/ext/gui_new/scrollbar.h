@@ -39,7 +39,7 @@ namespace NGUI {
 		virtual void OnSize(CPoint _OldSize);
 		virtual void OnDraw(CDrawer &_rDrawer);
 	public:
-		CScrollBar(CView *pParent=NULL, const int8 *pName=NULL, CGUI *pGUI=NULL);
+		CScrollBar(CView *pParent=NULL, const char *pName=NULL, CGUI *pGUI=NULL);
 		
 		void SetAmount(fp32 _a);
 		fp32 GetAmount();

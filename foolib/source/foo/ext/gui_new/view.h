@@ -33,7 +33,7 @@ namespace NGUI {
 		// sizing
 		CPoint m_MinSize;
 		CPoint m_MaxSize;
-		int8 m_Follow;
+		char m_Follow;
 		friend class CGUI;
 		void ParentResized(CPoint _OldSize, CPoint _NewSize);
 
@@ -57,7 +57,7 @@ namespace NGUI {
 		virtual void OnMouseEnter() {}
 		virtual void OnMouseExit() {}
 
-		virtual void OnKeyPress(int32_t _Key, int8 _Char, bool Repeat);
+		virtual void OnKeyPress(int32_t _Key, char _Char, bool Repeat);
 
 		virtual void OnDraw(CDrawer &_rDrawer) {}
 
@@ -82,7 +82,7 @@ namespace NGUI {
 		//
 		// Constructors
 		//
-		CView(CView *pParent=NULL, const int8 *pName=NULL, CGUI *pGUI=NULL);
+		CView(CView *pParent=NULL, const char *pName=NULL, CGUI *pGUI=NULL);
 		virtual ~CView();
 
 		void DestroyTree();
@@ -97,8 +97,8 @@ namespace NGUI {
 		//
 		//
 		//
-		const int8 *GetName() { return m_Name; }
-		void SetName(const int8 *_pName) { m_Name = _pName; }
+		const char *GetName() { return m_Name; }
+		void SetName(const char *_pName) { m_Name = _pName; }
 
 		//
 		//
@@ -123,7 +123,7 @@ namespace NGUI {
 		bool IsChild(CView *pView);
 		int32_t GetNumChildren();
 		CView *GetChild(int32_t _iLocal);
-		CView *GetChild(const int8 *_pName); // recursive
+		CView *GetChild(const char *_pName); // recursive
 		CView *GetChildByPoint(CPoint _Point, bool HiddensAsWell=true);
 
 		//

@@ -14,7 +14,7 @@ CMemoryWriter::~CMemoryWriter()
 
 void CMemoryWriter::Set(void *_pAddress)
 {
-	m_pAddress = (uint8*)_pAddress;
+	m_pAddress = (uint8_t*)_pAddress;
 	m_Written = 0;
 }
 
@@ -50,7 +50,7 @@ CMemoryReader::~CMemoryReader()
 
 void CMemoryReader::Set(void *_pAddress, int32_t _Size)
 {
-	m_pAddress = (uint8*)_pAddress;
+	m_pAddress = (uint8_t*)_pAddress;
 	m_Pos = 0;
 	m_Size = _Size;
 }

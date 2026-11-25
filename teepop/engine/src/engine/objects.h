@@ -1,5 +1,5 @@
 
-	typedef uint16 ObjectIndex;
+	typedef uint16_t ObjectIndex;
 	enum
 	{
 		EInvalidObject = sizeof(ObjectIndex)-1

@@ -31,13 +31,13 @@ namespace NFoo {
 
 		void SetTarget(CMessageQueue *pTarget);
 
-		void SetInt(const int8 *_pName, int32_t _Value);
-		void SetFloat(const int8 *_pName, fp32 _Value);
-		void SetString(const int8 *_pName, const int8 *_pValue);
+		void SetInt(const char *_pName, int32_t _Value);
+		void SetFloat(const char *_pName, fp32 _Value);
+		void SetString(const char *_pName, const char *_pValue);
 
-		int32_t GetInt(const int8 *_pName, int32_t _Default=0);
-		fp32 GetFloat(const int8 *_pName, fp32 _Default=0);
-		CString GetString(const int8 *_pName, const int8 *_pDefault=NULL);
+		int32_t GetInt(const char *_pName, int32_t _Default=0);
+		fp32 GetFloat(const char *_pName, fp32 _Default=0);
+		CString GetString(const char *_pName, const char *_pDefault=NULL);
 	};
 
 

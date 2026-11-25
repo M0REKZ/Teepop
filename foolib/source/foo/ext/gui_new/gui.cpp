@@ -32,11 +32,11 @@ CView *CGUI::CreateFromRegistry(CRegistry *pReg)
 		return NULL;
 
 	// parse value
-	int8 aValue[1024*16];
-	int8 *pPos = aValue;
-	int8 *pNameStart = NULL;
+	char aValue[1024*16];
+	char *pPos = aValue;
+	char *pNameStart = NULL;
 	int32_t NameLen = 0;
-	int8 *pValueStart = NULL;
+	char *pValueStart = NULL;
 	int32_t ValueLen = 0;
 	StringCopy(aValue, pReg->m_Value);
 
@@ -253,7 +253,7 @@ void CGUI::Refresh()
 //
 //
 //
-void CGUI::AddMapping(const int8 *pName, CMessageReceiver *pReceiver, CMessage &rMsg)
+void CGUI::AddMapping(const char *pName, CMessageReceiver *pReceiver, CMessage &rMsg)
 {
 	CMapping *pMap = new CMapping;
 	pMap->m_Name = pName;
@@ -262,13 +262,13 @@ void CGUI::AddMapping(const int8 *pName, CMessageReceiver *pReceiver, CMessage &
 	m_lMappings.Add(pMap);
 }
 
-void CGUI::AddMapping(const int8 *pName, CMessageReceiver *pReceiver, int32_t iMsg)
+void CGUI::AddMapping(const char *pName, CMessageReceiver *pReceiver, int32_t iMsg)
 {
 	CMessage Msg(iMsg);
 	AddMapping(pName, pReceiver, Msg);
 }
 
-CMessageTarget CGUI::GetMapping(const int8 *pName)
+CMessageTarget CGUI::GetMapping(const char *pName)
 {
 	for(int32_t i = 0; i < m_lMappings.Len(); i++)
 		if(m_lMappings[i]->m_Name == pName)
@@ -342,7 +342,7 @@ void CGUI::MouseUp(int32_t _Button)
 }
 
 // Keyboard
-void CGUI::KeyDown(int32_t _Stroke, uint8 _AsciiCode, bool Repeat)
+void CGUI::KeyDown(int32_t _Stroke, uint8_t _AsciiCode, bool Repeat)
 {
 	if(m_pFocusedView != NULL)
 		m_pFocusedView->OnKeyPress(_Stroke, _AsciiCode, false);
@@ -358,7 +358,7 @@ void CGUI::KeyDown(int32_t _Stroke, uint8 _AsciiCode, bool Repeat)
 	}
 }
 
-void CGUI::KeyUp(int32_t _Stroke, uint8 _AsciiCode)
+void CGUI::KeyUp(int32_t _Stroke, uint8_t _AsciiCode)
 {
 	m_KeyPressed = false;
 	//if(m_pFocusedView)

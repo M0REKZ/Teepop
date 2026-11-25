@@ -10,8 +10,8 @@ CZReader::CZReader(CInputStream &rSource)
 {
 	m_pError = NULL;
 	m_Ready = true;
-	int32_t CMF = m_rSource.ReadNE<uint8>();
-	int32_t Flags = m_rSource.ReadNE<uint8>();
+	int32_t CMF = m_rSource.ReadNE<uint8_t>();
+	int32_t Flags = m_rSource.ReadNE<uint8_t>();
 	int32_t Method = CMF&0xF;
 	int32_t CompInfo = CMF>>4;
 	int32_t Check = Flags&0xf;
