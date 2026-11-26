@@ -88,7 +88,7 @@ namespace NFoo { namespace NCore {
 } } // name spaces
 
 // Entry Point for applications
-int32_t FooMain(char *_pCmdLine);
+int32_t FooMain(const char *_pCmdLine);
 
 #endif // __FOO_CORE_H__
 

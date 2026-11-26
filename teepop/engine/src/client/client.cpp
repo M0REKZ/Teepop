@@ -2018,7 +2018,7 @@ void ThreadTest(void *)
 
 
 //
-int32_t FooMain(char *cmdline)
+int32_t FooMain(const char *cmdline)
 {
 	/*
 	g_TestLock.Aquire();

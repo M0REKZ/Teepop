@@ -3,36 +3,10 @@
 //==========================================================================================
 
 #ifdef FOO_PLATFORM_DARWIN
-	#ifdef FOO_COMPILER_GCC
-		// Carve some shit of Carbon.h
-		//#define __CORESERVICES__
-		//#define __APPLICATIONSERVICES__
-		//#define __HITOOLBOX__
-         
-		#define __CARBONSOUND__
-		#define __OPENSCRIPTING__
-		#define __PRINT__
-		#define __NAVIGATIONSERVICES__
-		#define __COMMONPANELS__
-		#define __HTMLRENDERING__
-		#define __SPEECHRECOGNITION__
-		#define __SECURITYHI__
-                #define __INK__
-		#define __HELP__
-		#define __IMAGECAPTURE__
-		
-		#include <Carbon/Carbon.h>
-	#elif defined(FOO_COMPILER_CW)
-		#include <MSL MacHeadersMach-O.h>
-	#else
-		#include <Carbon/Carbon.h>
-	#endif
-	
-//#include <Carbon>
+
 #include <unistd.h>
 #include <foo/base/log.h>
 #include <foo/base/string.h>
-//#include <ni/sys/posix.h>
 
 #include "core.h"
 #include "core_darwin.h"
@@ -121,30 +95,30 @@ void CCore_OSX::Init()
 
 bool CCore_OSX::Update()
 {
-	if(g_QuitRequest)
-	{
-		g_QuitRequest = false;
-		AddMessage(CMessage(EMsg_Quit));
-	}
-
 	SDL_Event sdlevent;
 	while(SDL_PollEvent(&sdlevent))
 	{
 	    m_lSDLEvents.Add(sdlevent);
 	}
 
+	//detect quit event
+	for(int32_t i = 0; i < m_lSDLEvents.Len(); i++)
+	{
+		if(m_lSDLEvents[i].type == SDL_EVENT_QUIT)
+		{
+			g_QuitRequest = true;
+		}
+	}
+
+	if(g_QuitRequest)
+	{
+		g_QuitRequest = false;
+		AddMessage(CMessage(EMsg_Quit));
+	}
+
 	bool core_res = CCore::Update();
 	m_lSDLEvents.Clear();
 	return core_res;
-}
-
-//
-// Quit Event
-//
-OSErr QuitAppleEventHandler(const AppleEvent *appleEvt, AppleEvent* reply, UInt32 refcon)
-{
-	g_QuitRequest = true;
-    return noErr;
 }
 
 //

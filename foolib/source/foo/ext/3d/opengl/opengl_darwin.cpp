@@ -51,7 +51,6 @@ public:
     SDL_GLContext m_RenderContext = NULL;
 	SDL_Window * m_pSDLWindow = nullptr;
 	bool m_GotFocus = false;
-	bool m_QuitEventReceived = false;
 	
 	//CMouse_OpenGLDarwin *m_pMouse;
 
@@ -271,7 +270,7 @@ public:
 		}
 		
 	
-		return !m_QuitEventReceived;
+		return true;
 	}
 
 	virtual bool SwapBuffers()
@@ -292,25 +291,19 @@ public:
 		//HideCursor
 	    switch (sdlevent.type) 
 	    {
-		case SDL_EVENT_QUIT:
-		{
-			m_QuitEventReceived = true;
-		}
-		break;
-
-		case SDL_EVENT_MOUSE_BUTTON_UP:
-		{
-			if(g_pMouse)
-				g_pMouse->ReleaseButton(0);
-		}
-		break;
-			 
-		case SDL_EVENT_MOUSE_BUTTON_DOWN:
-		{	
-			if(m_GotFocus && g_pMouse)
-				g_pMouse->PressButton(0);
-		}
-		break;
+			case SDL_EVENT_MOUSE_BUTTON_UP:
+			{
+				if(g_pMouse)
+					g_pMouse->ReleaseButton(0);
+			}
+			break;
+				
+			case SDL_EVENT_MOUSE_BUTTON_DOWN:
+			{	
+				if(m_GotFocus && g_pMouse)
+					g_pMouse->PressButton(0);
+			}
+			break;
 		}
 	}
 };

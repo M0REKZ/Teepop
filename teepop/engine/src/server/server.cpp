@@ -306,7 +306,7 @@ public:
 
 //
 //
-int32_t FooMain(char *cmdline)
+int32_t FooMain(const char *cmdline)
 {
 	CStdOutLogger stdlogger;
 	//CBadConnectionSimulator Simulator;
