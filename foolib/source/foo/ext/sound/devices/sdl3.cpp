@@ -22,7 +22,7 @@ class CSoundDevice_SDL3 : public CSoundDevice
 
 	int64_t m_SampleClock;
 
-	SDL_AudioStream * m_pSDL3MixerAudioStream = nullptr;
+	SDL_AudioStream * m_pSDL3AudioStream = nullptr;
 
 	int32_t m_iCurrentHandle;
 	TMap<int32_t, CInstance*> m_lInstances;
@@ -51,7 +51,7 @@ CSoundDevice_SDL3::CSoundDevice_SDL3() : CSoundDevice()
 {
 	m_pMixerInstance = nullptr;
 	m_Initialized = false;
-	m_pSDL3MixerAudioStream = nullptr;
+	m_pSDL3AudioStream = nullptr;
 	m_iCurrentHandle = 0;
 }
 
@@ -95,9 +95,9 @@ bool CSoundDevice_SDL3::Init(CFormat Format, int32_t BufferSize)
 	}
 
 
-	m_pSDL3MixerAudioStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec, nullptr, nullptr);
+	m_pSDL3AudioStream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &spec, nullptr, nullptr);
 
-	if (!m_pSDL3MixerAudioStream)
+	if (!m_pSDL3AudioStream)
 	{
 		NLog::WriteF("Error while trying to initialize SDL audio: %s\n", SDL_GetError());
 		return false;
@@ -121,8 +121,8 @@ bool CSoundDevice_SDL3::Shutdown()
 {
 	if(m_Initialized)
 	{
-		SDL_DestroyAudioStream(m_pSDL3MixerAudioStream);
-        m_pSDL3MixerAudioStream = nullptr;
+		SDL_DestroyAudioStream(m_pSDL3AudioStream);
+        m_pSDL3AudioStream = nullptr;
 
 		delete[] m_pBuffer;
 		m_pBuffer = nullptr;
@@ -143,7 +143,7 @@ bool CSoundDevice_SDL3::Update()
 	// Limit queued audio to prevent latency from accumulating.
 	const int32_t MaxQueuedBytes = m_BufferBytes * 3;
 	const int32_t QueuedBytes =
-		SDL_GetAudioStreamQueued(m_pSDL3MixerAudioStream);
+		SDL_GetAudioStreamQueued(m_pSDL3AudioStream);
 
 	if(QueuedBytes >= MaxQueuedBytes)
 		return true;
@@ -157,14 +157,14 @@ bool CSoundDevice_SDL3::Update()
 	const int32_t Bytes = Samples * m_Format.SampleSize();
 
     // Queue PCM for SDL playback.
-    if(!SDL_PutAudioStreamData(m_pSDL3MixerAudioStream, m_pBuffer, Bytes))
+    if(!SDL_PutAudioStreamData(m_pSDL3AudioStream, m_pBuffer, Bytes))
     {
         NLog::WriteF("SDL audio: PutAudioStreamData failed: %s\n",
             SDL_GetError());
         return false;
     }
 
-	if (!m_Resumed && !SDL_ResumeAudioStreamDevice(m_pSDL3MixerAudioStream))
+	if (!m_Resumed && !SDL_ResumeAudioStreamDevice(m_pSDL3AudioStream))
 	{
 		NLog::WriteF("Error while trying to resume SDL audio: %s\n", SDL_GetError());
 		return false;
