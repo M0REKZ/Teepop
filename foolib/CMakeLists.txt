@@ -12,9 +12,6 @@ find_package(SDL3 REQUIRED CONFIG)
 ## OpenGL
 find_package(OpenGL REQUIRED)
 
-## OpenAL
-find_package(OpenAL REQUIRED)
-
 set(FOOLIB_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/source/foo)
 
 file(GLOB FOOLIB_SRC CONFIGURE_DEPENDS
@@ -68,7 +65,6 @@ target_link_libraries(foolib
         SDL3::SDL3
         OpenGL::GL
         OpenGL::GLU
-        OpenAL::OpenAL
 )
 
 # Always defined

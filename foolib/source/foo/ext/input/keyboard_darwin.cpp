@@ -172,7 +172,7 @@
 				{
 					char c = SDLScancodeToAscii(sdlevent.key.scancode);
 					if(c)
-						PressButton(c, c);
+						PressButton(0, c);
 					else
 						PressButton(SDLScancodeToBtnEvent(sdlevent.key.scancode), c);
 				}
@@ -180,7 +180,7 @@
 				{
 					char c = SDLScancodeToAscii(sdlevent.key.scancode);
 					if(c)
-						ReleaseButton(c, c);
+						ReleaseButton(0, c);
 					else
 						ReleaseButton(SDLScancodeToBtnEvent(sdlevent.key.scancode), c);
 				}

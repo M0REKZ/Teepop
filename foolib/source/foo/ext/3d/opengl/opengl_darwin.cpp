@@ -142,7 +142,7 @@ public:
 		// Create Window
 		//
 		NLog::Write("COpenGLDevice_DARWIN::Init(): Creating window\n");
-		if(!SDL_Init(SDL_INIT_VIDEO))
+		if(!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO))
 		{
 			NLog::WriteF("COpenGLDevice_DARWIN::Init(): Error while trying to init SDL3: %s\n", SDL_GetError());
 			return false;
