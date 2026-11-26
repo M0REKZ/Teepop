@@ -5,4 +5,4 @@
 #define TEEPOP_SERVER_VERSION "Teepop Server (+KZ fix) v9"
 #define TEEPOP_NETWORK_VERSION "Teepop v9"
 
-#endif FILE_TEEPOP_VERSION_H
+#endif // FILE_TEEPOP_VERSION_H
