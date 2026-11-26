@@ -13,7 +13,7 @@
 				return 0;
 			if(key >= SDL_SCANCODE_A && key <= SDL_SCANCODE_Z)
 			{
-				bool caps_lock = (SDL_GetModState() & SDL_KMOD_CAPS) != 0;
+				bool caps_lock = ((SDL_GetModState() & SDL_KMOD_CAPS) | (SDL_GetModState() & SDL_KMOD_SHIFT)) != 0;
 				return caps_lock ? (key - SDL_SCANCODE_A) + 'A' : (key - SDL_SCANCODE_A) + 'a';
 			}
 			else if(key >= SDL_SCANCODE_1 && key <= SDL_SCANCODE_0)
