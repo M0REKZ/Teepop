@@ -64,21 +64,6 @@ void CDrawer::Init()
 //
 //
 //
-/*
-void CDrawer::Begin(int32_t _Blend, fp32 r, fp32 g, fp32 b, fp32 a)
-{
-	/*
-	m_pUtils->SetDefaults();
-	m_pUtils->SetColor(r, g, b, a);
-	m_pUtils->SetTexture(m_iTexture);
-	m_pUtils->SetBlend(_Blend);
-	m_pUtils->Quad_Begin();
-	*/
-//}
-
-//
-//
-//
 void CDrawer::SetUV(int32_t _u, int32_t _v, int32_t _w, int32_t _h)
 {
 	m_pPainter->SetUV(_u, _v, _w, _h);
@@ -163,25 +148,6 @@ void CDrawer::DrawText(int32_t _x, int32_t _y, const char *_pText, fp32 _r, fp32
 	*/
 }
 
-//
-//
-//
-/*
-void CDrawer::DrawTextWhite(int32_t _x, int32_t _y, const int8_t *_pText)
-{
-	m_pPainter->DrawText(_x, _y, _pText);
-	/*
-	m_pUtils->SetDefaults();
-	m_pUtils->SetBlend(N3D::C2DUtils::EBlend_Alpha);
-	//m_pUtils->SetColor(121/255.0f, 108/255.0f, 92/255.0f, 1);
-	
-	m_pUtils->Text_Begin(&m_Font);
-	m_pUtils->Text_Draw((fp32)_x, (fp32)_y, N3D::C2DUtils::ETextDraw_TL, "%s", _pText);
-	m_pUtils->Text_End();
-	*/
-//}
-
-
 void CDrawer::SetGlobalTranslate(int32_t _x, int32_t _y)
 {
 	m_pPainter->SetGlobalTranslate(_x, _y);
@@ -191,90 +157,6 @@ void CDrawer::SetClipping(bool _Use, int32_t _x, int32_t _y, int32_t _w, int32_t
 {
 	m_pPainter->SetClipping(_Use, _x, _y, _w, _h);
 }
-
-
-/*
-
-
-void CPainter_2DUtils::Init()
-{
-	m_Font.BuildNormalAscii();
-	//m_Font.m_iTexture = -1;
-	//m_Font.m_iTexture = m_pInterface->GetTexture("data/font1");
-	m_Font.m_XCells = 16;
-	m_Font.m_YCells = 16;
-	m_Font.m_Width = 16;
-	m_Font.m_Height = 16;
-	m_Font.m_Spacing = 6;
-}
-
-
-void CPainter_2DUtils::Begin()
-{
-	m_UtilsRect.SetTexture(m_iTexture);
-	m_UtilsRect.Quad_Begin();
-
-	m_UtilsText.Text_Begin(&m_Font);
-}
-
-void CPainter_2DUtils::End()
-{
-	m_UtilsRect.SetBlend(N3D::C2DUtils::EBlend_Alpha);
-	m_UtilsRect.Quad_End();
-	m_UtilsText.Text_End();
-}
-
-
-int32_t CPainter_2DUtils::CreateImage(CImage &_Image)
-{
-	return 1;
-}
-
-void CPainter_2DUtils::SetImage(int32_t _iImage)
-{
-}
-
-void CPainter_2DUtils::SetGlobalTranslate(int32_t _x, int32_t _y)
-{
-	m_pUtils->SetGlobalTranslate(_x, _y);
-}
-
-void CPainter_2DUtils::SetClipping(bool _Use, int32_t _x, int32_t _y, int32_t _w, int32_t _h)
-{
-	m_pUtils->SetClipping(_Use, _x, _y, _w, _h);
-}
-
-
-void CPainter_2DUtils::SetUV(int32_t _u, int32_t _v, int32_t _w, int32_t _h)
-{
-	m_pUtils->SetTexCoord(  (fp32)_u/(fp32)m_TextureWidth,
-							(fp32)_v/(fp32)m_TextureHeight,
-							(fp32)_u/(fp32)m_TextureWidth+(fp32)_w/(fp32)m_TextureWidth,
-							(fp32)_v/(fp32)m_TextureHeight+(fp32)_h/(fp32)m_TextureHeight);
-}
-
-void CPainter_2DUtils::DrawRect(int32_t _x, int32_t _y, int32_t _w, int32_t _h)
-{
-	
-	//m_pUtils->SetBlend(N3D::C2DUtils::EBlend_Alpha);
-	m_UtilsRect.SetColor(1, 1, 1, 1);
-	//m_UtilsRect.Quad_Begin();
-	m_UtilsRect.Quad_DrawTL(_x, _y, _w, _h);
-	//m_UtilsRect.Quad_End();
-}
-
-void CPainter_2DUtils::DrawText(int32_t _x, int32_t _y, const int8_t *_pText, fp32 _r, fp32 _g, fp32 _b)
-{
-	//m_pUtils->SetDefaults();
-	//m_pUtils->SetColor(121/255.0f, 108/255.0f, 92/255.0f, 1);
-	
-	
-	//m_pUtils->Text_Begin(&m_Font);
-	m_UtilsText.SetColor(_r, _g, _b, 1);
-	m_UtilsText.Text_Draw((fp32)_x, (fp32)_y, N3D::C2DUtils::ETextDraw_TL, "%s", _pText);
-	//m_pUtils->Text_End();
-}
-*/
 
 void CPainter_2DUtils::Init()
 {

@@ -12,7 +12,7 @@ namespace NFoo { namespace NSound {
 	class CSample : public CSource
 	{
 	public:
-		void *m_pData;
+		char *m_pData;
 		int32_t m_DataSize;
 
 		CSample()

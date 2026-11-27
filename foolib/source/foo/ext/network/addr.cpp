@@ -53,7 +53,7 @@ CAddr::CAddr(const char *_pAddr, uint16_t _Port)
 const char *CAddr::Str()
 {
 	static char aString[32];
-	sprintf(aString, "%d.%d.%d.%d:%d", m_aAddress[0], m_aAddress[1], m_aAddress[2], m_aAddress[3], m_Port);
+	snprintf(aString, sizeof(aString), "%d.%d.%d.%d:%d", m_aAddress[0], m_aAddress[1], m_aAddress[2], m_aAddress[3], m_Port);
 	return aString;
 }
 

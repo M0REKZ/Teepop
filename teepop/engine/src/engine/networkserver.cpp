@@ -89,7 +89,7 @@ void CNetworkServer::Update()
 		int32_t iClient = m_SlotServer.GetClientID(i);
 
 		CChunk *pChunk = NULL;
-		while(pChunk = pConnection->GetChunk())
+		while((pChunk = pConnection->GetChunk()))
 		{
 			if(pChunk->m_Type == EChunk_Message)
 			{

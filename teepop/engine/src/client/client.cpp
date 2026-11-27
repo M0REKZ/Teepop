@@ -385,7 +385,7 @@ public:
 			CSample *pSample = m_pPatternStream->m_lSamples[m_Current];
 			int32_t Left = (pSample->m_DataSize/4-m_Position);
 			int32_t ChunkSize = Left < 4092 ? Left : 4092;
-			rBuffer.m_pData = (uint8_t*)pSample->m_pData + m_Position*4;
+			rBuffer.m_pData = pSample->m_pData + m_Position*4;
 			rBuffer.m_Samples = ChunkSize; //m_pPatternStream->m_lSamples[m_Wanted]->m_DataSize/4;
 			m_Position += ChunkSize;
 

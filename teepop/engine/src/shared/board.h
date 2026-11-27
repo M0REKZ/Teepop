@@ -130,7 +130,7 @@ public:
 	//# Function: FindChain
 	//# Description: Looks for a chain
 	int32_t GetConnectionIndex(int32_t x, int32_t y);
-	int32_t GetColor(int32_t x, int32_t y) { m_aField[x][y]; }
+	int32_t GetColor(int32_t x, int32_t y) { return m_aField[x][y]; }
 
 	virtual void Pack(NFoo::COutputStream &rStream); // 6*12/2=36 byte
 	virtual void Unpack(NFoo::CInputStream &rStream);

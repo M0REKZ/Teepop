@@ -24,7 +24,7 @@ public:
 
 	CString GetString()
 	{
-		char *aStates[2] = {"Waiting", "Started"};
+		const char *aStates[2] = {"Waiting", "Started"};
 		return CString("%-20s %d/%d  %s", m_Name.GetData(), m_lPlayers.Len(), m_MaxPlayers, aStates[m_State&EState_Mask]);
 	}
 };

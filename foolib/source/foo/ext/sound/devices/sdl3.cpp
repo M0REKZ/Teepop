@@ -16,7 +16,7 @@ class CSoundDevice_SDL3 : public CSoundDevice
 	bool m_Initialized;
 
 	CFormat m_Format;
-	void* m_pBuffer = nullptr;
+	uint8_t * m_pBuffer = nullptr;
 	int32_t m_BufferSamples = 0;
 	int32_t m_BufferBytes = 0;
 
@@ -71,9 +71,9 @@ bool CSoundDevice_SDL3::Init(CFormat Format, int32_t BufferSize)
 	m_Resumed = false;
 
 	SDL_AudioSpec spec = {
+		.format = SDL_AUDIO_UNKNOWN,
 		.channels = m_Format.m_Channels,
 		.freq = m_Format.m_SampleRate,
-		.format = SDL_AUDIO_UNKNOWN,
 	};
 
 	switch (Format.m_Bits)

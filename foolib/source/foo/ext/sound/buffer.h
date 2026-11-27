@@ -16,7 +16,7 @@ namespace NFoo { namespace NSound {
 
 		int32_t m_Samples;
 		CFormat m_Format;
-		void *m_pData;
+		char *m_pData;
 
 		void CreateData(int32_t Samples)
 		{

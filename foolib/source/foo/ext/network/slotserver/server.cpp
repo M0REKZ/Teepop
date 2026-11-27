@@ -216,7 +216,7 @@ void CSlotServer::Update()
 	// Update stats socket
 	NNetwork::CSocket *pSocket;
 	
-	while(pSocket = m_StatsSocket.Accept())
+	while((pSocket = m_StatsSocket.Accept()))
 	{
 		char aString[1024*32];
 		char *pCurrent = aString;

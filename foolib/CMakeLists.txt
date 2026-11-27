@@ -97,6 +97,9 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     target_compile_definitions(foolib PUBLIC FOO_PLATFORM_DARWIN)
     target_compile_definitions(foolib PUBLIC FOO_PLATFORM_POSIX)
+    
+    # Silence OpenGL deprecation warnings
+    target_compile_definitions(foolib PUBLIC GL_SILENCE_DEPRECATION)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_compile_definitions(foolib PUBLIC FOO_PLATFORM_LINUX)
     target_compile_definitions(foolib PUBLIC FOO_PLATFORM_POSIX)

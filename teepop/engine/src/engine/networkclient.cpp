@@ -64,7 +64,7 @@ void CNetworkClient::Update()
 
 	//
 	CChunk *pChunk = NULL;
-	while(pChunk = m_SlotClient.GetChunk())
+	while((pChunk = m_SlotClient.GetChunk()))
 	{
 		if(pChunk->m_Type == EChunk_Message)
 		{
